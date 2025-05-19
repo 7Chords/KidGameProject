@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UnityEditor/MapEditor/EditorWindow/MapEditorWindow.uss?fileID=7433441132597879392&amp;guid=5508158abebf7444bafe69dba599f735&amp;type=3#MapEditorWindow" />
+    <ui:VisualElement name="TopMenu" style="flex-grow: 0; justify-content: flex-start; left: auto; top: auto; align-items: stretch; height: auto; flex-basis: auto; flex-direction: row; -unity-text-outline-color: rgba(0, 0, 0, 0); -unity-text-outline-width: 0; background-color: rgb(103, 103, 103); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
+        <ui:VisualElement name="ChangeModeGroup" style="flex-grow: 0; flex-direction: row; left: auto; width: auto; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <ui:Button text="编辑房间" parse-escape-sequences="true" display-tooltip-when-elided="true" name="EditRoomButton" style="align-items: stretch; width: 80px; height: 24px; left: 5px; top: 10px;" />
+            <ui:Button text="编辑房子" parse-escape-sequences="true" display-tooltip-when-elided="true" name="EditHouseButton" style="align-items: stretch; width: 80px; height: 24px; left: 5px; top: 10px; right: auto;" />
+            <ui:Button text="信息展示" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InfoButton" style="align-items: stretch; width: 80px; height: 24px; left: 5px; top: 10px; right: auto; margin-right: 16px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="DataFieldGroup" style="flex-grow: 1; flex-direction: row; left: auto; width: auto; height: 43px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <uie:ObjectField label="房间数据" name="RoomDataField" style="align-items: center; width: 250px; -unity-text-align: middle-center;" />
+            <uie:ObjectField label="房子数据" name="HouseDataField" style="align-items: center; width: 250px; -unity-text-align: middle-center;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="Content" style="flex-grow: 1; justify-content: flex-start; left: auto; top: auto; align-items: center; height: auto; align-self: auto; width: auto; flex-direction: row; min-height: auto; max-height: none;">
+        <ui:VisualElement name="ItemGroup" style="flex-grow: 0; justify-content: flex-start; left: auto; top: auto; align-items: stretch; flex-direction: row; height: 100%; width: 25%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 0; border-bottom-width: 1px; border-left-width: 1px;">
+            <ui:ScrollView name="ItemScrollView" style="width: 179px; flex-grow: 1;">
+                <ui:VisualElement name="ItemListView" style="flex-grow: 1; min-height: 1000px;" />
+            </ui:ScrollView>
+        </ui:VisualElement>
+        <ui:VisualElement name="WorkSpace" style="flex-grow: 1; justify-content: flex-start; left: auto; top: auto; align-items: stretch; flex-direction: row; height: 100%; width: 205px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 0;">
+            <ui:IMGUIContainer name="WorkContainer" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
