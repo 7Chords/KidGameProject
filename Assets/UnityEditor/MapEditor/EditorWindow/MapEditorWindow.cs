@@ -1,8 +1,12 @@
 using System;
 using UnityEditor;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using UnityEditor.UIElements;
+using ObjectField = UnityEditor.UIElements.ObjectField;
+using static UnityEditor.Searcher.Searcher.AnalyticsEvent;
+using UnityEditor.Searcher;
 /**
  * 地图编辑器窗口脚本
  */
@@ -39,6 +43,17 @@ public class MapEditorWindow : EditorWindow
     private Button EditHouseButton;
     private Button InfoButton;
 
+    //ObjectField是
+    private ObjectField RoomDataField;
+    private ObjectField MapDataField;
+    private ObjectField ItemConfigField;//菜单栏配置数据
+
+    private MapEditorMode editorMode;
+
+    private RoomData roomData;
+    private MapData mapData;
+    private MapEditorItemGroupConfig mapEditorItemGroupConfig;
+
     private void InitTopMenu()
     {
         EditRoomButton = root.Q<Button>(nameof(EditRoomButton));
@@ -49,21 +64,81 @@ public class MapEditorWindow : EditorWindow
 
         InfoButton = root.Q<Button>(nameof(InfoButton));
         InfoButton.clicked += OnInfoButtonClicked;
+
+        //ObjectField是UnityEditor.UIElements.ObjectField
+        RoomDataField = root.Q<ObjectField>(nameof(RoomDataField));
+        RoomDataField.objectType = typeof(RoomData);
+        RoomDataField.RegisterValueChangedCallback(RoomDataFieldValueChanged);
+        RoomDataField.RegisterCallback<MouseDownEvent>(OnRoomDataFieldClicked);
+
+        MapDataField = root.Q<ObjectField>(nameof(MapDataField));
+        MapDataField.objectType = typeof(MapData);
+        MapDataField.RegisterValueChangedCallback(MapDataFieldValueChanged);
+        MapDataField.RegisterCallback<MouseDownEvent>(OnMapDataFieldClicked);
+
+        ItemConfigField = root.Q<ObjectField>(nameof(ItemConfigField));
+        ItemConfigField.objectType = typeof(MapEditorItemGroupConfig);
+        ItemConfigField.RegisterValueChangedCallback(ItemConfigFieldValueChanged);
+        ItemConfigField.RegisterCallback<MouseDownEvent>(OnItemConfigFieldClicked);
+
+        //默认是房间编辑模式
+        OnEditRoomButtonClicked();
     }
 
     private void OnEditRoomButtonClicked()
     {
-        Debug.Log("EditRoomButtonClick");
+        editorMode = MapEditorMode.Room;
+        EditRoomButton.style.color = Color.yellow;
+        EditHouseButton.style.color = Color.white;
+
     }
 
     private void OnEditHouseButtonClicked()
     {
-        Debug.Log("EditHouseButtonClick");
+        editorMode = MapEditorMode.House;
+        EditHouseButton.style.color = Color.yellow;
+        EditRoomButton.style.color = Color.white;
     }
 
     private void OnInfoButtonClicked()
     {
         Debug.Log("InfoButtonClick");
+    }
+
+
+    private void RoomDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
+    {
+        roomData = evt.newValue as RoomData;
+    }
+    private void OnRoomDataFieldClicked(MouseDownEvent evt)
+    {
+        if(roomData != null)
+        {
+            Selection.activeObject = roomData;
+        }
+    }
+
+    private void MapDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
+    {
+        mapData = evt.newValue as MapData;
+    }
+    private void OnMapDataFieldClicked(MouseDownEvent evt)
+    {
+        if (mapData != null)
+        {
+            Selection.activeObject = mapData;
+        }
+    }
+    private void ItemConfigFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
+    {
+        mapEditorItemGroupConfig = evt.newValue as MapEditorItemGroupConfig;
+    }
+    private void OnItemConfigFieldClicked(MouseDownEvent evt)
+    {
+        if (mapEditorItemGroupConfig != null)
+        {
+            Selection.activeObject = mapEditorItemGroupConfig;
+        }
     }
     #endregion
 
@@ -86,37 +161,53 @@ public class MapEditorWindow : EditorWindow
         WorkContainer = root.Q<IMGUIContainer>(nameof(WorkContainer));
         //IMGUI的绘制函数
         WorkContainer.onGUIHandler = DrawWorkSpace;
-        //WorkContainer.RegisterCallback<WheelEvent>(TimerShaftWheel);
+        WorkContainer.RegisterCallback<WheelEvent>(WorkSpaceWheel);
         //WorkContainer.RegisterCallback<MouseDownEvent>(TimerShaftMouseDown);
         //WorkContainer.RegisterCallback<MouseMoveEvent>(TimerShaftMouseMove);
         //WorkContainer.RegisterCallback<MouseUpEvent>(TimerShaftMouseUp);
         //WorkContainer.RegisterCallback<MouseOutEvent>(TimerShaftMouseOut);
     }
 
+    private void RefreshWorkSpace()
+    {
+
+    }
+
+    private void WorkSpaceWheel(WheelEvent evt)
+    {
+        int delta = (int)evt.delta.y;
+        mapEditorConfig.curGridUnitLength = Mathf.Clamp(mapEditorConfig.curGridUnitLength- delta
+            ,MapEditorConfig.minGridUnitLength,MapEditorConfig.maxGridUnitLength);
+        UpdateWorkSpaceView();
+    }
+    private void UpdateWorkSpaceView()
+    {
+        WorkContainer.MarkDirtyLayout(); // 标志为需要重新绘制的
+    }
     private void DrawWorkSpace()
     {
         Handles.BeginGUI();
         Handles.color = Color.white;
 
         Rect rect = WorkContainer.contentRect;
-        int row = (int)rect.width / MapEditorConfig.standardGridUnitLength;//行
-        int column = (int)rect.height / MapEditorConfig.standardGridUnitLength;//列
+        int row = (int)rect.height / mapEditorConfig.curGridUnitLength;//行
+        int column = (int)rect.width / mapEditorConfig.curGridUnitLength;//列
 
         int curStartPos = 0;
         for(int i=0;i<row;i++)
         {
-            Handles.DrawLine(new Vector3(0, curStartPos + i * MapEditorConfig.standardGridUnitLength),
-                new Vector3(rect.width, curStartPos + i * MapEditorConfig.standardGridUnitLength));
-            curStartPos += MapEditorConfig.standardGridUnitLength;
+            Handles.DrawLine(new Vector3(0, curStartPos + i * mapEditorConfig.curGridUnitLength),
+                new Vector3(rect.width, curStartPos + i * mapEditorConfig.curGridUnitLength));
+            curStartPos += mapEditorConfig.curGridUnitLength;
         }
         curStartPos = 0;
         for (int i = 0; i < column; i++)
         {
-            Handles.DrawLine(new Vector3(curStartPos + i * MapEditorConfig.standardGridUnitLength, 0),
-                new Vector3(curStartPos + i * MapEditorConfig.standardGridUnitLength, rect.width));
-            curStartPos += MapEditorConfig.standardGridUnitLength;
+            Handles.DrawLine(new Vector3(curStartPos + i * mapEditorConfig.curGridUnitLength, 0),
+                new Vector3(curStartPos + i * mapEditorConfig.curGridUnitLength, rect.width));
+            curStartPos += mapEditorConfig.curGridUnitLength;
         }
-
+         
         //Handles.DrawLine(new Vector3(i, rect.height - 10), new Vector3(i, rect.height));
         //string indexStr = index.ToString();
         //GUI.Label(new Rect(i - indexStr.Length * 4.5f, 0, 35, 20), indexStr);
@@ -150,7 +241,11 @@ public class MapEditorWindow : EditorWindow
     }
     #endregion
 }
-
+public enum MapEditorMode
+{
+    Room,
+    House,
+}
 public class MapEditorConfig
 {
     public const int standardGridUnitLength = 20;  // 标准网格单位边长
