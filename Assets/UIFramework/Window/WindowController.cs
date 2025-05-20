@@ -45,7 +45,7 @@
         /// 把这个面板移动到最父物体的所有子物体中的最下面
         /// </summary>
         protected override void HierarchyFixOnShow() {
-            
+            transform.SetAsLastSibling();
             
         }
     }

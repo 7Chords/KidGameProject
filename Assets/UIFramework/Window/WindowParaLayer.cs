@@ -12,7 +12,8 @@ namespace UIFramework {
 
         private List<GameObject> containedScreens = new List<GameObject>();
         
-        public void AddScreen(Transform screenRectTransform) {
+        public void AddScreen(Transform screenRectTransform)
+        {
             screenRectTransform.SetParent(transform, false);
             containedScreens.Add(screenRectTransform.gameObject);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UIFramework.Examples
 {
@@ -29,6 +30,7 @@ namespace UIFramework.Examples
 
         public override void Animate(Transform target, Action callWhenFinished) {
             RectTransform rTransform = target as RectTransform;
+            
             var origAnchoredPos = rTransform.anchoredPosition;
             Vector3 startPosition = Vector3.zero;
 
