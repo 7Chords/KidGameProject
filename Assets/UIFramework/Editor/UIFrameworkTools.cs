@@ -8,6 +8,12 @@ using UnityEngine.UI;
 
 namespace UIFramework.Editor
 {
+    /// <summary>
+    /// 1.创建UI框架结构:
+    /// 在场景中直接创建UI框架：通过菜单项"Assets/Create/UI/UI Frame in Scene"
+    /// 创建UI框架预制体：通过菜单项"Assets/Create/UI/UI Frame Prefab"
+    /// 2.自动构建的UI框架组件
+    /// </summary>
     public static class UIFrameworkTools
     {
         [MenuItem("Assets/Create/UI/UI Frame in Scene", priority = 2)]

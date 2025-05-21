@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 using Utils;
 
@@ -13,14 +12,13 @@ namespace UIFramework.Examples
         [SerializeField] private Camera cam = null;
         [SerializeField] private Transform transformToFollow = null;
         private UIFrame uiFrame;
-        
-        private void Awake() {
+
+        private void Awake()
+        {
             uiFrame = defaultUISettings.CreateUIInstance();
             // Signals.Get<StartDemoSignal>().AddListener(OnStartDemo);
             // Signals.Get<NavigateToWindowSignal>().AddListener(OnNavigateToWindow);
             // Signals.Get<ShowConfirmationPopupSignal>().AddListener(OnShowConfirmationPopup);
         }
-    
     }
 }
-
