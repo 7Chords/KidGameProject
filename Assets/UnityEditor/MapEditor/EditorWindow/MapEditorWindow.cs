@@ -1,12 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 using ObjectField = UnityEditor.UIElements.ObjectField;
-using static UnityEditor.Searcher.Searcher.AnalyticsEvent;
-using UnityEditor.Searcher;
+
 /**
  * 地图编辑器窗口脚本
  */
@@ -15,6 +13,9 @@ public class MapEditorWindow : EditorWindow
     public static MapEditorWindow Instance;
 
     private MapEditorConfig mapEditorConfig = new MapEditorConfig();
+
+    public Color unSelectColor = new Color(0.7372549f, 0.7372549f, 0.7372549f, 1);
+    public Color selectColor = Color.yellow;
 
     [MenuItem("自定义编辑器/地图编辑器")]
     public static void ShowExample()
@@ -26,6 +27,8 @@ public class MapEditorWindow : EditorWindow
     private VisualElement root;
     public void CreateGUI()
     {
+        Instance = this;
+
         root = rootVisualElement;
         var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UnityEditor/MapEditor/EditorWindow/MapEditorWindow.uxml");
         VisualElement labelFromUXML = visualTree.Instantiate();
@@ -42,6 +45,7 @@ public class MapEditorWindow : EditorWindow
     private Button EditRoomButton;
     private Button EditHouseButton;
     private Button InfoButton;
+
 
     //ObjectField是
     private ObjectField RoomDataField;
@@ -88,16 +92,23 @@ public class MapEditorWindow : EditorWindow
     private void OnEditRoomButtonClicked()
     {
         editorMode = MapEditorMode.Room;
-        EditRoomButton.style.color = Color.yellow;
-        EditHouseButton.style.color = Color.white;
-
+        SetButtonBorderColor(EditRoomButton, selectColor);
+        SetButtonBorderColor(EditHouseButton, unSelectColor);
+        UpdateWorkSpaceView();
     }
-
     private void OnEditHouseButtonClicked()
     {
         editorMode = MapEditorMode.House;
-        EditHouseButton.style.color = Color.yellow;
-        EditRoomButton.style.color = Color.white;
+        SetButtonBorderColor(EditRoomButton, unSelectColor);
+        SetButtonBorderColor(EditHouseButton, selectColor);
+        UpdateWorkSpaceView();
+    }
+    public void SetButtonBorderColor(Button btn, Color color)
+    {
+        btn.style.borderBottomColor = color;
+        btn.style.borderTopColor = color;
+        btn.style.borderLeftColor = color;
+        btn.style.borderRightColor = color;
     }
 
     private void OnInfoButtonClicked()
@@ -109,6 +120,7 @@ public class MapEditorWindow : EditorWindow
     private void RoomDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
     {
         roomData = evt.newValue as RoomData;
+        UpdateWorkSpaceView();
     }
     private void OnRoomDataFieldClicked(MouseDownEvent evt)
     {
@@ -121,6 +133,7 @@ public class MapEditorWindow : EditorWindow
     private void MapDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
     {
         mapData = evt.newValue as MapData;
+        UpdateWorkSpaceView();
     }
     private void OnMapDataFieldClicked(MouseDownEvent evt)
     {
@@ -132,6 +145,7 @@ public class MapEditorWindow : EditorWindow
     private void ItemConfigFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
     {
         mapEditorItemGroupConfig = evt.newValue as MapEditorItemGroupConfig;
+        RefreshItemGroupView();
     }
     private void OnItemConfigFieldClicked(MouseDownEvent evt)
     {
@@ -145,16 +159,100 @@ public class MapEditorWindow : EditorWindow
 
     #region ItemMenu
     private VisualElement ItemListView;
+    private List<MapEditorItem> editorItemList;
+    private Button LeftButton;
+    private Button RightButton;
+    private Label ItemGroupTitle;
+
+    private MapEditorItem curSelectItem;
 
     private void InitItemMenu()
     {
         ItemListView = root.Q<VisualElement>(nameof(ItemListView));
+        LeftButton = root.Q<Button>(nameof(LeftButton));
+        LeftButton.clicked += OnLeftButtonClicked;
+
+        RightButton = root.Q<Button>(nameof(RightButton));
+        RightButton.clicked += OnRightButtonClicked;
+
+        ItemGroupTitle = root.Q <Label>(nameof(ItemGroupTitle));
+
+
+        editorItemList = new List<MapEditorItem>();
     }
 
+    private void OnLeftButtonClicked()
+    {
+        
+    }
+
+    private void OnRightButtonClicked()
+    {
+        
+    }
+
+    private void RefreshItemGroupView()
+    {
+        if (mapEditorItemGroupConfig == null)
+        {
+            ClearItemGroupView();
+            return;
+        }
+        if(editorMode == MapEditorMode.Room)
+        {
+            for (int i = 0; i < mapEditorItemGroupConfig.TileList.Count; i++)
+            {
+                MapEditorItem editItem = new MapEditorItem();
+                editorItemList.Add(editItem);
+                editItem.Init(ItemListView, mapEditorItemGroupConfig.TileList[i].tileName);
+            }
+            //for (int i = 0; i < mapEditorItemGroupConfig.FrunitureList.Count;i++)
+            //{
+            //    MapEditorItem editItem = new MapEditorItem();
+            //    editorItemList.Add(editItem);
+            //    editItem.Init(ItemListView, mapEditorItemGroupConfig.FrunitureList[i].FurnitureName);
+            //}
+        }
+        else if(editorMode == MapEditorMode.House)
+        {
+            for (int i = 0; i < mapEditorItemGroupConfig.RoomList.Count; i++)
+            {
+                MapEditorItem editItem = new MapEditorItem();
+                editorItemList.Add(editItem);
+                editItem.Init(ItemListView, mapEditorItemGroupConfig.RoomList[i].RoomName);
+            }
+        }
+
+    }
+    private void ClearItemGroupView()
+    {
+        foreach (var item in editorItemList)
+        {
+            item.Destory();
+        }
+        editorItemList.Clear();
+    }
+
+    public void SelectOneItem(MapEditorItem selectItem)
+    {
+        curSelectItem = selectItem;
+        foreach (var item in editorItemList)
+        {
+            if (item == selectItem)
+            {
+                item.Select();
+            }
+            else
+            {
+                item.UnSelect();
+            }
+        }
+    }
     #endregion
 
     #region WorkSpace
     private IMGUIContainer WorkContainer;
+
 
     private void InitWorkSpace()
     {
@@ -162,26 +260,26 @@ public class MapEditorWindow : EditorWindow
         //IMGUI的绘制函数
         WorkContainer.onGUIHandler = DrawWorkSpace;
         WorkContainer.RegisterCallback<WheelEvent>(WorkSpaceWheel);
-        //WorkContainer.RegisterCallback<MouseDownEvent>(TimerShaftMouseDown);
+        WorkContainer.RegisterCallback<MouseDownEvent>(WorkSpaceMouseDown);
         //WorkContainer.RegisterCallback<MouseMoveEvent>(TimerShaftMouseMove);
         //WorkContainer.RegisterCallback<MouseUpEvent>(TimerShaftMouseUp);
         //WorkContainer.RegisterCallback<MouseOutEvent>(TimerShaftMouseOut);
     }
-
     private void RefreshWorkSpace()
     {
 
     }
-
     private void WorkSpaceWheel(WheelEvent evt)
     {
         int delta = (int)evt.delta.y;
         mapEditorConfig.curGridUnitLength = Mathf.Clamp(mapEditorConfig.curGridUnitLength- delta
             ,MapEditorConfig.minGridUnitLength,MapEditorConfig.maxGridUnitLength);
         UpdateWorkSpaceView();
+        //Debug.Log(mapEditorConfig.curGridUnitLength);
     }
     private void UpdateWorkSpaceView()
     {
+        if (WorkContainer == null) return;
         WorkContainer.MarkDirtyLayout(); // 标志为需要重新绘制的
     }
     private void DrawWorkSpace()
@@ -189,56 +287,90 @@ public class MapEditorWindow : EditorWindow
         Handles.BeginGUI();
         Handles.color = Color.white;
 
+        //画网格
         Rect rect = WorkContainer.contentRect;
         int row = (int)rect.height / mapEditorConfig.curGridUnitLength;//行
         int column = (int)rect.width / mapEditorConfig.curGridUnitLength;//列
 
         int curStartPos = 0;
-        for(int i=0;i<row;i++)
+        for(int i=0;i<=row;i++)
         {
-            Handles.DrawLine(new Vector3(0, curStartPos + i * mapEditorConfig.curGridUnitLength),
-                new Vector3(rect.width, curStartPos + i * mapEditorConfig.curGridUnitLength));
+            Handles.DrawLine(new Vector3(0, curStartPos /*+ i * mapEditorConfig.curGridUnitLength*/),
+                new Vector3(rect.width, curStartPos /*+ i * mapEditorConfig.curGridUnitLength*/));
             curStartPos += mapEditorConfig.curGridUnitLength;
         }
         curStartPos = 0;
-        for (int i = 0; i < column; i++)
+        for (int i = 0; i <= column; i++)
         {
-            Handles.DrawLine(new Vector3(curStartPos + i * mapEditorConfig.curGridUnitLength, 0),
-                new Vector3(curStartPos + i * mapEditorConfig.curGridUnitLength, rect.width));
+            Handles.DrawLine(new Vector3(curStartPos /*+ i * mapEditorConfig.curGridUnitLength*/, 0),
+                new Vector3(curStartPos /*+ i * mapEditorConfig.curGridUnitLength*/, rect.width));
             curStartPos += mapEditorConfig.curGridUnitLength;
         }
-         
-        //Handles.DrawLine(new Vector3(i, rect.height - 10), new Vector3(i, rect.height));
-        //string indexStr = index.ToString();
-        //GUI.Label(new Rect(i - indexStr.Length * 4.5f, 0, 35, 20), indexStr);
+
+        //画数据
+
+        if(editorMode == MapEditorMode.Room)
+        {
+            if(roomData!=null)
+            {
+                foreach(var item in roomData.itemList)
+                {
+                    foreach (var pos in item.mapPosList)
+                    {
+                        GUIStyle labelStyle = new GUIStyle();
+                        labelStyle.fontSize = 20;
+                        GUI.Label(new Rect(pos.x * mapEditorConfig.curGridUnitLength,
+                            pos.y * mapEditorConfig.curGridUnitLength,
+                            mapEditorConfig.curGridUnitLength,
+                            mapEditorConfig.curGridUnitLength/2), item.tileData.tileName);
+                    }
+
+                }
+            }
+        }
 
 
-
-
-        //// 起始索引
-        //int index = Mathf.CeilToInt(contentOffsetPos / skillEditorConfig.frameUnitWidth);
-        //// 计算绘制起点的偏移
-        //float startOffset = 0;
-        //if (index > 0) startOffset = skillEditorConfig.frameUnitWidth - (contentOffsetPos % skillEditorConfig.frameUnitWidth);
-
-        ////相隔多少刻度画一个长线
-        //int tickStep = SkillEditorConfig.maxFrameWidthLV + 1 - (skillEditorConfig.frameUnitWidth / SkillEditorConfig.standFrameUnitWidth);
-        //tickStep = tickStep / 2; // 可能 1 / 2 = 0的情况
-        //if (tickStep == 0) tickStep = 1; // 避免为0
-        //for (float i = startOffset; i < rect.width; i += skillEditorConfig.frameUnitWidth)
-        //{
-        //    // 绘制长线、文本
-        //    if (index % tickStep == 0)
-        //    {
-        //        Handles.DrawLine(new Vector3(i, rect.height - 10), new Vector3(i, rect.height));
-        //        string indexStr = index.ToString();
-        //        GUI.Label(new Rect(i - indexStr.Length * 4.5f, 0, 35, 20), indexStr);
-        //    }
-        //    else Handles.DrawLine(new Vector3(i, rect.height - 5), new Vector3(i, rect.height));
-        //    index += 1;
-        //}
         Handles.EndGUI();
     }
+
+
+    private void WorkSpaceMouseDown(MouseDownEvent evt)
+    {
+
+        if (curSelectItem == null) return;
+        if ((editorMode == MapEditorMode.Room && roomData == null) || (editorMode == MapEditorMode.House && mapData == null)) return;
+        int x = (int)(evt.localMousePosition.x / mapEditorConfig.curGridUnitLength);
+        int y = (int)(evt.localMousePosition.y / mapEditorConfig.curGridUnitLength);
+
+        if(editorMode==MapEditorMode.Room)
+        {
+            //FurnitureData furnitureData = mapEditorItemGroupConfig.FrunitureList.Find(x => x.FurnitureName == curSelectItem.ItemName);
+            //if (furnitureData == null) return;
+            TileData tileData = mapEditorItemGroupConfig.TileList.Find(x => x.tileName == curSelectItem.ItemName);
+            if (tileData == null) return;
+            MapItem mapItem = new MapItem();
+            mapItem.gridState = MapGridState.Tile;
+            mapItem.tileData = tileData;
+            mapItem.mapPosList = new List<GridPos>();
+            foreach (var pos in tileData.posList)
+            {
+                int mapX = pos.x + x;
+                int mapY = pos.y + y;
+                // 记录已绘制的网格状态
+                GridPos mapPos = new GridPos(mapX, mapY);
+                mapItem.mapPosList.Add(mapPos);
+            }
+            roomData.itemList.Add(mapItem);
+
+        }
+        else if(editorMode == MapEditorMode.House)
+        {
+
+        }
+        WorkContainer.MarkDirtyLayout();
+
+    }
+
     #endregion
 }
 public enum MapEditorMode
@@ -246,10 +378,14 @@ public enum MapEditorMode
     Room,
     House,
 }
+
+
+
+
 public class MapEditorConfig
 {
-    public const int standardGridUnitLength = 20;  // 标准网格单位边长
-    public const int maxGridUnitLength = 40;      //  最大网格单位边长
-    public const int minGridUnitLength = 10;      //  最小网格单位边长
-    public int curGridUnitLength = 20;             //  当前网格单位边长
+    public const int standardGridUnitLength = 40;  // 标准网格单位边长
+    public const int maxGridUnitLength = 60;      //  最大网格单位边长
+    public const int minGridUnitLength = 20;      //  最小网格单位边长
+    public int curGridUnitLength = 40;             //  当前网格单位边长
 }

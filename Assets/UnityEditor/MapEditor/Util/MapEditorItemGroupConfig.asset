@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a2d6bf041b38341bc196c3d45cc520, type: 3}
   m_Name: MapEditorItemGroupConfig
   m_EditorClassIdentifier: 
+  TileList:
+  - {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+  FrunitureList:
+  - {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
+  - {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
+  - {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
+  RoomList:
+  - {fileID: 11400000, guid: cb6f8c6664dd45149ba559b89c975d5a, type: 2}
+  - {fileID: 11400000, guid: c458870baa67fbb46a84c57d768b25f8, type: 2}
+  MapListList:
+  - {fileID: 11400000, guid: 8d1eebedc64564d4b99f71d8e09a5d98, type: 2}
