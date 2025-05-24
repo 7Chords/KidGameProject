@@ -13,7 +13,6 @@ public class MapEditorItemGroupConfig : ScriptableObject
     public List<FurnitureData> FrunitureList;
 
     [Header("Blueprint")]
-    public List<RoomData> RoomList;
     public List<MapData> MapListList;
 
 }

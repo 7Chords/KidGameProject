@@ -5,5 +5,6 @@ using UnityEngine;
 public class TileData : ScriptableObject
 {
     public string tileName;
-    public List<GridPos> posList;
+    public Texture2D texture;
+    public GameObject tilePrefab;
 }

@@ -18,6 +18,7 @@ public struct GridPos
 public class FurnitureData : ScriptableObject
 {
     public string FurnitureName;
-
+    public Texture2D texture;
     public List<GridPos> posList;
+    public GameObject furniturePrefab;
 }

@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bb7b11d625b1a94c82d0e7d0dafbe1b, type: 3}
-  m_Name: RoomData 1
+  m_Script: {fileID: 11500000, guid: d4b8b56f59c459d4682ae8b92f9a5517, type: 3}
+  m_Name: "\u5927\u72D7\u5C4B"
   m_EditorClassIdentifier: 
+  MapName: 
+  tileList: []
+  furnitureList: []

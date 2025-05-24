@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06ce36765790671408634f0e1a152706, type: 3}
-  m_Name: TileData
+  m_Name: "\u767D\u8272\u5730\u7816"
   m_EditorClassIdentifier: 
   tileName: "\u767D\u8272\u5730\u7816"
-  posList:
-  - x: 0
-    y: 0
+  texture: {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
+  tilePrefab: {fileID: 2324160044407012532, guid: b185fb0715c4fb54ca686f75cd1279b0,
+    type: 3}
