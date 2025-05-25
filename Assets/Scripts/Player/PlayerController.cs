@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 //½ÇÉ«²âÊÔ½Å±¾
 public class PlayerController : MonoBehaviour

@@ -8,15 +8,18 @@ public class CameraController : MonoBehaviour
 
     private Vector3 originalPos;
     private Vector3 playerMovement;
+
     private void Start()
     {
         originalPos = Player.transform.position;
     }
+
     private void Update()
     {
         playerMovement = Player.transform.position - originalPos;
         originalPos = Player.transform.position;
     }
+
     private void LateUpdate()
     {
         transform.position += playerMovement;
