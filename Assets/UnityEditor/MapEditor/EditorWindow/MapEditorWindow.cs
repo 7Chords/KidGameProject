@@ -100,11 +100,13 @@ public class MapEditorWindow : EditorWindow
     private void OnGenerateMapButtonClicked()
     {
         if (mapData == null) return;
+        GameObject root = new GameObject("Map");
         foreach(var tile in mapData.tileList)
         {
-            Instantiate(tile.tileData.tilePrefab,
+            GameObject tileGO = Instantiate(tile.tileData.tilePrefab,
                 new Vector3(tile.mapPos.x,0, -tile.mapPos.y),
                 Quaternion.identity);
+            tileGO.transform.SetParent(root.transform);
         }
         foreach (var furniture in mapData.furnitureList)
         {
@@ -118,6 +120,7 @@ public class MapEditorWindow : EditorWindow
             averageZ /= furniture.mapPosList.Count;
             GameObject furnitureGO = Instantiate(furniture.furnitureData.furniturePrefab);
             furnitureGO.transform.position = new Vector3(averageX, 0, -averageZ);
+            furnitureGO.transform.SetParent(root.transform);
         }
     }
 
