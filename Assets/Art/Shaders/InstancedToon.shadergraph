@@ -332,20 +332,6 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "b82fd7189d4e4a40b2667a2e086b4620"
-                },
-                "m_SlotId": 1
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "e2fc33bbf22a4bcda63f54ccebd3ef63"
-                },
-                "m_SlotId": 760478300
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
                     "m_Id": "c74251650b634598aafc10da126f7d32"
                 },
                 "m_SlotId": 0
@@ -441,6 +427,7 @@
     "m_OutputNode": {
         "m_Id": ""
     },
+    "m_SubDatas": [],
     "m_ActiveTargets": [
         {
             "m_Id": "71d0abc105eb41fb9a773cba2ed1e2de"
@@ -1479,27 +1466,6 @@
     "m_Keyword": {
         "m_Id": "c7c325c56818460eb2e88e075847c1da"
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector2MaterialSlot",
-    "m_ObjectId": "4f966cf978d24478816539a2377fe975",
-    "m_Id": 760478300,
-    "m_DisplayName": "WorldUV",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "_WorldUV",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
-    },
-    "m_Labels": []
 }
 
 {
@@ -2622,9 +2588,6 @@
         }
     },
     "m_Slots": [
-        {
-            "m_Id": "4f966cf978d24478816539a2377fe975"
-        },
         {
             "m_Id": "bfa5b81bd1074538a99e70448c81c285"
         },

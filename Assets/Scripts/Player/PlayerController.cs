@@ -1,47 +1,62 @@
 ï»¿using UnityEngine;
 
-//½ÇÉ«²âÊÔ½Å±¾
-public class PlayerController : MonoBehaviour
+
+public class PlayerController : MonoBehaviour,IStateMachineOwner
 {
-    [Header("ÒÆ¶¯²ÎÊı")]
-    [Tooltip("½ÇÉ«ÒÆ¶¯ËÙ¶È")]
-    public float MoveSpeed = 5.0f;
+    private CharacterController characterController;
+    public CharacterController CharacterController
+    {
+        get { return characterController; }
+        private set { }
+    }
 
+    private Animator animator;
 
-    private Rigidbody rb;
-    private Vector3 movement;
+    private StateMachine stateMachine;
+    private PlayerState playerState; // ç©å®¶çš„å½“å‰çŠ¶æ€
 
+    public PlayerBaseData PlayerBaseData;
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
+
+        stateMachine = PoolManager.Instance.GetObject<StateMachine>();
+        stateMachine.Init(this);
+        ChangeState(PlayerState.Idle);
     }
 
-    void Update()
+    public void Rotate(Vector3 dir)
     {
-        HandleInput();
-        Rotate();
-    }
-    private void HandleInput()
-    {
-        if (!GlobalValue.EnablePlayerInput) return;
-        // ´¦ÀíÊäÈë
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.z = Input.GetAxisRaw("Vertical");
-        movement = movement.normalized;
-    }
-    private void Rotate()
-    {
-        if (movement.magnitude > 0.1f)
+        if (dir.magnitude > 0.1f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(movement);
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
             transform.rotation = targetRotation;
         }
     }
-    void FixedUpdate()
+
+
+    /// <summary>
+    /// ä¿®æ”¹çŠ¶æ€
+    /// </summary>
+    public void ChangeState(PlayerState playerState, bool reCurrstate = false)
     {
-        if (rb != null && movement != Vector3.zero)
+        this.playerState = playerState;
+        switch (playerState)
         {
-            rb.MovePosition(rb.position + movement * MoveSpeed * GlobalValue.GameDeltaTime);
+            case PlayerState.Idle:
+                stateMachine.ChangeState<PlayerIdleState>((int)playerState, reCurrstate);
+                break;
+            case PlayerState.Move:
+                stateMachine.ChangeState<PlayerMoveState>((int)playerState, reCurrstate);
+                break;
+            default:
+                break;
         }
+    }
+
+    public void PlayerAnimation(string animationName)
+    {
+        animator.Play(animationName);
     }
 }

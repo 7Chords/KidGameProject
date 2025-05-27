@@ -742,6 +742,7 @@
     "m_OutputNode": {
         "m_Id": ""
     },
+    "m_SubDatas": [],
     "m_ActiveTargets": [
         {
             "m_Id": "f4d12a76d4fa40b89599715f0ff4dfeb"
@@ -3501,9 +3502,6 @@
     },
     "m_Slots": [
         {
-            "m_Id": "d09613ff51a24ad1a3479085d1570f5c"
-        },
-        {
             "m_Id": "fffb96176a5e43d7830ba30bc67c3bc3"
         },
         {
@@ -3919,27 +3917,6 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "SurfaceDescription.Alpha"
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector2MaterialSlot",
-    "m_ObjectId": "d09613ff51a24ad1a3479085d1570f5c",
-    "m_Id": 760478300,
-    "m_DisplayName": "WorldUV",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "_WorldUV",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
-    },
-    "m_Labels": []
 }
 
 {

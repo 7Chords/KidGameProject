@@ -1,2 +1,0 @@
-Creating for testing.
-KidGameProject.
