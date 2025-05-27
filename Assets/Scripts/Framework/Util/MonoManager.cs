@@ -16,6 +16,7 @@ public class MonoManager : SingletonPersistent<MonoManager>
     {
         _updateEvent += action;
     }
+
     /// <summary>
     /// ÒÆ³ýUpdate¼àÌý
     /// </summary>
@@ -33,6 +34,7 @@ public class MonoManager : SingletonPersistent<MonoManager>
     {
         _lateUpdateEvent += action;
     }
+
     /// <summary>
     /// ÒÆ³ýLateUpdate¼àÌý
     /// </summary>
@@ -50,6 +52,7 @@ public class MonoManager : SingletonPersistent<MonoManager>
     {
         _fixedUpdateEvent += action;
     }
+
     /// <summary>
     /// ÒÆ³ýFixedUpdate¼àÌý
     /// </summary>
@@ -63,10 +66,12 @@ public class MonoManager : SingletonPersistent<MonoManager>
     {
         _updateEvent?.Invoke();
     }
+
     private void LateUpdate()
     {
         _lateUpdateEvent?.Invoke();
     }
+
     private void FixedUpdate()
     {
         _fixedUpdateEvent?.Invoke();

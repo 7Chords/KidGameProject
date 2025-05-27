@@ -11,9 +11,8 @@ public class SingletonPersistent<T> : MonoBehaviour where T : MonoBehaviour
     public static T Instance => instance;
 
     protected virtual void Awake()
-    { 
-
-        if(instance)
+    {
+        if (instance)
         {
             Destroy(gameObject);
         }
@@ -21,6 +20,7 @@ public class SingletonPersistent<T> : MonoBehaviour where T : MonoBehaviour
         {
             instance = this as T;
         }
+
         DontDestroyOnLoad(gameObject);
     }
 }

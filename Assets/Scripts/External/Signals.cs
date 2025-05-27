@@ -37,12 +37,13 @@ namespace Utils
     {
         string Hash { get; }
     }
-    
+
     public static class Signals
     {
         private static readonly SignalHub hub = new SignalHub();
 
-        public static SType Get<SType>() where SType : ISignal, new() {
+        public static SType Get<SType>() where SType : ISignal, new()
+        {
             return hub.Get<SType>();
         }
     }
@@ -57,54 +58,66 @@ namespace Utils
         /// <summary>
         /// 根据类型获取事件
         /// </summary>
-        public SType Get<SType>() where SType : ISignal, new() {
+        public SType Get<SType>() where SType : ISignal, new()
+        {
             Type signalType = typeof(SType);
             ISignal signal;
 
-            if (signals.TryGetValue(signalType, out signal)) {
-                return (SType) signal;
+            if (signals.TryGetValue(signalType, out signal))
+            {
+                return (SType)signal;
             }
 
-            return (SType) Bind(signalType);
+            return (SType)Bind(signalType);
         }
 
         /// <summary>
         /// 手动提供一个事件的哈希，并将其绑定到给定的监听器
         /// /// </summary> 
-        public void AddListenerToHash(string signalHash, Action handler) {
+        public void AddListenerToHash(string signalHash, Action handler)
+        {
             ISignal signal = GetSignalByHash(signalHash);
-            if (signal != null && signal is ASignal) {
+            if (signal != null && signal is ASignal)
+            {
                 (signal as ASignal).AddListener(handler);
             }
         }
-        
-        public void RemoveListenerFromHash(string signalHash, Action handler) {
+
+        public void RemoveListenerFromHash(string signalHash, Action handler)
+        {
             ISignal signal = GetSignalByHash(signalHash);
-            if (signal != null && signal is ASignal) {
+            if (signal != null && signal is ASignal)
+            {
                 (signal as ASignal).RemoveListener(handler);
             }
         }
 
-        private ISignal Bind(Type signalType) {
+        private ISignal Bind(Type signalType)
+        {
             ISignal signal;
-            if (signals.TryGetValue(signalType, out signal)) {
+            if (signals.TryGetValue(signalType, out signal))
+            {
                 UnityEngine.Debug.LogError(string.Format("Signal already registered for type {0}",
                     signalType.ToString()));
                 return signal;
             }
 
-            signal = (ISignal) Activator.CreateInstance(signalType);
+            signal = (ISignal)Activator.CreateInstance(signalType);
             signals.Add(signalType, signal);
             return signal;
         }
 
-        private ISignal Bind<T>() where T : ISignal, new() {
+        private ISignal Bind<T>() where T : ISignal, new()
+        {
             return Bind(typeof(T));
         }
 
-        private ISignal GetSignalByHash(string signalHash) {
-            foreach (ISignal signal in signals.Values) {
-                if (signal.Hash == signalHash) {
+        private ISignal GetSignalByHash(string signalHash)
+        {
+            foreach (ISignal signal in signals.Values)
+            {
+                if (signal.Hash == signalHash)
+                {
                     return signal;
                 }
             }
@@ -123,9 +136,12 @@ namespace Utils
         /// <summary>
         /// 本身的哈希值
         /// </summary>
-        public string Hash {
-            get {
-                if (string.IsNullOrEmpty(_hash)) {
+        public string Hash
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_hash))
+                {
                     _hash = this.GetType().ToString();
                 }
 
@@ -144,7 +160,8 @@ namespace Utils
         /// <summary>
         /// 事件加监听
         /// </summary>
-        public void AddListener(Action handler) {
+        public void AddListener(Action handler)
+        {
 #if UNITY_EDITOR
             UnityEngine.Debug.Assert(
                 handler.Method.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute),
@@ -157,15 +174,18 @@ namespace Utils
         /// <summary>
         /// 事件的移除监听
         /// </summary>
-        public void RemoveListener(Action handler) {
+        public void RemoveListener(Action handler)
+        {
             callback -= handler;
         }
 
         /// <summary>
         /// 广播事件
         /// </summary>
-        public void Dispatch() {
-            if (callback != null) {
+        public void Dispatch()
+        {
+            if (callback != null)
+            {
                 callback();
             }
         }
@@ -181,7 +201,8 @@ namespace Utils
         /// <summary>
         /// 事件加监听
         /// </summary>
-        public void AddListener(Action<T> handler) {
+        public void AddListener(Action<T> handler)
+        {
 #if UNITY_EDITOR
             UnityEngine.Debug.Assert(
                 handler.Method.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute),
@@ -194,15 +215,18 @@ namespace Utils
         /// <summary>
         /// 移除监听
         /// </summary>
-        public void RemoveListener(Action<T> handler) {
+        public void RemoveListener(Action<T> handler)
+        {
             callback -= handler;
         }
 
         /// <summary>
         /// 广播事件，带一个参数
         /// </summary>
-        public void Dispatch(T arg1) {
-            if (callback != null) {
+        public void Dispatch(T arg1)
+        {
+            if (callback != null)
+            {
                 callback(arg1);
             }
         }
@@ -214,8 +238,9 @@ namespace Utils
     public abstract class ASignal<T, U> : ABaseSignal
     {
         private Action<T, U> callback;
-        
-        public void AddListener(Action<T, U> handler) {
+
+        public void AddListener(Action<T, U> handler)
+        {
 #if UNITY_EDITOR
             UnityEngine.Debug.Assert(
                 handler.Method.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute),
@@ -224,13 +249,16 @@ namespace Utils
 #endif
             callback += handler;
         }
-        
-        public void RemoveListener(Action<T, U> handler) {
+
+        public void RemoveListener(Action<T, U> handler)
+        {
             callback -= handler;
         }
-        
-        public void Dispatch(T arg1, U arg2) {
-            if (callback != null) {
+
+        public void Dispatch(T arg1, U arg2)
+        {
+            if (callback != null)
+            {
                 callback(arg1, arg2);
             }
         }
@@ -242,8 +270,9 @@ namespace Utils
     public abstract class ASignal<T, U, V> : ABaseSignal
     {
         private Action<T, U, V> callback;
-        
-        public void AddListener(Action<T, U, V> handler) {
+
+        public void AddListener(Action<T, U, V> handler)
+        {
 #if UNITY_EDITOR
             UnityEngine.Debug.Assert(
                 handler.Method.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute),
@@ -252,13 +281,16 @@ namespace Utils
 #endif
             callback += handler;
         }
-        
-        public void RemoveListener(Action<T, U, V> handler) {
+
+        public void RemoveListener(Action<T, U, V> handler)
+        {
             callback -= handler;
         }
-        
-        public void Dispatch(T arg1, U arg2, V arg3) {
-            if (callback != null) {
+
+        public void Dispatch(T arg1, U arg2, V arg3)
+        {
+            if (callback != null)
+            {
                 callback(arg1, arg2, arg3);
             }
         }
