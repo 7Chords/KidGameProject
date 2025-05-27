@@ -14,7 +14,6 @@ public class InputSettings : MonoBehaviour
     private InputAction dashAction;
 
 
-
     public event Action OnInteractionPress;
 
     private void Awake()
@@ -65,5 +64,4 @@ public class InputSettings : MonoBehaviour
             OnInteractionPress.Invoke();
         }
     }
-
 }

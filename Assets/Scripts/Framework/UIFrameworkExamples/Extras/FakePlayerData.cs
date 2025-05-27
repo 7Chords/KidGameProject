@@ -5,23 +5,24 @@ using UnityEngine;
 
 namespace UIFramework.Examples
 {
-    public class PlayerDataUpdatedSignal : ASignal<List<PlayerDataEntry>> { }
+    public class PlayerDataUpdatedSignal : ASignal<List<PlayerDataEntry>>
+    {
+    }
 
     [Serializable]
     public class PlayerDataEntry
     {
         public string LevelName;
-        [Range(0,3)]
-        public int Stars;
+        [Range(0, 3)] public int Stars;
     }
 
     [CreateAssetMenu(fileName = "PlayerData", menuName = "UI/Fake Player Data")]
     public class FakePlayerData : ScriptableObject
     {
-        [SerializeField]
-        private List<PlayerDataEntry> levelProgress = null;
+        [SerializeField] private List<PlayerDataEntry> levelProgress = null;
 
-        public List<PlayerDataEntry> LevelProgress {
+        public List<PlayerDataEntry> LevelProgress
+        {
             get { return levelProgress; }
         }
 
@@ -31,7 +32,8 @@ namespace UIFramework.Examples
         /// 但在实践中，你可以通过向屏幕传递一个可观察变量来实现相同的行为，
         /// 该变量通过其属性或其他形式的数据绑定到控制器。
         /// </summary>
-        private void OnValidate() {
+        private void OnValidate()
+        {
             Signals.Get<PlayerDataUpdatedSignal>().Dispatch(levelProgress);
         }
     }

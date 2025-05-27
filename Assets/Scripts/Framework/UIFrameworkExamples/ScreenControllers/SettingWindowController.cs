@@ -33,6 +33,16 @@ public class SettingWindowController : WindowController
             UI_Close();
     }
 
+    private void OnBgmVolumeChanged(float value)
+    {
+        AudioManager.Instance.ChangeBgmVolume(value);
+    }
+
+    private void OnSfxVolumeChanged(float value)
+    {
+        AudioManager.Instance.ChangeSfxVolume(value);
+    }
+
     private ConfirmationPopupProperties GetPopupData()
     {
         ConfirmationPopupProperties testProps = null;
