@@ -3,12 +3,12 @@
 
 public class PlayerController : MonoBehaviour,IStateMachineOwner
 {
+    private InputSettings inputSettings;
+
+    public InputSettings InputSettings => inputSettings;
+
     private CharacterController characterController;
-    public CharacterController CharacterController
-    {
-        get { return characterController; }
-        private set { }
-    }
+    public CharacterController CharacterController => characterController;
 
     private Animator animator;
 
@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour,IStateMachineOwner
     public PlayerBaseData PlayerBaseData;
     void Start()
     {
+        inputSettings = GetComponent<InputSettings>();
         characterController = GetComponent<CharacterController>();
         animator = transform.GetChild(0).GetComponent<Animator>();
 

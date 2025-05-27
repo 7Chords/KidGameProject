@@ -13,10 +13,9 @@ public class PlayerIdleState : PlayerStateBase
     public override void Update()
     {
         player.CharacterController.Move(new Vector3(0, -9.8f * Time.deltaTime, 0));
+        Vector2 inputVal = player.InputSettings.MoveDir();
         // ¼ì²âÍæ¼ÒµÄÊäÈë
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        if (h != 0 || v != 0)
+        if (inputVal!= Vector2.zero)
         {
             // ÇÐ»»×´Ì¬
             player.ChangeState(PlayerState.Move);
