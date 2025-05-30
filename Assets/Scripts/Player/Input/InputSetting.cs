@@ -12,6 +12,11 @@ public class InputSettings : MonoBehaviour
     private InputAction interactionAction;
     private InputAction moveAction;
     private InputAction dashAction;
+    private InputAction runAction;
+    private InputAction useAction;
+    private InputAction throwAction;
+    private InputAction bagAction;
+
 
 
     public event Action OnInteractionPress;
@@ -26,6 +31,11 @@ public class InputSettings : MonoBehaviour
             moveAction = inputActionAsset.FindAction("Move");
             interactionAction = inputActionAsset.FindAction("Interaction");
             dashAction = inputActionAsset.FindAction("Dash");
+            runAction = inputActionAsset.FindAction("Run");
+            useAction = inputActionAsset.FindAction("Use");
+            throwAction = inputActionAsset.FindAction("Throw");
+            bagAction = inputActionAsset.FindAction("Bag");
+
 
             interactionAction.performed += OnInteractionActionPerformed;
         }
@@ -51,6 +61,28 @@ public class InputSettings : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public virtual bool GetDashDown() => dashAction.WasPressedThisFrame();
+
+    /// <summary>
+    /// 获取是否按住奔跑输入
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool GetIfRun() => runAction.IsPressed();
+    public virtual bool GetRunUp() => runAction.WasReleasedThisFrame();
+
+    /// <summary>
+    /// 是否按下使用键
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool GetUseDonw() => useAction.WasPerformedThisFrame();
+
+    /// <summary>
+    /// 是否按下投掷键
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool GetThrowDown() => throwAction.WasPerformedThisFrame();
+
+    public virtual bool GetBagDown() => bagAction.WasPerformedThisFrame();
+
 
     /// <summary>
     /// 交互键被按下时触发

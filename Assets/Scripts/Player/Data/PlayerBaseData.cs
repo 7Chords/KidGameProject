@@ -5,5 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New PlayerBaseData", menuName = "KidGameSO/Player/PlayerBaseData")]
 public class PlayerBaseData : ScriptableObject
 {
-    public float MoveSpeed;
+    public float WalkSpeed;
+    public float RunSpeed;
+    public float Hp;
+    public float Sp;
 }

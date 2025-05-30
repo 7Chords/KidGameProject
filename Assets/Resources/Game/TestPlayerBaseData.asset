@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d205cbcf9401b4eb0dd4fe418d433b, type: 3}
   m_Name: TestPlayerBaseData
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
+  WalkSpeed: 5
+  RunSpeed: 10
+  Hp: 3
+  Sp: 50

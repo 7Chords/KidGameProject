@@ -149,6 +149,17 @@ public class MapEditorWindow : EditorWindow
             Selection.activeObject = mapEditorItemGroupConfig;
         }
     }
+    
+
+    public void SaveConfig()
+    {
+        if (mapData != null)
+        {
+            EditorUtility.SetDirty(mapData);
+            AssetDatabase.SaveAssetIfDirty(mapData);
+        }
+    }
+
     #endregion
 
 
@@ -396,6 +407,7 @@ public class MapEditorWindow : EditorWindow
                 mapTile.mapPos = new GridPos(mapX, mapY);
                 if (mapData.tileList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY))) != null) return;
                 mapData.tileList.Add(mapTile);
+                SaveConfig();
             }
             else if(itemMenuType == ItemMenuType.Furniture)
             {
@@ -415,6 +427,7 @@ public class MapEditorWindow : EditorWindow
                 }
                 if (mapData.furnitureList.Find(x => x.mapPosList.Contains(new GridPos(mapX, mapY))) != null) return;
                 mapData.furnitureList.Add(mapFurniture);
+                SaveConfig();
             }
         }
         else if(evt.button == 1)
@@ -440,6 +453,7 @@ public class MapEditorWindow : EditorWindow
             if (mapFurniture != null)
             {
                 mapData.furnitureList.Remove(mapFurniture);
+                SaveConfig();
             }
             else
             {
@@ -447,6 +461,7 @@ public class MapEditorWindow : EditorWindow
                 if(mapTile!=null)
                 {
                     mapData.tileList.Remove(mapTile);
+                    SaveConfig();
                 }
             }
         }

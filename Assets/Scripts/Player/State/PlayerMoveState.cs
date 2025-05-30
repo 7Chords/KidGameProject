@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMoveState : PlayerStateBase
 {
+    private Vector3 dir;
+    private float speed;
     public override void Enter()
     {
         //player.PlayerAnimation("Move");
@@ -11,29 +13,41 @@ public class PlayerMoveState : PlayerStateBase
 
     public override void Update()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
-        if (h == 0 && v == 0)
+        player.Rotate();
+        if (player.InputSettings.GetDashDown())
+        {
+            // ÇÐ»»×´Ì¬
+            player.ChangeState(PlayerState.Dash);
+        }
+        Vector2 inputVal = player.InputSettings.MoveDir();
+        if (inputVal == Vector2.zero)
         {
             // ÇÐ»»×´Ì¬
             player.ChangeState(PlayerState.Idle);
         }
         else
         {
-            // ´¦ÀíÒÆ¶¯
-            Vector3 input = new Vector3(h, 0, v);
-            float speed = player.PlayerBaseData.MoveSpeed;
-            Vector3 motion = Time.deltaTime * speed * input;
-            motion.y = -9.8f * Time.deltaTime;
-            characterController.Move(motion);
-            //Ðý×ª
-            player.Rotate(input);
+            dir = new Vector3(inputVal.x,0,inputVal.y);
+            if(player.InputSettings.GetIfRun())
+            {
+                speed = player.PlayerBaseData.RunSpeed;
+            }
+            else
+            {
+                speed = player.PlayerBaseData.WalkSpeed;
+            }
         }
     }
 
+    public override void FixedUpdate()
+    {
+        player.Rb.velocity = dir * speed;
+
+    }
+
+
     public override void Exit()
     {
-        
+        base.Exit();
     }
 }
