@@ -18,7 +18,6 @@ public class InputSettings : MonoBehaviour
     private InputAction bagAction;
 
 
-
     public event Action OnInteractionPress;
 
     private void Awake()
@@ -67,6 +66,7 @@ public class InputSettings : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public virtual bool GetIfRun() => runAction.IsPressed();
+
     public virtual bool GetRunUp() => runAction.WasReleasedThisFrame();
 
     /// <summary>

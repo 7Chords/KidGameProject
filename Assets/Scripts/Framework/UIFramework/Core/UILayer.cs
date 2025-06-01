@@ -1,14 +1,16 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-    
-namespace UIFramework {
+
+namespace UIFramework
+{
     /// <summary>
     /// 基础的UI Layer层
     /// </summary>
-    public abstract class UILayer<TScreen> : MonoBehaviour where TScreen : IScreenController {
+    public abstract class UILayer<TScreen> : MonoBehaviour where TScreen : IScreenController
+    {
         protected Dictionary<string, TScreen> registeredScreens;
-        
+
         /// <summary>
         /// 显示界面
         /// </summary>
@@ -32,7 +34,8 @@ namespace UIFramework {
         /// <summary>
         /// 初始化Layer层
         /// </summary>
-        public virtual void Initialize() {
+        public virtual void Initialize()
+        {
             registeredScreens = new Dictionary<string, TScreen>();
         }
 
@@ -41,7 +44,8 @@ namespace UIFramework {
         /// </summary>
         /// <param name="controller">界面的controller</param>
         /// <param name="screenTransform">界面节点</param>
-        public virtual void ReparentScreen(IScreenController controller, Transform screenTransform) {
+        public virtual void ReparentScreen(IScreenController controller, Transform screenTransform)
+        {
             screenTransform.SetParent(transform, false);
         }
 
@@ -50,11 +54,14 @@ namespace UIFramework {
         /// </summary>
         /// <param name="screenId">界面id</param>
         /// <param name="controller">界面controller</param>
-        public void RegisterScreen(string screenId, TScreen controller) {
-            if (!registeredScreens.ContainsKey(screenId)) {
+        public void RegisterScreen(string screenId, TScreen controller)
+        {
+            if (!registeredScreens.ContainsKey(screenId))
+            {
                 ProcessScreenRegister(screenId, controller);
             }
-            else {
+            else
+            {
                 Debug.LogError("[AUILayerController] Screen controller already registered for id: " + screenId);
             }
         }
@@ -64,11 +71,14 @@ namespace UIFramework {
         /// </summary>
         /// <param name="screenId">界面id</param>
         /// <param name="controller">被取消的界面controller</param>
-        public void UnregisterScreen(string screenId, TScreen controller) {
-            if (registeredScreens.ContainsKey(screenId)) {
+        public void UnregisterScreen(string screenId, TScreen controller)
+        {
+            if (registeredScreens.ContainsKey(screenId))
+            {
                 ProcessScreenUnregister(screenId, controller);
             }
-            else {
+            else
+            {
                 Debug.LogError("[AUILayerController] Screen controller not registered for id: " + screenId);
             }
         }
@@ -77,12 +87,15 @@ namespace UIFramework {
         /// 根据id去找界面的controller,并且显示出来
         /// </summary>
         /// <param name="screenId">界面Id</param>
-        public void ShowScreenById(string screenId) {
+        public void ShowScreenById(string screenId)
+        {
             TScreen ctl;
-            if (registeredScreens.TryGetValue(screenId, out ctl)) {
+            if (registeredScreens.TryGetValue(screenId, out ctl))
+            {
                 ShowScreen(ctl);
             }
-            else {
+            else
+            {
                 Debug.LogError("[AUILayerController] Screen ID " + screenId + " not registered to this layer!");
             }
         }
@@ -93,12 +106,15 @@ namespace UIFramework {
         /// <param name="screenId">界面id</param>
         /// <param name="properties">属性参数</param>
         /// <typeparam name="TProps">属性类型</typeparam>
-        public void ShowScreenById<TProps>(string screenId, TProps properties) where TProps : IScreenProperties {
+        public void ShowScreenById<TProps>(string screenId, TProps properties) where TProps : IScreenProperties
+        {
             TScreen ctl;
-            if (registeredScreens.TryGetValue(screenId, out ctl)) {
+            if (registeredScreens.TryGetValue(screenId, out ctl))
+            {
                 ShowScreen(ctl, properties);
             }
-            else {
+            else
+            {
                 Debug.LogError("[AUILayerController] Screen ID " + screenId + " not registered!");
             }
         }
@@ -107,13 +123,17 @@ namespace UIFramework {
         /// 根据id隐藏界面
         /// </summary>
         /// <param name="screenId">界面id</param>
-        public void HideScreenById(string screenId) {
+        public void HideScreenById(string screenId)
+        {
             TScreen ctl;
-            if (registeredScreens.TryGetValue(screenId, out ctl)) {
+            if (registeredScreens.TryGetValue(screenId, out ctl))
+            {
                 HideScreen(ctl);
             }
-            else {
-                Debug.LogError("[AUILayerController] Could not hide Screen ID " + screenId + " as it is not registered to this layer!");
+            else
+            {
+                Debug.LogError("[AUILayerController] Could not hide Screen ID " + screenId +
+                               " as it is not registered to this layer!");
             }
         }
 
@@ -121,35 +141,42 @@ namespace UIFramework {
         /// 根据id看是否注册了
         /// </summary>
         /// <param name="screenId">界面id</param>
-        public bool IsScreenRegistered(string screenId) {
+        public bool IsScreenRegistered(string screenId)
+        {
             return registeredScreens.ContainsKey(screenId);
         }
-        
+
         /// <summary>
         /// 隐藏所有界面
         /// </summary>
         /// <param name="shouldAnimateWhenHiding">隐藏的时候是否需要动画</param>
-        public virtual void HideAll(bool shouldAnimateWhenHiding = true) {
-            foreach (var screen in registeredScreens) {
+        public virtual void HideAll(bool shouldAnimateWhenHiding = true)
+        {
+            foreach (var screen in registeredScreens)
+            {
                 screen.Value.Hide(shouldAnimateWhenHiding);
             }
         }
 
-        protected virtual void ProcessScreenRegister(string screenId, TScreen controller) {
+        protected virtual void ProcessScreenRegister(string screenId, TScreen controller)
+        {
             controller.ScreenId = screenId;
             registeredScreens.Add(screenId, controller);
             controller.ScreenDestroyed += OnScreenDestroyed;
         }
 
-        protected virtual void ProcessScreenUnregister(string screenId, TScreen controller) {
+        protected virtual void ProcessScreenUnregister(string screenId, TScreen controller)
+        {
             controller.ScreenDestroyed -= OnScreenDestroyed;
             registeredScreens.Remove(screenId);
         }
 
-        private void OnScreenDestroyed(IScreenController screen) {
+        private void OnScreenDestroyed(IScreenController screen)
+        {
             if (!string.IsNullOrEmpty(screen.ScreenId)
-                && registeredScreens.ContainsKey(screen.ScreenId)) {
-                UnregisterScreen(screen.ScreenId, (TScreen) screen);
+                && registeredScreens.ContainsKey(screen.ScreenId))
+            {
+                UnregisterScreen(screen.ScreenId, (TScreen)screen);
             }
         }
     }

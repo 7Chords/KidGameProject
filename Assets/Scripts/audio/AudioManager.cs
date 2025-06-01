@@ -23,9 +23,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
 
     // 音量控制全局音量
     public float mainVolumeFactor;
-    
     public float bgmVolumeFactor;
-
     public float sfxVolumeFactor;
 
     // 音频资源的根节点

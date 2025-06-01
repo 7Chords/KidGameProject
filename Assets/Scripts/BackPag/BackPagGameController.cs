@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
-namespace UIFramework.Examples
+namespace UIFramework.Game
 {
     public class BackPagGameController : MonoBehaviour
     {
