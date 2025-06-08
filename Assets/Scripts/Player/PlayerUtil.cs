@@ -33,10 +33,18 @@ public class PlayerUtil : Singleton<PlayerUtil>
         inputSettings.OnInteractionPress -= OnPlayerInteractPressed;
     }
 
+    #region Call
     public void CallPlayerInteractPressed()
     {
         OnPlayerInteractPressed?.Invoke();
     }
+
+    public void CallPlayerPickItem(IPickable iPickable)
+    {
+        onPlayerPickItem?.Invoke(iPickable);
+    }
+
+    #endregion
 
     public void RegPlayerPickItem(Action<IPickable> onPlayerPickItem)
     {

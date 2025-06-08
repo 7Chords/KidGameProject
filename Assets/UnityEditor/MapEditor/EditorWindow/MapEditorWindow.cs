@@ -51,7 +51,7 @@ public class MapEditorWindow : EditorWindow
     private ObjectField ItemConfigField;//菜单栏配置数据
 
     private MapData mapData;
-    private MapEditorItemGroupConfig mapEditorItemGroupConfig;
+    private MapEditorItemGroupConfig  mapEditorItemGroupConfig;
 
     private void InitTopMenu()
     {
@@ -100,6 +100,8 @@ public class MapEditorWindow : EditorWindow
     private void OnGenerateMapButtonClicked()
     {
         if (mapData == null) return;
+        GameObject tmpRoot = GameObject.Find("Map");
+        if (tmpRoot != null) DestroyImmediate(tmpRoot); 
         GameObject root = new GameObject("Map");
         foreach(var tile in mapData.tileList)
         {
@@ -121,6 +123,17 @@ public class MapEditorWindow : EditorWindow
             GameObject furnitureGO = Instantiate(furniture.furnitureData.furniturePrefab);
             furnitureGO.transform.position = new Vector3(averageX, 0, -averageZ);
             furnitureGO.transform.SetParent(root.transform);
+        }
+        foreach (var wall in mapData.wallList)
+        {
+            //生成堆叠的墙单位
+            for(int i=0;i<wall.stackLayer;i++)
+            {
+                GameObject wallGO = Instantiate(wall.wallData.wallPrefab,
+                    new Vector3(wall.mapPos.x, i, -wall.mapPos.y),
+                    Quaternion.identity);
+                wallGO.transform.SetParent(root.transform);
+            }
         }
     }
 
@@ -194,14 +207,15 @@ public class MapEditorWindow : EditorWindow
     {
         itemMenuIdx = (itemMenuIdx - 1) < 0 ? 2 : itemMenuIdx - 1;
         itemMenuType = (ItemMenuType)itemMenuIdx;
-        //SetItemMenu(itemMenuType == ItemMenuType.Tile ? ItemMenuType.Furniture : ItemMenuType.Tile);
+        SetItemMenu(itemMenuType);
     }
 
     private void OnRightButtonClicked()
     {
         itemMenuIdx = (itemMenuIdx + 1) > 2 ? 0 : itemMenuIdx + 1;
         itemMenuType = (ItemMenuType)itemMenuIdx;
-        //SetItemMenu(itemMenuType == ItemMenuType.Tile ? ItemMenuType.Furniture : ItemMenuType.Tile);
+        SetItemMenu(itemMenuType);
+
     }
 
     private void SetItemMenu(ItemMenuType menuType)
@@ -251,11 +265,11 @@ public class MapEditorWindow : EditorWindow
         }
         else if (itemMenuType == ItemMenuType.Wall)
         {
-            for (int i = 0; i < mapEditorItemGroupConfig.FrunitureList.Count; i++)
+            for (int i = 0; i < mapEditorItemGroupConfig.WallList.Count; i++)
             {
                 MapEditorItem editItem = new MapEditorItem();
                 editorItemList.Add(editItem);
-                editItem.Init(ItemListView, mapEditorItemGroupConfig.FrunitureList[i].FurnitureName);
+                editItem.Init(ItemListView, mapEditorItemGroupConfig.WallList[i].wallName);
             }
         }
     }
@@ -378,6 +392,24 @@ public class MapEditorWindow : EditorWindow
                     (mapXMax- mapXMin+1) * mapEditorConfig.curGridUnitLength,
                     (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength), furniture.furnitureData.texture);
             }
+
+            foreach (var wall in mapData.wallList)
+            {
+                float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
+                float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
+                if ((wall.mapPos.x - offsetGridX) < 0 || (wall.mapPos.y - offsetGridY) < 0) continue;
+                //画墙的图
+                GUI.DrawTexture(new Rect((wall.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                    (wall.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                    mapEditorConfig.curGridUnitLength,
+                    mapEditorConfig.curGridUnitLength), wall.wallData.texture);
+                //画墙的数量
+                GUI.Label(new Rect((wall.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                    (wall.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                    mapEditorConfig.curGridUnitLength,
+                    mapEditorConfig.curGridUnitLength), wall.stackLayer.ToString());
+            }
+
         }
 
 
@@ -438,12 +470,59 @@ public class MapEditorWindow : EditorWindow
                     int GridPosX = pos.x + mapX;
                     int GridPosY = pos.y + mapY;
                     GridPos mapPos = new GridPos(GridPosX, GridPosY);
-                    //家具要摆的位置还没有瓦片
+                    //家具要摆的位置还没有瓦片 放不了
                     if (mapData.tileList.Find(x => x.mapPos.Equals(mapPos)) == null) return;
+                    //如果这个位置已经有墙了 放不了
+                    if (mapData.wallList.Find(x => x.mapPos.Equals(mapPos)) != null) return;
+                    //如果和其他家具重叠了 放不了
+                    foreach (var furniture in mapData.furnitureList)
+                    {
+                        foreach (var tmpPos in furniture.mapPosList)
+                        {
+                            if (mapPos.Equals(tmpPos))
+                            {
+                                return;
+                            }
+                        }
+
+                    }
                     mapFurniture.mapPosList.Add(mapPos);
                 }
                 if (mapData.furnitureList.Find(x => x.mapPosList.Contains(new GridPos(mapX, mapY))) != null) return;
                 mapData.furnitureList.Add(mapFurniture);
+                SaveConfig();
+            }
+            else if (itemMenuType == ItemMenuType.Wall)
+            {
+                WallData wallData = mapEditorItemGroupConfig.WallList.Find(x => x.wallName == curSelectItem.ItemName);
+                if (wallData == null) return;
+                MapWall mapWall = new MapWall();
+                mapWall.wallData = wallData;
+                mapWall.mapPos = new GridPos(mapX, mapY);
+                //如果这个位置还没有瓦片 放不了
+                if (mapData.tileList.Find(x => x.mapPos.Equals(mapWall.mapPos)) == null) return;
+                MapWall tmpMapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
+                //如果这个位置有家具了 放不了
+                foreach(var furniture in mapData.furnitureList)
+                {
+                    foreach (var mapPos in furniture.mapPosList)
+                    {
+                        if(mapPos.Equals(mapWall.mapPos))
+                        {
+                            return;
+                        }
+                    }
+
+                }
+                //这个位置已经有墙了 那就叠加
+                if (tmpMapWall != null)
+                {
+                    tmpMapWall.stackLayer++;
+                }
+                else
+                {
+                    mapData.wallList.Add(mapWall);
+                }
                 SaveConfig();
             }
         }
@@ -474,11 +553,20 @@ public class MapEditorWindow : EditorWindow
             }
             else
             {
-                MapTile mapTile = mapData.tileList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
-                if(mapTile!=null)
+                MapWall mapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
+                if (mapWall != null)
                 {
-                    mapData.tileList.Remove(mapTile);
+                    mapData.wallList.Remove(mapWall);
                     SaveConfig();
+                }
+                else
+                {
+                    MapTile mapTile = mapData.tileList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
+                    if (mapTile != null)
+                    {
+                        mapData.tileList.Remove(mapTile);
+                        SaveConfig();
+                    }
                 }
             }
         }

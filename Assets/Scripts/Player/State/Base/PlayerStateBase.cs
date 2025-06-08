@@ -11,4 +11,12 @@ public class PlayerStateBase : StateBase
         base.Init(owner, stateType, stateMachine);
         player = (PlayerController)owner;
     }
+
+    public override void Update()
+    {
+        if(player.InputSettings.GetInteractDown())
+        {
+            PlayerUtil.Instance.CallPlayerInteractPressed();
+        }
+    }
 }

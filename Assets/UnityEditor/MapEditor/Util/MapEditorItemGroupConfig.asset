@@ -18,6 +18,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
   - {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
   - {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
+  WallList:
+  - {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
   MapListList:
   - {fileID: 11400000, guid: 8d1eebedc64564d4b99f71d8e09a5d98, type: 2}
   - {fileID: 11400000, guid: 7bc200724a03a15459ddf605391cf50e, type: 2}

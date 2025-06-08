@@ -13,11 +13,13 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         PlayerUtil.Instance.Init();
         PlayerController.Instance.Init();
+        PlayerBag.Instance.Init();
     }
 
     public void Discard()
     {
         PlayerUtil.Instance.Discard();
-        PlayerController.Instance.Init();
+        PlayerController.Instance.Discard();
+        PlayerBag.Instance.Discard();
     }
 }

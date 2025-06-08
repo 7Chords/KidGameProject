@@ -83,6 +83,8 @@ public class InputSettings : MonoBehaviour
 
     public virtual bool GetBagDown() => bagAction.WasPerformedThisFrame();
 
+    public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
+
 
     /// <summary>
     /// 交互键被按下时触发

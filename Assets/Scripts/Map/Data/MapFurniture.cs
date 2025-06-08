@@ -1,11 +1,6 @@
 using System.Collections.Generic;
 using System;
 
-//public enum MapGridState
-//{
-//    Tile,//地砖
-//    Furniture,//地砖上放了家具
-//}
 
 [Serializable]
 public class MapFurniture
@@ -21,4 +16,12 @@ public class MapTile
     public TileData tileData;
 
     public GridPos mapPos;
+}
+
+[Serializable]
+public class MapWall
+{
+    public WallData wallData;
+    public GridPos mapPos;
+    public int stackLayer = 1;
 }

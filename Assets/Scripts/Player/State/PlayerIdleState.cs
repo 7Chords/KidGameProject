@@ -11,6 +11,7 @@ public class PlayerIdleState : PlayerStateBase
 
     public override void Update()
     {
+        base.Update();
         player.Rotate();
         Vector2 inputVal = player.InputSettings.MoveDir();
         // ¼ì²âÍæ¼ÒµÄÊäÈë

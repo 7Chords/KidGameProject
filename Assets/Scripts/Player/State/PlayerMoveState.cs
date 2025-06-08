@@ -13,6 +13,7 @@ public class PlayerMoveState : PlayerStateBase
 
     public override void Update()
     {
+        base.Update();
         player.Rotate();
         if (player.InputSettings.GetDashDown())
         {
