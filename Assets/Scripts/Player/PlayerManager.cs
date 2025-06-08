@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerManager : Singleton<PlayerManager>
 {
-
     public void Init()
     {
         PlayerUtil.Instance.Init();

@@ -12,7 +12,12 @@ public class PlayerUtil : Singleton<PlayerUtil>
 
     //玩家按下交互按钮的事件
     private Action onPlayerInteractPressed;
-    public Action OnPlayerInteractPressed { get { return onPlayerInteractPressed; } set { onPlayerInteractPressed = value; } }
+
+    public Action OnPlayerInteractPressed
+    {
+        get { return onPlayerInteractPressed; }
+        set { onPlayerInteractPressed = value; }
+    }
 
     //玩家捡到场景物品（陷阱和道具）的事件
     private Action<IPickable> onPlayerPickItem;
@@ -34,6 +39,7 @@ public class PlayerUtil : Singleton<PlayerUtil>
     }
 
     #region Call
+
     public void CallPlayerInteractPressed()
     {
         OnPlayerInteractPressed?.Invoke();
@@ -55,7 +61,4 @@ public class PlayerUtil : Singleton<PlayerUtil>
     {
         this.onPlayerPickItem -= onPlayerPickItem;
     }
-
-
-
 }

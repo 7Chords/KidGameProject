@@ -114,6 +114,7 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
     }
 
     #region 事件相关
+
     private void RegActions()
     {
         PlayerUtil.Instance.OnPlayerInteractPressed += PlayerInteraction;
@@ -128,12 +129,11 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
     {
         Collider[] interactColliders = Physics.OverlapSphere(InteractCenter.position, InteractRadius, InteractLayer);
         if (interactColliders.Length == 0) return;
-        foreach(var col in interactColliders)
+        foreach (var col in interactColliders)
         {
             col.GetComponent<IInteractive>().Deal();
         }
     }
 
     #endregion
-
 }
