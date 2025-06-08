@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapData : ScriptableObject
 {
     public string MapName;
-    public List<MapTile> tileList = new List<MapTile>();
-    public List<MapWall> wallList = new List<MapWall>();
-    public List<MapFurniture> furnitureList = new List<MapFurniture>();
+    public List<MapTileData> tileList = new List<MapTileData>();
+    public List<MapWallData> wallList = new List<MapWallData>();
+    public List<MapFurnitureData> furnitureList = new List<MapFurnitureData>();
 }

@@ -3,7 +3,7 @@ using System;
 
 
 [Serializable]
-public class MapFurniture
+public class MapFurnitureData
 {
     public FurnitureData furnitureData;
 
@@ -11,7 +11,7 @@ public class MapFurniture
 }
 
 [Serializable]
-public class MapTile
+public class MapTileData
 {
     public TileData tileData;
 
@@ -19,7 +19,7 @@ public class MapTile
 }
 
 [Serializable]
-public class MapWall
+public class MapWallData
 {
     public WallData wallData;
     public GridPos mapPos;

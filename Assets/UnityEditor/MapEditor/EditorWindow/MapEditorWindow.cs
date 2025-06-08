@@ -103,12 +103,21 @@ public class MapEditorWindow : EditorWindow
         GameObject tmpRoot = GameObject.Find("Map");
         if (tmpRoot != null) DestroyImmediate(tmpRoot); 
         GameObject root = new GameObject("Map");
-        foreach(var tile in mapData.tileList)
+        GameObject tileRoot = new GameObject("Tile");
+        GameObject furnitureRoot = new GameObject("Furniture");
+        GameObject wallRoot = new GameObject("Wall");
+        tileRoot.transform.SetParent(root.transform);
+        furnitureRoot.transform.SetParent(root.transform);
+        wallRoot.transform.SetParent(root.transform);
+
+        foreach (var tile in mapData.tileList)
         {
             GameObject tileGO = Instantiate(tile.tileData.tilePrefab,
                 new Vector3(tile.mapPos.x,0, -tile.mapPos.y),
                 Quaternion.identity);
-            tileGO.transform.SetParent(root.transform);
+            MapTile mapTile = tileGO.AddComponent<MapTile>();
+            mapTile.SetData(tile);
+            tileGO.transform.SetParent(tileRoot.transform);
         }
         foreach (var furniture in mapData.furnitureList)
         {
@@ -122,7 +131,9 @@ public class MapEditorWindow : EditorWindow
             averageZ /= furniture.mapPosList.Count;
             GameObject furnitureGO = Instantiate(furniture.furnitureData.furniturePrefab);
             furnitureGO.transform.position = new Vector3(averageX, 0, -averageZ);
-            furnitureGO.transform.SetParent(root.transform);
+            MapFurniture mapFurniture = furnitureGO.AddComponent<MapFurniture>();
+            mapFurniture.SetData(furniture);
+            furnitureGO.transform.SetParent(furnitureRoot.transform);
         }
         foreach (var wall in mapData.wallList)
         {
@@ -130,9 +141,11 @@ public class MapEditorWindow : EditorWindow
             for(int i=0;i<wall.stackLayer;i++)
             {
                 GameObject wallGO = Instantiate(wall.wallData.wallPrefab,
-                    new Vector3(wall.mapPos.x, i, -wall.mapPos.y),
+                    new Vector3(wall.mapPos.x, i+0.5f, -wall.mapPos.y),
                     Quaternion.identity);
-                wallGO.transform.SetParent(root.transform);
+                MapWall mapWall = wallGO.AddComponent<MapWall>();
+                mapWall.SetData(wall);
+                wallGO.transform.SetParent(wallRoot.transform);
             }
         }
     }
@@ -451,7 +464,7 @@ public class MapEditorWindow : EditorWindow
             {
                 TileData tileData = mapEditorItemGroupConfig.TileList.Find(x => x.tileName == curSelectItem.ItemName);
                 if (tileData == null) return;
-                MapTile mapTile = new MapTile();
+                MapTileData mapTile = new MapTileData();
                 mapTile.tileData = tileData;
                 mapTile.mapPos = new GridPos(mapX, mapY);
                 if (mapData.tileList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY))) != null) return;
@@ -462,7 +475,7 @@ public class MapEditorWindow : EditorWindow
             {
                 FurnitureData furnitureData = mapEditorItemGroupConfig.FrunitureList.Find(x => x.FurnitureName == curSelectItem.ItemName);
                 if (furnitureData == null) return;
-                MapFurniture mapFurniture = new MapFurniture();
+                MapFurnitureData mapFurniture = new MapFurnitureData();
                 mapFurniture.furnitureData = furnitureData;
                 mapFurniture.mapPosList = new List<GridPos>();
                 foreach (var pos in furnitureData.posList)
@@ -496,12 +509,12 @@ public class MapEditorWindow : EditorWindow
             {
                 WallData wallData = mapEditorItemGroupConfig.WallList.Find(x => x.wallName == curSelectItem.ItemName);
                 if (wallData == null) return;
-                MapWall mapWall = new MapWall();
+                MapWallData mapWall = new MapWallData();
                 mapWall.wallData = wallData;
                 mapWall.mapPos = new GridPos(mapX, mapY);
                 //如果这个位置还没有瓦片 放不了
                 if (mapData.tileList.Find(x => x.mapPos.Equals(mapWall.mapPos)) == null) return;
-                MapWall tmpMapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
+                MapWallData tmpMapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
                 //如果这个位置有家具了 放不了
                 foreach(var furniture in mapData.furnitureList)
                 {
@@ -545,7 +558,7 @@ public class MapEditorWindow : EditorWindow
                 mapY++;
             }
 
-            MapFurniture mapFurniture = mapData.furnitureList.Find(x => x.mapPosList.Contains(new GridPos(mapX, mapY)));
+            MapFurnitureData mapFurniture = mapData.furnitureList.Find(x => x.mapPosList.Contains(new GridPos(mapX, mapY)));
             if (mapFurniture != null)
             {
                 mapData.furnitureList.Remove(mapFurniture);
@@ -553,7 +566,7 @@ public class MapEditorWindow : EditorWindow
             }
             else
             {
-                MapWall mapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
+                MapWallData mapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
                 if (mapWall != null)
                 {
                     mapData.wallList.Remove(mapWall);
@@ -561,7 +574,7 @@ public class MapEditorWindow : EditorWindow
                 }
                 else
                 {
-                    MapTile mapTile = mapData.tileList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
+                    MapTileData mapTile = mapData.tileList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
                     if (mapTile != null)
                     {
                         mapData.tileList.Remove(mapTile);

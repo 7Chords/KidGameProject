@@ -86,5 +86,107 @@ MonoBehaviour:
     mapPos:
       x: 4
       y: 2
-  wallList: []
-  furnitureList: []
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 6
+      y: 2
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 6
+      y: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 6
+      y: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 7
+      y: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 7
+      y: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 7
+      y: 2
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 8
+      y: 2
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 8
+      y: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 8
+      y: 0
+  wallList:
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 2
+      y: 1
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 2
+      y: 2
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 3
+      y: 1
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 0
+      y: 0
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 6
+      y: 0
+    stackLayer: 3
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 6
+      y: 1
+    stackLayer: 2
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 7
+      y: 0
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
+    mapPos:
+      x: 7
+      y: 1
+    stackLayer: 7
+  furnitureList:
+  - furnitureData: {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
+    mapPosList:
+    - x: 1
+      y: 1
+    - x: 1
+      y: 2
+  - furnitureData: {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
+    mapPosList:
+    - x: 1
+      y: 0
+    - x: 2
+      y: 0
+    - x: 3
+      y: 0
+  - furnitureData: {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
+    mapPosList:
+    - x: 5
+      y: 1
+    - x: 5
+      y: 2
+  - furnitureData: {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
+    mapPosList:
+    - x: 4
+      y: 0
+    - x: 4
+      y: 1
