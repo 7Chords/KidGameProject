@@ -173,6 +173,7 @@ public class MapEditorWindow : EditorWindow
     private MapEditorItem curSelectItem;
 
     private ItemMenuType itemMenuType;
+    private int itemMenuIdx;
 
     private void InitItemMenu()
     {
@@ -191,12 +192,16 @@ public class MapEditorWindow : EditorWindow
 
     private void OnLeftButtonClicked()
     {
-        SetItemMenu(itemMenuType == ItemMenuType.Tile ? ItemMenuType.Furniture : ItemMenuType.Tile);
+        itemMenuIdx = (itemMenuIdx - 1) < 0 ? 2 : itemMenuIdx - 1;
+        itemMenuType = (ItemMenuType)itemMenuIdx;
+        //SetItemMenu(itemMenuType == ItemMenuType.Tile ? ItemMenuType.Furniture : ItemMenuType.Tile);
     }
 
     private void OnRightButtonClicked()
     {
-        SetItemMenu(itemMenuType == ItemMenuType.Tile ? ItemMenuType.Furniture : ItemMenuType.Tile);
+        itemMenuIdx = (itemMenuIdx + 1) > 2 ? 0 : itemMenuIdx + 1;
+        itemMenuType = (ItemMenuType)itemMenuIdx;
+        //SetItemMenu(itemMenuType == ItemMenuType.Tile ? ItemMenuType.Furniture : ItemMenuType.Tile);
     }
 
     private void SetItemMenu(ItemMenuType menuType)
@@ -209,6 +214,9 @@ public class MapEditorWindow : EditorWindow
                 break;
             case ItemMenuType.Furniture:
                 ItemGroupTitle.text = "¼Ò¾ß";
+                break;
+            case ItemMenuType.Wall:
+                ItemGroupTitle.text = "Ç½(ÔÊÐíµþ)";
                 break;
             default:
                 break;
@@ -233,6 +241,15 @@ public class MapEditorWindow : EditorWindow
             }
         }
         else if(itemMenuType == ItemMenuType.Furniture)
+        {
+            for (int i = 0; i < mapEditorItemGroupConfig.FrunitureList.Count; i++)
+            {
+                MapEditorItem editItem = new MapEditorItem();
+                editorItemList.Add(editItem);
+                editItem.Init(ItemListView, mapEditorItemGroupConfig.FrunitureList[i].FurnitureName);
+            }
+        }
+        else if (itemMenuType == ItemMenuType.Wall)
         {
             for (int i = 0; i < mapEditorItemGroupConfig.FrunitureList.Count; i++)
             {
@@ -512,8 +529,9 @@ public class MapEditorWindow : EditorWindow
 
 public enum ItemMenuType
 {
-    Tile,
-    Furniture
+    Tile = 0,
+    Furniture = 1,
+    Wall = 2,
 }
 
 public class MapEditorConfig

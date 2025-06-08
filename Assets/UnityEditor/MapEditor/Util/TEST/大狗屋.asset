@@ -454,4 +454,28 @@ MonoBehaviour:
     mapPos:
       x: 10
       y: 0
-  furnitureList: []
+  furnitureList:
+  - furnitureData: {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
+    mapPosList:
+    - x: 2
+      y: 3
+    - x: 3
+      y: 3
+    - x: 4
+      y: 3
+  - furnitureData: {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
+    mapPosList:
+    - x: 2
+      y: 2
+    - x: 3
+      y: 2
+    - x: 4
+      y: 2
+  - furnitureData: {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
+    mapPosList:
+    - x: 2
+      y: 1
+    - x: 3
+      y: 1
+    - x: 4
+      y: 1

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PoolManager : SingletonPersistent<PoolManager>
+public class PoolManager : Singleton<PoolManager>
 {
     // ¸ù½Úµã
     [SerializeField]

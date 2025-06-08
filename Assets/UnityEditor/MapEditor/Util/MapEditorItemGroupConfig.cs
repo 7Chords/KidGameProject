@@ -12,6 +12,8 @@ public class MapEditorItemGroupConfig : ScriptableObject
     [Header("Furniture")]
     public List<FurnitureData> FrunitureList;
 
+
+
     [Header("Blueprint")]
     public List<MapData> MapListList;
 

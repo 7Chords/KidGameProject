@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 //为不继承MonoBehavior的脚本提供update fixedupdate等更新函数执行事件
-public class MonoManager : SingletonPersistent<MonoManager>
+public class MonoManager : Singleton<MonoManager>
 {
     private Action _updateEvent;
     private Action _lateUpdateEvent;

@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using PixelCamera;
 
-public class PlayerController : MonoBehaviour,IStateMachineOwner
+/// <summary>
+/// 玩家控制器
+/// </summary>
+public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
 {
     private InputSettings inputSettings;
     public InputSettings InputSettings => inputSettings;
@@ -17,22 +20,42 @@ public class PlayerController : MonoBehaviour,IStateMachineOwner
     public PlayerBaseData PlayerBaseData;
 
     private PixelCameraManager pixelCameraMgr;
-    void Start()
+
+    public Transform ModelTransform;
+    public Transform InteractCenter;
+    public float InteractRadius;
+    public LayerMask InteractLayer;
+
+    protected override void Awake()
     {
+        base.Awake();
         inputSettings = GetComponent<InputSettings>();
 
         animator = transform.GetChild(0).GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
 
         pixelCameraMgr = FindObjectOfType<PixelCameraManager>();
+    }
 
+    public void Init()
+    {
         stateMachine = PoolManager.Instance.GetObject<StateMachine>();
         stateMachine.Init(this);
+        //初始化为Idle状态
         ChangeState(PlayerState.Idle);
+        //注册一些事件
+        RegActions();
+    }
+
+    public void Discard()
+    {
+        UnregActions();
     }
 
 
-    //TODO:fix
+    /// <summary>
+    /// 玩家旋转 TODO:优化？
+    /// </summary>
     public void Rotate()
     {
         // 将鼠标屏幕坐标转换为世界坐标
@@ -81,9 +104,36 @@ public class PlayerController : MonoBehaviour,IStateMachineOwner
         }
     }
 
+    /// <summary>
+    /// 播放动画 TODO:后续封装一个玩家动画控制器？
+    /// </summary>
+    /// <param name="animationName"></param>
     public void PlayerAnimation(string animationName)
     {
         animator.Play(animationName);
     }
+
+    #region 事件相关
+    private void RegActions()
+    {
+        PlayerUtil.Instance.OnPlayerInteractPressed += PlayerInteraction;
+    }
+
+    private void UnregActions()
+    {
+        PlayerUtil.Instance.OnPlayerInteractPressed -= PlayerInteraction;
+    }
+
+    private void PlayerInteraction()
+    {
+        Collider[] interactColliders = Physics.OverlapSphere(InteractCenter.position, InteractRadius, InteractLayer);
+        if (interactColliders.Length == 0) return;
+        foreach(var col in interactColliders)
+        {
+            col.GetComponent<IInteractive>().Deal();
+        }
+    }
+
+    #endregion
 
 }
