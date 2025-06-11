@@ -49,10 +49,12 @@ public class MapEditorWindow : EditorWindow
 
     private ObjectField MapDataField;
     private ObjectField ItemConfigField;//菜单栏配置数据
+    private FloatField ScaleField;//生成地图缩放系数
 
     private MapData mapData;
     private MapEditorItemGroupConfig  mapEditorItemGroupConfig;
 
+    private float spawnMapScale = 1;
     private void InitTopMenu()
     {
 
@@ -74,6 +76,9 @@ public class MapEditorWindow : EditorWindow
         ItemConfigField.objectType = typeof(MapEditorItemGroupConfig);
         ItemConfigField.RegisterValueChangedCallback(ItemConfigFieldValueChanged);
         ItemConfigField.RegisterCallback<MouseDownEvent>(OnItemConfigFieldClicked);
+
+        ScaleField = root.Q<FloatField>(nameof(ScaleField));
+        ScaleField.RegisterValueChangedCallback(ScaleFieldValueChanged);
 
         //默认是房间编辑模式
         OnEditMapButtonClicked();
@@ -148,6 +153,7 @@ public class MapEditorWindow : EditorWindow
                 wallGO.transform.SetParent(wallRoot.transform);
             }
         }
+        root.transform.localScale = spawnMapScale * Vector3.one;
     }
 
     private void MapDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
@@ -175,7 +181,11 @@ public class MapEditorWindow : EditorWindow
             Selection.activeObject = mapEditorItemGroupConfig;
         }
     }
-    
+    private void ScaleFieldValueChanged(ChangeEvent<float> evt)
+    {
+        spawnMapScale = evt.newValue;
+    }
+
 
     public void SaveConfig()
     {
@@ -273,7 +283,7 @@ public class MapEditorWindow : EditorWindow
             {
                 MapEditorItem editItem = new MapEditorItem();
                 editorItemList.Add(editItem);
-                editItem.Init(ItemListView, mapEditorItemGroupConfig.FrunitureList[i].FurnitureName);
+                editItem.Init(ItemListView, mapEditorItemGroupConfig.FrunitureList[i].furnitureName);
             }
         }
         else if (itemMenuType == ItemMenuType.Wall)
@@ -473,7 +483,7 @@ public class MapEditorWindow : EditorWindow
             }
             else if(itemMenuType == ItemMenuType.Furniture)
             {
-                FurnitureData furnitureData = mapEditorItemGroupConfig.FrunitureList.Find(x => x.FurnitureName == curSelectItem.ItemName);
+                FurnitureData furnitureData = mapEditorItemGroupConfig.FrunitureList.Find(x => x.furnitureName == curSelectItem.ItemName);
                 if (furnitureData == null) return;
                 MapFurnitureData mapFurniture = new MapFurnitureData();
                 mapFurniture.furnitureData = furnitureData;

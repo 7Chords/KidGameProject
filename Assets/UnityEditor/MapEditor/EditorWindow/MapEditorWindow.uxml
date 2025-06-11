@@ -9,6 +9,7 @@
         <ui:VisualElement name="DataFieldGroup" style="flex-grow: 1; flex-direction: row; left: auto; width: auto; height: 43px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
             <uie:ObjectField label="地图数据" name="MapDataField" allow-scene-objects="false" style="align-items: center; width: 250px; -unity-text-align: middle-center;" />
             <uie:ObjectField label="菜单配置" name="ItemConfigField" allow-scene-objects="false" style="align-items: center; width: 250px; -unity-text-align: middle-center;" />
+            <ui:FloatField label="生成的地图缩放" value="1" name="ScaleField" style="width: 250px; -unity-text-align: middle-center; align-items: center;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="Content" style="flex-grow: 1; justify-content: flex-start; left: auto; top: auto; align-items: center; height: auto; align-self: auto; width: auto; flex-direction: row; min-height: auto; max-height: none;">

@@ -7,5 +7,5 @@ using UnityEngine;
 /// </summary>
 public interface IInteractive
 {
-    public abstract void Deal();
+    public abstract void Interact();
 }

@@ -17,7 +17,7 @@ public struct GridPos
 [CreateAssetMenu(fileName = "FurnitureData", menuName = "KidGameSO/Map/FurnitureData")]
 public class FurnitureData : ScriptableObject
 {
-    public string FurnitureName;
+    public string furnitureName;
     public Texture2D texture;
     public List<GridPos> posList;
     public GameObject furniturePrefab;

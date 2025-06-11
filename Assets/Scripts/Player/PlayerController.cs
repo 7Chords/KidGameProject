@@ -131,7 +131,7 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
         if (interactColliders.Length == 0) return;
         foreach (var col in interactColliders)
         {
-            col.GetComponent<IInteractive>().Deal();
+            col.GetComponent<IInteractive>().Interact();
         }
     }
 

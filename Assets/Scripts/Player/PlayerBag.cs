@@ -31,7 +31,7 @@ public class PlayerBag : Singleton<PlayerBag>
         if (iPickable == null) return;
         if (iPickable is MapItem)
         {
-            Debug.Log($"ºÒµΩ¡À{((MapItem)iPickable).itemName}£°");
+
         }
     }
 }

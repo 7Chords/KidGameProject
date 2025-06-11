@@ -5,12 +5,15 @@ using UnityEngine;
 /// <summary>
 ///  场景中的可拾取物品
 /// </summary>
-public class MapItem : MonoBehaviour, IPickable
+public abstract class MapItem : MonoBehaviour, IPickable,IInteractive
 {
-    public string itemName;
+    /// <summary>
+    /// 交互
+    /// </summary>
+    public abstract void Interact();
 
-    public void Deal()
-    {
-        PlayerUtil.Instance.CallPlayerPickItem(this);
-    }
+    /// <summary>
+    /// 拾取
+    /// </summary>
+    public abstract void Pick();
 }

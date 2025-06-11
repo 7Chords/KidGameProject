@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2db9a21a384d2847ac5d899330d4e14, type: 3}
   m_Name: "\u5355\u4EBA\u5E8A"
   m_EditorClassIdentifier: 
-  FurnitureName: "\u5355\u4EBA\u5E8A"
+  furnitureName: "\u5355\u4EBA\u5E8A"
   texture: {fileID: 2800000, guid: adcde02d746d45a4291fd5293fd07955, type: 3}
   posList:
   - x: 0

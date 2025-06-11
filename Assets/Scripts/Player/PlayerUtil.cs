@@ -38,7 +38,7 @@ public class PlayerUtil : Singleton<PlayerUtil>
         inputSettings.OnInteractionPress -= OnPlayerInteractPressed;
     }
 
-    #region Call
+    #region Call Event
 
     public void CallPlayerInteractPressed()
     {

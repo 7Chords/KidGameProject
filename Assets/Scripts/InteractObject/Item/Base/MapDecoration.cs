@@ -7,10 +7,8 @@ using UnityEngine;
 /// </summary>
 public class MapDecoration : MonoBehaviour, IInteractive
 {
-    public string decoratinoName;
-
-    public void Deal()
+    public void Interact()
     {
-        Debug.Log($"∫Õ{decoratinoName}ª•∂Ø¡À£°");
+
     }
 }
