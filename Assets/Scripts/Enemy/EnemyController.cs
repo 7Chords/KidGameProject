@@ -29,13 +29,12 @@ public class EnemyController : MonoBehaviour, IStateMachineOwner
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
-        stateMachine = PoolManager.Instance.GetObject<StateMachine>();
-        stateMachine.Init(this);
     }
 
     private void Start()
     {
+        stateMachine = PoolManager.Instance.GetObject<StateMachine>();
+        stateMachine.Init(this);
         player = FindObjectOfType<PlayerController>().gameObject.transform;
         ChangeState(EnemyState.Idle); // ³õÊ¼×´Ì¬
     }

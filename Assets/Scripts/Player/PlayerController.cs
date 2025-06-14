@@ -126,6 +126,7 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
     private void PlayerInteraction()
     {
         Collider[] interactColliders = Physics.OverlapSphere(InteractCenter.position, InteractRadius, InteractLayer);
+        Debug.Log(interactColliders.Length);
         if (interactColliders.Length == 0) return;
         foreach (var col in interactColliders)
         {
@@ -133,5 +134,13 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
         }
     }
 
+    #endregion
+
+    #region Gizoms
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(InteractCenter.position, InteractRadius);
+    }
     #endregion
 }

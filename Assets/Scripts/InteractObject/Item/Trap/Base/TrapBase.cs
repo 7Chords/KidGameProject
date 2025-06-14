@@ -16,11 +16,11 @@ public class TrapBase : MapItem
     protected float _validTimer;
     #endregion
 
-    [Header("触媒放置范围")]
-    [SerializeField] protected Collider _catalystPutCollider;
+    //[Header("触媒放置范围")]
+    //[SerializeField] protected Collider _catalystPutCollider;
 
-    [Header("陷阱作用范围")]
-    [SerializeField] protected Collider _trapEffectCollider;
+    //[Header("陷阱作用范围")]
+    //[SerializeField] protected Collider _trapEffectCollider;
 
     private CatalystBase _catalyst;
 
@@ -36,15 +36,22 @@ public class TrapBase : MapItem
         _validTimer = 0;
     }
 
+    protected virtual void Update()
+    {
+        TimeValidTick();
+    }
+
     #region 交互接口方法实现
     public override void InteractPositive() 
     {
         if (_trapData == null) return;
         //需要触媒
         if (_trapData.triggerType == TrapTriggerType.Catalyst) return;
-        //主动触发型交互
+        //不是主动触发型交互
         if (!_trapData.trapTypeList.Contains(TrapType.Positive))
             return;
+        //判断陷阱是否有效
+        if (!GetValidState()) return;
         Trigger();
     }
     public override void InteractNegative()
@@ -52,9 +59,11 @@ public class TrapBase : MapItem
         if (_trapData == null) return;
         //需要触媒
         if (_trapData.triggerType == TrapTriggerType.Catalyst) return;
-        //主动触发型交互
+        //不是被动触发型交互
         if (!_trapData.trapTypeList.Contains(TrapType.Negative))
             return;
+        //判断陷阱是否有效
+        if (!GetValidState()) return;
         Trigger();
     }
     public override void Pick()
@@ -63,6 +72,8 @@ public class TrapBase : MapItem
     }
 
     #endregion
+
+    
 
     #region 功能性
     /// <summary>
@@ -95,9 +106,13 @@ public class TrapBase : MapItem
         _catalyst = catalyst;
     }
 
-    public void TriggerByCatalyst()
+    /// <summary>
+    /// 通过触媒触发
+    /// </summary>
+    public void TriggerByCatalyst(CatalystBase catalyst)
     {
         if (_trapData == null || _trapData.triggerType != TrapTriggerType.Catalyst) return;
+        if (_catalyst == null || _catalyst != catalyst) return;
         Trigger();
     }
 
@@ -106,12 +121,10 @@ public class TrapBase : MapItem
     /// </summary>
     public virtual void Trigger()
     {
-        
+        Debug.Log("陷阱触发了");
     }
 
     #endregion
-
-
 
     #region Gizom
     private void OnDrawGizmos()

@@ -284,6 +284,191 @@ MonoBehaviour:
       x: 0
       y: 0
     roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 9
+      y: 4
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 9
+      y: 5
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 10
+      y: 4
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 10
+      y: 5
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 10
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 9
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 8
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 7
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 6
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 4
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 2
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 3
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 1
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 0
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 0
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 1
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 2
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 3
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 4
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 5
+      y: 6
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 5
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 6
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 7
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 8
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 9
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 10
+      y: 7
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 10
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 9
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 8
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 7
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 6
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 5
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 4
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 3
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 2
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 1
+      y: 8
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 0
+      y: 8
+    roomType: 0
   wallList:
   - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
     mapPos:

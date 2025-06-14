@@ -16,5 +16,6 @@ MonoBehaviour:
   trapName: "\u6D4B\u8BD5\u9677\u96311"
   trapLevel: 0.5
   trapDamage: 1
-  validTime: -1
-  triggerTypeList: 00000000
+  validTime: 10
+  trapTypeList: 0100000002000000
+  triggerType: 0
