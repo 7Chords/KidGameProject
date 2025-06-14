@@ -37,6 +37,15 @@ public class MapEditorWindow : EditorWindow
         InitTopMenu();
         InitItemMenu();
         InitWorkSpace();
+
+        ResetView(); 
+    }
+
+    public void ResetView()
+    {
+        MapData tmpMapData = mapData;
+        MapDataField.value = null;
+        MapDataField.value = tmpMapData;
     }
 
 
@@ -50,9 +59,11 @@ public class MapEditorWindow : EditorWindow
     private ObjectField MapDataField;
     private ObjectField ItemConfigField;//菜单栏配置数据
     private FloatField ScaleField;//生成地图缩放系数
+    private EnumField RoomTypeField;//房间类型枚举下拉
 
     private MapData mapData;
     private MapEditorItemGroupConfig  mapEditorItemGroupConfig;
+    private RoomType roomType;
 
     private float spawnMapScale = 1;
     private void InitTopMenu()
@@ -80,9 +91,15 @@ public class MapEditorWindow : EditorWindow
         ScaleField = root.Q<FloatField>(nameof(ScaleField));
         ScaleField.RegisterValueChangedCallback(ScaleFieldValueChanged);
 
+        RoomTypeField = root.Q<EnumField>(nameof(RoomTypeField));
+        RoomTypeField.RegisterValueChangedCallback(RoomTypeFieldValueChanged);
+        RoomTypeField.Init(RoomType.Corridor);
+        roomType = RoomType.Corridor;
+
         //默认是房间编辑模式
         OnEditMapButtonClicked();
     }
+
 
     private void OnEditMapButtonClicked()
     {
@@ -181,11 +198,15 @@ public class MapEditorWindow : EditorWindow
             Selection.activeObject = mapEditorItemGroupConfig;
         }
     }
+
     private void ScaleFieldValueChanged(ChangeEvent<float> evt)
     {
         spawnMapScale = evt.newValue;
     }
-
+    private void RoomTypeFieldValueChanged(ChangeEvent<Enum> evt)
+    {
+        roomType = (RoomType)evt.newValue;
+    }
 
     public void SaveConfig()
     {
@@ -197,7 +218,6 @@ public class MapEditorWindow : EditorWindow
     }
 
     #endregion
-
 
     #region ItemMenu
     private VisualElement ItemListView;
@@ -356,7 +376,7 @@ public class MapEditorWindow : EditorWindow
         WorkContainer.MarkDirtyLayout(); // 标志为需要重新绘制的
     }
     private void DrawWorkSpace()
-    {
+    { 
         Handles.BeginGUI();
         Handles.color = Color.white;
 
@@ -427,10 +447,12 @@ public class MapEditorWindow : EditorWindow
                     mapEditorConfig.curGridUnitLength,
                     mapEditorConfig.curGridUnitLength), wall.wallData.texture);
                 //画墙的数量
+                GUIStyle labelStyle = new GUIStyle();
+                labelStyle.fontSize = 30 * (mapEditorConfig.curGridUnitLength / MapEditorConfig.maxGridUnitLength);
                 GUI.Label(new Rect((wall.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
                     (wall.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
                     mapEditorConfig.curGridUnitLength,
-                    mapEditorConfig.curGridUnitLength), wall.stackLayer.ToString());
+                    mapEditorConfig.curGridUnitLength), wall.stackLayer.ToString(), labelStyle);
             }
 
         }
@@ -477,6 +499,7 @@ public class MapEditorWindow : EditorWindow
                 MapTileData mapTile = new MapTileData();
                 mapTile.tileData = tileData;
                 mapTile.mapPos = new GridPos(mapX, mapY);
+                mapTile.roomType = roomType;
                 if (mapData.tileList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY))) != null) return;
                 mapData.tileList.Add(mapTile);
                 SaveConfig();
@@ -488,6 +511,7 @@ public class MapEditorWindow : EditorWindow
                 MapFurnitureData mapFurniture = new MapFurnitureData();
                 mapFurniture.furnitureData = furnitureData;
                 mapFurniture.mapPosList = new List<GridPos>();
+                mapFurniture.roomType = roomType;
                 foreach (var pos in furnitureData.posList)
                 {
                     int GridPosX = pos.x + mapX;

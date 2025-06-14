@@ -29,8 +29,8 @@ public class EnemyController : MonoBehaviour, IStateMachineOwner
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        
-        stateMachine = new StateMachine();
+
+        stateMachine = PoolManager.Instance.GetObject<StateMachine>();
         stateMachine.Init(this);
     }
 
@@ -61,7 +61,8 @@ public class EnemyController : MonoBehaviour, IStateMachineOwner
 
     private void OnDestroy()
     {
-        stateMachine?.Destory();
+        //»ØÊÕ×´Ì¬»ú
+        stateMachine.ObjectPushPool();
     }
     #endregion
 

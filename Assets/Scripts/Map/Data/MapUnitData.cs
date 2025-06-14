@@ -8,6 +8,8 @@ public class MapFurnitureData
     public FurnitureData furnitureData;
 
     public List<GridPos> mapPosList;
+
+    public RoomType roomType;
 }
 
 [Serializable]
@@ -16,6 +18,8 @@ public class MapTileData
     public TileData tileData;
 
     public GridPos mapPos;
+
+    public RoomType roomType;
 }
 
 [Serializable]

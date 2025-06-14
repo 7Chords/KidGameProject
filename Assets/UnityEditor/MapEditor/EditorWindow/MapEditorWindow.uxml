@@ -7,9 +7,10 @@
             <ui:Button text="生成地图到场景" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GenerateMapButton" style="align-items: stretch; width: 120px; height: 24px; left: 5px; top: 10px; right: auto; margin-right: 16px;" />
         </ui:VisualElement>
         <ui:VisualElement name="DataFieldGroup" style="flex-grow: 1; flex-direction: row; left: auto; width: auto; height: 43px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
-            <uie:ObjectField label="地图数据" name="MapDataField" allow-scene-objects="false" style="align-items: center; width: 250px; -unity-text-align: middle-center;" />
-            <uie:ObjectField label="菜单配置" name="ItemConfigField" allow-scene-objects="false" style="align-items: center; width: 250px; -unity-text-align: middle-center;" />
-            <ui:FloatField label="生成的地图缩放" value="1" name="ScaleField" style="width: 250px; -unity-text-align: middle-center; align-items: center;" />
+            <uie:ObjectField label="地图数据" name="MapDataField" allow-scene-objects="false" style="align-items: center; width: 200px; -unity-text-align: middle-center;" />
+            <uie:ObjectField label="菜单配置" name="ItemConfigField" allow-scene-objects="false" style="align-items: center; width: 200px; -unity-text-align: middle-center;" />
+            <ui:FloatField label="生成的地图缩放" value="1" name="ScaleField" style="width: 200px; -unity-text-align: middle-center; align-items: center;" />
+            <ui:EnumField label="房间类型" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" name="RoomTypeField" style="width: 200px; align-items: center; -unity-text-align: middle-center;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="Content" style="flex-grow: 1; justify-content: flex-start; left: auto; top: auto; align-items: center; height: auto; align-self: auto; width: auto; flex-direction: row; min-height: auto; max-height: none;">

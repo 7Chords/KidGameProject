@@ -19,8 +19,6 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
 
     public PlayerBaseData PlayerBaseData;
 
-    private PixelCameraManager pixelCameraMgr;
-
     public Transform ModelTransform;
     public Transform InteractCenter;
     public float InteractRadius;
@@ -34,7 +32,6 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
         animator = transform.GetChild(0).GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
 
-        pixelCameraMgr = FindObjectOfType<PixelCameraManager>();
     }
 
     public void Init()
@@ -49,6 +46,7 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
 
     public void Discard()
     {
+        stateMachine.ObjectPushPool();
         UnregActions();
     }
 
@@ -131,7 +129,7 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
         if (interactColliders.Length == 0) return;
         foreach (var col in interactColliders)
         {
-            col.GetComponent<IInteractive>().Interact();
+            col.GetComponent<IInteractive>().InteractPositive();
         }
     }
 

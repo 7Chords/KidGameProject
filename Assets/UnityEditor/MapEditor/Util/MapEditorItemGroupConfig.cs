@@ -18,4 +18,5 @@ public class MapEditorItemGroupConfig : ScriptableObject
     [Header("Blueprint")]
     public List<MapData> MapListList;
 
+
 }

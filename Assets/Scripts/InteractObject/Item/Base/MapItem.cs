@@ -8,9 +8,14 @@ using UnityEngine;
 public abstract class MapItem : MonoBehaviour, IPickable,IInteractive
 {
     /// <summary>
-    /// 交互
+    /// 主动交互
     /// </summary>
-    public abstract void Interact();
+    public abstract void InteractPositive();
+
+    /// <summary>
+    /// 被动交互
+    /// </summary>
+    public abstract void InteractNegative();
 
     /// <summary>
     /// 拾取

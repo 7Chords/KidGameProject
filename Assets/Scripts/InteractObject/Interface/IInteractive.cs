@@ -7,5 +7,9 @@ using UnityEngine;
 /// </summary>
 public interface IInteractive
 {
-    public abstract void Interact();
+    //主动互动
+    public abstract void InteractPositive();
+
+    //被动互动
+    public abstract void InteractNegative();
 }

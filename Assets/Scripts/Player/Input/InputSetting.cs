@@ -16,7 +16,7 @@ public class InputSettings : MonoBehaviour
     private InputAction useAction;
     private InputAction throwAction;
     private InputAction bagAction;
-
+    private InputAction recycleAction;
 
     public event Action OnInteractionPress;
 
@@ -34,7 +34,7 @@ public class InputSettings : MonoBehaviour
             useAction = inputActionAsset.FindAction("Use");
             throwAction = inputActionAsset.FindAction("Throw");
             bagAction = inputActionAsset.FindAction("Bag");
-
+            recycleAction = inputActionAsset.FindAction("Recycle");
 
             interactionAction.performed += OnInteractionActionPerformed;
         }
@@ -43,6 +43,11 @@ public class InputSettings : MonoBehaviour
             Debug.LogWarning("无法获取输入配置文件" + e);
             throw;
         }
+    }
+
+    private void OnDestroy()
+    {
+        interactionAction.performed -= OnInteractionActionPerformed;
     }
 
     /// <summary>
@@ -81,10 +86,23 @@ public class InputSettings : MonoBehaviour
     /// <returns></returns>
     public virtual bool GetThrowDown() => throwAction.WasPerformedThisFrame();
 
+    /// <summary>
+    /// 是否按下打开背包键
+    /// </summary>
+    /// <returns></returns>
     public virtual bool GetBagDown() => bagAction.WasPerformedThisFrame();
 
+    /// <summary>
+    /// 是否按下交互键
+    /// </summary>
+    /// <returns></returns>
     public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
 
+    /// <summary>
+    /// 是否按下回收键
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool GetRecycleDown() => recycleAction.WasPerformedThisFrame();
 
     /// <summary>
     /// 交互键被按下时触发

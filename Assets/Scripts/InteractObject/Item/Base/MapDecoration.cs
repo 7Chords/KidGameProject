@@ -7,8 +7,7 @@ using UnityEngine;
 /// </summary>
 public class MapDecoration : MonoBehaviour, IInteractive
 {
-    public void Interact()
-    {
+    public virtual void InteractNegative() { }
 
-    }
+    public virtual void InteractPositive() { }
 }
