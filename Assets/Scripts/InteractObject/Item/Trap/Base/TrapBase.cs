@@ -7,8 +7,10 @@ using UnityEngine;
 /// </summary>
 public class TrapBase : MapItem
 {
-    [SerializeField]//测试用
-    protected TrapData _trapData;
+    //测试public
+    public TrapData _trapData;
+
+    public TrapData trapData => _trapData;
 
     #region 时间型陷阱相关参数
     protected bool _isTimeValid;

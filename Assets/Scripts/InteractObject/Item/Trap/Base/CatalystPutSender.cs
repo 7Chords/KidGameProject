@@ -22,4 +22,13 @@ public class CatalystPutSender : MonoBehaviour
         catalyst.SetTrap(_trap);
         _trap.SetCatalyst(catalyst);
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (_trap == null) return;
+        if (other.gameObject.tag != "Catalyst") return;
+        CatalystBase catalyst = other.GetComponent<CatalystBase>();
+        catalyst.SetTrap(null);
+        _trap.SetCatalyst(null);
+    }
 }

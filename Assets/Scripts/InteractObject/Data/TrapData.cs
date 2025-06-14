@@ -18,14 +18,13 @@ public enum TrapTriggerType
 }
 
 
-
-
-
 [CreateAssetMenu(fileName = "TrapData", menuName = "KidGameSO/Interactive/TrapData")]
 public class TrapData : ScriptableObject
 {
-    public string ID;
+    public string trapID;
     public string trapName;
+    public string trapDesc;
+    public Sprite trapIcon;
     public float trapLevel;
     public float trapDamage;//这里的陷阱伤害是基础伤害 部分陷阱伤害还受其他因素影响 在trap的mono脚本中处理计算
     public float validTime = -1;//有效时间 -1为可以立刻生效

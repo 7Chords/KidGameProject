@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ba7bfda5ce735c439e3d7717b4f370a, type: 3}
   m_Name: TrapData
   m_EditorClassIdentifier: 
-  ID: T_001
+  trapID: 
   trapName: "\u6D4B\u8BD5\u9677\u96311"
+  trapDesc: 
+  trapIcon: {fileID: 0}
   trapLevel: 0.5
   trapDamage: 1
   validTime: 10
-  trapTypeList: 0100000002000000
-  triggerType: 0
+  trapTypeList: 00000000
+  triggerType: 1

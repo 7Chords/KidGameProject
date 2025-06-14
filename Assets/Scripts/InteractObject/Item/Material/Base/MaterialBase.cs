@@ -7,6 +7,10 @@ using UnityEngine;
 /// </summary>
 public class MaterialBase : MapItem
 {
+    //²âÊÔpublic
+    public MaterialData _materialData;
+
+    public MaterialData materialData => _materialData;
     public override void InteractNegative()
     {
     }

@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class CatalystBase : MapItem
 {
+    [SerializeField]
     protected TrapBase _trap;
     public void Init()
     {
@@ -14,13 +15,12 @@ public class CatalystBase : MapItem
     }
     public override void InteractNegative()
     {
-        
+        if (_trap == null) return;
+        _trap.TriggerByCatalyst(this);
     }
 
     public override void InteractPositive()
     {
-        if (_trap == null) return;
-        _trap.TriggerByCatalyst(this);
     }
 
     public override void Pick()
