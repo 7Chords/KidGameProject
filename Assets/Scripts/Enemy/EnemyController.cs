@@ -31,8 +31,10 @@ public class EnemyController : MonoBehaviour, IStateMachineOwner
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Start()
+    public void Init(EnemyBaseData enemyData)
     {
+        enemyBaseData = enemyData;
+
         stateMachine = PoolManager.Instance.GetObject<StateMachine>();
         stateMachine.Init(this);
         player = FindObjectOfType<PlayerController>().gameObject.transform;

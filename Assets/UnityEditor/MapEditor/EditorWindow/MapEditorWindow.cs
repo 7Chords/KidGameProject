@@ -159,12 +159,21 @@ public class MapEditorWindow : EditorWindow
         }
         foreach (var wall in mapData.wallList)
         {
+            float averageX = 0, averageZ = 0;
+            foreach (var pos in wall.mapPosList)
+            {
+                averageX += pos.x;
+                averageZ += pos.y;
+            }
+            averageX /= wall.mapPosList.Count;
+            averageZ /= wall.mapPosList.Count;
             //生成堆叠的墙单位
-            for(int i=0;i<wall.stackLayer;i++)
+            for (int i=0;i<wall.stackLayer;i++)
             {
                 GameObject wallGO = Instantiate(wall.wallData.wallPrefab,
-                    new Vector3(wall.mapPos.x, i+0.5f, -wall.mapPos.y),
+                    new Vector3(averageX, 3*i, -averageZ),
                     Quaternion.identity);
+                wallGO.transform.rotation = wall.wallData.wallPrefab.transform.rotation;
                 MapWall mapWall = wallGO.AddComponent<MapWall>();
                 mapWall.SetData(wall);
                 wallGO.transform.SetParent(wallRoot.transform);
@@ -438,19 +447,27 @@ public class MapEditorWindow : EditorWindow
 
             foreach (var wall in mapData.wallList)
             {
+                int mapXMin = 999, mapXMax = -1, mapYMin = 999, mapYMax = -1;
+                foreach (var pos in wall.mapPosList)
+                {
+                    if (pos.x < mapXMin) mapXMin = pos.x;
+                    if (pos.x > mapXMax) mapXMax = pos.x;
+                    if (pos.y < mapYMin) mapYMin = pos.y;
+                    if (pos.y > mapYMax) mapYMax = pos.y;
+                }
                 float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
                 float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
-                if ((wall.mapPos.x - offsetGridX) < 0 || (wall.mapPos.y - offsetGridY) < 0) continue;
                 //画墙的图
-                GUI.DrawTexture(new Rect((wall.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
-                    (wall.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
-                    mapEditorConfig.curGridUnitLength,
-                    mapEditorConfig.curGridUnitLength), wall.wallData.texture);
+                if ((mapXMin - offsetGridX) < 0 || (mapYMin - offsetGridY) < 0) continue;
+                GUI.DrawTexture(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                    (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                    (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength,
+                    (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength), wall.wallData.texture);
                 //画墙的数量
                 GUIStyle labelStyle = new GUIStyle();
                 labelStyle.fontSize = 30 * (mapEditorConfig.curGridUnitLength / MapEditorConfig.maxGridUnitLength);
-                GUI.Label(new Rect((wall.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
-                    (wall.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                GUI.Label(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                    (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
                     mapEditorConfig.curGridUnitLength,
                     mapEditorConfig.curGridUnitLength), wall.stackLayer.ToString(), labelStyle);
             }
@@ -520,18 +537,21 @@ public class MapEditorWindow : EditorWindow
                     //家具要摆的位置还没有瓦片 放不了
                     if (mapData.tileList.Find(x => x.mapPos.Equals(mapPos)) == null) return;
                     //如果这个位置已经有墙了 放不了
-                    if (mapData.wallList.Find(x => x.mapPos.Equals(mapPos)) != null) return;
+                    if (mapData.wallList.Find(x => x.mapPosList.Contains(mapPos)) != null) return;
                     //如果和其他家具重叠了 放不了
                     foreach (var furniture in mapData.furnitureList)
                     {
-                        foreach (var tmpPos in furniture.mapPosList)
+                        if(furniture.mapPosList.Contains(mapPos))
                         {
-                            if (mapPos.Equals(tmpPos))
-                            {
-                                return;
-                            }
+                            return;
                         }
-
+                        //foreach (var tmpPos in furniture.mapPosList)
+                        //{
+                        //    if (mapPos.Equals(tmpPos))
+                        //    {
+                        //        return;
+                        //    }
+                        //}
                     }
                     mapFurniture.mapPosList.Add(mapPos);
                 }
@@ -545,31 +565,30 @@ public class MapEditorWindow : EditorWindow
                 if (wallData == null) return;
                 MapWallData mapWall = new MapWallData();
                 mapWall.wallData = wallData;
-                mapWall.mapPos = new GridPos(mapX, mapY);
-                //如果这个位置还没有瓦片 放不了
-                if (mapData.tileList.Find(x => x.mapPos.Equals(mapWall.mapPos)) == null) return;
-                MapWallData tmpMapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
-                //如果这个位置有家具了 放不了
-                foreach(var furniture in mapData.furnitureList)
+                mapWall.mapPosList = new List<GridPos>();
+                foreach (var pos in wallData.posList)
                 {
-                    foreach (var mapPos in furniture.mapPosList)
+                    int GridPosX = pos.x + mapX;
+                    int GridPosY = pos.y + mapY;
+                    GridPos mapPos = new GridPos(GridPosX, GridPosY);
+                    //找到该位置的墙的数据（有没有下面不同处理）
+                    MapWallData tmpMapWall = mapData.wallList.Find(x => x.mapPosList.Contains(mapPos));
+                    if (tmpMapWall != null)
                     {
-                        if(mapPos.Equals(mapWall.mapPos))
-                        {
-                            return;
-                        }
+                        tmpMapWall.stackLayer++;
+                        SaveConfig();
+                        return;
                     }
-
+                    //如果这个位置还没有瓦片 放不了
+                    if (mapData.tileList.Find(x => x.mapPos.Equals(mapPos)) == null) return;
+                    //如果这个位置有家具了 放不了
+                    foreach (var furniture in mapData.furnitureList)
+                    {
+                        if (furniture.mapPosList.Contains(mapPos)) return;
+                    }
+                    mapWall.mapPosList.Add(mapPos);
                 }
-                //这个位置已经有墙了 那就叠加
-                if (tmpMapWall != null)
-                {
-                    tmpMapWall.stackLayer++;
-                }
-                else
-                {
-                    mapData.wallList.Add(mapWall);
-                }
+                mapData.wallList.Add(mapWall);
                 SaveConfig();
             }
         }
@@ -600,7 +619,7 @@ public class MapEditorWindow : EditorWindow
             }
             else
             {
-                MapWallData mapWall = mapData.wallList.Find(x => x.mapPos.Equals(new GridPos(mapX, mapY)));
+                MapWallData mapWall = mapData.wallList.Find(x => x.mapPosList.Contains(new GridPos(mapX, mapY)));
                 if (mapWall != null)
                 {
                     mapData.wallList.Remove(mapWall);

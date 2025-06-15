@@ -26,6 +26,6 @@ public class MapTileData
 public class MapWallData
 {
     public WallData wallData;
-    public GridPos mapPos;
+    public List<GridPos> mapPosList;
     public int stackLayer = 1;
 }

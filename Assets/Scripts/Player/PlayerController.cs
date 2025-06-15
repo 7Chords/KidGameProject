@@ -126,7 +126,6 @@ public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
     private void PlayerInteraction()
     {
         Collider[] interactColliders = Physics.OverlapSphere(InteractCenter.position, InteractRadius, InteractLayer);
-        Debug.Log(interactColliders.Length);
         if (interactColliders.Length == 0) return;
         foreach (var col in interactColliders)
         {

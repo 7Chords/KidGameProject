@@ -7,5 +7,6 @@ public class WallData : ScriptableObject
 {
     public string wallName;
     public Texture2D texture;
+    public List<GridPos> posList;
     public GameObject wallPrefab;
 }

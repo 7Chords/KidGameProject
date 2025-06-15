@@ -10,9 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe0cf7d6d9f713c489ad6c38fb41db33, type: 3}
-  m_Name: "\u666E\u901A\u5899"
+  m_Name: "\u6C34\u5E73\u5899"
   m_EditorClassIdentifier: 
-  wallName: "\u7EFF\u8272\u5899"
-  texture: {fileID: 2800000, guid: 8f3a62debad3fa34db1e791a8b97320f, type: 3}
-  wallPrefab: {fileID: 5937558036629869955, guid: 29fae8e91894bf1429265b5436685295,
+  wallName: "\u6C34\u5E73\u5899"
+  texture: {fileID: 2800000, guid: 8078975cd6388984b882a853dadf76cf, type: 3}
+  posList:
+  - x: 0
+    y: 0
+  - x: 1
+    y: 0
+  - x: 2
+    y: 0
+  - x: 3
+    y: 0
+  wallPrefab: {fileID: 305522642107577260, guid: 29fae8e91894bf1429265b5436685295,
     type: 3}
