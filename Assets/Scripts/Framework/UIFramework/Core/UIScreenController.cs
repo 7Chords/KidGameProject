@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// UI界面的基类，窗口，面板这些都继承它，比如 AWindowController，PanelController

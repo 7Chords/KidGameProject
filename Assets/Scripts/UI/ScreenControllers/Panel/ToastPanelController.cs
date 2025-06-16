@@ -4,7 +4,7 @@ using Utils;
 using DG.Tweening;
 using UnityEngine;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     public class ToastPanelController : PanelController
     {

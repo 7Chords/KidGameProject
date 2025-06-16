@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UIFramework;
+using KidGame.UI;
 using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UIFramework.Game;
+using KidGame.UI.Game;
 
 public class TransitionPanelController : PanelController
 {

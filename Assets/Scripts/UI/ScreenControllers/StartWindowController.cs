@@ -1,6 +1,6 @@
 ﻿using Utils;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     public class StartGameSignal : ASignal
     {

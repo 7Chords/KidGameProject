@@ -1,4 +1,4 @@
-﻿namespace UIFramework {
+﻿namespace KidGame.UI {
     /// <summary>
     /// 窗口记录和队列
     /// </summary>

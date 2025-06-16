@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// 基础的UI Layer层

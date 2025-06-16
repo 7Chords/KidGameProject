@@ -1,31 +1,33 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
-
-[Serializable]
-public class MapFurnitureData
+namespace KidGame.Core.Data
 {
-    public FurnitureData furnitureData;
+    [Serializable]
+    public class MapFurnitureData
+    {
+        public FurnitureData furnitureData;
 
-    public List<GridPos> mapPosList;
+        public List<GridPos> mapPosList;
 
-    public RoomType roomType;
-}
+        public RoomType roomType;
+    }
 
-[Serializable]
-public class MapTileData
-{
-    public TileData tileData;
+    [Serializable]
+    public class MapTileData
+    {
+        public TileData tileData;
 
-    public GridPos mapPos;
+        public GridPos mapPos;
 
-    public RoomType roomType;
-}
+        public RoomType roomType;
+    }
 
-[Serializable]
-public class MapWallData
-{
-    public WallData wallData;
-    public List<GridPos> mapPosList;
-    public int stackLayer = 1;
+    [Serializable]
+    public class MapWallData
+    {
+        public WallData wallData;
+        public List<GridPos> mapPosList;
+        public int stackLayer = 1;
+    }
 }

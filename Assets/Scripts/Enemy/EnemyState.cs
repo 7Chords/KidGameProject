@@ -1,9 +1,12 @@
-/// <summary>
-/// 敌人有限状态机的全部状态
-/// </summary>
-public enum EnemyState
+namespace KidGame.Core
 {
-    Idle,
-    Patrol,
-    Attack,
+    /// <summary>
+    /// 敌人有限状态机的全部状态
+    /// </summary>
+    public enum EnemyState
+    {
+        Idle,
+        Patrol,
+        Attack,
+    }
 }

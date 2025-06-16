@@ -1,4 +1,4 @@
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     public sealed class ScreenIds
     {

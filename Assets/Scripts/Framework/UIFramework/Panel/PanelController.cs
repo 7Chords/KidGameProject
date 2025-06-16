@@ -1,4 +1,4 @@
-﻿namespace UIFramework
+﻿namespace KidGame.UI
 {
     /// <summary>
     /// 面板控制器

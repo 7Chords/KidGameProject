@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UIFramework {
+namespace KidGame.UI {
     /// <summary>
     /// 面板属性类
     /// </summary>

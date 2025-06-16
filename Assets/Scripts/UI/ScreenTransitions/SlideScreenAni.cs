@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     public class SlideScreenAni : AniComponent
     {

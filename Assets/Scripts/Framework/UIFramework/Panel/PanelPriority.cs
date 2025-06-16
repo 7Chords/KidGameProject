@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// 规定面板属于哪个层的，便于管理

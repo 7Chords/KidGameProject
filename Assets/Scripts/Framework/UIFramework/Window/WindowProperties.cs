@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UIFramework {
+namespace KidGame.UI {
     /// <summary>
     /// 窗口的通用属性
     /// </summary>

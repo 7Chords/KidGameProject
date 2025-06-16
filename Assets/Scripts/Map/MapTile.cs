@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+using KidGame.Core.Data;
 using UnityEngine;
 
-public class MapTile : MonoBehaviour
+namespace KidGame.Core
 {
-    public MapTileData mapTileData;
-
-    public MapTile(MapTileData data)
+    public class MapTile : MonoBehaviour
     {
-        mapTileData = data;
-    }
+        public MapTileData mapTileData;
 
-    public void SetData(MapTileData data)
-    {
-        mapTileData = data;
+        public MapTile(MapTileData data)
+        {
+            mapTileData = data;
+        }
+
+        public void SetData(MapTileData data)
+        {
+            mapTileData = data;
+        }
     }
 }

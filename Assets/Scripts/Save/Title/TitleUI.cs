@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using KidGame.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -49,7 +50,7 @@ public class TitleUI : MonoBehaviour
     void LoadRecord(int i)
     {
         //载入指定存档数据
-        Player.Instance.Load(i);
+        PlayerSaveData.Instance.Load(i);
 
         //如果最新存档不是i，就更新最新存档的序号，并保存
         if(i!= RecordData.Instance.lastID)
@@ -59,7 +60,7 @@ public class TitleUI : MonoBehaviour
         }    
         
         //跳转场景
-        SceneManager.LoadScene(Player.Instance.scensName);
+        SceneManager.LoadScene(PlayerSaveData.Instance.scensName);
     }
 
     void OpenRecordPanel()
@@ -73,7 +74,7 @@ public class TitleUI : MonoBehaviour
         //可以在Player里写个Init函数，也可以在预制体上直接设置
 
         //跳转至默认场景
-        SceneManager.LoadScene(Player.Instance.scensName);
+        SceneManager.LoadScene(PlayerSaveData.Instance.scensName);
     }
 
     void QuitGame()

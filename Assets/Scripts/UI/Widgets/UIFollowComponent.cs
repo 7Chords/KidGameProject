@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
 	/// <summary>
 	/// UI跟随组件，注意：仅在模板UI元素锚定到左下角时才有效

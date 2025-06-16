@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// 这个layer层控制所有的窗口.

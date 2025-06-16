@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-namespace UIFramework {
+namespace KidGame.UI {
     /// <summary>
     /// 界面动画组件
     /// </summary>

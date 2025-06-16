@@ -1,13 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using KidGame.Interface;
 using UnityEngine;
 
-/// <summary>
-/// 场景中的装饰物，不需要实现具体的逻辑
-/// </summary>
-public class MapDecoration : MonoBehaviour, IInteractive
+namespace KidGame.Core
 {
-    public virtual void InteractNegative() { }
+    /// <summary>
+    /// 场景中的装饰物，不需要实现具体的逻辑
+    /// </summary>
+    public class MapDecoration : MonoBehaviour, IInteractive
+    {
+        public virtual void InteractNegative() { }
 
-    public virtual void InteractPositive() { }
+        public virtual void InteractPositive() { }
+    }
 }

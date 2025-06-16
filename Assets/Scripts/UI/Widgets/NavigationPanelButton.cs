@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     [RequireComponent(typeof(Button))]
     public class NavigationPanelButton : MonoBehaviour

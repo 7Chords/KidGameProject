@@ -2,7 +2,7 @@ using Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     public class PopupWindowController : WindowController
     {

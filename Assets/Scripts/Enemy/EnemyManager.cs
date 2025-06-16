@@ -1,27 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : Singleton<EnemyManager>
+namespace KidGame.Core
 {
-    [SerializeField]
-    private List<EnemyController> enemyList;
-
-    //≤‚ ‘
-    public GameObject enemyPrefab;
-    public void Init()
+    public class EnemyManager : Singleton<EnemyManager>
     {
-        enemyList = new List<EnemyController>();
-    }
+        [SerializeField]
+        private List<EnemyController> enemyList;
 
-    public void InitEnemy(List<EnemyBaseData> enemyDataList)
-    {
-        foreach(var data in enemyDataList)
+        //≤‚ ‘
+        public GameObject enemyPrefab;
+        public void Init()
         {
-            GameObject enemy = Instantiate(enemyPrefab);
-            EnemyController enemyCtl = enemy.GetComponent<EnemyController>();
-            enemyCtl.Init(data);
-            enemyList.Add(enemyCtl);
+            enemyList = new List<EnemyController>();
+        }
+
+        public void InitEnemy(List<EnemyBaseData> enemyDataList)
+        {
+            foreach(var data in enemyDataList)
+            {
+                GameObject enemy = Instantiate(enemyPrefab);
+                EnemyController enemyCtl = enemy.GetComponent<EnemyController>();
+                enemyCtl.Init(data);
+                enemyList.Add(enemyCtl);
+            }
         }
     }
 }

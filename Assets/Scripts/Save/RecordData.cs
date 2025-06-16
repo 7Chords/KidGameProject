@@ -1,75 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class RecordData : MonoBehaviour
+namespace KidGame.Core
 {
-    #region 单例
-    public static RecordData Instance;
-    private void Awake()
+    public class RecordData : SingletonPersistent<RecordData>
     {
-        if (Instance == null)
+        public const int recordNum = 3; //档位数
+        public const string NAME = "RecordData"; //存档列表名
+
+        public string[] recordName = new string[recordNum]; //存档文件名(不是全路径名)
+        public int lastID; //最新存档序号(用于重启时自动读档)
+
+        class SaveData
         {
-            DontDestroyOnLoad(gameObject);
-            Instance = this;
+            public string[] recordName = new string[recordNum];
+            public int lastID;
         }
-        else if (Instance != null)
+
+        SaveData ForSave()
         {
-            Destroy(gameObject);
+            var savedata = new SaveData();
+
+            for (int i = 0; i < recordNum; i++)
+            {
+                savedata.recordName[i] = recordName[i];
+            }
+
+            savedata.lastID = lastID;
+
+            return savedata;
         }
 
-    }
-    #endregion
-
-    public const int recordNum = 20;             //档位数
-    public const string NAME = "RecordData";     //存档列表名
-
-    public string[] recordName = new string[recordNum];    //存档文件名(不是全路径名)
-    public int lastID;                                     //最新存档序号(用于重启时自动读档)
-
-    class SaveData
-    {
-        public string[] recordName = new string[recordNum];
-        public int lastID;
-    }
-
-    SaveData ForSave()
-    {
-        var savedata = new SaveData();
-      
-        for (int i = 0; i < recordNum; i++)
+        void ForLoad(SaveData savedata)
         {
-            savedata.recordName[i] = recordName[i];
+            lastID = savedata.lastID;
+            for (int i = 0; i < recordNum; i++)
+            {
+                recordName[i] = savedata.recordName[i];
+            }
         }
-        savedata.lastID = lastID;
 
-        return savedata;
-    }
-
-    void ForLoad(SaveData savedata)
-    {       
-        lastID = savedata.lastID;
-        for (int i = 0; i < recordNum; i++)
+        public void Save()
         {
-            recordName[i] = savedata.recordName[i];
+            SAVE.PlayerPrefsSave(NAME, ForSave());
         }
-    }
 
-    public void Save()
-    {
-        SAVE.PlayerPrefsSave(NAME, ForSave());
-    }
-
-    public void Load()
-    {
-        //有存档才读
-        if (PlayerPrefs.HasKey(NAME))
+        public void Load()
         {
-            string json = SAVE.PlayerPrefsLoad(NAME);
-            SaveData saveData = JsonUtility.FromJson<SaveData>(json);
-            ForLoad(saveData);
+            //有存档才读
+            if (PlayerPrefs.HasKey(NAME))
+            {
+                string json = SAVE.PlayerPrefsLoad(NAME);
+                SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+                ForLoad(saveData);
+            }
         }
     }
-
-    
 }

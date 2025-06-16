@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace UIFramework {
+namespace KidGame.UI {
     /// <summary>
     /// 这是一个“辅助”层级，以便显示优先级更高的窗口。
     /// 默认情况下，它包含任何标记为弹出窗口的窗口。它由 WindowUILayer 控制

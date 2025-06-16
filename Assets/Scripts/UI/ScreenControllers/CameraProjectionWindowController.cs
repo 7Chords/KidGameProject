@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     [Serializable]
     public class CameraProjectionWindowProperties : WindowProperties

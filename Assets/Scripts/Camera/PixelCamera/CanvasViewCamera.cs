@@ -1,14 +1,14 @@
-namespace PixelCamera
-{
-    using UnityEngine;
+using UnityEngine;
 
+namespace KidGame.Core
+{
     /// <summary>
     /// The canvas view camera. This smoothes the view on the pixelated game camera by adjusting its position relative to the upscaled display.
     /// </summary>
     [ExecuteInEditMode]
 	public class CanvasViewCamera : MonoBehaviour
     {
-        Camera canvasCamera;
+        UnityEngine.Camera canvasCamera;
         public float Aspect => this.canvasCamera.aspect;
         public float Zoom { get ; private set; }
 

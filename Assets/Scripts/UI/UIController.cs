@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Utils;
 using UnityEngine;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     public class UIController : SingletonPersistent<UIController>
     {

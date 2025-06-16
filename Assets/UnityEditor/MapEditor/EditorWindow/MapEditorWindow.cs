@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using KidGame.Core;
+using KidGame.Core.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;

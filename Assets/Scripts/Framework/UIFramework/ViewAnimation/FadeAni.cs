@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// 渐入动画，同样愿意自己封装DoTween的也行

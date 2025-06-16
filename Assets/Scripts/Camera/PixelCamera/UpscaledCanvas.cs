@@ -1,7 +1,7 @@
-namespace PixelCamera
-{
-    using UnityEngine;
+using UnityEngine;
 
+namespace KidGame.Core
+{
     /// <summary>
     /// The upscaled canvas which displays the game camera render.
     /// </summary>

@@ -1,7 +1,7 @@
-namespace PixelCamera
-{
-    using UnityEngine;
+using UnityEngine;
 
+namespace KidGame.Core
+{
     // How the game resolution is synchronized for different aspect ratios.
     public enum ResolutionSynchronizationMode
     {

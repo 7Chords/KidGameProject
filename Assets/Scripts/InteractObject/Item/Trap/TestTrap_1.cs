@@ -1,13 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using KidGame.Core;
 using UnityEngine;
 
-public class TestTrap_1 : TrapBase
+namespace KidGame.Core
 {
-
-    public override void Trigger()
+    public class TestTrap_1 : TrapBase
     {
-        Debug.Log("TestTrap_1触发了");
 
+        public override void Trigger()
+        {
+            Debug.Log("TestTrap_1触发了");
+
+        }
     }
 }

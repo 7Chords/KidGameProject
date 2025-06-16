@@ -1,7 +1,7 @@
-namespace PixelCamera
-{
-    using UnityEngine;
+using UnityEngine;
 
+namespace KidGame.Core
+{
     /// <summary>
     /// Tooltips for Unity editor
     /// </summary>
@@ -48,7 +48,7 @@ namespace PixelCamera
         [Tooltip(Tooltips.TT_GAME_ZOOM)] public float GameCameraZoom = 5f;
         [Tooltip(Tooltips.TT_VIEW_ZOOM)][Range(-1f, 1f)] public float ViewCameraZoom = 1f;
 
-        Camera gameCamera;
+        UnityEngine.Camera gameCamera;
         CanvasViewCamera viewCamera;
         UpscaledCanvas upscaledCanvas;
 

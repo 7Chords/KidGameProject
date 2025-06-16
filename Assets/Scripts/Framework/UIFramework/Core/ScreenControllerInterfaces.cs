@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UIFramework {
+namespace KidGame.UI {
     /// <summary>
     /// 所有的UI界面必须实现的接口，统一风格
     /// </summary>

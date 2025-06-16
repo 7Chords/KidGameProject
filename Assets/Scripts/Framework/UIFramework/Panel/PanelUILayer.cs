@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// 这个Layer层是控制面板的

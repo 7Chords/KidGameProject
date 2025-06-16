@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/// <summary>
-/// 可拾取接口
-/// </summary>
-public interface IPickable
+namespace KidGame.Interface
 {
-    public abstract void Pick();
+    /// <summary>
+    /// 可拾取接口
+    /// </summary>
+    public interface IPickable
+    {
+        public abstract void Pick();
+    }
 }

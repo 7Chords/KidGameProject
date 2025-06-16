@@ -1,12 +1,15 @@
-/// <summary>
-/// Íæ¼Ò×´Ì¬
-/// </summary>
-public enum PlayerState
+namespace KidGame.Core
 {
-    Idle,
-    Move,
-    Dash,
-    Use,
-    Throw,
-    Dead,
+    /// <summary>
+    /// Íæ¼Ò×´Ì¬
+    /// </summary>
+    public enum PlayerState
+    {
+        Idle,
+        Move,
+        Dash,
+        Use,
+        Throw,
+        Dead,
+    }
 }

@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     public class ScaleScreenAni : AniComponent
     {

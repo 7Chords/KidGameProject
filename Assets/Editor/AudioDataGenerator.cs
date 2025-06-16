@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
+using KidGame.Core;
 
 public static class AudioDataGenerator
 {

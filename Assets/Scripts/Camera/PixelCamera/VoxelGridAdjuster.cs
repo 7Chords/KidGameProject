@@ -1,7 +1,7 @@
-namespace PixelCamera
-{
-    using UnityEngine;
+using UnityEngine;
 
+namespace KidGame.Core
+{
     /// <summary>
     /// Adjusts the transform of this game object to a grid that ensures constant sampling by the camera.
     /// </summary>

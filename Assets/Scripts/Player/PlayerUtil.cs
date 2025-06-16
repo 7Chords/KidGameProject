@@ -1,64 +1,65 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using KidGame.Interface;
 
-/// <summary>
-/// 玩家事件中心
-/// </summary>
-public class PlayerUtil : Singleton<PlayerUtil>
+namespace KidGame.Core
 {
-    private InputSettings inputSettings;
-
-    //玩家按下交互按钮的事件
-    private Action onPlayerInteractPressed;
-
-    public Action OnPlayerInteractPressed
+    /// <summary>
+    /// 玩家事件中心
+    /// </summary>
+    public class PlayerUtil : Singleton<PlayerUtil>
     {
-        get { return onPlayerInteractPressed; }
-        set { onPlayerInteractPressed = value; }
-    }
+        private InputSettings inputSettings;
 
-    //玩家捡到场景物品（陷阱和道具）的事件
-    private Action<IPickable> onPlayerPickItem;
+        //玩家按下交互按钮的事件
+        private Action onPlayerInteractPressed;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        inputSettings = GetComponent<InputSettings>();
-    }
+        public Action OnPlayerInteractPressed
+        {
+            get { return onPlayerInteractPressed; }
+            set { onPlayerInteractPressed = value; }
+        }
 
-    public void Init()
-    {
-        inputSettings.OnInteractionPress += OnPlayerInteractPressed;
-    }
+        //玩家捡到场景物品（陷阱和道具）的事件
+        private Action<IPickable> onPlayerPickItem;
 
-    public void Discard()
-    {
-        inputSettings.OnInteractionPress -= OnPlayerInteractPressed;
-    }
+        protected override void Awake()
+        {
+            base.Awake();
+            inputSettings = GetComponent<InputSettings>();
+        }
 
-    #region Call Event
+        public void Init()
+        {
+            inputSettings.OnInteractionPress += OnPlayerInteractPressed;
+        }
 
-    public void CallPlayerInteractPressed()
-    {
-        OnPlayerInteractPressed?.Invoke();
-    }
+        public void Discard()
+        {
+            inputSettings.OnInteractionPress -= OnPlayerInteractPressed;
+        }
 
-    public void CallPlayerPickItem(IPickable iPickable)
-    {
-        onPlayerPickItem?.Invoke(iPickable);
-    }
+        #region Call Event
 
-    #endregion
+        public void CallPlayerInteractPressed()
+        {
+            OnPlayerInteractPressed?.Invoke();
+        }
 
-    public void RegPlayerPickItem(Action<IPickable> onPlayerPickItem)
-    {
-        this.onPlayerPickItem += onPlayerPickItem;
-    }
+        public void CallPlayerPickItem(IPickable iPickable)
+        {
+            onPlayerPickItem?.Invoke(iPickable);
+        }
 
-    public void UnregPlayerPickItem(Action<IPickable> onPlayerPickItem)
-    {
-        this.onPlayerPickItem -= onPlayerPickItem;
+        #endregion
+
+        public void RegPlayerPickItem(Action<IPickable> onPlayerPickItem)
+        {
+            this.onPlayerPickItem += onPlayerPickItem;
+        }
+
+        public void UnregPlayerPickItem(Action<IPickable> onPlayerPickItem)
+        {
+            this.onPlayerPickItem -= onPlayerPickItem;
+        }
     }
 }

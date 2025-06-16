@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+using KidGame.Core.Data;
 using UnityEngine;
 
-public class MapFurniture : MonoBehaviour
+namespace KidGame.Core
 {
-    public MapFurnitureData mapFurnitureData;
-
-    public MapFurniture(MapFurnitureData data)
+    public class MapFurniture : MonoBehaviour
     {
-        mapFurnitureData = data;
-    }
+        public MapFurnitureData mapFurnitureData;
 
-    public void SetData(MapFurnitureData data)
-    {
-        mapFurnitureData = data;
+        public MapFurniture(MapFurnitureData data)
+        {
+            mapFurnitureData = data;
+        }
+
+        public void SetData(MapFurnitureData data)
+        {
+            mapFurnitureData = data;
+        }
     }
 }

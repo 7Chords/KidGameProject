@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UIFramework.Editor
+namespace KidGame.UI.Editor
 {
     /// <summary>
     /// 1.创建UI框架结构:

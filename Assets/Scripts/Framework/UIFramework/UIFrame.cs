@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// 所有的对外接口都在这，相当于UIManager之类的

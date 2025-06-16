@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using KidGame.Core;
 using UnityEngine;
 
-/// <summary>
-/// 所有敌人状态的基类
-/// </summary>
-public class EnemyStateBase : StateBase
+namespace KidGame.Core
 {
-    protected EnemyController enemy;
-
-    public override void Init(IStateMachineOwner owner, int stateType, StateMachine stateMachine)
+    /// <summary>
+    /// 所有敌人状态的基类
+    /// </summary>
+    public class EnemyStateBase : StateBase
     {
-        base.Init(owner, stateType, stateMachine);
-        enemy = (EnemyController)owner;
+        protected EnemyController enemy;
+
+        public override void Init(IStateMachineOwner owner, int stateType, StateMachine stateMachine)
+        {
+            base.Init(owner, stateType, stateMachine);
+            enemy = (EnemyController)owner;
+        }
     }
 }

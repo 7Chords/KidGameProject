@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace UIFramework.Game
+namespace KidGame.UI.Game
 {
     /// <summary>
     /// 具体动画实现，自己封装DoTween之类的都行，这个随意。

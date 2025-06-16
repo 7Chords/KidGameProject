@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UIFramework;
-using UIFramework.Game;
+using KidGame.UI;
+using KidGame.UI.Game;
 using Utils;
 using UnityEngine;
 

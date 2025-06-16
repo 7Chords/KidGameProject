@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace UIFramework.Editor
+namespace KidGame.UI.Editor
 {
     /// <summary>
     /// 尽可能使用一些常量，商业化框架其实就是不断的封装，封装到使用者觉得足够简单

@@ -1,4 +1,4 @@
-﻿namespace UIFramework
+﻿namespace KidGame.UI
 {
     /// <summary>
     /// 界面属性的接口

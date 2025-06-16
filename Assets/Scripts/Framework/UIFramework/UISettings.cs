@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace UIFramework
+namespace KidGame.UI
 {
     /// <summary>
     /// UI的模板.
