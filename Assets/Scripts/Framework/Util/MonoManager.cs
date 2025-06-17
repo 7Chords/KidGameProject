@@ -82,4 +82,5 @@ public class MonoManager : Singleton<MonoManager>
         GameObject go = Instantiate(obj);
         return go;
     }
+
 }

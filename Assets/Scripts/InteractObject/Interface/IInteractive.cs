@@ -10,5 +10,6 @@ namespace KidGame.Interface
 
         //±»¶¯»¥¶¯
         public abstract void InteractNegative();
+
     }
 }

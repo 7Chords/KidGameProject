@@ -20,4 +20,4 @@ MonoBehaviour:
   trapDamage: 1
   validTime: 10
   trapTypeList: 00000000
-  triggerType: 1
+  triggerType: 0

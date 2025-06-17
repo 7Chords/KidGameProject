@@ -3,29 +3,32 @@ using System.Collections.Generic;
 using KidGame.Core;
 using UnityEngine;
 
-public class PlayerIdleState : PlayerStateBase
+namespace KidGame.Core
 {
-    public override void Enter()
+    public class PlayerIdleState : PlayerStateBase
     {
-        //player.PlayAnimation("Idle");
-    }
-
-    public override void Update()
-    {
-        base.Update();
-        player.Rotate();
-        Vector2 inputVal = player.InputSettings.MoveDir();
-        // ¼ì²âÍæ¼ÒµÄÊäÈë
-        if (inputVal != Vector2.zero)
+        public override void Enter()
         {
-            // ÇÐ»»×´Ì¬
-            player.ChangeState(PlayerState.Move);
+            //player.PlayAnimation("Idle");
         }
-    }
+
+        public override void Update()
+        {
+            base.Update();
+            player.Rotate();
+            Vector2 inputVal = player.InputSettings.MoveDir();
+            // ¼ì²âÍæ¼ÒµÄÊäÈë
+            if (inputVal != Vector2.zero)
+            {
+                // ÇÐ»»×´Ì¬
+                player.ChangeState(PlayerState.Move);
+            }
+        }
 
 
-    public override void Exit()
-    {
-        base.Exit();
+        public override void Exit()
+        {
+            base.Exit();
+        }
     }
 }

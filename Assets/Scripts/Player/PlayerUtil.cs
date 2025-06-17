@@ -10,15 +10,6 @@ namespace KidGame.Core
     {
         private InputSettings inputSettings;
 
-        //玩家按下交互按钮的事件
-        private Action onPlayerInteractPressed;
-
-        public Action OnPlayerInteractPressed
-        {
-            get { return onPlayerInteractPressed; }
-            set { onPlayerInteractPressed = value; }
-        }
-
         //玩家捡到场景物品（陷阱和道具）的事件
         private Action<IPickable> onPlayerPickItem;
 
@@ -30,20 +21,13 @@ namespace KidGame.Core
 
         public void Init()
         {
-            inputSettings.OnInteractionPress += OnPlayerInteractPressed;
         }
 
         public void Discard()
         {
-            inputSettings.OnInteractionPress -= OnPlayerInteractPressed;
         }
 
-        #region Call Event
-
-        public void CallPlayerInteractPressed()
-        {
-            OnPlayerInteractPressed?.Invoke();
-        }
+        #region 呼叫事件
 
         public void CallPlayerPickItem(IPickable iPickable)
         {
@@ -51,6 +35,10 @@ namespace KidGame.Core
         }
 
         #endregion
+
+
+        #region 注册和反注册
+
 
         public void RegPlayerPickItem(Action<IPickable> onPlayerPickItem)
         {
@@ -61,5 +49,7 @@ namespace KidGame.Core
         {
             this.onPlayerPickItem -= onPlayerPickItem;
         }
+
+        #endregion
     }
 }

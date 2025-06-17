@@ -1,4 +1,5 @@
 ﻿using KidGame.Interface;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -22,9 +23,9 @@ namespace KidGame.Core
         public PlayerBaseData PlayerBaseData;
 
         public Transform ModelTransform;
-        public Transform InteractCenter;
-        public float InteractRadius;
-        public LayerMask InteractLayer;
+
+        //key:可交互 value:和玩家距离
+        private Dictionary<IInteractive,float> interactiveDict;
 
         protected override void Awake()
         {
@@ -43,6 +44,8 @@ namespace KidGame.Core
             ChangeState(PlayerState.Idle);
             //注册一些事件
             RegActions();
+
+            interactiveDict = new Dictionary<IInteractive, float>();
         }
 
         public void Discard()
@@ -113,32 +116,33 @@ namespace KidGame.Core
 
         #region 事件相关
 
+        /// <summary>
+        /// 注册事件们
+        /// </summary>
         private void RegActions()
         {
-            PlayerUtil.Instance.OnPlayerInteractPressed += PlayerInteraction;
-            inputSettings.OnThrowPress += TryPlaceTrap;
-        }
-
-        private void UnregActions()
-        {
-            PlayerUtil.Instance.OnPlayerInteractPressed -= PlayerInteraction;
-            inputSettings.OnThrowPress -= TryPlaceTrap;
-        }
-
-        private void PlayerInteraction()
-        {
-            Collider[] interactColliders =
-                Physics.OverlapSphere(InteractCenter.position, InteractRadius, InteractLayer);
-            if (interactColliders.Length == 0) return;
-            foreach (var col in interactColliders)
-            {
-                col.GetComponent<IInteractive>().InteractPositive();
-            }
+            inputSettings.OnInteractionPress += PlayerInteraction;
+            inputSettings.OnUsePress += TryPlaceTrap;
         }
 
         /// <summary>
-        /// 尝试放陷阱
+        /// 反注册事件们
         /// </summary>
+        private void UnregActions()
+        {
+            inputSettings.OnInteractionPress -= PlayerInteraction;
+            inputSettings.OnUsePress -= TryPlaceTrap;
+        }
+
+        /// <summary>
+        /// 玩家交互
+        /// </summary>
+        public void PlayerInteraction()
+        {
+            if (interactiveDict == null || interactiveDict.Count == 0) return;
+            GetClosestInteractive()?.InteractPositive();
+        }
+
         /// <summary>
         /// 尝试放陷阱
         /// </summary>
@@ -146,8 +150,46 @@ namespace KidGame.Core
         {
             if (PlayerBag.Instance._trapBag.Count > 0)
             {
-                ChangeState(PlayerState.Throw);
+                ChangeState(PlayerState.Use);
             }
+        }
+
+        /// <summary>
+        /// 添加到可交互列表
+        /// </summary>
+        /// <param name="interactive"></param>
+        public void AddInteractiveToList(IInteractive interactive,float distance)
+        {
+            if (interactiveDict == null) return;
+            interactiveDict.Add(interactive,distance);
+        }
+
+        /// <summary>
+        /// 从可交互列表中移除
+        /// </summary>
+        /// <param name="interactive"></param>
+        public void RemoveInteractiveFromList(IInteractive interactive)
+        {
+            if (interactiveDict == null) return;
+            interactiveDict.Remove(interactive);
+        }
+
+        /// <summary>
+        /// 获得最近的可交互者
+        /// </summary>
+        private IInteractive GetClosestInteractive()
+        {
+            float min = 999;
+            IInteractive closestInteractive = null;
+            foreach(var pair in interactiveDict)
+            {
+                if(pair.Value<min)
+                {
+                    min = pair.Value;
+                    closestInteractive = pair.Key;
+                }
+            }
+            return closestInteractive;
         }
 
         #endregion
@@ -156,8 +198,6 @@ namespace KidGame.Core
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(InteractCenter.position, InteractRadius);
         }
 
         #endregion
