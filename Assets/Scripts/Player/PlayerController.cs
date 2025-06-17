@@ -33,7 +33,6 @@ namespace KidGame.Core
 
             animator = transform.GetChild(0).GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
-
         }
 
         public void Init()
@@ -51,7 +50,6 @@ namespace KidGame.Core
             stateMachine.ObjectPushPool();
             UnregActions();
         }
-
 
         /// <summary>
         /// 玩家旋转 TODO:优化？
@@ -118,16 +116,19 @@ namespace KidGame.Core
         private void RegActions()
         {
             PlayerUtil.Instance.OnPlayerInteractPressed += PlayerInteraction;
+            inputSettings.OnThrowPress += TryPlaceTrap;
         }
 
         private void UnregActions()
         {
             PlayerUtil.Instance.OnPlayerInteractPressed -= PlayerInteraction;
+            inputSettings.OnThrowPress -= TryPlaceTrap;
         }
 
         private void PlayerInteraction()
         {
-            Collider[] interactColliders = Physics.OverlapSphere(InteractCenter.position, InteractRadius, InteractLayer);
+            Collider[] interactColliders =
+                Physics.OverlapSphere(InteractCenter.position, InteractRadius, InteractLayer);
             if (interactColliders.Length == 0) return;
             foreach (var col in interactColliders)
             {
@@ -135,14 +136,30 @@ namespace KidGame.Core
             }
         }
 
+        /// <summary>
+        /// 尝试放陷阱
+        /// </summary>
+        /// <summary>
+        /// 尝试放陷阱
+        /// </summary>
+        public void TryPlaceTrap()
+        {
+            if (PlayerBag.Instance._trapBag.Count > 0)
+            {
+                ChangeState(PlayerState.Throw);
+            }
+        }
+
         #endregion
 
         #region Gizoms
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(InteractCenter.position, InteractRadius);
         }
+
         #endregion
     }
 }

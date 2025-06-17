@@ -7,46 +7,55 @@ public class PlayerMoveState : PlayerStateBase
 {
     private Vector3 dir;
     private float speed;
+    private bool isRunning;
+
     public override void Enter()
     {
         //player.PlayerAnimation("Move");
+        isRunning = player.InputSettings.GetIfRun();
+        UpdateSpeed();
     }
 
     public override void Update()
     {
         base.Update();
         player.Rotate();
+        
+        // ³å´Ì
         if (player.InputSettings.GetDashDown())
         {
-            // ÇÐ»»×´Ì¬
             player.ChangeState(PlayerState.Dash);
+            return;
         }
+
+        // ±¼ÅÜ×´Ì¬ÇÐ»»
+        bool runningInput = player.InputSettings.GetIfRun();
+        if (runningInput != isRunning)
+        {
+            isRunning = runningInput;
+            UpdateSpeed();
+        }
+
         Vector2 inputVal = player.InputSettings.MoveDir();
         if (inputVal == Vector2.zero)
         {
-            // ÇÐ»»×´Ì¬
             player.ChangeState(PlayerState.Idle);
         }
         else
         {
-            dir = new Vector3(inputVal.x,0,inputVal.y);
-            if(player.InputSettings.GetIfRun())
-            {
-                speed = player.PlayerBaseData.RunSpeed;
-            }
-            else
-            {
-                speed = player.PlayerBaseData.WalkSpeed;
-            }
+            dir = new Vector3(inputVal.x, 0, inputVal.y);
         }
+    }
+
+    private void UpdateSpeed()
+    {
+        speed = isRunning ? player.PlayerBaseData.RunSpeed : player.PlayerBaseData.WalkSpeed;
     }
 
     public override void FixedUpdate()
     {
         player.Rb.velocity = dir * speed;
-
     }
-
 
     public override void Exit()
     {

@@ -14,9 +14,11 @@ namespace KidGame.Core
         public TrapData trapData => _trapData;
 
         #region 时间型陷阱相关参数
+
         protected bool _isTimeValid;
         protected float _validTime;
         protected float _validTimer;
+
         #endregion
 
         //[Header("触媒放置范围")]
@@ -45,7 +47,8 @@ namespace KidGame.Core
         }
 
         #region 交互接口方法实现
-        public override void InteractPositive() 
+
+        public override void InteractPositive()
         {
             if (_trapData == null) return;
             //需要触媒
@@ -57,6 +60,7 @@ namespace KidGame.Core
             if (!GetValidState()) return;
             Trigger();
         }
+
         public override void InteractNegative()
         {
             if (_trapData == null) return;
@@ -69,6 +73,7 @@ namespace KidGame.Core
             if (!GetValidState()) return;
             Trigger();
         }
+
         public override void Pick()
         {
             PlayerUtil.Instance.CallPlayerPickItem(this);
@@ -76,9 +81,8 @@ namespace KidGame.Core
 
         #endregion
 
-    
-
         #region 功能性
+
         /// <summary>
         /// 时间型陷阱计时更新
         /// </summary>
@@ -130,10 +134,11 @@ namespace KidGame.Core
         #endregion
 
         #region Gizom
+
         private void OnDrawGizmos()
         {
-        
         }
+
         #endregion
     }
 }

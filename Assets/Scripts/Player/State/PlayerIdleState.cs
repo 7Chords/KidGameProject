@@ -22,7 +22,7 @@ public class PlayerIdleState : PlayerStateBase
             player.ChangeState(PlayerState.Move);
         }
     }
-    
+
 
     public override void Exit()
     {

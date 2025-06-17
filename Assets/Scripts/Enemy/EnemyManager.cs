@@ -5,11 +5,11 @@ namespace KidGame.Core
 {
     public class EnemyManager : Singleton<EnemyManager>
     {
-        [SerializeField]
-        private List<EnemyController> enemyList;
+        [SerializeField] private List<EnemyController> enemyList;
 
         //≤‚ ‘
         public GameObject enemyPrefab;
+
         public void Init()
         {
             enemyList = new List<EnemyController>();
@@ -17,7 +17,7 @@ namespace KidGame.Core
 
         public void InitEnemy(List<EnemyBaseData> enemyDataList)
         {
-            foreach(var data in enemyDataList)
+            foreach (var data in enemyDataList)
             {
                 GameObject enemy = Instantiate(enemyPrefab);
                 EnemyController enemyCtl = enemy.GetComponent<EnemyController>();

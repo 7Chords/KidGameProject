@@ -18,15 +18,24 @@ public class InputSettings : MonoBehaviour
     private InputAction bagAction;
     private InputAction recycleAction;
 
+    // 所有输入事件
     public event Action OnInteractionPress;
+    public event Action OnDashPress;
+    public event Action OnRunPress;
+    public event Action OnRunRelease;
+    public event Action OnUsePress;
+    public event Action OnThrowPress;
+    public event Action OnBagPress;
+    public event Action OnRecyclePress;
 
     private void Awake()
     {
-        //输入模块获取
         try
         {
             playerInput = GetComponent<PlayerInput>();
             inputActionAsset = playerInput.actions;
+
+            // 获取所有输入动作
             moveAction = inputActionAsset.FindAction("Move");
             interactionAction = inputActionAsset.FindAction("Interaction");
             dashAction = inputActionAsset.FindAction("Dash");
@@ -36,7 +45,15 @@ public class InputSettings : MonoBehaviour
             bagAction = inputActionAsset.FindAction("Bag");
             recycleAction = inputActionAsset.FindAction("Recycle");
 
+            // 绑定所有输入事件
             interactionAction.performed += OnInteractionActionPerformed;
+            dashAction.performed += OnDashActionPerformed;
+            runAction.performed += OnRunActionPerformed;
+            runAction.canceled += OnRunActionCanceled;
+            useAction.performed += OnUseActionPerformed;
+            throwAction.performed += OnThrowActionPerformed;
+            bagAction.performed += OnBagActionPerformed;
+            recycleAction.performed += OnRecycleActionPerformed;
         }
         catch (Exception e)
         {
@@ -47,73 +64,76 @@ public class InputSettings : MonoBehaviour
 
     private void OnDestroy()
     {
+        // 解绑所有输入事件
         interactionAction.performed -= OnInteractionActionPerformed;
+        dashAction.performed -= OnDashActionPerformed;
+        runAction.performed -= OnRunActionPerformed;
+        runAction.canceled -= OnRunActionCanceled;
+        useAction.performed -= OnUseActionPerformed;
+        throwAction.performed -= OnThrowActionPerformed;
+        bagAction.performed -= OnBagActionPerformed;
+        recycleAction.performed -= OnRecycleActionPerformed;
     }
 
     /// <summary>
     /// 获取移动输入指向
     /// </summary>
-    /// <returns></returns>
     public Vector2 MoveDir()
     {
         Vector2 inputDir = moveAction.ReadValue<Vector2>();
         return inputDir.normalized;
     }
-
-    /// <summary>
-    /// 是否按下冲刺键
-    /// </summary>
-    /// <returns></returns>
+    
     public virtual bool GetDashDown() => dashAction.WasPressedThisFrame();
-
-    /// <summary>
-    /// 获取是否按住奔跑输入
-    /// </summary>
-    /// <returns></returns>
     public virtual bool GetIfRun() => runAction.IsPressed();
-
     public virtual bool GetRunUp() => runAction.WasReleasedThisFrame();
-
-    /// <summary>
-    /// 是否按下使用键
-    /// </summary>
-    /// <returns></returns>
     public virtual bool GetUseDonw() => useAction.WasPerformedThisFrame();
-
-    /// <summary>
-    /// 是否按下投掷键
-    /// </summary>
-    /// <returns></returns>
     public virtual bool GetThrowDown() => throwAction.WasPerformedThisFrame();
-
-    /// <summary>
-    /// 是否按下打开背包键
-    /// </summary>
-    /// <returns></returns>
     public virtual bool GetBagDown() => bagAction.WasPerformedThisFrame();
-
-    /// <summary>
-    /// 是否按下交互键
-    /// </summary>
-    /// <returns></returns>
     public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
-
-    /// <summary>
-    /// 是否按下回收键
-    /// </summary>
-    /// <returns></returns>
     public virtual bool GetRecycleDown() => recycleAction.WasPerformedThisFrame();
 
-    /// <summary>
-    /// 交互键被按下时触发
-    /// </summary>
-    /// <param name="context"></param>
+    #region 输入事件处理
+
     private void OnInteractionActionPerformed(InputAction.CallbackContext context)
     {
-        // 当事件被触发时，通知所有订阅者
-        if (OnInteractionPress != null)
-        {
-            OnInteractionPress.Invoke();
-        }
+        OnInteractionPress?.Invoke();
     }
+
+    private void OnDashActionPerformed(InputAction.CallbackContext context)
+    {
+        OnDashPress?.Invoke();
+    }
+
+    private void OnRunActionPerformed(InputAction.CallbackContext context)
+    {
+        OnRunPress?.Invoke();
+    }
+
+    private void OnRunActionCanceled(InputAction.CallbackContext context)
+    {
+        OnRunRelease?.Invoke();
+    }
+
+    private void OnUseActionPerformed(InputAction.CallbackContext context)
+    {
+        OnUsePress?.Invoke();
+    }
+
+    private void OnThrowActionPerformed(InputAction.CallbackContext context)
+    {
+        OnThrowPress?.Invoke();
+    }
+
+    private void OnBagActionPerformed(InputAction.CallbackContext context)
+    {
+        OnBagPress?.Invoke();
+    }
+
+    private void OnRecycleActionPerformed(InputAction.CallbackContext context)
+    {
+        OnRecyclePress?.Invoke();
+    }
+
+    #endregion
 }

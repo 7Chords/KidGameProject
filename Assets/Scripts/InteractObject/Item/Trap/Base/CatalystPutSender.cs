@@ -14,12 +14,16 @@ namespace KidGame.Core
         {
             _trap = GetComponentInParent<TrapBase>();
         }
+
         private void OnTriggerEnter(Collider other)
         {
             if (_trap == null) return;
+            
             if (other.gameObject.tag != "Catalyst") return;
+            
             CatalystBase catalyst = other.GetComponent<CatalystBase>();
             if (catalyst == null) return;
+            
             catalyst.SetTrap(_trap);
             _trap.SetCatalyst(catalyst);
         }
@@ -27,7 +31,9 @@ namespace KidGame.Core
         private void OnTriggerExit(Collider other)
         {
             if (_trap == null) return;
+            
             if (other.gameObject.tag != "Catalyst") return;
+            
             CatalystBase catalyst = other.GetComponent<CatalystBase>();
             catalyst.SetTrap(null);
             _trap.SetCatalyst(null);

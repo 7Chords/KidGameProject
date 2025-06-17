@@ -13,6 +13,7 @@ namespace KidGame.Core
         {
             _trap = GetComponentInParent<TrapBase>();
         }
+
         private void OnTriggerEnter(Collider other)
         {
             if (_trap == null) return;

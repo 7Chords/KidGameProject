@@ -8,12 +8,12 @@ namespace KidGame.Core
     /// </summary>
     public class CatalystBase : MapItem
     {
-        [SerializeField]
-        protected TrapBase _trap;
+        [SerializeField] protected TrapBase _trap;
+
         public void Init()
         {
-
         }
+
         public override void InteractNegative()
         {
             if (_trap == null) return;
@@ -26,7 +26,6 @@ namespace KidGame.Core
 
         public override void Pick()
         {
-        
         }
 
         public virtual void SetTrap(TrapBase trap)
