@@ -7,7 +7,7 @@ namespace KidGame.Core
     /// <summary>
     /// 玩家控制器
     /// </summary>
-    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner
+    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner,IDamageable
     {
         private InputSettings inputSettings;
         public InputSettings InputSettings => inputSettings;
@@ -17,12 +17,14 @@ namespace KidGame.Core
 
         private Animator animator;
 
-        private StateMachine stateMachine;
-        private PlayerState playerState; // 玩家的当前状态
-
         public PlayerBaseData PlayerBaseData;
 
         public Transform ModelTransform;
+
+        private StateMachine stateMachine;
+        private PlayerState playerState; // 玩家的当前状态
+
+        private BuffHandler playerBuffHandler;
 
         //key:可交互 value:和玩家距离
         private Dictionary<IInteractive,float> interactiveDict;
@@ -42,15 +44,20 @@ namespace KidGame.Core
             stateMachine.Init(this);
             //初始化为Idle状态
             ChangeState(PlayerState.Idle);
+            //初始化buff处理器
+            playerBuffHandler = new BuffHandler();
+            playerBuffHandler.Init();
+
             //注册一些事件
             RegActions();
-
+            //初始化交互字典
             interactiveDict = new Dictionary<IInteractive, float>();
         }
 
         public void Discard()
         {
             stateMachine.ObjectPushPool();
+            playerBuffHandler.Discard();
             UnregActions();
         }
 
@@ -134,6 +141,10 @@ namespace KidGame.Core
             inputSettings.OnUsePress -= TryPlaceTrap;
         }
 
+        #endregion
+
+
+        #region 功能
         /// <summary>
         /// 玩家交互
         /// </summary>
@@ -190,6 +201,15 @@ namespace KidGame.Core
                 }
             }
             return closestInteractive;
+        }
+
+        /// <summary>
+        /// 受伤
+        /// </summary>
+        /// <param name="damageInfo"></param>
+        public void TakeDamage(DamageInfo damageInfo)
+        {
+            
         }
 
         #endregion

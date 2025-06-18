@@ -10,14 +10,7 @@ namespace KidGame.Core
         {
             //player.PlayerAnimation("Dash");
             player.Rb.AddForce(player.transform.forward * 5f, ForceMode.Impulse);
-            //TODO:¡Ÿ ±≤‚ ‘
-            MonoManager.Instance.Invoke("ChangeToIdle", 1);
-        }
 
-        private void ChangeToIdle()
-        {
-            Debug.Log("ChangeToIdleChangeToIdle");
-            player.ChangeState(PlayerState.Idle);
         }
 
 

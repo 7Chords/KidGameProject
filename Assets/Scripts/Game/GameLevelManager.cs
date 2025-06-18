@@ -30,6 +30,11 @@ namespace KidGame.Core
             EnemyManager.Instance.InitEnemy(_levelDataList[levelIndex].enemyDataList);
         }
 
+        public void DiscardLevel()
+        {
+            EnemyManager.Instance.DiscardEnemy();
+        }
+
         public void StartLevel()
         {
             _levelStarted = true;

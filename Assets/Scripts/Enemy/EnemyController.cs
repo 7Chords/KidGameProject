@@ -1,5 +1,6 @@
 using KidGame.Core;
 using UnityEngine;
+using KidGame.Interface;
 
 namespace KidGame.Core
 {
@@ -7,7 +8,7 @@ namespace KidGame.Core
     /// 管理敌人逻辑、状态机以及感知判断
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-    public class EnemyController : MonoBehaviour, IStateMachineOwner
+    public class EnemyController : MonoBehaviour, IStateMachineOwner,IDamageable
     {
         [SerializeField] private EnemyBaseData enemyBaseData;
         [Tooltip("巡逻点列表（可选）为空时将在原地 Idle → Patrol 循环")]
@@ -25,6 +26,8 @@ namespace KidGame.Core
         [HideInInspector] public int CurrentPatrolIndex;
         [HideInInspector] public float PatrolTimer;
 
+        private BuffHandler enemyBuffHandler;
+
         #region 生命周期
         private void Awake()
         {
@@ -39,6 +42,9 @@ namespace KidGame.Core
             stateMachine.Init(this);
             player = FindObjectOfType<PlayerController>().gameObject.transform;
             ChangeState(EnemyState.Idle); // 初始状态
+
+            enemyBuffHandler = new BuffHandler();
+            enemyBuffHandler.Init();
         }
     
         #endregion
@@ -60,10 +66,12 @@ namespace KidGame.Core
             }
         }
 
-        private void OnDestroy()
+        public void Discard()
         {
             //回收状态机
             stateMachine.ObjectPushPool();
+
+            enemyBuffHandler.Discard();
         }
         #endregion
 
@@ -84,9 +92,15 @@ namespace KidGame.Core
             return (player.position - transform.position).magnitude <= enemyBaseData.HearingRange;
         }
 
+
         public Transform Player => player;
         public Transform[] PatrolPoints => patrolPoints;
         public float PatrolWaitTime => patrolWaitTime;
         #endregion
+
+        public void TakeDamage(DamageInfo damageInfo)
+        {
+
+        }
     }
 }

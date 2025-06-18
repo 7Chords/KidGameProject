@@ -25,5 +25,13 @@ namespace KidGame.Core
                 enemyList.Add(enemyCtl);
             }
         }
+
+        public void DiscardEnemy()
+        {
+            foreach(var enemy in enemyList)
+            {
+                enemy.Discard();
+            }
+        }
     }
 }
