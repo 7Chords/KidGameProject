@@ -1,6 +1,7 @@
 ﻿using KidGame.Interface;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace KidGame.Core
 {
@@ -15,7 +16,7 @@ namespace KidGame.Core
         private Rigidbody rb;
         public Rigidbody Rb => rb;
 
-        private Animator animator;
+        public PlayerAnimator PlayerAnimator;
 
         public PlayerBaseData PlayerBaseData;
 
@@ -29,12 +30,13 @@ namespace KidGame.Core
         //key:可交互 value:和玩家距离
         private Dictionary<IInteractive,float> interactiveDict;
 
+        private Vector3 playerScreenPos;
+
         protected override void Awake()
         {
             base.Awake();
             inputSettings = GetComponent<InputSettings>();
 
-            animator = transform.GetChild(0).GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
         }
 
@@ -52,6 +54,8 @@ namespace KidGame.Core
             RegActions();
             //初始化交互字典
             interactiveDict = new Dictionary<IInteractive, float>();
+
+            playerScreenPos = Camera.main.WorldToScreenPoint(transform.position);
         }
 
         public void Discard()
@@ -66,21 +70,11 @@ namespace KidGame.Core
         /// </summary>
         public void Rotate()
         {
-            // 将鼠标屏幕坐标转换为世界坐标
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition.z = Camera.main.transform.position.y - transform.position.y; // 设置Z轴为相机与玩家的高度差
-            Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            //Vector3 dir = Input.mousePosition - new Vector3(Screen.currentResolution.width,
+            //    Screen.currentResolution.height, 0).normalized;
+            //dir.z = 0;
+            //transform.
 
-            // 计算从玩家位置指向鼠标位置的方向向量
-            Vector3 direction = worldMousePosition - transform.position;
-            direction.y = 0; // 确保只在水平面上旋转
-
-            // 如果方向向量有效，则旋转玩家
-            if (direction != Vector3.zero)
-            {
-                Quaternion lookRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Euler(0, lookRotation.eulerAngles.y, 0);
-            }
         }
 
 
@@ -113,12 +107,12 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// 播放动画 TODO:后续封装一个玩家动画控制器？
+        /// 播放动画
         /// </summary>
         /// <param name="animationName"></param>
-        public void PlayerAnimation(string animationName)
+        public void PlayAnimation(string animationName)
         {
-            animator.Play(animationName);
+            PlayerAnimator.PlayAnimation(animationName);
         }
 
         #region 事件相关
@@ -213,6 +207,7 @@ namespace KidGame.Core
         }
 
         #endregion
+
 
         #region Gizoms
 

@@ -90,7 +90,7 @@ namespace KidGame.Core
         {
             if (!_isTimeValid) return;
             if (GetValidState()) return;
-            _validTimer += GlobalValue.GameDeltaTime;
+            _validTimer += Time.deltaTime;
         }
 
         /// <summary>

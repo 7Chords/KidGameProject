@@ -9,7 +9,7 @@ namespace KidGame.Core
     {
         public override void Enter()
         {
-            //player.PlayAnimation("Idle");
+            player.PlayAnimation("Idle");
         }
 
         public override void Update()

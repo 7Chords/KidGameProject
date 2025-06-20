@@ -15,7 +15,7 @@ namespace KidGame.Core
             enemyList = new List<EnemyController>();
         }
 
-        public void InitEnemy(List<EnemyBaseData> enemyDataList)
+        public void InitEnemy(List<EnemyBaseData> enemyDataList,List<Transform> bornPoints)
         {
             foreach (var data in enemyDataList)
             {
