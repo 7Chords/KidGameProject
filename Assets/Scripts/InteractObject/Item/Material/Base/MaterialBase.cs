@@ -11,17 +11,21 @@ namespace KidGame.Core
         public MaterialData _materialData;
 
         public MaterialData materialData => _materialData;
-        public override void InteractNegative()
-        {
-        }
-
         public override void InteractPositive()
+        {
+            if (_materialData == null) return;
+            Pick();
+        }
+        public override void InteractNegative()
         {
         }
 
         public override void Pick()
         {
+            PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerUtil.Instance.CallPlayerPickItem(this);
+            //TODO:工厂回收？
+            Destroy(gameObject);
         }
     }
 }

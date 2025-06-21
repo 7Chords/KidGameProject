@@ -9,15 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ba7bfda5ce735c439e3d7717b4f370a, type: 3}
-  m_Name: TrapData
+  m_Script: {fileID: 11500000, guid: 497a4032cd1e58044bd291c728b6ee10, type: 3}
+  m_Name: TestMaterialData
   m_EditorClassIdentifier: 
-  trapID: T_001
-  trapName: "\u6D4B\u8BD5\u9677\u96311"
-  trapDesc: 
-  trapIcon: {fileID: 0}
-  trapLevel: 0.5
-  trapDamage: 1
-  validTime: 10
-  trapTypeList: 00000000
-  triggerType: 0
+  materialID: M_001
+  materialName: "\u54C8\u54C8"
+  materialDesc: "\u54C8\u54C8\u54C8"
+  materialIcon: {fileID: 0}

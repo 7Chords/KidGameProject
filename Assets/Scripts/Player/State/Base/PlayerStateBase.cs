@@ -15,12 +15,5 @@ namespace KidGame.Core
             player = (PlayerController)owner;
         }
 
-        public override void Update()
-        {
-            if (player.InputSettings.GetInteractDown())
-            {
-                player.PlayerInteraction();
-            }
-        }
     }
 }

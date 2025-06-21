@@ -1,12 +1,14 @@
 using KidGame.Core;
+using KidGame.Interface;
 using UnityEngine;
+
 
 namespace KidGame.Core
 {
     /// <summary>
     /// 陷阱基类
     /// </summary>
-    public class TrapBase : MapItem
+    public class TrapBase : MapItem,IRecyclable
     {
         //测试public
         public TrapData _trapData;
@@ -58,6 +60,7 @@ namespace KidGame.Core
                 return;
             //判断陷阱是否有效
             if (!GetValidState()) return;
+            PlayerController.Instance.RemoveInteractiveFromList(this);
             Trigger();
         }
 
@@ -71,12 +74,20 @@ namespace KidGame.Core
                 return;
             //判断陷阱是否有效
             if (!GetValidState()) return;
+            PlayerController.Instance.RemoveInteractiveFromList(this);
             Trigger();
         }
 
         public override void Pick()
         {
             PlayerUtil.Instance.CallPlayerPickItem(this);
+        }
+
+        public virtual void Recycle()
+        {
+            PlayerController.Instance.RemoveInteractiveFromList(this);
+            PlayerController.Instance.RemoveRecyclableFromList(this);
+            Pick();
         }
 
         #endregion

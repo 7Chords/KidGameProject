@@ -49,13 +49,14 @@ namespace KidGame.Core
 
             // 计算放置位置
             // 需要根据网格系统调整
-            Vector3 placePosition = player.transform.position + player.transform.forward * 2f;
+            Vector3 placePosition = player.transform.position + player.transform.forward + Vector3.up;
 
             // 实例化陷阱预制体
-            TrapBase newTrap = TrapFactory.Create(trapToPlace.trapID, placePosition);
+            GameObject newTrap = TrapFactory.Create(trapToPlace.trapID, placePosition);
             if (newTrap != null)
             {
                 newTrap.transform.rotation = player.transform.rotation;
+                Debug.Log(newTrap);
                 hasPlaced = true;
             }
         }

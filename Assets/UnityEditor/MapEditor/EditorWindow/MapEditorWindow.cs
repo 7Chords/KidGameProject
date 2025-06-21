@@ -19,6 +19,18 @@ public class MapEditorWindow : EditorWindow
     public Color unSelectColor = new Color(0.7372549f, 0.7372549f, 0.7372549f, 1);
     public Color selectColor = Color.yellow;
 
+    public static List<Color> colorList = new List<Color>()
+    {
+        MapEditorColorCfg.color_light_green,
+        MapEditorColorCfg.color_light_blue,
+        MapEditorColorCfg.color_red,
+        MapEditorColorCfg.color_purple,
+        MapEditorColorCfg.color_yellow,
+        MapEditorColorCfg.color_brown,
+        MapEditorColorCfg.color_dark_blue,
+        //etc
+    };
+
     [MenuItem("自定义编辑器/地图编辑器")]
     public static void ShowExample()
     {
@@ -118,8 +130,16 @@ public class MapEditorWindow : EditorWindow
 
     private void OnInfoButtonClicked()
     {
-        Debug.Log("配置好菜单和地图数据后，可以选择左侧的按钮放置,家具必须放在地砖上\n"+
-            "鼠标左键放置，中键拖拽工作区，滚轮放大缩小，右键删除");
+        Debug.Log("配置好菜单和地图数据后，可以选择左侧的按钮放置\n"+
+            "鼠标左键放置，中键拖拽工作区，滚轮放大缩小，右键删除\n"+
+            "地块所属房间对应颜色表：\n" +
+            "Corridor（走廊）:浅绿\n" +
+            "BedRoom（卧室）:浅蓝\n"+
+            "LivingRoom（客厅）:红色\n" +
+            "DinningRoom（餐厅）:紫色\n" +
+            "Study（书房）:黄色\n" +
+            "Nursery（育婴室）:棕色\n" +
+            "Bathroom（浴室）:深蓝\n");
     }
     private void OnGenerateMapButtonClicked()
     {
@@ -421,14 +441,15 @@ public class MapEditorWindow : EditorWindow
                 float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
                 float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
                 if ((tile.mapPos.x - offsetGridX) < 0 || (tile.mapPos.y - offsetGridY) < 0) continue;
+                GUI.color = colorList[(int)tile.roomType];
                 GUI.DrawTexture(new Rect((tile.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
                     (tile.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
                     mapEditorConfig.curGridUnitLength,
                     mapEditorConfig.curGridUnitLength), tile.tileData.texture);
 
             }
-
-            foreach(var furniture in mapData.furnitureList)
+            GUI.color = Color.white;
+            foreach (var furniture in mapData.furnitureList)
             {
                 int mapXMin = 999, mapXMax = -1, mapYMin = 999, mapYMax = -1;
                 foreach(var pos in furniture.mapPosList)
@@ -698,4 +719,18 @@ public class MapEditorConfig
     public const int maxMapSizeX = 900;
     public const int maxMapSizeY = 600;
     public int curGridUnitLength = 40;             //  当前网格单位边长
+}
+
+
+
+public class MapEditorColorCfg
+{
+    public static Color color_light_green = new Color(128f / 255, 1, 0 , 1 );
+    public static Color color_light_blue = new Color(51f / 255, 1, 1, 1);
+    public static Color color_red = new Color(1, 0, 0, 1);
+    public static Color color_purple = new Color(204f/255, 0, 204f/255, 1);
+    public static Color color_yellow = new Color(1, 1, 0, 1);
+    public static Color color_brown = new Color(102f/255, 51f/255, 0, 1);
+    public static Color color_dark_blue = new Color(0, 0, 204f/255, 1);
+    //etc
 }

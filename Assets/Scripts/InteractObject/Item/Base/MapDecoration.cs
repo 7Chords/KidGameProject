@@ -8,7 +8,11 @@ namespace KidGame.Core
     /// </summary>
     public class MapDecoration : MonoBehaviour, IInteractive
     {
-        public virtual void InteractNegative() { }
+
+        public virtual void InteractNegative() 
+        {
+
+        }
 
         public virtual void InteractPositive() { }
     }
