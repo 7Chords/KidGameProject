@@ -9,15 +9,15 @@ namespace KidGame.Core
     /// </summary>
     public static class MaterialFactory
     {
-        public static GameObject Create(string materialID, Vector3 position)
+        public static GameObject Create(MaterialData materialData, Vector3 position)
         {
             //这里应该根据trapID加载对应的预制体
             //实际项目中应该使用资源管理系统
 
-            GameObject materialPrefab = Resources.Load<GameObject>("Materials/" + materialID);
+            GameObject materialPrefab = Resources.Load<GameObject>("Materials/" + materialData.materialID);
             if (materialPrefab == null)
             {
-                Debug.LogWarning($"找不到陷阱预制体: {materialID}");
+                Debug.LogWarning($"找不到陷阱预制体: {materialData.materialID}");
                 return null;
             }
 
@@ -26,7 +26,7 @@ namespace KidGame.Core
 
             if (material == null)
             {
-                Debug.LogWarning($"预制体 {materialID} 没有TrapBase组件");
+                Debug.LogWarning($"预制体 {materialData.materialID} 没有MaterialBase组件");
                 Object.Destroy(materialObj);
                 return null;
             }

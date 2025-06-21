@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using KidGame.Core;
 using UnityEngine;
+using KidGame.Core.Data;
 
 namespace KidGame.Core
 {
@@ -17,6 +18,8 @@ namespace KidGame.Core
 
         private int _levelIndex;
 
+        //test public
+        public MapData mapData;
 
         //Start调用保证各个单例完成初始化
         private void Start()
@@ -32,7 +35,7 @@ namespace KidGame.Core
             //游戏各个模块的初始化
             //如果点击继续游戏，需要读取存档数据
             PlayerManager.Instance.Init();
-            MapManager.Instance.Init();
+            MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(gameData.levelDataList);
         }
 
@@ -46,7 +49,7 @@ namespace KidGame.Core
         public void StartGame()
         {
             _gameStarted = true;
-            GameLevelManager.Instance.InitLevel(0);
+            GameLevelManager.Instance.InitFirstLevel();
         }
 
         public void FinishGame()

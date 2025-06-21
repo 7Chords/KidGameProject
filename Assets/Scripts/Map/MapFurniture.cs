@@ -19,6 +19,7 @@ namespace KidGame.Core
 
         public List<MaterialItem> materialHoldList;
 
+        private bool canInteract;
         public MapFurniture(MapFurnitureData data)
         {
             mapFurnitureData = data;
@@ -28,9 +29,10 @@ namespace KidGame.Core
             mapFurnitureData = data;
         }
 
-        public void Init()
+        public void Init(bool canInteract, List<MaterialItem> materialList = null)
         {
-
+            this.canInteract = canInteract;
+            materialHoldList = materialList;
         }
 
         public void Discard()
@@ -40,12 +42,12 @@ namespace KidGame.Core
 
         public void InteractNegative()
         {
-            
+            if (!canInteract) return;
         }
 
         public void InteractPositive()
         {
-            
+            if (!canInteract) return;
         }
 
 

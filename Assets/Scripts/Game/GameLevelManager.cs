@@ -20,6 +20,8 @@ namespace KidGame.Core
 
         public List<Transform> bornPointList;
 
+        private int levelIndex;
+
         public void Init(List<GameLevelData> levelDataList)
         {
             _levelDataList = levelDataList;
@@ -27,8 +29,14 @@ namespace KidGame.Core
             EnemyManager.Instance.Init();
         }
 
-        public void InitLevel(int levelIndex)
+        public void InitFirstLevel()
         {
+            EnemyManager.Instance.InitEnemy(_levelDataList[0].enemyDataList, bornPointList);
+        }
+
+        public void InitNextLevel()
+        {
+            levelIndex++;
             EnemyManager.Instance.InitEnemy(_levelDataList[levelIndex].enemyDataList, bornPointList);
         }
 

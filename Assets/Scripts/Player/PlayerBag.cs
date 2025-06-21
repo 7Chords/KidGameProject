@@ -11,18 +11,12 @@ namespace KidGame.Core
     [Serializable]
     public class TrapSlotInfo
     {
-        public string trapID;
-        public string trapName;
-        public string trapDesc;
-        public Sprite trapIcon;
+        public TrapData trapData;
         public int amount;
 
-        public TrapSlotInfo(string trapID, string trapName, string trapDesc, Sprite trapIcon, int amount)
+        public TrapSlotInfo(TrapData trapData, int amount)
         {
-            this.trapID = trapID;
-            this.trapName = trapName;
-            this.trapDesc = trapDesc;
-            this.trapIcon = trapIcon;
+            this.trapData = trapData;
             this.amount = amount;
         }
     }
@@ -30,19 +24,12 @@ namespace KidGame.Core
     [Serializable]
     public class MaterialSlotInfo
     {
-        public string materialID;
-        public string materialName;
-        public string materialDesc;
-        public Sprite materialIcon;
+        public MaterialData materialData;
         public int amount;
 
-        public MaterialSlotInfo(string materialID, string materialName, string materialDesc, Sprite materialIcon,
-            int amount)
+        public MaterialSlotInfo(MaterialData materialData, int amount)
         {
-            this.materialID = materialID;
-            this.materialName = materialName;
-            this.materialDesc = materialDesc;
-            this.materialIcon = materialIcon;
+            this.materialData = materialData;
             this.amount = amount;
         }
     }
@@ -84,11 +71,10 @@ namespace KidGame.Core
             {
                 TrapData trapData = (iPickable as TrapBase).trapData;
                 if (trapData == null) return;
-                TrapSlotInfo trapSlotInfo = _trapBag.Find(x => x.trapID == trapData.trapID);
+                TrapSlotInfo trapSlotInfo = _trapBag.Find(x => x.trapData.trapID == trapData.trapID);
                 if (trapSlotInfo == null)
                 {
-                    _trapBag.Add(new TrapSlotInfo(trapData.trapID, trapData.trapName, trapData.trapDesc,
-                        trapData.trapIcon, 1));
+                    _trapBag.Add(new TrapSlotInfo(trapData, 1));
                 }
                 else
                 {
@@ -99,11 +85,10 @@ namespace KidGame.Core
             {
                 MaterialData materialData = (iPickable as MaterialBase).materialData;
                 if (materialData == null) return;
-                MaterialSlotInfo materialSlotInfo = _materialBag.Find(x => x.materialID == materialData.materialID);
+                MaterialSlotInfo materialSlotInfo = _materialBag.Find(x => x.materialData.materialID == materialData.materialID);
                 if (materialSlotInfo == null)
                 {
-                    _materialBag.Add(new MaterialSlotInfo(materialData.materialID, materialData.materialName,
-                        materialData.materialDesc, materialData.materialIcon, 1));
+                    _materialBag.Add(new MaterialSlotInfo(materialData,1));
                 }
                 else
                 {

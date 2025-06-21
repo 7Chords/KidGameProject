@@ -52,11 +52,10 @@ namespace KidGame.Core
             Vector3 placePosition = player.transform.position + player.transform.forward + Vector3.up;
 
             // 实例化陷阱预制体
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapID, placePosition);
+            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, placePosition);
             if (newTrap != null)
             {
                 newTrap.transform.rotation = player.transform.rotation;
-                Debug.Log(newTrap);
                 hasPlaced = true;
             }
         }

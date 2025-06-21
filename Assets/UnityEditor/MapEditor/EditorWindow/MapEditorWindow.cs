@@ -69,7 +69,7 @@ public class MapEditorWindow : EditorWindow
     private Button InfoButton;
     private Button GenerateMapButton;
 
-
+    private ObjectField GeneratePointField;//地图生成位置
     private ObjectField MapDataField;
     private ObjectField ItemConfigField;//菜单栏配置数据
     private FloatField ScaleField;//生成地图缩放系数
@@ -78,8 +78,8 @@ public class MapEditorWindow : EditorWindow
     private MapData mapData;
     private MapEditorItemGroupConfig  mapEditorItemGroupConfig;
     private RoomType roomType;
-
     private float spawnMapScale = 1;
+    private Transform generatePoint;
     private void InitTopMenu()
     {
 
@@ -91,6 +91,12 @@ public class MapEditorWindow : EditorWindow
 
         GenerateMapButton = root.Q<Button>(nameof(GenerateMapButton));
         GenerateMapButton.clicked += OnGenerateMapButtonClicked;
+
+        GeneratePointField = root.Q<ObjectField>(nameof(GeneratePointField));
+        GeneratePointField.objectType = typeof(Transform);
+        GeneratePointField.allowSceneObjects = true;
+        GeneratePointField.RegisterValueChangedCallback(GeneratePointFieldValueChanged);
+
 
         MapDataField = root.Q<ObjectField>(nameof(MapDataField));
         MapDataField.objectType = typeof(MapData);
@@ -113,7 +119,6 @@ public class MapEditorWindow : EditorWindow
         //默认是房间编辑模式
         OnEditMapButtonClicked();
     }
-
 
     private void OnEditMapButtonClicked()
     {
@@ -144,9 +149,17 @@ public class MapEditorWindow : EditorWindow
     private void OnGenerateMapButtonClicked()
     {
         if (mapData == null) return;
+        if(generatePoint == null)
+        {
+            Debug.LogError("请先配置生成位置！\n" +
+                "可以用###MANAGERS###/GameLogic的MapGeneratePoint\n" +
+                "保证游戏启动时地图生成位置和编辑器预览一致！");
+            return;
+        }
         GameObject tmpRoot = GameObject.Find("Map");
         if (tmpRoot != null) DestroyImmediate(tmpRoot); 
         GameObject root = new GameObject("Map");
+        root.transform.position = generatePoint.position;
         GameObject tileRoot = new GameObject("Tile");
         GameObject furnitureRoot = new GameObject("Furniture");
         GameObject wallRoot = new GameObject("Wall");
@@ -162,6 +175,8 @@ public class MapEditorWindow : EditorWindow
             MapTile mapTile = tileGO.AddComponent<MapTile>();
             mapTile.SetData(tile);
             tileGO.transform.SetParent(tileRoot.transform);
+            tileGO.transform.position += generatePoint.position;
+
         }
         foreach (var furniture in mapData.furnitureList)
         {
@@ -178,6 +193,8 @@ public class MapEditorWindow : EditorWindow
             MapFurniture mapFurniture = furnitureGO.AddComponent<MapFurniture>();
             mapFurniture.SetData(furniture);
             furnitureGO.transform.SetParent(furnitureRoot.transform);
+            furnitureGO.transform.position += generatePoint.position;
+
         }
         foreach (var wall in mapData.wallList)
         {
@@ -199,11 +216,16 @@ public class MapEditorWindow : EditorWindow
                 MapWall mapWall = wallGO.AddComponent<MapWall>();
                 mapWall.SetData(wall);
                 wallGO.transform.SetParent(wallRoot.transform);
+                wallGO.transform.position += generatePoint.position;
             }
         }
         root.transform.localScale = spawnMapScale * Vector3.one;
     }
 
+    private void GeneratePointFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
+    {
+        generatePoint = evt.newValue as Transform;
+    }
     private void MapDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
     {
         mapData = evt.newValue as MapData;

@@ -164,6 +164,14 @@ namespace KidGame.Core
             }
         }
 
+        public void TryThrowTrap()
+        {
+            if (PlayerBag.Instance._trapBag.Count > 0)
+            {
+                ChangeState(PlayerState.Throw);
+            }
+        }
+
         /// <summary>
         /// 添加到可交互列表
         /// </summary>

@@ -17,12 +17,20 @@ namespace KidGame.Core
 
         public void InitEnemy(List<EnemyBaseData> enemyDataList,List<Transform> bornPoints)
         {
-            foreach (var data in enemyDataList)
+            for(int i=0;i< enemyDataList.Count;i++)
             {
                 GameObject enemy = Instantiate(enemyPrefab);
                 EnemyController enemyCtl = enemy.GetComponent<EnemyController>();
-                enemyCtl.Init(data);
+                enemyCtl.Init(enemyDataList[i]);
                 enemyList.Add(enemyCtl);
+                if(i <= bornPoints.Count-1)
+                {
+                    enemy.transform.position = bornPoints[i].position;
+                }
+                else
+                {
+                    enemy.transform.position = bornPoints[i% bornPoints.Count].position;
+                }
             }
         }
 
