@@ -1293,4 +1293,11 @@ MonoBehaviour:
     - x: 16
       y: 12
     stackLayer: 1
-  furnitureList: []
+  furnitureList:
+  - furnitureData: {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
+    mapPosList:
+    - x: 1
+      y: 1
+    - x: 1
+      y: 2
+    roomType: 1

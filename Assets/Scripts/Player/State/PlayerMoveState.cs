@@ -21,7 +21,6 @@ namespace KidGame.Core
         public override void Update()
         {
             base.Update();
-            player.Rotate();
 
             // ³å´Ì
             if (player.InputSettings.GetDashDown())
@@ -47,6 +46,7 @@ namespace KidGame.Core
             {
                 dir = new Vector3(inputVal.x, 0, inputVal.y);
             }
+            player.Rotate(dir);
         }
 
         private void UpdateSpeed()

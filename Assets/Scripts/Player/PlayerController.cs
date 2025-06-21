@@ -30,7 +30,8 @@ namespace KidGame.Core
         //key:可交互 value:和玩家距离
         private Dictionary<IInteractive,float> interactiveDict;
 
-        private Vector3 playerScreenPos;
+        //key:可回收 value:和玩家距离
+        private Dictionary<IRecyclable, float> recyclableDict;
 
         protected override void Awake()
         {
@@ -52,10 +53,10 @@ namespace KidGame.Core
 
             //注册一些事件
             RegActions();
-            //初始化交互字典
-            interactiveDict = new Dictionary<IInteractive, float>();
 
-            playerScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+            //初始化字典
+            interactiveDict = new Dictionary<IInteractive, float>();
+            recyclableDict = new Dictionary<IRecyclable, float>();
         }
 
         public void Discard()
@@ -68,13 +69,9 @@ namespace KidGame.Core
         /// <summary>
         /// 玩家旋转 TODO:优化？
         /// </summary>
-        public void Rotate()
+        public void Rotate(Vector3 dir)
         {
-            //Vector3 dir = Input.mousePosition - new Vector3(Screen.currentResolution.width,
-            //    Screen.currentResolution.height, 0).normalized;
-            //dir.z = 0;
-            //transform.
-
+            transform.rotation = Quaternion.LookRotation(dir);
         }
 
 
@@ -123,6 +120,7 @@ namespace KidGame.Core
         private void RegActions()
         {
             inputSettings.OnInteractionPress += PlayerInteraction;
+            inputSettings.OnRecyclePress += PlayerRecycle;
             inputSettings.OnUsePress += TryPlaceTrap;
         }
 
@@ -132,6 +130,7 @@ namespace KidGame.Core
         private void UnregActions()
         {
             inputSettings.OnInteractionPress -= PlayerInteraction;
+            inputSettings.OnRecyclePress -= PlayerRecycle;
             inputSettings.OnUsePress -= TryPlaceTrap;
         }
 
@@ -146,6 +145,12 @@ namespace KidGame.Core
         {
             if (interactiveDict == null || interactiveDict.Count == 0) return;
             GetClosestInteractive()?.InteractPositive();
+        }
+
+        public void PlayerRecycle()
+        {
+            if (recyclableDict == null || recyclableDict.Count == 0) return;
+            GetClosestRecyclable()?.Recycle();
         }
 
         /// <summary>
@@ -166,6 +171,7 @@ namespace KidGame.Core
         public void AddInteractiveToList(IInteractive interactive,float distance)
         {
             if (interactiveDict == null) return;
+            if (interactiveDict.ContainsKey(interactive)) return;
             interactiveDict.Add(interactive,distance);
         }
 
@@ -176,6 +182,7 @@ namespace KidGame.Core
         public void RemoveInteractiveFromList(IInteractive interactive)
         {
             if (interactiveDict == null) return;
+            if (!interactiveDict.ContainsKey(interactive)) return;
             interactiveDict.Remove(interactive);
         }
 
@@ -196,6 +203,48 @@ namespace KidGame.Core
             }
             return closestInteractive;
         }
+
+        /// <summary>
+        /// 添加到可回收列表
+        /// </summary>
+        /// <param name="interactive"></param>
+        public void AddIRecyclableToList(IRecyclable recyclable, float distance)
+        {
+            if (recyclableDict == null) return;
+            if (recyclableDict.ContainsKey(recyclable)) return;
+            recyclableDict.Add(recyclable, distance);
+        }
+
+        /// <summary>
+        /// 从可回收列表中移除
+        /// </summary>
+        /// <param name="interactive"></param>
+        public void RemoveRecyclableFromList(IRecyclable recyclable)
+        {
+            if (recyclableDict == null) return;
+            if (!recyclableDict.ContainsKey(recyclable)) return;
+            recyclableDict.Remove(recyclable);
+        }
+
+        /// <summary>
+        /// 获得最近的可回收者
+        /// </summary>
+        private IRecyclable GetClosestRecyclable()
+        {
+            float min = 999;
+            IRecyclable closestIRecyclable = null;
+            foreach (var pair in recyclableDict)
+            {
+                if (pair.Value < min)
+                {
+                    min = pair.Value;
+                    closestIRecyclable = pair.Key;
+                }
+            }
+            return closestIRecyclable;
+        }
+
+
 
         /// <summary>
         /// 受伤
