@@ -51,6 +51,7 @@ namespace KidGame.UI.Game
             if (ButtonClicked != null) {
                 Debug.Log("12121");
                 ButtonClicked(this);
+                UIController.Instance.uiCanvas.GetComponent<GraphicRaycaster>().enabled = true;
             }
         }
     }
