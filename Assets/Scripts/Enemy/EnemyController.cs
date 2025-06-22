@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using KidGame.Core;
 using UnityEngine;
 using KidGame.Interface;
@@ -98,6 +100,22 @@ namespace KidGame.Core
         public float PatrolWaitTime => patrolWaitTime;
         #endregion
 
+        #region Κά»χ
+
+        public void Stun(float duration)
+        {
+            StartCoroutine(StunRoutine(duration));
+        }
+
+        private IEnumerator StunRoutine(float duration)
+        {
+            rb.velocity = Vector3.zero;
+            yield return new WaitForSeconds(duration);
+        }        
+
+        #endregion
+        
+        
         public void TakeDamage(DamageInfo damageInfo)
         {
 

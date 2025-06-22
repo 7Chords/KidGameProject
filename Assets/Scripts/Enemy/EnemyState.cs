@@ -7,6 +7,9 @@ namespace KidGame.Core
     {
         Idle,
         Patrol,
-        Attack,
+        SearchTargetRoom,   // 有目的地搜房间
+        CheckNoiseSource,   // 检查声源（翻床、翻柜）
+        Chase,              // 追击玩家，含冲刺
+        Attack
     }
 }

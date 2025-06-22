@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using KidGame.Core.Data;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,13 +10,16 @@ namespace KidGame.Core
         private MapData _mapData;
 
         public List<MapTile> mapTileList;
-        public Dictionary<RoomType, List<MapTile>> mapTileDic;//¸ã¸ö·¿¼äÀàÐÍ¶ÔÓ¦µÄËùÓÐÍßÆ¬µÄ×Öµä·½±ãÍâÃæÓÃ
+        public Dictionary<RoomType, List<MapTile>> mapTileDic;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½Öµä·½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         public List<MapFurniture> mapFurnitureList;
-        public Dictionary<RoomType, List<MapFurniture>> mapFurnitureDic;//¸ã¸ö·¿¼äÀàÐÍ¶ÔÓ¦µÄËùÓÐ¼Ò¾ßµÄ×Öµä·½±ãÍâÃæÓÃ
+        public Dictionary<RoomType, List<MapFurniture>> mapFurnitureDic;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼Ò¾ßµï¿½ï¿½Öµä·½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         public List<MapWall> mapWallList;
 
 
         public Transform MapGeneratePoint;
+
+        // ï¿½ï¿½ï¿½Ù²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½êµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½
+        private readonly Dictionary<Vector2Int, RoomType> _grid2RoomType = new();
 
         public void Init(MapData mapData)
         {
@@ -27,7 +31,7 @@ namespace KidGame.Core
             mapWallList = new List<MapWall>();
 
             GenerateMap(mapData);
-
+            BuildRoomLookup();// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½
         }
 
         public void GenerateMap(MapData mapData)
@@ -106,7 +110,7 @@ namespace KidGame.Core
 
                 averageX /= wall.mapPosList.Count;
                 averageZ /= wall.mapPosList.Count;
-                //Éú³É¶ÑµþµÄÇ½µ¥Î»
+                //ï¿½ï¿½ï¿½É¶Ñµï¿½ï¿½ï¿½Ç½ï¿½ï¿½Î»
                 for (int i = 0; i < wall.stackLayer; i++)
                 {
                     GameObject wallGO = Instantiate(wall.wallData.wallPrefab,
@@ -120,6 +124,38 @@ namespace KidGame.Core
                     mapWallList.Add(mapWall);
                 }
             }
+        }
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¡ï¿½ï¿½ï¿½ï¿½ï¿½
+        private void BuildRoomLookup()
+        {
+            _grid2RoomType.Clear();
+            if (_mapData == null) return;
+
+            foreach (var tile in _mapData.tileList)
+            {
+                _grid2RoomType[new Vector2Int(tile.mapPos.x, tile.mapPos.y)] = tile.roomType;
+            }
+        }
+
+        /// <summary>
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        /// ï¿½É¹ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ä·µï¿½ï¿½true ï¿½ï¿½ï¿½ï¿½roomTypeï¿½ï¿½ï¿½ï¿½ï¿½
+        /// Ê§ï¿½Ü·ï¿½ï¿½ï¿½false
+        /// </summary>
+        public bool TryGetRoomTypeAtWorldPos(Vector3 worldPos, out RoomType roomType)
+        {
+            roomType = default;
+            if (_grid2RoomType.Count == 0 || MapGeneratePoint == null)
+                return false;
+
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            Vector3 local = worldPos - MapGeneratePoint.position;
+            int gridX = Mathf.RoundToInt(local.x);
+            int gridY = Mathf.RoundToInt(-local.z);
+
+            Debug.Log(_grid2RoomType.TryGetValue(new Vector2Int(gridX, gridY), out roomType));
+            return _grid2RoomType.TryGetValue(new Vector2Int(gridX, gridY), out roomType);
         }
 
         public void Discard()
