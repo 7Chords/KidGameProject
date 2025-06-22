@@ -23,5 +23,11 @@ namespace KidGame.UI.Game
         public const string ToastPanel = "ToastPanel";
         
         public const string TransitionPanel = "TransitionPanel";
+        
+        public const string GamePlayPanel = "GamePlayPanel";
+        
+        public const string PauseSelectPanel = "PauseSelectPanel";
+        
+        public const string BackpackWindow = "BackpackWindow";
     }
 }

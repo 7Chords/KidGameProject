@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KidGame.UI;
 using DG.Tweening;
+using KidGame.Core;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using KidGame.UI.Game;
@@ -12,7 +13,7 @@ public class TransitionPanelController : PanelController
 {
     [SerializeField] private Image overlayImage;
     [SerializeField] private float fadeDuration = 0.5f;
-
+    
     private string sceneToLoad;
 
     public void FadeIn(Action onComplete = null)
@@ -41,7 +42,7 @@ public class TransitionPanelController : PanelController
 
         yield return new WaitUntil(() => isInDone);
 
-        SceneManager.LoadScene(sceneToLoad);
+        SceneLoader.Instance.LoadScene(sceneToLoad);
 
         yield return null;
 
@@ -59,4 +60,6 @@ public class TransitionPanelController : PanelController
     {
         overlayImage.color = new Color(overlayImage.color.r, overlayImage.color.g, overlayImage.color.b, 0);
     }
+
+    
 }

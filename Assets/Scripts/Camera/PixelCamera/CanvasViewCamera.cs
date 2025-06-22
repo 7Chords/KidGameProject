@@ -8,7 +8,7 @@ namespace KidGame.Core
     [ExecuteInEditMode]
 	public class CanvasViewCamera : MonoBehaviour
     {
-        UnityEngine.Camera canvasCamera;
+        public UnityEngine.Camera canvasCamera;
         public float Aspect => this.canvasCamera.aspect;
         public float Zoom { get ; private set; }
 

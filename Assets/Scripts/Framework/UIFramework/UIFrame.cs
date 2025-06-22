@@ -1,5 +1,7 @@
 ﻿using System;
+using KidGame.Core;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace KidGame.UI
@@ -49,6 +51,7 @@ namespace KidGame.UI
             {
                 Initialize();
             }
+            DontDestroyOnLoad(this);
         }
 
         /// <summary>
@@ -324,5 +327,7 @@ namespace KidGame.UI
                 graphicRaycaster.enabled = true;
             }
         }
+
+        
     }
 }

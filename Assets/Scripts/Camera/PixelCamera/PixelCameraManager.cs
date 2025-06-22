@@ -63,7 +63,7 @@ namespace KidGame.Core
         public float ViewCameraZoom = 1f;
 
         UnityEngine.Camera gameCamera;
-        CanvasViewCamera viewCamera;
+        public CanvasViewCamera viewCamera;
         UpscaledCanvas upscaledCanvas;
 
         float renderTextureAspect;

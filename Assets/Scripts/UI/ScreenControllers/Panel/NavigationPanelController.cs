@@ -68,6 +68,7 @@ public class NavigationPanelController : PanelController
 
         // 默认选中第一个按钮
         OnNavigationButtonClicked(currentButtons[0]);
+        templateButton.gameObject.SetActive(false);
     }
 
     private void OnNavigationButtonClicked(NavigationPanelButton currentlyClickedButton)
@@ -93,6 +94,15 @@ public class NavigationPanelController : PanelController
         {
             button.ButtonClicked -= OnNavigationButtonClicked;
             Destroy(button.gameObject);
+        }
+        currentButtons.Clear();
+    }
+    private void Update()
+    {
+        if (gameObject.activeInHierarchy&&Input.GetKeyDown(KeyCode.Escape))
+        {
+            Hide();
+            UIController.Instance.CloseCurrentWindow();
         }
     }
 }

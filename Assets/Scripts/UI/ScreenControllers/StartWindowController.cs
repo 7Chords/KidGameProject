@@ -1,4 +1,6 @@
-﻿using Utils;
+﻿using KidGame.Core;
+using UnityEngine.SceneManagement;
+using Utils;
 
 namespace KidGame.UI.Game
 {
@@ -22,7 +24,9 @@ namespace KidGame.UI.Game
     {
         public void UI_Start()
         {
+            SceneLoader.Instance.LoadSceneWithTransition("GenerateMapTest",UIController.Instance.UICameraBindingVertexCamera);
             Signals.Get<StartGameSignal>().Dispatch();
+            Hide();
         }
 
         public void UI_Continue()

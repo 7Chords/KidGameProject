@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Utils;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace KidGame.UI.Game
 {
@@ -19,8 +20,11 @@ namespace KidGame.UI.Game
             base.Awake();
             
             uiFrame = defaultUISettings.CreateUIInstance();
+            
             Signals.Get<StartGameSignal>().AddListener(OnStartDemo);
             Signals.Get<ToSettingsWindowSignal>().AddListener(OnToSettingsWindow);
+            Signals.Get<GamePauseSignal>().AddListener(OnShowPauseSelectPanel);
+            
 
             Signals.Get<NavigateToWindowSignal>().AddListener(OnNavigateToWindow);
             Signals.Get<ShowConfirmationPopupSignal>().AddListener(OnShowConfirmationPopup);
@@ -30,6 +34,7 @@ namespace KidGame.UI.Game
         {
             Signals.Get<StartGameSignal>().RemoveListener(OnStartDemo);
             Signals.Get<ToSettingsWindowSignal>().RemoveListener(OnToSettingsWindow);
+            Signals.Get<GamePauseSignal>().RemoveListener(OnShowPauseSelectPanel);
             
             Signals.Get<NavigateToWindowSignal>().RemoveListener(OnNavigateToWindow);
             Signals.Get<ShowConfirmationPopupSignal>().RemoveListener(OnShowConfirmationPopup);
@@ -45,9 +50,11 @@ namespace KidGame.UI.Game
 
         private void OnStartDemo()
         {
-            uiFrame.ShowPanel(ScreenIds.NavigationPanel);
-            uiFrame.ShowPanel(ScreenIds.ToastPanel);
+            /*uiFrame.ShowPanel(ScreenIds.NavigationPanel);
+            uiFrame.ShowPanel(ScreenIds.ToastPanel);*/
+            uiFrame.ShowPanel(ScreenIds.GamePlayPanel);
         }
+        
 
         private void OnToSettingsWindow()
         {
@@ -73,11 +80,21 @@ namespace KidGame.UI.Game
             }
         }
 
+        public void CloseCurrentWindow()
+        {
+            uiFrame.CloseCurrentWindow();
+        }
+
         private void OnShowConfirmationPopup(ConfirmationPopupProperties popupPayload)
         {
             uiFrame.OpenWindow(ScreenIds.ConfirmationPopup, popupPayload);
         }
 
+        private void OnShowPauseSelectPanel()
+        {
+            uiFrame.ShowPanel(ScreenIds.NavigationPanel);
+            //uiFrame.ShowPanel(ScreenIds.PauseSelectPanel);
+        }
         #endregion
 
         #region 转场
@@ -92,7 +109,18 @@ namespace KidGame.UI.Game
         {
             uiFrame.HidePanel(ScreenIds.TransitionPanel);
         }
-
+        
+        public void UICameraBindingVertexCamera()
+        {
+            Camera vertexCamera = GameObject.Find("ViewCamera").GetComponent<Camera>();
+            UniversalAdditionalCameraData baseCameraData = 
+                vertexCamera.GetUniversalAdditionalCameraData();
+            UniversalAdditionalCameraData UICameraData = 
+                uiFrame.UICamera.GetUniversalAdditionalCameraData();
+            UICameraData.renderType = CameraRenderType.Overlay;
+            // 将Overlay相机加入堆叠
+            baseCameraData.cameraStack.Add(uiFrame.UICamera);
+        }
         #endregion
     }
 }
