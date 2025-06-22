@@ -5,20 +5,26 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+    public class RoomInfo
+    {
+        // 需要获得一个房间的中心坐标，来判断距离
+        public RoomType RoomType;
+        public Vector3 CenterWorldPosition;
+    }
+
+
     public class MapManager : Singleton<MapManager>
     {
         private MapData _mapData;
 
         public List<MapTile> mapTileList;
-        public Dictionary<RoomType, List<MapTile>> mapTileDic;//����������Ͷ�Ӧ��������Ƭ���ֵ䷽��������
+        public Dictionary<RoomType, List<MapTile>> mapTileDic;
         public List<MapFurniture> mapFurnitureList;
-        public Dictionary<RoomType, List<MapFurniture>> mapFurnitureDic;//����������Ͷ�Ӧ�����мҾߵ��ֵ䷽��������
+        public Dictionary<RoomType, List<MapFurniture>> mapFurnitureDic;
         public List<MapWall> mapWallList;
-
 
         public Transform MapGeneratePoint;
 
-        // ���ٲ�ѯ�����������굽�������ͣ�
         private readonly Dictionary<Vector2Int, RoomType> _grid2RoomType = new();
 
         public void Init(MapData mapData)
@@ -31,7 +37,7 @@ namespace KidGame.Core
             mapWallList = new List<MapWall>();
 
             GenerateMap(mapData);
-            BuildRoomLookup();// ������ѯ��
+            BuildRoomLookup();
         }
 
         public void GenerateMap(MapData mapData)
@@ -61,7 +67,7 @@ namespace KidGame.Core
                 tileGO.transform.SetParent(tileRoot.transform);
                 tileGO.transform.position += root.transform.position;
                 mapTileList.Add(mapTile);
-                if(mapTileDic.ContainsKey(tile.roomType))
+                if (mapTileDic.ContainsKey(tile.roomType))
                 {
                     mapTileDic[tile.roomType].Add(mapTile);
                 }
@@ -110,7 +116,7 @@ namespace KidGame.Core
 
                 averageX /= wall.mapPosList.Count;
                 averageZ /= wall.mapPosList.Count;
-                //���ɶѵ���ǽ��λ
+                //???????????λ
                 for (int i = 0; i < wall.stackLayer; i++)
                 {
                     GameObject wallGO = Instantiate(wall.wallData.wallPrefab,
@@ -126,7 +132,6 @@ namespace KidGame.Core
             }
         }
 
-        // ���������ӡ��������͡�����
         private void BuildRoomLookup()
         {
             _grid2RoomType.Clear();
@@ -138,10 +143,10 @@ namespace KidGame.Core
             }
         }
 
+
         /// <summary>
-        /// �������������ȡ��������
-        /// �ɹ��ҵ����䷵��true ����roomType�����
-        /// ʧ�ܷ���false
+        /// 根据世界坐标判断是否在房间内。
+        /// 若成功找到格子，则返回 true，并输出该格子的房间类型。
         /// </summary>
         public bool TryGetRoomTypeAtWorldPos(Vector3 worldPos, out RoomType roomType)
         {
@@ -149,18 +154,48 @@ namespace KidGame.Core
             if (_grid2RoomType.Count == 0 || MapGeneratePoint == null)
                 return false;
 
-            // ��������ת����������
+            // 将世界坐标转换为格子坐标
             Vector3 local = worldPos - MapGeneratePoint.position;
             int gridX = Mathf.RoundToInt(local.x);
             int gridY = Mathf.RoundToInt(-local.z);
 
-            Debug.Log(_grid2RoomType.TryGetValue(new Vector2Int(gridX, gridY), out roomType));
             return _grid2RoomType.TryGetValue(new Vector2Int(gridX, gridY), out roomType);
         }
+        
+        /// <summary>
+        /// 获取场景中所有房间的中心点与类型信息
+        /// </summary>
+        public List<RoomInfo> GetAllRooms()
+        {
+            List<RoomInfo> result = new List<RoomInfo>();
+
+            foreach (var kvp in mapTileDic)
+            {
+                RoomType type = kvp.Key;
+                List<MapTile> tiles = kvp.Value;
+                if (tiles == null || tiles.Count == 0) continue;
+
+                Vector3 sum = Vector3.zero;
+                foreach (var tile in tiles)
+                {
+                    sum += tile.transform.position;
+                }
+
+                Vector3 avg = sum / tiles.Count;
+
+                result.Add(new RoomInfo
+                {
+                    RoomType = type,
+                    CenterWorldPosition = avg
+                });
+            }
+
+            return result;
+        }
+
 
         public void Discard()
         {
-
             mapTileList.Clear();
             mapTileList = null;
             mapTileDic.Clear();
@@ -171,7 +206,6 @@ namespace KidGame.Core
             mapFurnitureDic = null;
             mapWallList.Clear();
             mapWallList = null;
-
         }
     }
 }

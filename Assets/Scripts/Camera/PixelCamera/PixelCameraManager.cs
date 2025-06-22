@@ -7,23 +7,31 @@ namespace KidGame.Core
     /// </summary>
     public static class Tooltips
     {
-        public const string TT_FOLLOWED_TRANSFORM = "Transform that this camera follow while doing pixel perfect corrections. Very useful for camera controllers. Allows for full control of a transform.";
+        public const string TT_FOLLOWED_TRANSFORM =
+            "Transform that this camera follow while doing pixel perfect corrections. Very useful for camera controllers. Allows for full control of a transform.";
 
-        public const string TT_GRID_MOVEMENT = "Stationary objects in 3D world look stationary without jittering colors or outlines. Camera moves on a voxel grid.";
+        public const string TT_GRID_MOVEMENT =
+            "Stationary objects in 3D world look stationary without jittering colors or outlines. Camera moves on a voxel grid.";
 
         public const string TT_SUB_PIXEL = "Subpixel adjustments counter the blocky nature of moving along a grid.";
 
-        public const string TT_FOLLOW_ROTATION = "Should the camera transform follow the followed transforms rotation as well as position.";
+        public const string TT_FOLLOW_ROTATION =
+            "Should the camera transform follow the followed transforms rotation as well as position.";
 
-        public const string TT_GAME_RESOLUTION = "The resolution of the game render texture. Lower values look more pixelated.";
+        public const string TT_GAME_RESOLUTION =
+            "The resolution of the game render texture. Lower values look more pixelated.";
 
-        public const string TT_RESOLUTION_SYNCHRONIZATION_MODE = "How 'GameResolution' should be calculated. Synchronization ensures consistent pixelation for different device resolutions and artstyles.";
+        public const string TT_RESOLUTION_SYNCHRONIZATION_MODE =
+            "How 'GameResolution' should be calculated. Synchronization ensures consistent pixelation for different device resolutions and artstyles.";
 
-        public const string TT_CONTROL_GAME_ZOOM = "Should this script control the game cameras orthographic size. This can be turned off if another controller is already controlling it to avoid unexpected behaviour.";
+        public const string TT_CONTROL_GAME_ZOOM =
+            "Should this script control the game cameras orthographic size. This can be turned off if another controller is already controlling it to avoid unexpected behaviour.";
 
-        public const string TT_GAME_ZOOM = "The resolution of the game appears to stay the same but everything becomes more detailed while zooming in. The game cameras orhtographic size.";
+        public const string TT_GAME_ZOOM =
+            "The resolution of the game appears to stay the same but everything becomes more detailed while zooming in. The game cameras orhtographic size.";
 
-        public const string TT_VIEW_ZOOM = "Zoom where pixels stay a constant size and the view camera zooms in. The view cameras orhtographic size.";
+        public const string TT_VIEW_ZOOM =
+            "Zoom where pixels stay a constant size and the view camera zooms in. The view cameras orhtographic size.";
     }
 
     /// <summary>
@@ -32,21 +40,27 @@ namespace KidGame.Core
     [ExecuteInEditMode]
     public class PixelCameraManager : MonoBehaviour
     {
-        [Tooltip(Tooltips.TT_FOLLOWED_TRANSFORM)] public Transform FollowedTransform;
+        [Tooltip(Tooltips.TT_FOLLOWED_TRANSFORM)]
+        public Transform FollowedTransform;
 
-        [Header("Settings")]
-        [Tooltip(Tooltips.TT_GRID_MOVEMENT)] public bool VoxelGridMovement = true;
+        [Header("Settings")] [Tooltip(Tooltips.TT_GRID_MOVEMENT)]
+        public bool VoxelGridMovement = true;
+
         [Tooltip(Tooltips.TT_SUB_PIXEL)] public bool SubpixelAdjustments = true;
         [Tooltip(Tooltips.TT_FOLLOW_ROTATION)] public bool FollowRotation = true;
 
-        [Header("Resolution")]
-        [Tooltip(Tooltips.TT_RESOLUTION_SYNCHRONIZATION_MODE)] public ResolutionSynchronizationMode resolutionSynchronizationMode = ResolutionSynchronizationMode.SetHeight;
+        [Header("Resolution")] [Tooltip(Tooltips.TT_RESOLUTION_SYNCHRONIZATION_MODE)]
+        public ResolutionSynchronizationMode resolutionSynchronizationMode = ResolutionSynchronizationMode.SetHeight;
+
         public Vector2Int GameResolution = new Vector2Int(640, 360);
 
-        [Header("Zoom")]
-        [Tooltip(Tooltips.TT_CONTROL_GAME_ZOOM)] public bool ControlGameZoom = true;
+        [Header("Zoom")] [Tooltip(Tooltips.TT_CONTROL_GAME_ZOOM)]
+        public bool ControlGameZoom = true;
+
         [Tooltip(Tooltips.TT_GAME_ZOOM)] public float GameCameraZoom = 5f;
-        [Tooltip(Tooltips.TT_VIEW_ZOOM)][Range(-1f, 1f)] public float ViewCameraZoom = 1f;
+
+        [Tooltip(Tooltips.TT_VIEW_ZOOM)] [Range(-1f, 1f)]
+        public float ViewCameraZoom = 1f;
 
         UnityEngine.Camera gameCamera;
         CanvasViewCamera viewCamera;
@@ -72,7 +86,9 @@ namespace KidGame.Core
         /// <summary>
         /// Gets the target texture resolution and Vector2Int.left if none is defined.
         /// </summary>
-        Vector2Int TargetTextureResolution => this.gameCamera.targetTexture == null ? Vector2Int.left : new Vector2Int(this.gameCamera.targetTexture.width, this.gameCamera.targetTexture.height);
+        Vector2Int TargetTextureResolution => this.gameCamera.targetTexture == null
+            ? Vector2Int.left
+            : new Vector2Int(this.gameCamera.targetTexture.width, this.gameCamera.targetTexture.height);
 
         /// <summary>
         /// Rounds a vector3 to the closest camera pixel sized voxel.
@@ -84,8 +100,8 @@ namespace KidGame.Core
             var integerMovement = (Vector3)Vector3Int.RoundToInt(localPositionInPixels);
             var movement = integerMovement * this.PixelWorldSize;
             return (movement.x * this.transform.right)
-                 + (movement.y * this.transform.up)
-                 + (movement.z * this.transform.forward);
+                   + (movement.y * this.transform.up)
+                   + (movement.z * this.transform.forward);
         }
 
         /// <summary>
@@ -97,6 +113,7 @@ namespace KidGame.Core
             this.gameCamera.orthographicSize = checkedZoom;
             return checkedZoom;
         }
+
         /// <summary>
         /// Synchronizes the clip planes. The view camera offset should be taken into account.
         /// </summary>
@@ -143,7 +160,8 @@ namespace KidGame.Core
 
             if (this.transform.parent.childCount > 2)
             {
-                Debug.LogWarning("Pixel Camera Managers parent should only have 2 child objects. This and a transform that it follows.");
+                Debug.LogWarning(
+                    "Pixel Camera Managers parent should only have 2 child objects. This and a transform that it follows.");
             }
 
             if (this.FollowedTransform == null)
@@ -177,7 +195,8 @@ namespace KidGame.Core
             if (aspectRatioChanged || pixelResolutionChanged || this.gameCamera.targetTexture == null)
             {
                 // Change fitting aspect ratio
-                this.GameResolution = RenderTextureUtilities.TextureResultion(this.viewCamera.Aspect, this.GameResolution, this.resolutionSynchronizationMode);
+                this.GameResolution = RenderTextureUtilities.TextureResultion(this.viewCamera.Aspect,
+                    this.GameResolution, this.resolutionSynchronizationMode);
 
                 if (this.gameCamera.targetTexture != null)
                 {
@@ -211,14 +230,18 @@ namespace KidGame.Core
 
             if (orthographicSizeChanged || pixelResolutionChanged || this.ViewCameraZoom != this.viewCamera.Zoom)
             {
-                var canvasOnScreenLimit = 1 - (2f / this.GameResolution.y); // This ensures that the view camera doesn't move over the canvas edge
+                var canvasOnScreenLimit =
+                    1 - (2f / this.GameResolution
+                        .y); // This ensures that the view camera doesn't move over the canvas edge
                 if (this.GameResolution.y < 3)
                 {
                     canvasOnScreenLimit = 1f;
                     Debug.LogWarning("The resolution is too small, this might lead to unexpected behaviour");
                 }
 
-                this.ViewCameraZoom = Mathf.Approximately(this.ViewCameraZoom, 0f) ? 0.01f : Mathf.Clamp(this.ViewCameraZoom, -1, 1f);
+                this.ViewCameraZoom = Mathf.Approximately(this.ViewCameraZoom, 0f)
+                    ? 0.01f
+                    : Mathf.Clamp(this.ViewCameraZoom, -1, 1f);
                 this.viewCamera.SetZoom(this.ViewCameraZoom * canvasOnScreenLimit, this.GameCameraZoom);
             }
 
@@ -235,7 +258,9 @@ namespace KidGame.Core
                 this.transform.rotation = this.FollowedTransform.rotation;
             }
 
-            this.transform.position = this.VoxelGridMovement ? this.PositionToGrid(this.FollowedTransform.position) : this.FollowedTransform.position;
+            this.transform.position = this.VoxelGridMovement
+                ? this.PositionToGrid(this.FollowedTransform.position)
+                : this.FollowedTransform.position;
 
             if (this.SubpixelAdjustments)
             {

@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using KidGame.Core.Data;
 using UnityEngine;
 
-
-[CreateAssetMenu(fileName = "MapEditorItemGroupConfig",menuName = "KidGameSO/Editor/MapEditorItemGroupConfig")]
-public class MapEditorItemGroupConfig : ScriptableObject
+namespace KidGame.Editor
 {
-    [Header("Tile")]
-    public List<TileData> TileList;
+    [CreateAssetMenu(fileName = "MapEditorItemGroupConfig", menuName = "KidGameSO/Editor/MapEditorItemGroupConfig")]
+    public class MapEditorItemGroupConfig : ScriptableObject
+    {
+        [Header("Tile")] public List<TileData> TileList;
 
-    [Header("Furniture")]
-    public List<FurnitureData> FrunitureList;
+        [Header("Furniture")] public List<FurnitureData> FrunitureList;
 
-    [Header("Wall")]
-    public List<WallData> WallList;
+        [Header("Wall")] public List<WallData> WallList;
 
-    [Header("Blueprint")]
-    public List<MapData> MapListList;
-
-
+        [Header("Blueprint")] public List<MapData> MapListList;
+    }
 }
