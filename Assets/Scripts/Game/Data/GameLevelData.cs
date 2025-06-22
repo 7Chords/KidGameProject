@@ -8,5 +8,7 @@ namespace KidGame.Core
     public class GameLevelData : ScriptableObject
     {
         public List<EnemyBaseData> enemyDataList;
+
+        public LevelResData levelResData;
     }
 }

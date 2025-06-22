@@ -19,6 +19,7 @@ namespace KidGame.Core
         private InputAction throwAction;
         private InputAction bagAction;
         private InputAction recycleAction;
+        private InputAction mouseWheelAction;
 
         // 所有输入事件
         public event Action OnInteractionPress;
@@ -46,7 +47,7 @@ namespace KidGame.Core
                 throwAction = inputActionAsset.FindAction("Throw");
                 bagAction = inputActionAsset.FindAction("Bag");
                 recycleAction = inputActionAsset.FindAction("Recycle");
-
+                mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
                 // 绑定所有输入事件
                 interactionAction.performed += OnInteractionActionPerformed;
                 dashAction.performed += OnDashActionPerformed;
@@ -84,6 +85,17 @@ namespace KidGame.Core
         {
             Vector2 inputDir = moveAction.ReadValue<Vector2>();
             return inputDir.normalized;
+        }
+
+        /// <summary>
+        /// 鼠标滚轮值
+        /// </summary>
+        /// <returns></returns>
+        public float MouseWheelValue()
+        {
+            float val = mouseWheelAction.ReadValue<float>();
+            //inputaction面板中已经限制了范围[-1,1]
+            return val;
         }
 
         public virtual bool GetDashDown() => dashAction.WasPressedThisFrame();

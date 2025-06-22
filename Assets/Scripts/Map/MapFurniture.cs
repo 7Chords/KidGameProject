@@ -10,6 +10,12 @@ namespace KidGame.Core
     {
         public int amount;
         public MaterialData data;
+
+        public MaterialItem(MaterialData data,int amount)
+        {
+            this.amount = amount;
+            this.data = data;
+        }
     }
 
 
@@ -33,11 +39,16 @@ namespace KidGame.Core
         {
             this.canInteract = canInteract;
             materialHoldList = materialList;
+            if(canInteract)
+            {
+                gameObject.layer = LayerMask.NameToLayer("Interactive");
+            }
         }
 
         public void Discard()
         {
-
+            materialHoldList.Clear();
+            materialHoldList = null;
         }
 
         public void InteractNegative()
@@ -48,6 +59,7 @@ namespace KidGame.Core
         public void InteractPositive()
         {
             if (!canInteract) return;
+            Debug.Log("和" + mapFurnitureData.furnitureData.furnitureName + "互动了！可以获得里面的材料！");
         }
 
 

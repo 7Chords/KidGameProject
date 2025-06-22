@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c66ff9d8e01e9418c05055f7a5c836, type: 3}
+  m_Name: LevelResData
+  m_EditorClassIdentifier: 
+  f2MMappingList:
+  - furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
+    materialDataList:
+    - materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
+      randomAmount_min: 2
+      randomAmount_max: 4
+  r2MMappingList:
+  - roomType: 1
+    materialDataList:
+    - materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
+      randomAmount_min: 1
+      randomAmount_max: 5

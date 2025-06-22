@@ -16,8 +16,6 @@ namespace KidGame.Core
         //总的游戏结束
         private bool _gameFinished;
 
-        private int _levelIndex;
-
         //test public
         public MapData mapData;
 
@@ -44,8 +42,12 @@ namespace KidGame.Core
             //游戏各个模块的销毁 主要是事件的反注册
             PlayerManager.Instance.Discard();
             MapManager.Instance.Discard();
+            GameLevelManager.Instance.Discard();
         }
 
+        /// <summary>
+        /// 开始游戏 保证在初始游戏之后调用
+        /// </summary>
         public void StartGame()
         {
             _gameStarted = true;

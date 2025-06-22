@@ -1,4 +1,5 @@
 using KidGame.Core.Data;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -7,12 +8,24 @@ namespace KidGame.Core
     {
         private MapData _mapData;
 
+        public List<MapTile> mapTileList;
+        public Dictionary<RoomType, List<MapTile>> mapTileDic;//搞个房间类型对应的所有瓦片的字典方便外面用
+        public List<MapFurniture> mapFurnitureList;
+        public Dictionary<RoomType, List<MapFurniture>> mapFurnitureDic;//搞个房间类型对应的所有家具的字典方便外面用
+        public List<MapWall> mapWallList;
 
         public Transform MapGeneratePoint;
         public void Init(MapData mapData)
         {
             _mapData = mapData;
+            mapTileList = new List<MapTile>();
+            mapTileDic = new Dictionary<RoomType, List<MapTile>>();
+            mapFurnitureList = new List<MapFurniture>();
+            mapFurnitureDic = new Dictionary<RoomType, List<MapFurniture>>();
+            mapWallList = new List<MapWall>();
+
             GenerateMap(mapData);
+
         }
 
         public void GenerateMap(MapData mapData)
@@ -39,6 +52,15 @@ namespace KidGame.Core
                 mapTile.SetData(tile);
                 tileGO.transform.SetParent(tileRoot.transform);
                 tileGO.transform.position += root.transform.position;
+                mapTileList.Add(mapTile);
+                if(mapTileDic.ContainsKey(tile.roomType))
+                {
+                    mapTileDic[tile.roomType].Add(mapTile);
+                }
+                else
+                {
+                    mapTileDic.Add(tile.roomType, new List<MapTile>());
+                }
             }
             foreach (var furniture in mapData.furnitureList)
             {
@@ -56,6 +78,15 @@ namespace KidGame.Core
                 mapFurniture.SetData(furniture);
                 furnitureGO.transform.SetParent(furnitureRoot.transform);
                 furnitureGO.transform.position += root.transform.position;
+                mapFurnitureList.Add(mapFurniture);
+                if (mapFurnitureDic.ContainsKey(furniture.roomType))
+                {
+                    mapFurnitureDic[furniture.roomType].Add(mapFurniture);
+                }
+                else
+                {
+                    mapFurnitureDic.Add(furniture.roomType, new List<MapFurniture>());
+                }
             }
             foreach (var wall in mapData.wallList)
             {
@@ -78,13 +109,23 @@ namespace KidGame.Core
                     mapWall.SetData(wall);
                     wallGO.transform.SetParent(wallRoot.transform);
                     wallGO.transform.position += root.transform.position;
+                    mapWallList.Add(mapWall);
                 }
             }
         }
 
         public void Discard()
         {
-
+            mapTileList.Clear();
+            mapTileList = null;
+            mapTileDic.Clear();
+            mapTileDic = null;
+            mapFurnitureList.Clear();
+            mapFurnitureList = null;
+            mapFurnitureDic.Clear();
+            mapFurnitureDic = null;
+            mapWallList.Clear();
+            mapWallList = null;
         }
     }
 }

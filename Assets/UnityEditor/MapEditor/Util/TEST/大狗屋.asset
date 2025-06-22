@@ -1301,3 +1301,13 @@ MonoBehaviour:
     - x: 1
       y: 2
     roomType: 1
+  - furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
+    mapPosList:
+    - x: 2
+      y: 1
+    roomType: 1
+  - furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
+    mapPosList:
+    - x: 3
+      y: 1
+    roomType: 1
