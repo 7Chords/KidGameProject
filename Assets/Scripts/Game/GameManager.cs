@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using KidGame.Core;
 using UnityEngine;
 using KidGame.Core.Data;
 
 namespace KidGame.Core
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
         public GameData gameData;
 
@@ -15,6 +12,19 @@ namespace KidGame.Core
 
         //总的游戏结束
         private bool _gameFinished;
+
+
+        private int _levelIndex;
+
+        #region 分数变量
+
+        // 用于本轮（白天+夜晚）的总得分
+        private int _currentLoopScore;
+
+        public int CurrentLoopScore => _currentLoopScore;
+
+        #endregion
+
 
         //test public
         public MapData mapData;
@@ -27,6 +37,7 @@ namespace KidGame.Core
             StartGame();
         }
 
+        #region 游戏循环
 
         private void InitGame()
         {
@@ -52,11 +63,35 @@ namespace KidGame.Core
         {
             _gameStarted = true;
             GameLevelManager.Instance.InitFirstLevel();
+            GameLevelManager.Instance.StartDayPhase();
         }
 
         public void FinishGame()
         {
             _gameFinished = true;
         }
+
+        #endregion
+
+        #region 分数统计
+
+        // 外部调用，比如陷阱命中、击杀敌人时调用
+        public void AddScore(int score)
+        {
+            _currentLoopScore += score;
+        }
+
+        public int GetCurrentLoopScore()
+        {
+            return _currentLoopScore;
+        }
+
+        // 清空分数方法，每个新白天开始时调用
+        public void ResetLoopScore()
+        {
+            _currentLoopScore = 0;
+        }
+
+        #endregion
     }
 }

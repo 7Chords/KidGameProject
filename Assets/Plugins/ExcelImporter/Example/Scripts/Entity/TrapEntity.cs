@@ -17,10 +17,11 @@ public class TrapEnitiy
     public float lastTime;
     public string detail;
 }
+
 public enum trapType
 {
-    主动触发,
-    被动触发,
-    定时,
-    混合
+    initiative, // 主动触发
+    passive, // 被动触发
+    timing, // 定时
+    mix, // 混合
 }

@@ -14,7 +14,9 @@ namespace KidGame.Core
         public Dictionary<RoomType, List<MapFurniture>> mapFurnitureDic;//搞个房间类型对应的所有家具的字典方便外面用
         public List<MapWall> mapWallList;
 
+
         public Transform MapGeneratePoint;
+
         public void Init(MapData mapData)
         {
             _mapData = mapData;
@@ -36,6 +38,7 @@ namespace KidGame.Core
             if (tmpRoot != null) DestroyImmediate(tmpRoot);
             GameObject root = new GameObject("Map");
             root.transform.position = MapGeneratePoint.position;
+
             GameObject tileRoot = new GameObject("Tile");
             GameObject furnitureRoot = new GameObject("Furniture");
             GameObject wallRoot = new GameObject("Wall");
@@ -48,6 +51,7 @@ namespace KidGame.Core
                 GameObject tileGO = Instantiate(tile.tileData.tilePrefab,
                     new Vector3(tile.mapPos.x, 0, -tile.mapPos.y),
                     Quaternion.identity);
+
                 MapTile mapTile = tileGO.AddComponent<MapTile>();
                 mapTile.SetData(tile);
                 tileGO.transform.SetParent(tileRoot.transform);
@@ -62,6 +66,7 @@ namespace KidGame.Core
                     mapTileDic.Add(tile.roomType, new List<MapTile>());
                 }
             }
+
             foreach (var furniture in mapData.furnitureList)
             {
                 float averageX = 0, averageZ = 0;
@@ -70,6 +75,7 @@ namespace KidGame.Core
                     averageX += pos.x;
                     averageZ += pos.y;
                 }
+
                 averageX /= furniture.mapPosList.Count;
                 averageZ /= furniture.mapPosList.Count;
                 GameObject furnitureGO = Instantiate(furniture.furnitureData.furniturePrefab);
@@ -88,6 +94,7 @@ namespace KidGame.Core
                     mapFurnitureDic.Add(furniture.roomType, new List<MapFurniture>());
                 }
             }
+
             foreach (var wall in mapData.wallList)
             {
                 float averageX = 0, averageZ = 0;
@@ -96,6 +103,7 @@ namespace KidGame.Core
                     averageX += pos.x;
                     averageZ += pos.y;
                 }
+
                 averageX /= wall.mapPosList.Count;
                 averageZ /= wall.mapPosList.Count;
                 //生成堆叠的墙单位
@@ -116,6 +124,7 @@ namespace KidGame.Core
 
         public void Discard()
         {
+
             mapTileList.Clear();
             mapTileList = null;
             mapTileDic.Clear();
@@ -126,6 +135,7 @@ namespace KidGame.Core
             mapFurnitureDic = null;
             mapWallList.Clear();
             mapWallList = null;
+
         }
     }
 }

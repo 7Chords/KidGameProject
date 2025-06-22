@@ -15,28 +15,28 @@ namespace KidGame.Core
             enemyList = new List<EnemyController>();
         }
 
-        public void InitEnemy(List<EnemyBaseData> enemyDataList,List<Transform> bornPoints)
+        public void InitEnemy(List<EnemyBaseData> enemyDataList, List<Transform> bornPoints)
         {
-            for(int i=0;i< enemyDataList.Count;i++)
+            for (int i = 0; i < enemyDataList.Count; i++)
             {
                 GameObject enemy = Instantiate(enemyPrefab);
                 EnemyController enemyCtl = enemy.GetComponent<EnemyController>();
                 enemyCtl.Init(enemyDataList[i]);
                 enemyList.Add(enemyCtl);
-                if(i <= bornPoints.Count-1)
+                if (i <= bornPoints.Count - 1)
                 {
                     enemy.transform.position = bornPoints[i].position;
                 }
                 else
                 {
-                    enemy.transform.position = bornPoints[i% bornPoints.Count].position;
+                    enemy.transform.position = bornPoints[i % bornPoints.Count].position;
                 }
             }
         }
 
         public void DiscardEnemy()
         {
-            foreach(var enemy in enemyList)
+            foreach (var enemy in enemyList)
             {
                 enemy.Discard();
             }
