@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using KidGame.Interface;
 
@@ -11,29 +12,32 @@ namespace KidGame.Core
     public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable
     {
         [SerializeField] private EnemyBaseData enemyBaseData;
-
-        [Tooltip("巡逻点列表")] [SerializeField]
-        private Transform[] patrolPoints;
-
-        [SerializeField] private float patrolWaitTime = 2.0f;
+        public EnemyBaseData EnemyBaseData => enemyBaseData;
 
         private StateMachine stateMachine;
         private Rigidbody rb;
+        public Rigidbody Rb => rb;
         private Transform player;
 
-        public EnemyBaseData EnemyBaseData => enemyBaseData;
-        public Rigidbody Rb => rb;
-
         private BuffHandler enemyBuffHandler;
-        
+
+        #region 理智变量
+
+        private int _currentHealth;
+
+        #endregion
+
         #region 巡逻
 
         // 巡逻状态需要的临时变量
         [HideInInspector] public int CurrentPatrolIndex;
         [HideInInspector] public float PatrolTimer;
         public Transform Player => player;
+
+        [Tooltip("巡逻点列表")] [SerializeField] private Transform[] patrolPoints;
         public Transform[] PatrolPoints => patrolPoints;
         public float PatrolWaitTime => patrolWaitTime;
+        [SerializeField] private float patrolWaitTime = 2.0f;
 
         #endregion
 
@@ -44,6 +48,18 @@ namespace KidGame.Core
 
         #endregion
 
+        #region 技能
+
+        private List<ActiveSkillInstance> _activeSkillInstances = new List<ActiveSkillInstance>();
+        private List<PassiveSkillSO> _appliedPassiveSkills = new List<PassiveSkillSO>();
+        private class ActiveSkillInstance
+        {
+            public ActiveSkillSO skillSO;
+            public float currentCooldown;
+        }
+        
+        #endregion
+        
         #region 生命周期
 
         private void Awake()
@@ -51,9 +67,52 @@ namespace KidGame.Core
             rb = GetComponent<Rigidbody>();
         }
 
+        private void Start()
+        {
+            // 初始化主动技能实例
+            foreach (var skillSO in enemyBaseData.activeSkills)
+            {
+                _activeSkillInstances.Add(new ActiveSkillInstance
+                {
+                    skillSO = skillSO,
+                    currentCooldown = 0f
+                });
+
+                // 处理定时触发技能
+                if (skillSO.triggerCondition == SkillTriggerCondition.OnTimer)
+                {
+                    StartCoroutine(TimerSkillRoutine(skillSO));
+                }
+
+                // 处理生成时触发技能
+                if (skillSO.triggerCondition == SkillTriggerCondition.OnSpawn)
+                {
+                    TryTriggerSkill(skillSO);
+                }
+            }
+
+            // 应用被动技能
+            foreach (var skillSO in enemyBaseData.passiveSkills)
+            {
+                skillSO.Apply(this);
+                _appliedPassiveSkills.Add(skillSO);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            // 移除所有被动技能效果
+            foreach (var skillSO in _appliedPassiveSkills)
+            {
+                skillSO.Remove(this);
+            }
+        }
+
         private void Update()
         {
             UpdateCurrentRoomType();
+            UpdateSkillCooldowns();
+            CheckSkillTriggers();
         }
 
         public void Init(EnemyBaseData enemyData)
@@ -133,6 +192,8 @@ namespace KidGame.Core
 
         #endregion
 
+        #region 房间
+
         private void UpdateCurrentRoomType()
         {
             if (MapManager.Instance.TryGetRoomTypeAtWorldPos(transform.position, out var roomType))
@@ -141,8 +202,109 @@ namespace KidGame.Core
             }
         }
 
+        #endregion
+
+        #region 技能
+
+        private void UpdateSkillCooldowns()
+        {
+            foreach (var skillInstance in _activeSkillInstances)
+            {
+                if (skillInstance.currentCooldown > 0)
+                {
+                    skillInstance.currentCooldown -= Time.deltaTime;
+                }
+            }
+        }
+
+        private void CheckSkillTriggers()
+        {
+            if (player == null) return;
+
+            foreach (var skillInstance in _activeSkillInstances)
+            {
+                if (skillInstance.currentCooldown > 0) continue;
+
+                var skillSO = skillInstance.skillSO;
+
+                switch (skillSO.triggerCondition)
+                {
+                    case SkillTriggerCondition.OnPlayerInRange:
+                        if (Vector3.Distance(transform.position, player.position) <= skillSO.triggerRange)
+                        {
+                            TryTriggerSkill(skillSO);
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        private IEnumerator TimerSkillRoutine(ActiveSkillSO skillSO)
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(skillSO.timerInterval);
+                TryTriggerSkill(skillSO);
+            }
+        }
+
         public void TakeDamage(DamageInfo damageInfo)
         {
+            // 现有伤害处理逻辑...
+
+            // 检查被击中时触发的技能
+            foreach (var skillInstance in _activeSkillInstances)
+            {
+                var skillSO = skillInstance.skillSO;
+                if (skillSO.triggerCondition == SkillTriggerCondition.OnHit &&
+                    skillInstance.currentCooldown <= 0)
+                {
+                    TryTriggerSkill(skillSO);
+                }
+            }
+
+            // 检查低血量触发的技能
+            if (_currentHealth / enemyBaseData.MaxSanity <= 0.3f)
+            {
+                foreach (var skillInstance in _activeSkillInstances)
+                {
+                    var skillSO = skillInstance.skillSO;
+                    if (skillSO.triggerCondition == SkillTriggerCondition.OnLowHealth &&
+                        skillInstance.currentCooldown <= 0)
+                    {
+                        TryTriggerSkill(skillSO);
+                    }
+                }
+            }
         }
+
+        private void TryTriggerSkill(ActiveSkillSO skillSO)
+        {
+            var skillInstance = _activeSkillInstances.Find(s => s.skillSO == skillSO);
+            if (skillInstance == null || skillInstance.currentCooldown > 0) return;
+
+            skillSO.Execute(this);
+            skillInstance.currentCooldown = skillSO.cooldown;
+        }
+
+        #endregion
+
+        #region 攻击
+
+        public void OnAttack()
+        {
+            foreach (var skillInstance in _activeSkillInstances)
+            {
+                var skillSO = skillInstance.skillSO;
+                if (skillSO.triggerCondition == SkillTriggerCondition.OnAttack &&
+                    skillInstance.currentCooldown <= 0)
+                {
+                    TryTriggerSkill(skillSO);
+                }
+            }
+        }
+
+        #endregion
     }
 }

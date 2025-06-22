@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -7,24 +5,26 @@ namespace KidGame.Core
     public class CameraController : MonoBehaviour
     {
         public Transform Player;
+        public float smoothSpeed = 5f;
 
-        private Vector3 originalPos;
-        private Vector3 playerMovement;
+        private float initialDistance;
 
         private void Start()
         {
-            originalPos = Player.transform.position;
-        }
+            if (Player == null)
+                Player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        private void Update()
-        {
-            playerMovement = Player.transform.position - originalPos;
-            originalPos = Player.transform.position;
+            if (Player == null) return;
+            initialDistance = Vector3.Distance(transform.position, Player.position);
         }
 
         private void LateUpdate()
         {
-            transform.position += playerMovement;
+            if (Player == null) return;
+
+            Vector3 desiredPosition = Player.position - transform.forward * initialDistance;
+            
+            transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * smoothSpeed);
         }
     }
 }
