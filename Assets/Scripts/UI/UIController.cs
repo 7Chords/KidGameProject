@@ -12,6 +12,7 @@ namespace KidGame.UI.Game
         [SerializeField] private FakePlayerData fakePlayerData = null;
         [SerializeField] private Camera cam = null;
         [SerializeField] private Transform transformToFollow = null;
+        public Canvas uiCanvas =  null;
 
         private UIFrame uiFrame;
 
@@ -20,7 +21,7 @@ namespace KidGame.UI.Game
             base.Awake();
             
             uiFrame = defaultUISettings.CreateUIInstance();
-            
+            uiCanvas = uiFrame.GetComponent<Canvas>();
             Signals.Get<StartGameSignal>().AddListener(OnStartDemo);
             Signals.Get<ToSettingsWindowSignal>().AddListener(OnToSettingsWindow);
             Signals.Get<GamePauseSignal>().AddListener(OnShowPauseSelectPanel);
@@ -67,12 +68,12 @@ namespace KidGame.UI.Game
 
             switch (windowId)
             {
-                case ScreenIds.PlayerWindow:
-                    uiFrame.OpenWindow(windowId, new PlayerWindowProperties(fakePlayerData.LevelProgress));
+                case ScreenIds.SettingWindow:
+                    uiFrame.OpenWindow(windowId);
                     break;
-                case ScreenIds.CameraProjectionWindow:
-                    transformToFollow.parent.gameObject.SetActive(true);
-                    uiFrame.OpenWindow(windowId, new CameraProjectionWindowProperties(cam, transformToFollow));
+                case ScreenIds.BackpackWindow:
+                    //uiFrame.OpenWindow(windowId);
+                    uiFrame.OpenWindow(windowId);
                     break;
                 default:
                     uiFrame.OpenWindow(windowId);

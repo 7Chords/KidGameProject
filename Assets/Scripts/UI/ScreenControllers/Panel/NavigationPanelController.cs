@@ -4,6 +4,7 @@ using KidGame.UI;
 using KidGame.UI.Game;
 using Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class NavigationPanelEntry
@@ -69,6 +70,7 @@ public class NavigationPanelController : PanelController
         // 默认选中第一个按钮
         OnNavigationButtonClicked(currentButtons[0]);
         templateButton.gameObject.SetActive(false);
+        UIController.Instance.uiCanvas.GetComponent<GraphicRaycaster>().enabled = true;
     }
 
     private void OnNavigationButtonClicked(NavigationPanelButton currentlyClickedButton)

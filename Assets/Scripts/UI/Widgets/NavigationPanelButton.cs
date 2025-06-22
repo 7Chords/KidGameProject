@@ -49,6 +49,7 @@ namespace KidGame.UI.Game
         
         public void UI_Click() {
             if (ButtonClicked != null) {
+                Debug.Log("12121");
                 ButtonClicked(this);
             }
         }
