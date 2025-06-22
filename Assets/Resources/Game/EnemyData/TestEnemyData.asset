@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50bd88fd18ee401e8674be5a3b99493, type: 3}
   m_Name: TestEnemyData
   m_EditorClassIdentifier: 
+  EnemyId: 
   EnemyName: ghost
   MaxSanity: 100
   MoveSpeed: 2
   Resistance: 0.5
   VisionRange: 8
   HearingRange: 4
+  activeSkills:
+  - {fileID: 11400000, guid: ad1b238d39336436688d071fd6a0b202, type: 2}
+  passiveSkills: []

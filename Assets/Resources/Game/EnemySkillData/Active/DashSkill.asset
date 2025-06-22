@@ -9,9 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32f9fce875d904defa5117bbcdaedc2b, type: 3}
-  m_Name: TestPassiveSkill
+  m_Script: {fileID: 11500000, guid: 187e5e677c835468c993a245a4505fd3, type: 3}
+  m_Name: DashSkill
   m_EditorClassIdentifier: 
-  skillId: 0
-  skillName: 
+  skillId: 
+  skillName: "\u51B2\u523A"
   skillDescription: 
+  triggerCondition: 0
+  cooldown: 10
+  triggerRange: 1
+  healthThreshold: 0.3
+  timerInterval: 0
+  dashSpeedMultiplier: 5
+  dashDuration: 6

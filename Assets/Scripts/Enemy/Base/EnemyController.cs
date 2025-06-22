@@ -21,6 +21,12 @@ namespace KidGame.Core
 
         private BuffHandler enemyBuffHandler;
 
+        #region 有目的搜索
+
+        public string _currentTargetItemId;
+        
+        #endregion
+        
         #region 理智变量
 
         private int _currentHealth;
@@ -28,8 +34,7 @@ namespace KidGame.Core
         #endregion
 
         #region 巡逻
-
-        // 巡逻状态需要的临时变量
+        
         [HideInInspector] public int CurrentPatrolIndex;
         [HideInInspector] public float PatrolTimer;
         public Transform Player => player;
@@ -142,6 +147,8 @@ namespace KidGame.Core
                     return stateMachine.ChangeState<EnemyPatrolState>((int)newState);
                 case EnemyState.Attack:
                     return stateMachine.ChangeState<EnemyAttackState>((int)newState);
+                case EnemyState.SearchTargetRoom:
+                    return stateMachine.ChangeState<EnemySearchTargetRoomState>((int)newState);
                 default:
                     return false;
             }
