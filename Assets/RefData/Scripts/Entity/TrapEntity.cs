@@ -19,8 +19,8 @@ public class TrapEnitiy
 }
 public enum trapType
 {
-    主动触发,
-    被动触发,
-    定时,
-    混合
+    initiative,
+    passive,
+    timing,
+    mix
 }
