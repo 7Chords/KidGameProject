@@ -122,38 +122,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &409529137
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 409529138}
-  m_Layer: 0
-  m_Name: MapGeneratePoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &409529138
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 409529137}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1529857602}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1160709028
+--- !u!84 &332627250
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,6 +160,37 @@ RenderTexture:
   m_Dimension: 2
   m_VolumeDepth: 1
   m_ShadowSamplingMode: 2
+--- !u!1 &409529137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 409529138}
+  m_Layer: 0
+  m_Name: MapGeneratePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &409529138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409529137}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1529857602}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1212203885
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,6 +276,7 @@ MonoBehaviour:
   fakePlayerData: {fileID: 11400000, guid: c3df7728a16d6e643b12a51a42b3d074, type: 2}
   cam: {fileID: 0}
   transformToFollow: {fileID: 0}
+  uiCanvas: {fileID: 0}
 --- !u!1 &1378303217
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +407,6 @@ GameObject:
   - component: {fileID: 1406033294}
   - component: {fileID: 1406033295}
   - component: {fileID: 1406033296}
-  - component: {fileID: 1406033297}
   m_Layer: 0
   m_Name: '###MANAGERS###'
   m_TagString: Untagged
@@ -476,25 +476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660035ab3de3f1f4d9242bc9953dea53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1406033297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1406033292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a69475b9b1e2d460a981c2f2057ab2cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bgmAudioInfoList: []
-  sfxAudioInfoList: []
-  mainVolumeFactor: 0
-  bgmVolumeFactor: 0
-  sfxVolumeFactor: 0
-  audioDatas: {fileID: 11400000, guid: b6a64427a303141a8bcdc8e1d81c0d6e, type: 2}
-  audioMixer: {fileID: 24100000, guid: 15c89fc4d2f3c48df881326d98f3ec05, type: 2}
 --- !u!1 &1529857601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,7 +1139,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1160709028}
+      objectReference: {fileID: 332627250}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size

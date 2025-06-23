@@ -24,7 +24,7 @@ namespace KidGame.UI.Game
     {
         public void UI_Start()
         {
-            SceneLoader.Instance.LoadSceneWithTransition("GenerateMapTest",UIController.Instance.UICameraBindingVertexCamera);
+            SceneLoader.Instance.LoadSceneWithTransition("GameScene",UIController.Instance.UICameraBindingVertexCamera);
             Signals.Get<StartGameSignal>().Dispatch();
             Hide();
         }
