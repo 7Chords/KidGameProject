@@ -16,6 +16,15 @@ namespace KidGame.UI
 
         private Tweener _tweener;
 
+        private RectTransform rectTran;
+
+        Vector3 worldCenterPos;
+        Vector2 screenPos;
+
+        private void Awake()
+        {
+            rectTran = GetComponent<RectTransform>();
+        }
         public void Init(BubbleInfo info, string key)
         {
             go_1 = info.go_1;
@@ -27,7 +36,7 @@ namespace KidGame.UI
             transform.DOScale(Vector3.one, 0.2f);
 
             //TODO:设置父物体
-            //transform.parent = GameObject.FindWithTag("BubbleManager").transform;
+            transform.parent = transform;
         }
 
         private void Update()
@@ -45,8 +54,9 @@ namespace KidGame.UI
         /// <param name="obj2"></param>
         public void SetPosition(GameObject obj1, GameObject obj2)
         {
-            Vector3 pos = (obj1.transform.position + obj2.transform.position) / 2;
-            transform.position = Camera.main.WorldToScreenPoint(pos);
+            worldCenterPos = (obj1.transform.position + obj2.transform.position) / 2;
+            screenPos = Camera.main.WorldToScreenPoint(worldCenterPos);
+            rectTran.transform.localPosition = ScreenPointToUIPoint(rectTran, screenPos);
         }
 
         public void DestoryBubble()
@@ -59,6 +69,16 @@ namespace KidGame.UI
         {
             yield return _tweener.WaitForCompletion();
             Destroy(gameObject);
+        }
+
+        // 屏幕坐标转换为 UGUI 坐标
+        public Vector3 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
+        {
+            Vector3 uiLocalPos;
+            //TODO:应该有个ui相机才对
+            Camera uiCamera = Camera.main;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(rt, screenPoint, uiCamera, out uiLocalPos);
+            return uiLocalPos;
         }
     }
 }

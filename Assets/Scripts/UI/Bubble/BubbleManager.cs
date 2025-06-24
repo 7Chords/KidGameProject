@@ -11,6 +11,16 @@ namespace KidGame.UI
         public string myControlType; //控制类型：键盘/手柄
 
         public string inputActionName; //提示操作的inputaction的名字
+
+        public BubbleInfo(string myControlType, string inputActionName, GameObject go_1, GameObject go_2, string content)
+        {
+            this.myControlType = myControlType;
+            this.inputActionName = inputActionName;
+            this.go_1 = go_1;
+            this.go_2 = go_2;
+            this.content = content;
+        }
+
         public GameObject go_1 { get; set; }
         public GameObject go_2 { get; set; }
         public string content { get; set; } //文本
@@ -19,7 +29,7 @@ namespace KidGame.UI
     /// <summary>
     /// 气泡管理器
     /// </summary>
-    public class BubbleManager : MonoBehaviour
+    public class BubbleManager : Singleton<BubbleManager>
     {
         public GameObject BubblePrefab; // 气泡的预制体
 
@@ -37,6 +47,10 @@ namespace KidGame.UI
             onBubbleCreated -= CreateBubble;
         }
 
+        /// <summary>
+        /// 创建气泡 需要完善 是否有多个气泡同时存在的情况？
+        /// </summary>
+        /// <param name="info"></param>
         public void CreateBubble(BubbleInfo info)
         {
             // 销毁已有的气泡
@@ -48,6 +62,7 @@ namespace KidGame.UI
             // 实例化气泡
             currentBubble = Instantiate(BubblePrefab);
             UIBubbleItem bubbleItem = currentBubble.GetComponent<UIBubbleItem>();
+            currentBubble.transform.parent = transform;
 
             string keyStr = "";
             if (bubbleItem != null)

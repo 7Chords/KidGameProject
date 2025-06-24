@@ -1,4 +1,5 @@
 using KidGame.Interface;
+using KidGame.UI;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -23,6 +24,8 @@ namespace KidGame.Core
                 player.AddIRecyclableToList(other.gameObject.GetComponent<IRecyclable>(),
                     Vector3.Distance(other.gameObject.transform.position, player.transform.position));
             }
+            BubbleManager.Instance.CreateBubble(new BubbleInfo("Keyboard", "Interaction",
+                player.gameObject, player.gameObject, "½»»¥"));
         }
 
         private void OnTriggerExit(Collider other)
@@ -34,6 +37,7 @@ namespace KidGame.Core
             {
                 player.RemoveRecyclableFromList(other.gameObject.GetComponent<IRecyclable>());
             }
+            BubbleManager.Instance.DestroyBubble();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using KidGame.Core;
+using KidGame.UI;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -23,6 +24,7 @@ namespace KidGame.Core
                 // ÇÐ»»×´Ì¬
                 player.ChangeState(PlayerState.Move);
             }
+            
         }
 
 

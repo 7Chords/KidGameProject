@@ -23,12 +23,6 @@ namespace KidGame.Core
 
         #endregion
 
-        //[Header("´¥Ã½·ÅÖÃ·¶Î§")]
-        //[SerializeField] protected Collider _catalystPutCollider;
-
-        //[Header("ÏİÚå×÷ÓÃ·¶Î§")]
-        //[SerializeField] protected Collider _trapEffectCollider;
-
         private CatalystBase _catalyst;
 
         /// <summary>
