@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace KidGame.UI
@@ -36,6 +37,7 @@ namespace KidGame.UI
         private GameObject currentBubble;
 
         public event Action<BubbleInfo> onBubbleCreated;
+
 
         public void Init()
         {
