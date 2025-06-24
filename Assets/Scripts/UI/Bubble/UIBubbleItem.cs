@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,16 +7,16 @@ namespace KidGame.UI
 {
     public class UIBubbleItem : MonoBehaviour
     {
-        public Text ContentText;//提示的内容，如：“使用/投掷/触发”
-        public Image ContentImage;//提示的图片（暂时没用）
-        public Text KeyText;//提示的键位
+        public Text ContentText; //提示的内容，如：“使用/投掷/触发”
+        public Image ContentImage; //提示的图片（暂时没用）
+        public Text KeyText; //提示的键位
 
         private GameObject go_1;
         private GameObject go_2;
 
         private Tweener _tweener;
 
-        public void Init(BubbleInfo info,string key)
+        public void Init(BubbleInfo info, string key)
         {
             go_1 = info.go_1;
             go_2 = info.go_2;
@@ -62,7 +61,4 @@ namespace KidGame.UI
             Destroy(gameObject);
         }
     }
-
-
-
 }

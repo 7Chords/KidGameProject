@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace KidGame.UI
 {
@@ -11,12 +8,12 @@ namespace KidGame.UI
     /// </summary>
     public class BubbleInfo
     {
-        public string myControlType;//控制类型：键盘/手柄
+        public string myControlType; //控制类型：键盘/手柄
 
-        public string inputActionName;//提示操作的inputaction的名字
+        public string inputActionName; //提示操作的inputaction的名字
         public GameObject go_1 { get; set; }
         public GameObject go_2 { get; set; }
-        public string content { get; set; }//文本
+        public string content { get; set; } //文本
     }
 
     /// <summary>
@@ -29,14 +26,17 @@ namespace KidGame.UI
         private GameObject currentBubble;
 
         public event Action<BubbleInfo> onBubbleCreated;
+
         public void Init()
         {
             onBubbleCreated += CreateBubble;
         }
+
         public void Discard()
         {
             onBubbleCreated -= CreateBubble;
         }
+
         public void CreateBubble(BubbleInfo info)
         {
             // 销毁已有的气泡
@@ -44,6 +44,7 @@ namespace KidGame.UI
             {
                 Destroy(currentBubble);
             }
+
             // 实例化气泡
             currentBubble = Instantiate(BubblePrefab);
             UIBubbleItem bubbleItem = currentBubble.GetComponent<UIBubbleItem>();
@@ -51,7 +52,7 @@ namespace KidGame.UI
             string keyStr = "";
             if (bubbleItem != null)
             {
-                if (info.myControlType == "Keyboard")//键盘
+                if (info.myControlType == "Keyboard") //键盘
                 {
                     switch (info.inputActionName)
                     {
@@ -62,14 +63,14 @@ namespace KidGame.UI
                             keyStr = "R";
                             break;
                         case "Throw":
-                            keyStr = "鼠标右键";//有点长了 建议把所有的可能提示的键位都画示意图 用图片提示
+                            keyStr = "鼠标右键"; //有点长了 建议把所有的可能提示的键位都画示意图 用图片提示
                             break;
                         case "Use":
                             keyStr = "鼠标左键";
                             break;
                     }
                 }
-                else if (info.myControlType == "Gamepad")//手柄
+                else if (info.myControlType == "Gamepad") //手柄
                 {
                     switch (info.inputActionName)
                     {
@@ -87,7 +88,8 @@ namespace KidGame.UI
                             break;
                     }
                 }
-                bubbleItem.Init(info,keyStr); // 初始化气泡
+
+                bubbleItem.Init(info, keyStr); // 初始化气泡
             }
         }
 
