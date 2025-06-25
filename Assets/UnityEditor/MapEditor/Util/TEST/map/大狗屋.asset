@@ -1196,6 +1196,28 @@ MonoBehaviour:
     stackLayer: 1
   - wallData: {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}
     mapPosList:
+    - x: 0
+      y: 5
+    - x: 1
+      y: 5
+    - x: 2
+      y: 5
+    - x: 3
+      y: 5
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}
+    mapPosList:
+    - x: 6
+      y: 5
+    - x: 7
+      y: 5
+    - x: 8
+      y: 5
+    - x: 9
+      y: 5
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}
+    mapPosList:
     - x: 10
       y: 0
     - x: 11
@@ -1289,23 +1311,3 @@ MonoBehaviour:
     - x: 3
       y: 1
     roomType: 1
-  - furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
-    mapPosList:
-    - x: 4
-      y: 1
-    roomType: 0
-  - furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
-    mapPosList:
-    - x: 2
-      y: 2
-    roomType: 0
-  - furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
-    mapPosList:
-    - x: 2
-      y: 3
-    roomType: 0
-  - furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
-    mapPosList:
-    - x: 4
-      y: 2
-    roomType: 0

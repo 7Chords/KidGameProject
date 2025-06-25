@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 764525096021938302}
   - component: {fileID: 6583658633699506607}
   - component: {fileID: 2556957414072866441}
+  - component: {fileID: 3900183992154927367}
   - component: {fileID: 83527413327759375}
   m_Layer: 5
   m_Name: BubbleUI
@@ -187,7 +188,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7184288700282029711}
   - {fileID: 7877630497208673128}
@@ -237,6 +238,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3900183992154927367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944888077476667840}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5315946277ae4eafa9ef4ed52e42cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 0
 --- !u!114 &83527413327759375
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,13 +11,14 @@ namespace KidGame.UI
         public Image ContentImage; //提示的图片（暂时没用）
         public Text KeyText; //提示的键位
 
-        private GameObject creator;
-        private GameObject player;
+        private GameObject go_1;
+        private GameObject go_2;
 
         private Tweener _tweener;
 
         private RectTransform rectTran;
 
+        Vector3 worldCenterPos;
         Vector2 screenPos;
 
         private void Awake()
@@ -26,32 +27,36 @@ namespace KidGame.UI
         }
         public void Init(BubbleInfo info, string key)
         {
-            creator = info.creator;
-            player = info.player;
+            go_1 = info.go_1;
+            go_2 = info.go_2;
             ContentText.text = info.content;
             KeyText.text = key;
 
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one, 0.2f);
+
+            //TODO:设置父物体
+            transform.parent = transform;
         }
 
         private void Update()
         {
-            if (creator)
+            if (go_1 && go_2)
             {
-                SetPosition(creator);
+                SetPosition(go_1, go_2);
             }
         }
 
         /// <summary>
         /// 在玩家和需要交互的物品的位置间设置该气泡
         /// </summary>
-        /// <param name="creator"></param>
-        public void SetPosition(GameObject creator)
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        public void SetPosition(GameObject obj1, GameObject obj2)
         {
-            screenPos = Camera.main.WorldToScreenPoint(creator.transform.position) *(1080f/300);
-            // 转换为 UI 本地坐标
-            rectTran.localPosition = ScreenPointToUIPoint(rectTran, screenPos);
+            worldCenterPos = (obj1.transform.position + obj2.transform.position) / 2;
+            screenPos = Camera.main.WorldToScreenPoint(worldCenterPos);
+            rectTran.transform.localPosition = ScreenPointToUIPoint(rectTran, screenPos);
         }
 
         public void DestoryBubble()
@@ -67,16 +72,13 @@ namespace KidGame.UI
         }
 
         // 屏幕坐标转换为 UGUI 坐标
-        public Vector2 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
+        public Vector3 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
         {
-            Vector2 localPoint;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                rt.parent as RectTransform,
-                screenPoint,
-                null,
-                out localPoint
-            );
-            return localPoint;
+            Vector3 uiLocalPos;
+            //TODO:应该有个ui相机才对
+            Camera uiCamera = Camera.main;
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(rt, screenPoint, uiCamera, out uiLocalPos);
+            return uiLocalPos;
         }
     }
 }
