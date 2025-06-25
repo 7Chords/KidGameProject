@@ -150,6 +150,33 @@ namespace KidGame.Core
         }
 
         #endregion
+
+        #region 功能性
+        /// <summary>
+        /// 获取设置的键位
+        /// </summary>
+        /// <param name="actionName">动作名称</param>
+        /// <param name="controlScheme">控制方案名称，默认为当前激活的方案</param>
+        /// <param name="bindingIndex">绑定索引，默认为第一个绑定</param>
+        /// <returns>格式化后的键位显示字符串</returns>
+        public string GetSettingKey(string actionName, int controlTypeIndex)
+        {
+            if (inputActionAsset == null)
+            {
+                Debug.LogError("InputActionAsset未初始化");
+                return string.Empty;
+            }
+
+            var action = inputActionAsset.FindAction(actionName);
+            if (action == null)
+            {
+                Debug.LogError($"未找到名为 '{actionName}' 的动作");
+                return string.Empty;
+            }
+
+            return action.bindings[controlTypeIndex].ToDisplayString();
+        }
+        #endregion
     }
 }
 

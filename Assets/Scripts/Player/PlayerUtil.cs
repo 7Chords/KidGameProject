@@ -36,7 +36,6 @@ namespace KidGame.Core
 
         #endregion
 
-
         #region 注册和反注册
 
 
@@ -50,6 +49,20 @@ namespace KidGame.Core
             this.onPlayerPickItem -= onPlayerPickItem;
         }
 
+        #endregion
+
+        #region 功能性
+
+        /// <summary>
+        /// 获取玩家设置的键位
+        /// </summary>
+        /// <param name="actionName">行为名</param>
+        /// <param name="controlType">控制类型</param>
+        /// <returns></returns>
+        public string GetSettingKey(string actionName,ControlType controlType)
+        {
+            return inputSettings.GetSettingKey(actionName, (int)controlType);
+        }
         #endregion
     }
 }

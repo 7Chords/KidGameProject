@@ -24,8 +24,8 @@ namespace KidGame.Core
                 player.AddIRecyclableToList(other.gameObject.GetComponent<IRecyclable>(),
                     Vector3.Distance(other.gameObject.transform.position, player.transform.position));
             }
-            BubbleManager.Instance.CreateBubble(new BubbleInfo("Keyboard", "Interaction",
-                player.gameObject, player.gameObject, "½»»¥"));
+            BubbleManager.Instance.AddBubbleInfoToList(new BubbleInfo(ControlType.Keyborad, "Interaction",
+                other.gameObject, player.gameObject,"½»»¥"));
         }
 
         private void OnTriggerExit(Collider other)
@@ -37,7 +37,8 @@ namespace KidGame.Core
             {
                 player.RemoveRecyclableFromList(other.gameObject.GetComponent<IRecyclable>());
             }
-            BubbleManager.Instance.DestroyBubble();
+            BubbleManager.Instance.RemoveBubbleInfoFromList(new BubbleInfo(ControlType.Keyborad, "Interaction",
+                other.gameObject, player.gameObject, "½»»¥"));
         }
     }
 }
