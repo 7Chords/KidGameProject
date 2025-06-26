@@ -35,7 +35,7 @@ namespace KidGame.UI
             transform.DOScale(Vector3.one, 0.2f);
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (creator)
             {

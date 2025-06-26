@@ -159,7 +159,7 @@ namespace KidGame.Core
         /// <param name="controlScheme">控制方案名称，默认为当前激活的方案</param>
         /// <param name="bindingIndex">绑定索引，默认为第一个绑定</param>
         /// <returns>格式化后的键位显示字符串</returns>
-        public string GetSettingKey(string actionName, int controlTypeIndex)
+        public string GetSettingKey(InputActionType actionType, int controlTypeIndex)
         {
             if (inputActionAsset == null)
             {
@@ -167,10 +167,10 @@ namespace KidGame.Core
                 return string.Empty;
             }
 
-            var action = inputActionAsset.FindAction(actionName);
+            var action = inputActionAsset.FindAction(actionType.ToString());
             if (action == null)
             {
-                Debug.LogError($"未找到名为 '{actionName}' 的动作");
+                Debug.LogError($"未找到名为 '{actionType}' 的动作");
                 return string.Empty;
             }
 

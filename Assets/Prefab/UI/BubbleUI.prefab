@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 59e5c9f46618345668cb007dfe6d8f01, type: 3}
-    m_FontSize: 14
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: "\u54C8\u54C8/\u54C8\u54C8"
 --- !u!1 &3018495931365365893
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: ER
 --- !u!1 &6944888077476667840
 GameObject:
   m_ObjectHideFlags: 0

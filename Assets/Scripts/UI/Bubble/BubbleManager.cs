@@ -13,15 +13,15 @@ namespace KidGame.UI
 
         public ControlType controlType; //控制类型：键盘/手柄
 
-        public string inputActionName; //提示操作的inputaction的名字，如”Interaction“
+        public List<InputActionType> actionTypeList;
         public GameObject creator { get; set; }//气泡创造者，如陷阱
         public GameObject player { get; set; }//玩家
         public string content { get; set; } //文本
 
-        public BubbleInfo(ControlType controlType, string inputActionName, GameObject creator, GameObject player, string content)
+        public BubbleInfo(ControlType controlType, List<InputActionType> actionTypeList, GameObject creator, GameObject player, string content)
         {
             this.controlType = controlType;
-            this.inputActionName = inputActionName;
+            this.actionTypeList = actionTypeList;
             this.creator = creator;
             this.player = player;
             this.content = content;
@@ -102,7 +102,11 @@ namespace KidGame.UI
             string keyStr = "";//按键提示文本
             if (bubbleItem != null)
             {
-                keyStr = PlayerUtil.Instance.GetSettingKey(tmpBubbleInfo.inputActionName, tmpBubbleInfo.controlType);
+                for(int i = 0;i< tmpBubbleInfo.actionTypeList.Count;i++)
+                {
+                    keyStr += PlayerUtil.Instance.GetSettingKey(tmpBubbleInfo.actionTypeList[i], tmpBubbleInfo.controlType);
+                    if(i< tmpBubbleInfo.actionTypeList.Count-1) keyStr += "/";
+                }
                 bubbleItem.Init(tmpBubbleInfo, keyStr); // 初始化气泡
             }
         }

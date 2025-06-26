@@ -59,9 +59,9 @@ namespace KidGame.Core
         /// <param name="actionName">行为名</param>
         /// <param name="controlType">控制类型</param>
         /// <returns></returns>
-        public string GetSettingKey(string actionName,ControlType controlType)
+        public string GetSettingKey(InputActionType actionType,ControlType controlType)
         {
-            return inputSettings.GetSettingKey(actionName, (int)controlType);
+            return inputSettings.GetSettingKey(actionType, (int)controlType);
         }
         #endregion
     }
