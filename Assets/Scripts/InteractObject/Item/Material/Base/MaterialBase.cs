@@ -1,4 +1,6 @@
 using KidGame.Core;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace KidGame.Core
 {
@@ -11,6 +13,7 @@ namespace KidGame.Core
         public MaterialData _materialData;
 
         public MaterialData materialData => _materialData;
+
         public override void InteractPositive()
         {
             if (_materialData == null) return;

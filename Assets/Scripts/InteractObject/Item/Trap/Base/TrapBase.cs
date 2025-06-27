@@ -1,5 +1,6 @@
 using KidGame.Core;
 using KidGame.Interface;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -10,10 +11,22 @@ namespace KidGame.Core
     /// </summary>
     public class TrapBase : MapItem,IRecyclable
     {
+        [SerializeField]
+        protected List<string> randomRecycleSfxList;
+        public List<string> RandomRecycleSfxList { get => randomRecycleSfxList; set { randomRecycleSfxList = value; } }
+
+        [SerializeField]
+        protected ParticleSystem recyclePartical;
+        public ParticleSystem RecyclePartical { get => recyclePartical; set { recyclePartical = value; } }
+
+        [Space(20)]
+
+
         //测试public
         public TrapData _trapData;
 
         public TrapData trapData => _trapData;
+
 
         #region 时间型陷阱相关参数
 
@@ -55,6 +68,15 @@ namespace KidGame.Core
             //判断陷阱是否有效
             if (!GetValidState()) return;
             PlayerController.Instance.RemoveInteractiveFromList(this);
+            //todo:播放音效和特效
+            if(RandomInteractSfxList != null && RandomInteractSfxList.Count>0)
+            {
+                AudioManager.Instance.PlaySfx(RandomInteractSfxList[Random.Range(0, RandomInteractSfxList.Count)]);
+            }
+            if(interactPartical != null)
+            {
+                Instantiate(interactPartical, transform.position, Quaternion.identity);
+            }
             Trigger();
         }
 
@@ -69,6 +91,15 @@ namespace KidGame.Core
             //判断陷阱是否有效
             if (!GetValidState()) return;
             PlayerController.Instance.RemoveInteractiveFromList(this);
+            //todo:播放音效和特效
+            if (RandomInteractSfxList != null && RandomInteractSfxList.Count > 0)
+            {
+                AudioManager.Instance.PlaySfx(RandomInteractSfxList[Random.Range(0, RandomInteractSfxList.Count)]);
+            }
+            if (interactPartical != null)
+            {
+                Instantiate(interactPartical, transform.position, Quaternion.identity);
+            }
             Trigger();
         }
 

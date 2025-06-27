@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KidGame.Interface;
+using UnityEngine.AI;
 
 namespace KidGame.Core
 {
@@ -11,15 +12,38 @@ namespace KidGame.Core
     [RequireComponent(typeof(Rigidbody))]
     public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable
     {
+        [SerializeField]
+        private List<string> randomDamgeSfxList;
+        public List<string> RandomDamgeSfxList { get => randomDamgeSfxList; set { randomDamgeSfxList = value; } }
+
+        [SerializeField]
+        private ParticleSystem damagePartical;
+        public ParticleSystem DamagePartical { get => damagePartical; set { damagePartical = value; } }
+
+
+
+
         [SerializeField] private EnemyBaseData enemyBaseData;
         public EnemyBaseData EnemyBaseData => enemyBaseData;
 
         private StateMachine stateMachine;
-        private Rigidbody rb;
-        public Rigidbody Rb => rb;
+
         private Transform player;
 
+
+
+        private Rigidbody rb;
+        public Rigidbody Rb => rb;
+
+        private Animator animator;
+        public Animator Animator => animator;
+
+        private NavMeshAgent agent;
+        public NavMeshAgent Agent => agent;
+
         private BuffHandler enemyBuffHandler;
+
+        private float distance2Player;
 
         #region 有目的搜索
 
@@ -51,6 +75,7 @@ namespace KidGame.Core
         private RoomType _currentRoomType;
         public RoomType CurrentRoomType => _currentRoomType;
 
+
         #endregion
 
         #region 技能
@@ -70,6 +95,8 @@ namespace KidGame.Core
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
+            animator = GetComponentInChildren<Animator>();
+            agent = GetComponent<NavMeshAgent>();
         }
 
         private void Start()
@@ -171,7 +198,7 @@ namespace KidGame.Core
             if (player == null) return false;
             Vector3 dir = player.position - transform.position;
             if (dir.magnitude > enemyBaseData.VisionRange) return false;
-
+            //TODO:加入扇形判断
             // 可以在这里添加射线检测，排除被遮挡的物体
             return true;
         }
@@ -312,6 +339,18 @@ namespace KidGame.Core
             }
         }
 
+        #endregion
+
+        #region 追击玩家
+
+        public bool ChasePlayer()
+        {
+            Vector3 dir = (player.position - transform.position).normalized;
+            Rb.velocity = dir * EnemyBaseData.MoveSpeed;
+            distance2Player = Vector3.Distance(player.position, transform.position);
+            if (distance2Player < EnemyBaseData.AttackRange) return true;
+            return false;
+        }
         #endregion
     }
 }

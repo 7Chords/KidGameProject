@@ -14,7 +14,10 @@ namespace KidGame.Core
         public float Resistance = 0.5f;
 
         public float VisionRange = 8f;
+        public float VisionAngle = 120f;
         public float HearingRange = 4f;
+
+        public float AttackRange = 0.5f;
         
         public List<ActiveSkillSO> activeSkills = new List<ActiveSkillSO>();
         public List<PassiveSkillSO> passiveSkills = new List<PassiveSkillSO>();

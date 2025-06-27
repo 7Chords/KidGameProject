@@ -10,11 +10,20 @@ namespace KidGame.Core
     /// </summary>
     public class PlayerController : Singleton<PlayerController>, IStateMachineOwner,IDamageable
     {
+        [SerializeField]
+        private List<string> randomDamgeSfxList;
+        public List<string> RandomDamgeSfxList { get => randomDamgeSfxList; set { randomDamgeSfxList = value; } }
+
+        [SerializeField]
+        private ParticleSystem damagePartical;
+        public ParticleSystem DamagePartical { get => damagePartical; set { damagePartical = value; } }
+
         private InputSettings inputSettings;
         public InputSettings InputSettings => inputSettings;
 
         private Rigidbody rb;
         public Rigidbody Rb => rb;
+
 
         public PlayerAnimator PlayerAnimator;
 

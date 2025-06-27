@@ -25,6 +25,14 @@ namespace KidGame.Core
 
         public List<MaterialItem> materialHoldList;
 
+        [SerializeField]
+        private List<string> randomInteractSfxList;
+        public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
+
+        [SerializeField]
+        private ParticleSystem interactPartical;
+        public ParticleSystem InteractPartical { get => interactPartical; set { interactPartical = value; } }
+
         private bool canInteract;
         public MapFurniture(MapFurnitureData data)
         {
