@@ -2,6 +2,7 @@ using KidGame.Core.Data;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace KidGame.Core
 {

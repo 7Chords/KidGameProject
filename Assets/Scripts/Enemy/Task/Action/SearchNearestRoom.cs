@@ -15,13 +15,16 @@ namespace KidGame.Core
 
         public override TaskStatus OnUpdate()
         {
-            if (agent.remainingDistance < 0.01f && agent.isStopped)
+            if (enemy.CheckArriveDestination())
             {
-                enemy.SetRoomCheckState(searchRoomType, true);
                 return TaskStatus.Success;
             }
             return TaskStatus.Running;
 
+        }
+        public override void OnEnd()
+        {
+            enemy.SetRoomCheckState(searchRoomType, true);
         }
     }
 

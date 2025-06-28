@@ -51,6 +51,8 @@ namespace KidGame.Core
 
         private List<RoomInfo> _roomsToCheck = new List<RoomInfo>();
 
+        private Vector3 targetPos;
+
         #region ÓÐÄ¿µÄËÑË÷
 
         public string _currentTargetItemId;
@@ -403,7 +405,7 @@ namespace KidGame.Core
         {
             _roomsToCheck.OrderBy(r => Vector3.Distance(transform.position, r.CenterWorldPosition))
                 .ToList();
-            Vector3 targetPos = Vector3.zero;
+            targetPos = Vector3.zero;
             RoomType nearestRoonType = RoomType.Corridor;
             foreach(var room in _roomsToCheck)
             {
@@ -415,6 +417,7 @@ namespace KidGame.Core
                 nearestRoonType = room.RoomType;
                 break;
             }
+            Debug.Log(nearestRoonType);
             Agent.speed = enemyBaseData.MoveSpeed;
             Agent.SetDestination(targetPos);
             return nearestRoonType;
@@ -429,6 +432,11 @@ namespace KidGame.Core
         public void SetRoomCheckState(RoomType roomType,bool state)
         {
             roomSearchStateDic[roomType] = state;
+        }
+
+        public bool CheckArriveDestination()
+        {
+            return Vector3.Distance(transform.position, targetPos) < 0.5f;
         }
     }
 }
