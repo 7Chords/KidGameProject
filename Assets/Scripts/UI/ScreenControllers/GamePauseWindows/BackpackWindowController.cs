@@ -32,7 +32,10 @@ public class BackpackWindowController : WindowController
         scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count,OnCellUpdate,null);
         
     }
-
+    protected override void WhileHiding()
+    {
+        OnHideItemDetail();
+    }
     protected override void OnDestroy()
     {
         base.OnDestroy();
@@ -67,7 +70,7 @@ public class BackpackWindowController : WindowController
         // 设置详细描述面板的位置
         detailPanel.GetComponent<RectTransform>().anchoredPosition = localMousePosition;*/
         
-        detailPanel.transform.position = cellUI.transform.position + new Vector3(1.5f, -1.5f, 0f);
+        detailPanel.transform.position = cellUI.transform.position + new Vector3(1.7f, -1.7f, 0f);
         detailText.text = cellUI.detailText;
         detailPanel.SetActive(true);
     }
