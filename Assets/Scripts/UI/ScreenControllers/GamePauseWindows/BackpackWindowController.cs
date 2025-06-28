@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class BackpackWindowController : WindowController
 {
-    private GameObject playerModelPoint;
-    
+    private UICircularScrollView scrollView;
     protected override void Awake()
     {
         base.Awake();
         
+    }
+
+    protected override void OnPropertiesSet() {
+        scrollView = gameObject.GetComponentInChildren<UICircularScrollView>();
+        scrollView.Init(100,null,null);
     }
 }
