@@ -1,16 +1,16 @@
-using System;
+ï»¿using System;
 using KidGame.Interface;
 
 namespace KidGame.Core
 {
     /// <summary>
-    /// Íæ¼ÒÊÂ¼þÖÐÐÄ
+    /// ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public class PlayerUtil : Singleton<PlayerUtil>
     {
         private InputSettings inputSettings;
 
-        //Íæ¼Ò¼ñµ½³¡¾°ÎïÆ·£¨ÏÝÚåºÍµÀ¾ß£©µÄÊÂ¼þ
+        //ï¿½ï¿½Ò¼ñµ½³ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         private Action<IPickable> onPlayerPickItem;
 
         protected override void Awake()
@@ -27,7 +27,7 @@ namespace KidGame.Core
         {
         }
 
-        #region ºô½ÐÊÂ¼þ
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 
         public void CallPlayerPickItem(IPickable iPickable)
         {
@@ -36,8 +36,7 @@ namespace KidGame.Core
 
         #endregion
 
-
-        #region ×¢²áºÍ·´×¢²á
+        #region ×¢ï¿½ï¿½Í·ï¿½×¢ï¿½ï¿½
 
 
         public void RegPlayerPickItem(Action<IPickable> onPlayerPickItem)
@@ -50,6 +49,20 @@ namespace KidGame.Core
             this.onPlayerPickItem -= onPlayerPickItem;
         }
 
+        #endregion
+
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+        /// <summary>
+        /// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÃµÄ¼ï¿½Î»
+        /// </summary>
+        /// <param name="actionName">ï¿½ï¿½Îªï¿½ï¿½</param>
+        /// <param name="controlType">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+        /// <returns></returns>
+        public string GetSettingKey(InputActionType actionType, ControlType controlType)
+        {
+            return inputSettings.GetSettingKey(actionType, (int)controlType);
+        }
         #endregion
     }
 }

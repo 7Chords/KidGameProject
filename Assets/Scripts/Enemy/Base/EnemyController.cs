@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using KidGame.Interface;
 using UnityEngine.AI;
+using BehaviorDesigner.Runtime;
+using System.Linq;
 
 namespace KidGame.Core
 {
     /// <summary>
-    /// 管理敌人逻辑、状态机以及感知判断
+    /// 封装敌人相关变量与方法
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable
@@ -26,7 +28,7 @@ namespace KidGame.Core
         [SerializeField] private EnemyBaseData enemyBaseData;
         public EnemyBaseData EnemyBaseData => enemyBaseData;
 
-        private StateMachine stateMachine;
+        //private StateMachine stateMachine;
 
         private Transform player;
 
@@ -43,7 +45,11 @@ namespace KidGame.Core
 
         private BuffHandler enemyBuffHandler;
 
-        private float distance2Player;
+        private BehaviorTree behaviorTree;
+
+        private Dictionary<RoomType, bool> roomSearchStateDic;//房间搜索情况字典
+
+        private List<RoomInfo> _roomsToCheck = new List<RoomInfo>();
 
         #region 有目的搜索
 
@@ -97,48 +103,9 @@ namespace KidGame.Core
             rb = GetComponent<Rigidbody>();
             animator = GetComponentInChildren<Animator>();
             agent = GetComponent<NavMeshAgent>();
+            behaviorTree = GetComponent<BehaviorTree>();
         }
 
-        private void Start()
-        {
-            // 初始化主动技能实例
-            foreach (var skillSO in enemyBaseData.activeSkills)
-            {
-                _activeSkillInstances.Add(new ActiveSkillInstance
-                {
-                    skillSO = skillSO,
-                    currentCooldown = 0f
-                });
-
-                // 处理定时触发技能
-                if (skillSO.triggerCondition == SkillTriggerCondition.OnTimer)
-                {
-                    StartCoroutine(TimerSkillRoutine(skillSO));
-                }
-
-                // 处理生成时触发技能
-                if (skillSO.triggerCondition == SkillTriggerCondition.OnSpawn)
-                {
-                    TryTriggerSkill(skillSO);
-                }
-            }
-
-            // 应用被动技能
-            foreach (var skillSO in enemyBaseData.passiveSkills)
-            {
-                skillSO.Apply(this);
-                _appliedPassiveSkills.Add(skillSO);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            // 移除所有被动技能效果
-            foreach (var skillSO in _appliedPassiveSkills)
-            {
-                skillSO.Remove(this);
-            }
-        }
 
         private void Update()
         {
@@ -151,43 +118,66 @@ namespace KidGame.Core
         {
             enemyBaseData = enemyData;
 
-            stateMachine = PoolManager.Instance.GetObject<StateMachine>();
-            stateMachine.Init(this);
+            //stateMachine = PoolManager.Instance.GetObject<StateMachine>();
+            //stateMachine.Init(this);
+            //ChangeState(EnemyState.Idle); // 初始状态
             player = FindObjectOfType<PlayerController>().gameObject.transform;
-            ChangeState(EnemyState.Idle); // 初始状态
 
             enemyBuffHandler = new BuffHandler();
             enemyBuffHandler.Init();
-        }
 
-        #endregion
-
-        #region 状态机包装
-
-        public bool ChangeState(EnemyState newState)
-        {
-            switch (newState)
+            List<RoomInfo> allRoomInfos = MapManager.Instance.GetAllRooms();
+            _roomsToCheck = allRoomInfos
+                .OrderBy(r => Vector3.Distance(transform.position, r.CenterWorldPosition))
+                .ToList();
+            roomSearchStateDic = new Dictionary<RoomType, bool>();
+            foreach(var info in allRoomInfos)
             {
-                case EnemyState.Idle:
-                    return stateMachine.ChangeState<EnemyIdleState>((int)newState);
-                case EnemyState.Patrol:
-                    return stateMachine.ChangeState<EnemyPatrolState>((int)newState);
-                case EnemyState.Attack:
-                    return stateMachine.ChangeState<EnemyAttackState>((int)newState);
-                case EnemyState.SearchTargetRoom:
-                    return stateMachine.ChangeState<EnemySearchTargetRoomState>((int)newState);
-                default:
-                    return false;
+                roomSearchStateDic.Add(info.RoomType, false);
             }
-        }
+            roomSearchStateDic[RoomType.Corridor] = true;
+            //InitSkills();
 
+
+            behaviorTree.Start();
+        }
         public void Discard()
         {
             //回收状态机
-            stateMachine.ObjectPushPool();
+            //stateMachine.ObjectPushPool();
 
             enemyBuffHandler.Discard();
+            //DiscardSkills();
+
+            behaviorTree.DisableBehavior();
+            behaviorTree = null;
+
+            _roomsToCheck.Clear();
+            _roomsToCheck = null;
+            roomSearchStateDic.Clear();
+            roomSearchStateDic = null;
         }
+        #endregion
+
+        #region 状态机包装(DELETE)
+
+        //public bool ChangeState(EnemyState newState)
+        //{
+        //    switch (newState)
+        //    {
+        //        case EnemyState.Idle:
+        //            return stateMachine.ChangeState<EnemyIdleState>((int)newState);
+        //        case EnemyState.Patrol:
+        //            return stateMachine.ChangeState<EnemyPatrolState>((int)newState);
+        //        case EnemyState.Attack:
+        //            return stateMachine.ChangeState<EnemyAttackState>((int)newState);
+        //        case EnemyState.SearchTargetRoom:
+        //            return stateMachine.ChangeState<EnemySearchTargetRoomState>((int)newState);
+        //        default:
+        //            return false;
+        //    }
+        //}
+
 
         #endregion
 
@@ -239,7 +229,46 @@ namespace KidGame.Core
         #endregion
 
         #region 技能
+        private void InitSkills()
+        {
+            // 初始化主动技能实例
+            foreach (var skillSO in enemyBaseData.activeSkills)
+            {
+                _activeSkillInstances.Add(new ActiveSkillInstance
+                {
+                    skillSO = skillSO,
+                    currentCooldown = 0f
+                });
 
+                // 处理定时触发技能
+                if (skillSO.triggerCondition == SkillTriggerCondition.OnTimer)
+                {
+                    StartCoroutine(TimerSkillRoutine(skillSO));
+                }
+
+                // 处理生成时触发技能
+                if (skillSO.triggerCondition == SkillTriggerCondition.OnSpawn)
+                {
+                    TryTriggerSkill(skillSO);
+                }
+            }
+
+            // 应用被动技能
+            foreach (var skillSO in enemyBaseData.passiveSkills)
+            {
+                skillSO.Apply(this);
+                _appliedPassiveSkills.Add(skillSO);
+            }
+        }
+
+        private void DiscardSkills()
+        {
+            // 移除所有被动技能效果
+            foreach (var skillSO in _appliedPassiveSkills)
+            {
+                skillSO.Remove(this);
+            }
+        }
         private void UpdateSkillCooldowns()
         {
             foreach (var skillInstance in _activeSkillInstances)
@@ -341,16 +370,65 @@ namespace KidGame.Core
 
         #endregion
 
-        #region 追击玩家
+        #region 行为树封装方法
 
-        public bool ChasePlayer()
+        /// <summary>
+        /// 追击玩家
+        /// </summary>
+        public void ChasePlayer()
         {
-            Vector3 dir = (player.position - transform.position).normalized;
-            Rb.velocity = dir * EnemyBaseData.MoveSpeed;
-            distance2Player = Vector3.Distance(player.position, transform.position);
-            if (distance2Player < EnemyBaseData.AttackRange) return true;
-            return false;
+            Agent.speed = enemyBaseData.ChaseSpeed;
+            Agent.SetDestination(player.transform.position);
         }
         #endregion
+
+        /// <summary>
+        /// 是否检查了所有的房间
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckAllRooms()
+        {
+            foreach(var pair in roomSearchStateDic)
+            {
+                Debug.Log(pair.Key + ":" + pair.Value);
+                if (pair.Value == false) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 去检查最近的未检查过的房间
+        /// </summary>
+        public RoomType GoNearestUnCheckRoom()
+        {
+            _roomsToCheck.OrderBy(r => Vector3.Distance(transform.position, r.CenterWorldPosition))
+                .ToList();
+            Vector3 targetPos = Vector3.zero;
+            RoomType nearestRoonType = RoomType.Corridor;
+            foreach(var room in _roomsToCheck)
+            {
+                if(roomSearchStateDic[room.RoomType])
+                {
+                    continue;
+                }
+                targetPos = room.CenterWorldPosition;
+                nearestRoonType = room.RoomType;
+                break;
+            }
+            Agent.speed = enemyBaseData.MoveSpeed;
+            Agent.SetDestination(targetPos);
+            return nearestRoonType;
+        }
+        public void ResetAllRoomsCheckState()
+        {
+            foreach(var key in roomSearchStateDic.Keys)
+            {
+                SetRoomCheckState(key, false);
+            }
+        }
+        public void SetRoomCheckState(RoomType roomType,bool state)
+        {
+            roomSearchStateDic[roomType] = state;
+        }
     }
 }

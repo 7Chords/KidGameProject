@@ -1,18 +1,29 @@
+using BehaviorDesigner.Runtime.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SearchNearestRoom : MonoBehaviour
+namespace KidGame.Core
 {
-    // Start is called before the first frame update
-    void Start()
+    public class SearchNearestRoom : BaseEnemyAction
     {
-        
+        private RoomType searchRoomType;
+        public override void OnStart()
+        {
+            searchRoomType = enemy.GoNearestUnCheckRoom();
+        }
+
+        public override TaskStatus OnUpdate()
+        {
+            if (agent.remainingDistance < 0.01f && agent.isStopped)
+            {
+                enemy.SetRoomCheckState(searchRoomType, true);
+                return TaskStatus.Success;
+            }
+            return TaskStatus.Running;
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using BehaviorDesigner.Runtime.Tasks;
 
-public class CheckAllRooms : MonoBehaviour
+
+
+namespace KidGame.Core
 {
-    // Start is called before the first frame update
-    void Start()
+    public class CheckAllRooms : BaseEnemyConditional
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+        public override TaskStatus OnUpdate()
+        {
+            if (enemy.CheckAllRooms()) return TaskStatus.Success;
+            return TaskStatus.Failure;
+        }
     }
 }

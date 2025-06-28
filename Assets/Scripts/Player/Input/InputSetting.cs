@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace KidGame.Core
 {
     /// <summary>
-    /// ÊäÈëÊý¾ÝÔ¤´¦Àí
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public class InputSettings : MonoBehaviour
     {
@@ -21,7 +21,7 @@ namespace KidGame.Core
         private InputAction recycleAction;
         private InputAction mouseWheelAction;
 
-        // ËùÓÐÊäÈëÊÂ¼þ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         public event Action OnInteractionPress;
         public event Action OnDashPress;
         public event Action OnRunPress;
@@ -38,7 +38,7 @@ namespace KidGame.Core
                 playerInput = GetComponent<PlayerInput>();
                 inputActionAsset = playerInput.actions;
 
-                // »ñÈ¡ËùÓÐÊäÈë¶¯×÷
+                // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¶¯ï¿½ï¿½
                 moveAction = inputActionAsset.FindAction("Move");
                 interactionAction = inputActionAsset.FindAction("Interaction");
                 dashAction = inputActionAsset.FindAction("Dash");
@@ -48,7 +48,7 @@ namespace KidGame.Core
                 bagAction = inputActionAsset.FindAction("Bag");
                 recycleAction = inputActionAsset.FindAction("Recycle");
                 mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
-                // °ó¶¨ËùÓÐÊäÈëÊÂ¼þ
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
                 interactionAction.performed += OnInteractionActionPerformed;
                 dashAction.performed += OnDashActionPerformed;
                 runAction.performed += OnRunActionPerformed;
@@ -60,14 +60,14 @@ namespace KidGame.Core
             }
             catch (Exception e)
             {
-                Debug.LogWarning("ÎÞ·¨»ñÈ¡ÊäÈëÅäÖÃÎÄ¼þ" + e);
+                Debug.LogWarning("ï¿½Þ·ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½" + e);
                 throw;
             }
         }
 
         private void OnDestroy()
         {
-            // ½â°óËùÓÐÊäÈëÊÂ¼þ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
             interactionAction.performed -= OnInteractionActionPerformed;
             dashAction.performed -= OnDashActionPerformed;
             runAction.performed -= OnRunActionPerformed;
@@ -79,7 +79,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// »ñÈ¡ÒÆ¶¯ÊäÈëÖ¸Ïò
+        /// ï¿½ï¿½È¡ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
         /// </summary>
         public Vector2 MoveDir()
         {
@@ -88,13 +88,13 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// Êó±ê¹öÂÖÖµ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
         /// </summary>
         /// <returns></returns>
         public float MouseWheelValue()
         {
             float val = mouseWheelAction.ReadValue<float>();
-            //inputactionÃæ°åÖÐÒÑ¾­ÏÞÖÆÁË·¶Î§[-1,1]
+            //inputactionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë·ï¿½Î§[-1,1]
             return val;
         }
 
@@ -107,7 +107,7 @@ namespace KidGame.Core
         public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
         public virtual bool GetRecycleDown() => recycleAction.WasPerformedThisFrame();
 
-        #region ÊäÈëÊÂ¼þ´¦Àí
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
 
         private void OnInteractionActionPerformed(InputAction.CallbackContext context)
         {
@@ -149,6 +149,33 @@ namespace KidGame.Core
             OnRecyclePress?.Invoke();
         }
 
+        #endregion
+
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        /// <summary>
+        /// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÃµÄ¼ï¿½Î»
+        /// </summary>
+        /// <param name="actionName">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+        /// <param name="controlScheme">ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½Ä¬ï¿½ï¿½Îªï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½</param>
+        /// <param name="bindingIndex">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½</param>
+        /// <returns>ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Î»ï¿½ï¿½Ê¾ï¿½Ö·ï¿½ï¿½ï¿½</returns>
+        public string GetSettingKey(InputActionType actionType, int controlTypeIndex)
+        {
+            if (inputActionAsset == null)
+            {
+                Debug.LogError("InputActionAssetÎ´ï¿½ï¿½Ê¼ï¿½ï¿½");
+                return string.Empty;
+            }
+
+            var action = inputActionAsset.FindAction(actionType.ToString());
+            if (action == null)
+            {
+                Debug.LogError($"Î´ï¿½Òµï¿½ï¿½ï¿½Îª '{actionType}' ï¿½Ä¶ï¿½ï¿½ï¿½");
+                return string.Empty;
+            }
+
+            return action.bindings[controlTypeIndex].ToDisplayString();
+        }
         #endregion
     }
 }

@@ -77,6 +77,7 @@ namespace KidGame.Core
             {
                 Instantiate(interactPartical, transform.position, Quaternion.identity);
             }
+            RemoveFormPlayerUsingList();
             Trigger();
         }
 
@@ -100,18 +101,19 @@ namespace KidGame.Core
             {
                 Instantiate(interactPartical, transform.position, Quaternion.identity);
             }
+            RemoveFormPlayerUsingList();
             Trigger();
         }
 
         public override void Pick()
         {
+            RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
         }
 
         public virtual void Recycle()
         {
-            PlayerController.Instance.RemoveInteractiveFromList(this);
-            PlayerController.Instance.RemoveRecyclableFromList(this);
+            RemoveFormPlayerUsingList();
             Pick();
         }
 
@@ -169,12 +171,11 @@ namespace KidGame.Core
 
         #endregion
 
-        #region Gizom
 
-        private void OnDrawGizmos()
+        private void RemoveFormPlayerUsingList()
         {
+            PlayerController.Instance.RemoveInteractiveFromList(this);
+            PlayerController.Instance.RemoveRecyclableFromList(this);
         }
-
-        #endregion
     }
 }

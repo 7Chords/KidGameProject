@@ -11,6 +11,7 @@ namespace KidGame.Core
         public float MaxSanity = 100f;
 
         public float MoveSpeed = 2.0f;
+        public float ChaseSpeed = 3.0f;
         public float Resistance = 0.5f;
 
         public float VisionRange = 8f;

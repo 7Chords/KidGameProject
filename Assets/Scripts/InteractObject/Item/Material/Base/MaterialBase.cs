@@ -30,5 +30,6 @@ namespace KidGame.Core
             //TODO:工厂回收？
             Destroy(gameObject);
         }
+
     }
 }

@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using KidGame.Core.Data;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -130,6 +130,9 @@ namespace KidGame.Core
                     mapWallList.Add(mapWall);
                 }
             }
+            tileRoot.isStatic = true;
+            NavMeshSurface surface = tileRoot.AddComponent<NavMeshSurface>();
+            surface.BuildNavMesh();
         }
 
         private void BuildRoomLookup()

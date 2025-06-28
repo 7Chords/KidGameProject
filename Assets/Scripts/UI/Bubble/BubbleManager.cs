@@ -1,3 +1,4 @@
+ï»¿using KidGame.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,108 +6,108 @@ using UnityEngine;
 namespace KidGame.UI
 {
     /// <summary>
-    /// ÆøÅÝÐÅÏ¢
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
     /// </summary>
-    public class BubbleInfo
+    public class BubbleInfo : IComparable<BubbleInfo>
     {
-        public string myControlType; //¿ØÖÆÀàÐÍ£º¼üÅÌ/ÊÖ±ú
 
-        public string inputActionName; //ÌáÊ¾²Ù×÷µÄinputactionµÄÃû×Ö
+        public ControlType controlType; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Ö±ï¿½
 
-        public BubbleInfo(string myControlType, string inputActionName, GameObject go_1, GameObject go_2, string content)
+        public List<InputActionType> actionTypeList;
+        public GameObject creator { get; set; }//ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        public GameObject player { get; set; }//ï¿½ï¿½ï¿½
+        public string content { get; set; } //ï¿½Ä±ï¿½
+
+        public BubbleInfo(ControlType controlType, List<InputActionType> actionTypeList, GameObject creator, GameObject player, string content)
         {
-            this.myControlType = myControlType;
-            this.inputActionName = inputActionName;
-            this.go_1 = go_1;
-            this.go_2 = go_2;
+            this.controlType = controlType;
+            this.actionTypeList = actionTypeList;
+            this.creator = creator;
+            this.player = player;
             this.content = content;
         }
 
-        public GameObject go_1 { get; set; }
-        public GameObject go_2 { get; set; }
-        public string content { get; set; } //ÎÄ±¾
+        public int CompareTo(BubbleInfo other)//ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò£º¸ï¿½ï¿½Ýºï¿½ï¿½ï¿½ÒµÄ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        {
+            float myDist = Vector3.Distance(creator.transform.position, player.transform.position);
+            float otherDist = Vector3.Distance(other.creator.transform.position, other.player.transform.position);
+            if (myDist <= otherDist) return -1;
+            else return 1;
+        }
     }
 
     /// <summary>
-    /// ÆøÅÝ¹ÜÀíÆ÷
+    /// ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public class BubbleManager : Singleton<BubbleManager>
     {
-        public GameObject BubblePrefab; // ÆøÅÝµÄÔ¤ÖÆÌå
+        public GameObject BubblePrefab; // ï¿½ï¿½ï¿½Ýµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
 
-        private GameObject currentBubble;
+        private GameObject currentBubble;//ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        private BubbleInfo currentBubbleInfo;
 
-        public event Action<BubbleInfo> onBubbleCreated;
+        /// <summary>
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬Ê±Ö»ï¿½ï¿½ï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ä¶ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        /// </summary>
+        public List<BubbleInfo> bubbleInfoList;
 
 
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        private void Start()
+        {
+            Init();
+        }
         public void Init()
         {
-            onBubbleCreated += CreateBubble;
+            bubbleInfoList = new List<BubbleInfo>();
         }
-
         public void Discard()
         {
-            onBubbleCreated -= CreateBubble;
+            bubbleInfoList.Clear();
+            bubbleInfoList = null;
+        }
+
+
+        private void Update()
+        {
+            SortBubbleQueueByDist();
         }
 
         /// <summary>
-        /// ´´½¨ÆøÅÝ ÐèÒªÍêÉÆ ÊÇ·ñÓÐ¶à¸öÆøÅÝÍ¬Ê±´æÔÚµÄÇé¿ö£¿
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ ï¿½Ç·ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬Ê±ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="info"></param>
-        public void CreateBubble(BubbleInfo info)
+        private void RefreshBubble()
         {
-            // Ïú»ÙÒÑÓÐµÄÆøÅÝ
+            if (bubbleInfoList == null || bubbleInfoList.Count == 0) return;
+
+            //È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½bubbleinfo
+            BubbleInfo tmpBubbleInfo = bubbleInfoList[0];
+            //ï¿½ï¿½ï¿½Ú»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            if (currentBubbleInfo != null && tmpBubbleInfo.creator == currentBubbleInfo.creator) return;
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
             if (currentBubble != null)
             {
-                Destroy(currentBubble);
+                DestroyBubble();
             }
-
-            // ÊµÀý»¯ÆøÅÝ
+            //ï¿½ï¿½ï¿½Âµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+            currentBubbleInfo = tmpBubbleInfo;
+            // Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             currentBubble = Instantiate(BubblePrefab);
+
             UIBubbleItem bubbleItem = currentBubble.GetComponent<UIBubbleItem>();
             currentBubble.transform.parent = transform;
 
-            string keyStr = "";
+            string keyStr = "";//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ä±ï¿½
             if (bubbleItem != null)
             {
-                if (info.myControlType == "Keyboard") //¼üÅÌ
+                for (int i = 0; i < tmpBubbleInfo.actionTypeList.Count; i++)
                 {
-                    switch (info.inputActionName)
-                    {
-                        case "Interaction":
-                            keyStr = "E";
-                            break;
-                        case "Recycle":
-                            keyStr = "R";
-                            break;
-                        case "Throw":
-                            keyStr = "Êó±êÓÒ¼ü"; //ÓÐµã³¤ÁË ½¨Òé°ÑËùÓÐµÄ¿ÉÄÜÌáÊ¾µÄ¼üÎ»¶¼»­Ê¾ÒâÍ¼ ÓÃÍ¼Æ¬ÌáÊ¾
-                            break;
-                        case "Use":
-                            keyStr = "Êó±ê×ó¼ü";
-                            break;
-                    }
+                    keyStr += PlayerUtil.Instance.GetSettingKey(tmpBubbleInfo.actionTypeList[i], tmpBubbleInfo.controlType);
+                    if (i < tmpBubbleInfo.actionTypeList.Count - 1) keyStr += "/";
                 }
-                else if (info.myControlType == "Gamepad") //ÊÖ±ú
-                {
-                    switch (info.inputActionName)
-                    {
-                        case "Interaction":
-                            keyStr = "A";
-                            break;
-                        case "Recycle":
-                            keyStr = "Y";
-                            break;
-                        case "Throw":
-                            keyStr = "B";
-                            break;
-                        case "Use":
-                            keyStr = "X";
-                            break;
-                    }
-                }
-
-                bubbleItem.Init(info, keyStr); // ³õÊ¼»¯ÆøÅÝ
+                bubbleItem.Init(tmpBubbleInfo, keyStr); // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             }
         }
 
@@ -116,6 +117,35 @@ namespace KidGame.UI
             {
                 currentBubble.GetComponent<UIBubbleItem>().DestoryBubble();
             }
+        }
+
+        public void AddBubbleInfoToList(BubbleInfo info)
+        {
+            if (bubbleInfoList == null) return;
+            if (bubbleInfoList.Find(x => x.creator == info.creator) != null) return;
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½Ã¿Ö¡ï¿½ï¿½ï¿½Ã£ï¿½ï¿½Å»ï¿½ï¿½ï¿½ï¿½ï¿½
+            bubbleInfoList.Add(info);
+            RefreshBubble();
+        }
+
+        public void RemoveBubbleInfoFromList(BubbleInfo info)
+        {
+            if (bubbleInfoList == null) return;
+            BubbleInfo tmpInfo = bubbleInfoList.Find(x => x.creator == info.creator);
+            if (tmpInfo == null) return;
+            bubbleInfoList.Remove(tmpInfo);
+            if (bubbleInfoList.Count == 0)
+            {
+                currentBubbleInfo = null;
+                DestroyBubble();
+            }
+            RefreshBubble();
+        }
+
+        public void SortBubbleQueueByDist()
+        {
+            if (bubbleInfoList == null) return;
+            bubbleInfoList.Sort();
         }
     }
 }

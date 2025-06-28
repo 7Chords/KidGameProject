@@ -1,4 +1,4 @@
-using DG.Tweening;
+ï»¿using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,18 +7,17 @@ namespace KidGame.UI
 {
     public class UIBubbleItem : MonoBehaviour
     {
-        public Text ContentText; //ÌáÊ¾µÄÄÚÈÝ£¬Èç£º¡°Ê¹ÓÃ/Í¶ÖÀ/´¥·¢¡±
-        public Image ContentImage; //ÌáÊ¾µÄÍ¼Æ¬£¨ÔÝÊ±Ã»ÓÃ£©
-        public Text KeyText; //ÌáÊ¾µÄ¼üÎ»
+        public Text ContentText; //ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ç£ºï¿½ï¿½Ê¹ï¿½ï¿½/Í¶ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        public Image ContentImage; //ï¿½ï¿½Ê¾ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½Ê±Ã»ï¿½Ã£ï¿½
+        public Text KeyText; //ï¿½ï¿½Ê¾ï¿½Ä¼ï¿½Î»
 
-        private GameObject go_1;
-        private GameObject go_2;
+        private GameObject creator;
+        private GameObject player;
 
         private Tweener _tweener;
 
         private RectTransform rectTran;
 
-        Vector3 worldCenterPos;
         Vector2 screenPos;
 
         private void Awake()
@@ -27,36 +26,32 @@ namespace KidGame.UI
         }
         public void Init(BubbleInfo info, string key)
         {
-            go_1 = info.go_1;
-            go_2 = info.go_2;
+            creator = info.creator;
+            player = info.player;
             ContentText.text = info.content;
             KeyText.text = key;
 
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one, 0.2f);
-
-            //TODO:ÉèÖÃ¸¸ÎïÌå
-            transform.parent = transform;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            if (go_1 && go_2)
+            if (creator)
             {
-                SetPosition(go_1, go_2);
+                SetPosition(creator);
             }
         }
 
         /// <summary>
-        /// ÔÚÍæ¼ÒºÍÐèÒª½»»¥µÄÎïÆ·µÄÎ»ÖÃ¼äÉèÖÃ¸ÃÆøÅÝ
+        /// ï¿½ï¿½ï¿½ï¿½Òºï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Î»ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
-        /// <param name="obj1"></param>
-        /// <param name="obj2"></param>
-        public void SetPosition(GameObject obj1, GameObject obj2)
+        /// <param name="creator"></param>
+        public void SetPosition(GameObject creator)
         {
-            worldCenterPos = (obj1.transform.position + obj2.transform.position) / 2;
-            screenPos = Camera.main.WorldToScreenPoint(worldCenterPos);
-            rectTran.transform.localPosition = ScreenPointToUIPoint(rectTran, screenPos);
+            screenPos = Camera.main.WorldToScreenPoint(creator.transform.position) * (1080f / 300);
+            // ×ªï¿½ï¿½Îª UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            rectTran.localPosition = ScreenPointToUIPoint(rectTran, screenPos);
         }
 
         public void DestoryBubble()
@@ -71,14 +66,17 @@ namespace KidGame.UI
             Destroy(gameObject);
         }
 
-        // ÆÁÄ»×ø±ê×ª»»Îª UGUI ×ø±ê
-        public Vector3 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
+        // ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îª UGUI ï¿½ï¿½ï¿½ï¿½
+        public Vector2 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
         {
-            Vector3 uiLocalPos;
-            //TODO:Ó¦¸ÃÓÐ¸öuiÏà»ú²Å¶Ô
-            Camera uiCamera = Camera.main;
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(rt, screenPoint, uiCamera, out uiLocalPos);
-            return uiLocalPos;
+            Vector2 localPoint;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rt.parent as RectTransform,
+                screenPoint,
+                null,
+                out localPoint
+            );
+            return localPoint;
         }
     }
 }
