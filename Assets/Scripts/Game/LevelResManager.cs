@@ -6,103 +6,161 @@ using Random = UnityEngine.Random;
 
 namespace KidGame.Core
 {
-    /// <summary>
-    /// 游戏资源管理器 管理材料生成回收等
-    /// </summary>
     public class LevelResManager : Singleton<LevelResManager>
     {
         private LevelResData _resData;
-        public void Init()
-        {
 
-        }
-        public void Discard()
-        {
-
-        }
+        public void Init() { }
+        public void Discard() { }
 
         public void InitLevelRes(LevelResData resData)
         {
             _resData = resData;
             List<MaterialItem> tmpMaterialItemList = new List<MaterialItem>();
 
-            //给有材料的家具初始化
+            // 初始化有材料的家具
+            InitializeFurnitureMaterials(tmpMaterialItemList);
+
+            // 生成房间里散落的材料
+            SpawnRoomMaterials();
+        }
+
+        private void InitializeFurnitureMaterials(List<MaterialItem> tmpMaterialItemList)
+        {
             foreach (var mapFurniture in MapManager.Instance.mapFurnitureList)
             {
                 tmpMaterialItemList.Clear();
-                //该家具存在和材料的映射，说明该家具里有材料
-                Furniture2MaterialMapping mapping = _resData.f2MMappingList.Find(x => x.furnitureData.Equals(mapFurniture.mapFurnitureData.furnitureData));
+                var mapping = _resData.f2MMappingList.Find(x =>
+                    x.furnitureData.Equals(mapFurniture.mapFurnitureData.furnitureData));
+
                 if (mapping != null)
                 {
                     foreach (var item in mapping.materialDataList)
                     {
-                        tmpMaterialItemList.Add(new MaterialItem(item.materialData, Random.Range(item.randomAmount_min, item.randomAmount_max+1)));
+                        tmpMaterialItemList.Add(new MaterialItem(
+                            item.materialData,
+                            Random.Range(item.randomAmount_min, item.randomAmount_max + 1)
+                        ));
                     }
                     mapFurniture.Init(true, tmpMaterialItemList);
                 }
-
             }
+        }
 
-
-            //生成房间里可以直接捡的材料
-
+        private void SpawnRoomMaterials()
+        {
             foreach (var mapping in _resData.r2MMappingList)
             {
-                List<MapTile> tmpTileList = MapManager.Instance.mapTileDic[mapping.roomType];
-                List<MapFurniture> tmpFurnitureList = MapManager.Instance.mapFurnitureDic[mapping.roomType];
-                foreach (var mapTile in tmpTileList)
-                {
-                    //这个瓦片上没有墙和家具
-                    if(!tmpFurnitureList.Find(x=>x.mapFurnitureData.mapPosList.Contains(mapTile.mapTileData.mapPos))
-                        && MapManager.Instance.mapWallList.Find(x=>x.mapWallData.mapPosList.Contains(mapTile.mapTileData.mapPos)))
-                    {
+                var roomTiles = MapManager.Instance.mapTileDic[mapping.roomType];
+                var roomFurniture = MapManager.Instance.mapFurnitureDic[mapping.roomType];
+                var roomWalls = MapManager.Instance.mapWallList;
 
+                // 获取可生成材料的有效位置
+                List<MapTile> validTiles = GetValidSpawnTiles(roomTiles, roomFurniture, roomWalls);
+
+                // 计算要生成的材料总数
+                int totalMaterials = CalculateTotalMaterials(mapping.materialDataList);
+
+                // 确保不超过可用位置数量
+                totalMaterials = Mathf.Min(totalMaterials, validTiles.Count);
+
+                // 随机选择位置生成材料
+                SpawnMaterialsAtRandomPositions(mapping.materialDataList, validTiles, totalMaterials);
+            }
+        }
+
+        private List<MapTile> GetValidSpawnTiles(List<MapTile> roomTiles,
+            List<MapFurniture> roomFurniture, List<MapWall> roomWalls)
+        {
+            List<MapTile> validTiles = new List<MapTile>();
+
+            foreach (var tile in roomTiles)
+            {
+                bool isOccupied = false;
+
+                // 检查是否有家具占用此位置
+                foreach (var furniture in roomFurniture)
+                {
+                    if (furniture.mapFurnitureData.mapPosList.Contains(tile.mapTileData.mapPos))
+                    {
+                        isOccupied = true;
+                        break;
                     }
+                }
+
+                // 检查是否有墙占用此位置
+                if (!isOccupied)
+                {
+                    foreach (var wall in roomWalls)
+                    {
+                        if (wall.mapWallData.mapPosList.Contains(tile.mapTileData.mapPos))
+                        {
+                            isOccupied = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isOccupied)
+                {
+                    validTiles.Add(tile);
                 }
             }
 
-            #region Delete
-            ////生成房间里可以直接捡的材料
-            //int xMin = 999, xMax = -1, yMin = 999, yMax = -1;
-            //int canSpawnTileAmount = 0;
+            return validTiles;
+        }
 
-            //foreach (var mapping in _resData.r2MMappingList)
-            //{
-            //    List<MapTile> tmpTileList = MapManager.Instance.mapTileDic[mapping.roomType];
-            //    xMin = 999;
-            //    xMax = -1;
-            //    yMin = 999;
-            //    yMax = -1;
-            //    //获得当前房间的边界范围 在这些范围上的瓦片不能生成材料
-            //    foreach (var mapTile in tmpTileList)
-            //    {
-            //        if (mapTile.mapTileData.mapPos.x < xMin)
-            //            xMin = mapTile.mapTileData.mapPos.x;
-            //        if (mapTile.mapTileData.mapPos.x > xMax)
-            //            xMax = mapTile.mapTileData.mapPos.x;
-            //        if (mapTile.mapTileData.mapPos.y < yMin)
-            //            yMin = mapTile.mapTileData.mapPos.y;
-            //        if (mapTile.mapTileData.mapPos.y > yMax)
-            //            yMax = mapTile.mapTileData.mapPos.y;
-            //    }
-            //    canSpawnTileAmount = 0;
-            //    foreach (var mapTile in tmpTileList)
-            //    {
-            //        if(mapTile.mapTileData.mapPos.x > xMin && mapTile.mapTileData.mapPos.x < xMax 
-            //            && mapTile.mapTileData.mapPos.y > yMin && mapTile.mapTileData.mapPos.y < yMax)
-            //        {
-            //            canSpawnTileAmount++;
-            //        }
-            //    }
+        private int CalculateTotalMaterials(List<MaterialResCfg> materialResCfgList)
+        {
+            int total = 0;
+            foreach (var resCfg in materialResCfgList)
+            {
+                total += Random.Range(resCfg.randomAmount_min, resCfg.randomAmount_max + 1);
+            }
+            return total;
+        }
 
-            //    int total = 0;
-            //    foreach(var resCfg in mapping.materialDataList)
-            //    {
+        private void SpawnMaterialsAtRandomPositions(List<MaterialResCfg> materialResCfgList,
+            List<MapTile> validTiles, int totalMaterials)
+        {
+            // 先打乱有效位置列表
+            ShuffleTiles(validTiles);
 
-            //    }
-            //}
-            #endregion
+            // 按材料类型和数量生成
+            int spawnedCount = 0;
+            foreach (var materialData in materialResCfgList)
+            {
+                int amount = Random.Range(materialData.randomAmount_min, materialData.randomAmount_max + 1);
 
+                for (int i = 0; i < amount && spawnedCount < totalMaterials; i++, spawnedCount++)
+                {
+                    if (spawnedCount >= validTiles.Count) break;
+
+                    var tile = validTiles[spawnedCount];
+                    Debug.Log(materialData.materialData);
+                    Debug.Log(tile.transform.position);
+
+                    SpawnMaterialAtPosition(materialData.materialData, tile.transform.position);
+                }
+            }
+        }
+
+        private void ShuffleTiles(List<MapTile> tiles)
+        {
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                int randomIndex = Random.Range(i, tiles.Count);
+                (tiles[i], tiles[randomIndex]) = (tiles[randomIndex], tiles[i]);
+            }
+        }
+
+        private void SpawnMaterialAtPosition(MaterialData materialData, Vector3 position)
+        {
+            Vector3 placePosition = position + Vector3.up;
+            GameObject materialGO = MaterialFactory.Create(materialData, placePosition);
+            MaterialBase materialBase = materialGO.GetComponent<MaterialBase>();
+            materialBase.Init(materialData);
+            Debug.Log(materialGO + "生成在" + position);
         }
     }
 }

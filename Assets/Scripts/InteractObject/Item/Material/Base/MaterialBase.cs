@@ -1,4 +1,5 @@
 using KidGame.Core;
+using KidGame.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,15 @@ namespace KidGame.Core
 
         public MaterialData materialData => _materialData;
 
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="materialData"></param>
+        public virtual void Init(MaterialData materialData)
+        {
+            _materialData = materialData;
+        }
         public override void InteractPositive()
         {
             if (_materialData == null) return;
@@ -27,6 +37,8 @@ namespace KidGame.Core
         {
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerUtil.Instance.CallPlayerPickItem(this);
+            BubbleManager.Instance.RemoveBubbleInfoFromList(new BubbleInfo(ControlType.Keyborad, null,
+    gameObject, null, ""));
             //TODO:工厂回收？
             Destroy(gameObject);
         }

@@ -1,5 +1,6 @@
 using KidGame.Core;
 using KidGame.Interface;
+using KidGame.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -109,11 +110,11 @@ namespace KidGame.Core
         {
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
+            Destroy(gameObject);
         }
 
         public virtual void Recycle()
         {
-            RemoveFormPlayerUsingList();
             Pick();
         }
 
@@ -166,7 +167,7 @@ namespace KidGame.Core
         /// </summary>
         public virtual void Trigger()
         {
-            Debug.Log("陷阱触发了");
+            Debug.Log(gameObject.name + "陷阱触发了");
         }
 
         #endregion
@@ -176,6 +177,8 @@ namespace KidGame.Core
         {
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerController.Instance.RemoveRecyclableFromList(this);
+            BubbleManager.Instance.RemoveBubbleInfoFromList(new BubbleInfo(ControlType.Keyborad, null,
+gameObject, null, ""));
         }
     }
 }

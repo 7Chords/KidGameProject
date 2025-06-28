@@ -188,10 +188,27 @@ namespace KidGame.Core
         public bool PlayerInSight()
         {
             if (player == null) return false;
-            Vector3 dir = player.position - transform.position;
-            if (dir.magnitude > enemyBaseData.VisionRange) return false;
-            //TODO:加入扇形判断
-            // 可以在这里添加射线检测，排除被遮挡的物体
+
+            // 距离检查
+            Vector3 dirToPlayer = player.position - transform.position;
+            float distanceToPlayer = dirToPlayer.magnitude;
+            if (distanceToPlayer > enemyBaseData.VisionRange) return false;
+
+            // 扇形角度检查
+            float angleToPlayer = Vector3.Angle(transform.forward, dirToPlayer);
+            if (angleToPlayer > enemyBaseData.VisionAngle / 2f) return false;
+
+            // 视线遮挡检查
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, dirToPlayer.normalized, out hit, distanceToPlayer))
+            {
+                if (hit.collider.transform != player)
+                {
+                    // 有物体遮挡玩家
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -380,7 +397,8 @@ namespace KidGame.Core
         public void ChasePlayer()
         {
             Agent.speed = enemyBaseData.ChaseSpeed;
-            Agent.SetDestination(player.transform.position);
+            targetPos = player.transform.position;
+            Agent.SetDestination(targetPos);
         }
         #endregion
 
@@ -437,6 +455,11 @@ namespace KidGame.Core
         public bool CheckArriveDestination()
         {
             return Vector3.Distance(transform.position, targetPos) < 0.5f;
+        }
+
+        public bool CheckCatchPlayer()
+        {
+            return Vector3.Distance(transform.position, player.transform.position) < 1f;
         }
     }
 }

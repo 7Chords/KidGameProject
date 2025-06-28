@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TestMaterialData
   m_EditorClassIdentifier: 
   materialID: M_001
-  materialName: "\u6728\u677F"
+  materialName: "\u6D4B\u8BD5\u6750\u65991"
   materialDesc: "\u54C8\u54C8\u54C8"
   materialIcon: {fileID: 21300000, guid: e38368d748707614f8d7c40c78196e40, type: 3}

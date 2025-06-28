@@ -14,10 +14,10 @@ namespace KidGame.Core
             //这里应该根据trapID加载对应的预制体
             //实际项目中应该使用资源管理系统
 
-            GameObject materialPrefab = Resources.Load<GameObject>("Materials/" + materialData.materialID);
+            GameObject materialPrefab = Resources.Load<GameObject>("Materials/" + materialData.materialName);
             if (materialPrefab == null)
             {
-                Debug.LogWarning($"找不到陷阱预制体: {materialData.materialID}");
+                Debug.LogWarning($"找不到材料预制体: {materialData.materialName}");
                 return null;
             }
 
@@ -26,7 +26,7 @@ namespace KidGame.Core
 
             if (material == null)
             {
-                Debug.LogWarning($"预制体 {materialData.materialID} 没有MaterialBase组件");
+                Debug.LogWarning($"预制体 {materialData.materialName} 没有MaterialBase组件");
                 Object.Destroy(materialObj);
                 return null;
             }
