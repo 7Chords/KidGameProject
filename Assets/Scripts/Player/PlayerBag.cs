@@ -7,7 +7,8 @@ using UnityEngine;
 namespace KidGame.Core
 {
     #region 单个物品的信息结构
-
+    
+    
     [Serializable]
     public class TrapSlotInfo
     {
@@ -41,8 +42,8 @@ namespace KidGame.Core
         #region 物品列表
 
         // 当前捡到的物品、以及从存档中读取数据、保存数据的逻辑
-        public List<TrapSlotInfo> _trapBag;
-        public List<MaterialSlotInfo> _materialBag;
+        public List<TrapSlotInfo> _trapBag = new List<TrapSlotInfo>();
+        public List<MaterialSlotInfo> _materialBag = new List<MaterialSlotInfo>();
 
         #endregion
 
@@ -52,8 +53,8 @@ namespace KidGame.Core
         {
             PlayerUtil.Instance.RegPlayerPickItem(PlayerPickItem);
 
-            _trapBag = new List<TrapSlotInfo>();
-            _materialBag = new List<MaterialSlotInfo>();
+            //_trapBag = new List<TrapSlotInfo>();
+            //_materialBag = new List<MaterialSlotInfo>();
         }
 
         public void Discard()
@@ -62,6 +63,21 @@ namespace KidGame.Core
         }
 
         #endregion
+
+        #region 外部调用方法
+
+        public List<TrapSlotInfo> GetTrapSlots()
+        {
+            return _trapBag;
+        }
+
+        public List<MaterialSlotInfo> GetMaterialSlots()
+        {
+            return _materialBag;
+        }
+        
+        #endregion
+        
 
 
         private void PlayerPickItem(IPickable iPickable)

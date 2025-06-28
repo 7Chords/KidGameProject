@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trapID: T_001
   trapName: "\u6D4B\u8BD5\u9677\u96311"
-  trapDesc: 
-  trapIcon: {fileID: 0}
+  trapDesc: "\u6D4B\u8BD5\u9677\u96311"
+  trapIcon: {fileID: 21300000, guid: ff8b2c345452818449c57d99b7cebaff, type: 3}
   trapLevel: 0.5
   trapDamage: 1
   validTime: 10
