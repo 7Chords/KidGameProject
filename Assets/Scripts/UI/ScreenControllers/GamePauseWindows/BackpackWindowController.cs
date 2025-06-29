@@ -14,7 +14,7 @@ public class BackpackWindowController : WindowController
     private List<TrapSlotInfo> _trapSlotInfos;
     private GameObject detailPanel;
     private TextMeshProUGUI detailText;
-    
+
     protected override void Awake()
     {
         base.Awake();
@@ -25,17 +25,19 @@ public class BackpackWindowController : WindowController
         Signals.Get<HideItemDetailSignal>().AddListener(OnHideItemDetail);
     }
 
-    protected override void OnPropertiesSet() {
+    protected override void OnPropertiesSet()
+    {
         scrollView = gameObject.GetComponentInChildren<UICircularScrollView>();
         _materialSlotInfos = PlayerBag.Instance.GetMaterialSlots();
         _trapSlotInfos = PlayerBag.Instance.GetTrapSlots();
-        scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count,OnCellUpdate,null);
-        
+        scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count, OnCellUpdate, null);
     }
+
     protected override void WhileHiding()
     {
         OnHideItemDetail();
     }
+
     protected override void OnDestroy()
     {
         base.OnDestroy();
@@ -43,13 +45,14 @@ public class BackpackWindowController : WindowController
         Signals.Get<HideItemDetailSignal>().RemoveListener(OnHideItemDetail);
     }
 
-    private void OnCellUpdate(GameObject cell,int index)
+    private void OnCellUpdate(GameObject cell, int index)
     {
         CellUI cellUI = cell.GetComponent<CellUI>();
         if (index - 1 < _materialSlotInfos.Count)
         {
-            cellUI.SetUIWithMaterial(_materialSlotInfos[index-1]);
-        }else if (index - 1 - _materialSlotInfos.Count < _trapSlotInfos.Count)
+            cellUI.SetUIWithMaterial(_materialSlotInfos[index - 1]);
+        }
+        else if (index - 1 - _materialSlotInfos.Count < _trapSlotInfos.Count)
         {
             cellUI.SetUIWithTrap(_trapSlotInfos[index - 1 - _materialSlotInfos.Count]);
         }
@@ -69,7 +72,7 @@ public class BackpackWindowController : WindowController
 
         // ÉèÖÃÏêÏ¸ÃèÊöÃæ°åµÄÎ»ÖÃ
         detailPanel.GetComponent<RectTransform>().anchoredPosition = localMousePosition;*/
-        
+
         detailPanel.transform.position = cellUI.transform.position + new Vector3(1.7f, -1.7f, 0f);
         detailText.text = cellUI.detailText;
         detailPanel.SetActive(true);

@@ -12,18 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74e71f92ca6be467c8fea50d89d8a1ab, type: 3}
   m_Name: AudioDataList
   m_EditorClassIdentifier: 
-  audioDataList:
-  - audioName: DM-CGS-01
-    audioPath: Audios/sfx/DM-CGS-01
-  - audioName: DM-CGS-02
-    audioPath: Audios/sfx/DM-CGS-02
-  - audioName: DM-CGS-03
-    audioPath: Audios/sfx/DM-CGS-03
-  - audioName: DM-CGS-04
-    audioPath: Audios/sfx/DM-CGS-04
-  - audioName: DM-CGS-05
-    audioPath: Audios/sfx/DM-CGS-05
-  - audioName: DM-CGS-06
-    audioPath: Audios/sfx/DM-CGS-06
-  - audioName: DM-CGS-07
-    audioPath: Audios/sfx/DM-CGS-07
+  audioDataList: []

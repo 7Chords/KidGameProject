@@ -18,6 +18,4 @@
         Recycle = 7,
         Switch = 8,
     }
-
-
 }

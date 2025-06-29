@@ -1,18 +1,18 @@
+using KidGame.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace KidGame.Core
+namespace KidGame.UI
 {
-    public class RecordUI : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
+    public class SaveCell : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        public Text indexText;         //序号
-        public Text recordName;        //存档名
-        public GameObject auto;        //自动存档的标识
-        public Image rect;             //边框
-        [ColorUsage(true)]
-        public Color enterColor;       //鼠标进入存档时的边框颜色
-    
+        public Text indexText; //序号
+        public Text recordName; //存档名
+        public GameObject auto; //自动存档的标识
+        public Image rect; //边框
+        [ColorUsage(true)] public Color enterColor; //鼠标进入存档时的边框颜色
+
 
         public static System.Action<int> OnLeftClick;
         public static System.Action<int> OnRightClick;
@@ -62,7 +62,7 @@ namespace KidGame.Core
 
             //隐藏详情
             if (OnExit != null)
-                OnExit();       
+                OnExit();
         }
 
         //初始化存档列表时设置序号
@@ -87,7 +87,7 @@ namespace KidGame.Core
                 //截取日期【8位】
                 string date = full.Substring(0, 8);
                 //截取时间【6位】
-                string time = full.Substring(9, 6);            
+                string time = full.Substring(9, 6);
                 //设置格式
                 TimeMgr.SetDate(ref date);
                 TimeMgr.SetTime(ref time);
@@ -96,13 +96,10 @@ namespace KidGame.Core
 
                 //根据存档类型设置Auto标识
                 if (full.Substring(full.Length - 4) == "auto")
-                    auto.SetActive(true);                
+                    auto.SetActive(true);
                 else
-                    auto.SetActive(false);            
+                    auto.SetActive(false);
             }
-        
         }
-
-    
     }
 }

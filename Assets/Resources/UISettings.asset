@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 414062f9d9180b24eb66136c31c0fe4c, type: 3}
-  m_Name: DefaultUISettings
+  m_Name: UISettings
   m_EditorClassIdentifier: 
   templateUIPrefab: {fileID: 358001020665244776, guid: 8ff5283766dd8614a8838c8489cb528c,
     type: 3}
@@ -28,4 +28,5 @@ MonoBehaviour:
   - {fileID: 5215458760470888239, guid: 1dbbd7573195d7744862547fa98bfb90, type: 3}
   - {fileID: 7617306793594988998, guid: c359438071a7c234ca30eb8efa37ab1e, type: 3}
   - {fileID: 4897739062730910601, guid: 9a22795be21b4a040a9e2b1c02dd87cd, type: 3}
+  - {fileID: 327504023756517327, guid: af61d5277820ab8499a6b00943047abd, type: 3}
   deactivateScreenGOs: 1

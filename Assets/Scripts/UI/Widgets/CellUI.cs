@@ -13,6 +13,7 @@ using Utils;
 public class ShowItemDetailSignal : ASignal<CellUI>
 {
 }
+
 public class HideItemDetailSignal : ASignal
 {
 }
@@ -20,28 +21,26 @@ public class HideItemDetailSignal : ASignal
 public class CellUI : MonoBehaviour
 {
     private EventTrigger eventTrigger;
-    
+
     public Image icon;
     public TextMeshProUGUI count;
-    
-    
+
+
     public string detailText;
 
     private float timer = 0f;
     private const float delay = 0.6f; // 悬停时间阈值
+
     private void Awake()
     {
         eventTrigger = GetComponent<EventTrigger>();
-        
+
         icon = transform.Find("Icon").GetComponent<Image>();
         count = transform.Find("Count").GetComponent<TextMeshProUGUI>();
-        
-        
+
 
         // 动态添加 EventTrigger 组件
         AddEventTrigger();
-        
-        
     }
 
     public void SetUIWithMaterial(MaterialSlotInfo material)
@@ -57,6 +56,7 @@ public class CellUI : MonoBehaviour
         count.text = trap.amount.ToString();
         detailText = trap.trapData.trapDesc;
     }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         timer = 0f; // 重置计时器
@@ -80,9 +80,11 @@ public class CellUI : MonoBehaviour
                 Signals.Get<ShowItemDetailSignal>().Dispatch(this);
                 break;
             }
+
             yield return null;
         }
     }
+
     private void AddEventTrigger()
     {
         // 获取或添加 EventTrigger 组件
@@ -104,6 +106,4 @@ public class CellUI : MonoBehaviour
         entryExit.callback.AddListener((data) => { OnPointerExit((PointerEventData)data); });
         trigger.triggers.Add(entryExit);
     }
-    
-    
 }

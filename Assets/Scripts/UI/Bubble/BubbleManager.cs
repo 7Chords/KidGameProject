@@ -65,8 +65,7 @@ namespace KidGame.UI
             bubbleInfoList.Clear();
             bubbleInfoList = null;
         }
-
-
+        
         private void Update()
         {
             SortBubbleQueueByDist();

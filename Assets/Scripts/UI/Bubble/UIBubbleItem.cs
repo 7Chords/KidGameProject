@@ -25,6 +25,7 @@ namespace KidGame.UI
         {
             rectTran = GetComponent<RectTransform>();
         }
+
         public void Init(BubbleInfo info, string key)
         {
             creator = info.creator;

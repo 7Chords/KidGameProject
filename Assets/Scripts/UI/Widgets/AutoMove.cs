@@ -12,10 +12,11 @@ namespace KidGame.UI.Game
         [SerializeField] private float speedY = 0f;
         [SerializeField] private Vector3 rotationSpeed = Vector3.zero;
 
-        private void Update() {
+        private void Update()
+        {
             transform.Rotate(rotationSpeed * Time.deltaTime, Space.Self);
-            float x = Mathf.Lerp(minMaxPosition.x, minMaxPosition.y, (Mathf.Sin(Time.time*speed)+1)/2f);
-            float y = Mathf.Lerp(minMaxPositionY.x, minMaxPositionY.y, (Mathf.Sin(Time.time*speedY)+1)/2f);
+            float x = Mathf.Lerp(minMaxPosition.x, minMaxPosition.y, (Mathf.Sin(Time.time * speed) + 1) / 2f);
+            float y = Mathf.Lerp(minMaxPositionY.x, minMaxPositionY.y, (Mathf.Sin(Time.time * speedY) + 1) / 2f);
             transform.localPosition = new Vector3(x, y, transform.position.z);
         }
     }

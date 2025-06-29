@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace KidGame.Core
 {
     /// <summary>
-    /// ��������Ԥ����
+    /// ?????????????
     /// </summary>
     public class InputSettings : MonoBehaviour
     {
@@ -21,7 +21,7 @@ namespace KidGame.Core
         private InputAction recycleAction;
         private InputAction mouseWheelAction;
 
-        // ���������¼�
+        // ???????????
         public event Action OnInteractionPress;
         public event Action OnDashPress;
         public event Action OnRunPress;
@@ -38,7 +38,7 @@ namespace KidGame.Core
                 playerInput = GetComponent<PlayerInput>();
                 inputActionAsset = playerInput.actions;
 
-                // ��ȡ�������붯��
+                // ?????????????
                 moveAction = inputActionAsset.FindAction("Move");
                 interactionAction = inputActionAsset.FindAction("Interaction");
                 dashAction = inputActionAsset.FindAction("Dash");
@@ -48,7 +48,7 @@ namespace KidGame.Core
                 bagAction = inputActionAsset.FindAction("Bag");
                 recycleAction = inputActionAsset.FindAction("Recycle");
                 mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
-                // �����������¼�
+                // ?????????????
                 interactionAction.performed += OnInteractionActionPerformed;
                 dashAction.performed += OnDashActionPerformed;
                 runAction.performed += OnRunActionPerformed;
@@ -60,14 +60,14 @@ namespace KidGame.Core
             }
             catch (Exception e)
             {
-                Debug.LogWarning("�޷���ȡ���������ļ�" + e);
+                Debug.LogWarning("?????????????????" + e);
                 throw;
             }
         }
 
         private void OnDestroy()
         {
-            // ������������¼�
+            // ??????????????
             interactionAction.performed -= OnInteractionActionPerformed;
             dashAction.performed -= OnDashActionPerformed;
             runAction.performed -= OnRunActionPerformed;
@@ -79,7 +79,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ��ȡ�ƶ�����ָ��
+        /// ?????????????
         /// </summary>
         public Vector2 MoveDir()
         {
@@ -88,13 +88,13 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ������ֵ
+        /// ???????
         /// </summary>
         /// <returns></returns>
         public float MouseWheelValue()
         {
             float val = mouseWheelAction.ReadValue<float>();
-            //inputaction������Ѿ������˷�Χ[-1,1]
+            //inputaction???????????????��[-1,1]
             return val;
         }
 
@@ -107,7 +107,7 @@ namespace KidGame.Core
         public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
         public virtual bool GetRecycleDown() => recycleAction.WasPerformedThisFrame();
 
-        #region �����¼�����
+        #region ???????????
 
         private void OnInteractionActionPerformed(InputAction.CallbackContext context)
         {
@@ -151,32 +151,33 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ������
+        #region ??????
+
         /// <summary>
-        /// ��ȡ���õļ�λ
+        /// ?????????��
         /// </summary>
-        /// <param name="actionName">��������</param>
-        /// <param name="controlScheme">���Ʒ������ƣ�Ĭ��Ϊ��ǰ����ķ���</param>
-        /// <param name="bindingIndex">��������Ĭ��Ϊ��һ����</param>
-        /// <returns>��ʽ����ļ�λ��ʾ�ַ���</returns>
+        /// <param name="actionName">????????</param>
+        /// <param name="controlScheme">???????????????????????????</param>
+        /// <param name="bindingIndex">???????????????????</param>
+        /// <returns>?????????��????????</returns>
         public string GetSettingKey(InputActionType actionType, int controlTypeIndex)
         {
             if (inputActionAsset == null)
             {
-                Debug.LogError("InputActionAssetδ��ʼ��");
+                Debug.LogError("InputActionAsset��?????");
                 return string.Empty;
             }
 
             var action = inputActionAsset.FindAction(actionType.ToString());
             if (action == null)
             {
-                Debug.LogError($"δ�ҵ���Ϊ '{actionType}' �Ķ���");
+                Debug.LogError($"��?????? '{actionType}' ?????");
                 return string.Empty;
             }
 
             return action.bindings[controlTypeIndex].ToDisplayString();
         }
+
         #endregion
     }
 }
-
