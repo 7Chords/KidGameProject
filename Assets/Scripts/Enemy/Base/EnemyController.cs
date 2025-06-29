@@ -215,7 +215,13 @@ namespace KidGame.Core
         public bool PlayerInHearing()
         {
             if (player == null) return false;
-            return (player.position - transform.position).magnitude <= enemyBaseData.HearingRange;
+            
+            if ((player.position - transform.position).magnitude <= enemyBaseData.HearingRange)
+            {
+                targetPos = player.position;
+                return true;
+            }
+            return false;
         }
 
         #endregion
@@ -410,7 +416,6 @@ namespace KidGame.Core
         {
             foreach(var pair in roomSearchStateDic)
             {
-                Debug.Log(pair.Key + ":" + pair.Value);
                 if (pair.Value == false) return false;
             }
             return true;
@@ -435,7 +440,6 @@ namespace KidGame.Core
                 nearestRoonType = room.RoomType;
                 break;
             }
-            Debug.Log(nearestRoonType);
             Agent.speed = enemyBaseData.MoveSpeed;
             Agent.SetDestination(targetPos);
             return nearestRoonType;
@@ -460,6 +464,12 @@ namespace KidGame.Core
         public bool CheckCatchPlayer()
         {
             return Vector3.Distance(transform.position, player.transform.position) < 1f;
+        }
+
+        public void GoCheckHearPoint()
+        {
+            Agent.speed = enemyBaseData.MoveSpeed;
+            Agent.SetDestination(targetPos);
         }
     }
 }

@@ -6,18 +6,18 @@ using UnityEngine;
 namespace KidGame.Core
 {
     /// <summary>
-    /// 追击玩家节点
+    /// 检查听到声音的位置点
     /// </summary>
-    public class ChasePlayer : BaseEnemyAction
+    public class CheckHearPoint : BaseEnemyAction
     {
+        public override void OnStart()
+        {
+            enemy.GoCheckHearPoint();
+        }
+
         public override TaskStatus OnUpdate()
         {
-            enemy.ChasePlayer();
-            if(!enemy.PlayerInSight())
-            {
-                return TaskStatus.Failure;
-            }
-            if (enemy.CheckCatchPlayer())
+            if(enemy.CheckArriveDestination())
             {
                 return TaskStatus.Success;
             }

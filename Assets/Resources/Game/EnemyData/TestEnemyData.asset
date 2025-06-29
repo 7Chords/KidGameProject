@@ -16,9 +16,12 @@ MonoBehaviour:
   EnemyName: ghost
   MaxSanity: 100
   MoveSpeed: 2
+  ChaseSpeed: 3
   Resistance: 0.5
-  VisionRange: 8
-  HearingRange: 4
+  VisionRange: 4
+  VisionAngle: 180
+  HearingRange: 8
+  AttackRange: 0.5
   activeSkills:
   - {fileID: 11400000, guid: ad1b238d39336436688d071fd6a0b202, type: 2}
   passiveSkills: []

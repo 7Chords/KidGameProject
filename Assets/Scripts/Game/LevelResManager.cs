@@ -137,8 +137,6 @@ namespace KidGame.Core
                     if (spawnedCount >= validTiles.Count) break;
 
                     var tile = validTiles[spawnedCount];
-                    Debug.Log(materialData.materialData);
-                    Debug.Log(tile.transform.position);
 
                     SpawnMaterialAtPosition(materialData.materialData, tile.transform.position);
                 }

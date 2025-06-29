@@ -5,7 +5,7 @@ using UnityEngine.AI;
 namespace KidGame.Core
 {
     /// <summary>
-    /// 敌人条件节点基类
+    /// 行为树 - 敌人条件节点基类
     /// </summary>
     public class BaseEnemyConditional : Conditional
     {
