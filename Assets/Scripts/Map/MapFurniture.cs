@@ -33,6 +33,8 @@ namespace KidGame.Core
         private ParticleSystem interactPartical;
         public ParticleSystem InteractPartical { get => interactPartical; set { interactPartical = value; } }
 
+        public string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
+
         private bool canInteract;
         public MapFurniture(MapFurnitureData data)
         {

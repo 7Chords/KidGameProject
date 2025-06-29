@@ -26,6 +26,8 @@ namespace KidGame.Core
         public List<string> RandomPickSfxList { get => randomPickSfxList; set { randomPickSfxList = value; } }
         public ParticleSystem PickPartical { get => pickPartical; set { pickPartical = value; } }
 
+        public virtual string itemName { get => "default item name"; set { } }
+
         /// <summary>
         /// Ö÷¶¯½»»¥
         /// </summary>

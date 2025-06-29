@@ -25,11 +25,10 @@ namespace KidGame.Core
             if (other.gameObject.layer != LayerMask.NameToLayer("Interactive")) return;
             bubbleStr = "";
             tmpActionTypeList.Clear();
-            player.AddInteractiveToList(other.gameObject.GetComponent<IInteractive>(),
-                Vector3.Distance(other.gameObject.transform.position, player.transform.position));
-            //����Ҫ��ʾ�ļ�λ��ʾ
+            IInteractive collInteractive = other.gameObject.GetComponent<IInteractive>();
+            player.AddInteractiveToList(collInteractive,Vector3.Distance(other.gameObject.transform.position, player.transform.position));
             tmpActionTypeList.Add(InputActionType.Interaction);
-            bubbleStr += "交互";
+            bubbleStr += "交互";//TODO:根据不同的交互者调整合适的文本
             IRecyclable recyclable = other.gameObject.GetComponent<IRecyclable>();
             if (recyclable != null)
             {
@@ -39,7 +38,7 @@ namespace KidGame.Core
                 bubbleStr += "/回收";
             }
             BubbleManager.Instance.AddBubbleInfoToList(new BubbleInfo(ControlType.Keyborad, tmpActionTypeList,
-                other.gameObject, player.gameObject, bubbleStr));
+                other.gameObject, player.gameObject, bubbleStr, collInteractive.itemName));
         }
 
         private void OnTriggerExit(Collider other)
@@ -51,9 +50,7 @@ namespace KidGame.Core
             {
                 player.RemoveRecyclableFromList(other.gameObject.GetComponent<IRecyclable>());
             }
-            //ֻҪ�����creator�� ������������ν ��Ϊֻ��Ҫ�жϸ�creator������Ȼ��ɾ��
-            BubbleManager.Instance.RemoveBubbleInfoFromList(new BubbleInfo(ControlType.Keyborad, tmpActionTypeList,
-                other.gameObject, player.gameObject, bubbleStr));
+            BubbleManager.Instance.RemoveBubbleInfoFromList(other.gameObject);
         }
     }
 }

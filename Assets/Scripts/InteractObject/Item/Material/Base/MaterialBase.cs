@@ -15,6 +15,7 @@ namespace KidGame.Core
 
         public MaterialData materialData => _materialData;
 
+        public override string itemName => _materialData.materialName;
 
         /// <summary>
         /// 初始化
@@ -37,8 +38,7 @@ namespace KidGame.Core
         {
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerUtil.Instance.CallPlayerPickItem(this);
-            BubbleManager.Instance.RemoveBubbleInfoFromList(new BubbleInfo(ControlType.Keyborad, null,
-    gameObject, null, ""));
+            BubbleManager.Instance.RemoveBubbleInfoFromList(gameObject);
             //TODO:工厂回收？
             Destroy(gameObject);
         }

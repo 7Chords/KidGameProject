@@ -7,9 +7,10 @@ namespace KidGame.UI
 {
     public class UIBubbleItem : MonoBehaviour
     {
-        public Text ContentText; //��ʾ�����ݣ��磺��ʹ��/Ͷ��/������
-        public Image ContentImage; //��ʾ��ͼƬ����ʱû�ã�
-        public Text KeyText; //��ʾ�ļ�λ
+        public Text ContentText;
+        public Image ContentImage;
+        public Text KeyText;
+        public Text ItemNameText;
 
         private GameObject creator;
         private GameObject player;
@@ -29,6 +30,7 @@ namespace KidGame.UI
             creator = info.creator;
             player = info.player;
             ContentText.text = info.content;
+            ItemNameText.text = info.itemName;
             KeyText.text = key;
 
             transform.localScale = Vector3.zero;
@@ -44,13 +46,13 @@ namespace KidGame.UI
         }
 
         /// <summary>
-        /// ����Һ���Ҫ��������Ʒ��λ�ü����ø�����
+        /// 实时刷新气泡位置
         /// </summary>
         /// <param name="creator"></param>
         public void SetPosition(GameObject creator)
         {
             screenPos = Camera.main.WorldToScreenPoint(creator.transform.position) * (1080f / 300);
-            // ת��Ϊ UI ��������
+            // 屏幕坐标转UI坐标
             rectTran.localPosition = ScreenPointToUIPoint(rectTran, screenPos);
         }
 
@@ -66,7 +68,6 @@ namespace KidGame.UI
             Destroy(gameObject);
         }
 
-        // ��Ļ����ת��Ϊ UGUI ����
         public Vector2 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
         {
             Vector2 localPoint;

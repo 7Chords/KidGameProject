@@ -6,28 +6,31 @@ using UnityEngine;
 namespace KidGame.UI
 {
     /// <summary>
-    /// ������Ϣ
+    /// 气泡信息类
     /// </summary>
     public class BubbleInfo : IComparable<BubbleInfo>
     {
 
-        public ControlType controlType; //�������ͣ�����/�ֱ�
+        public ControlType controlType; //玩家的控制类型：手柄/键盘...
 
-        public List<InputActionType> actionTypeList;
-        public GameObject creator { get; set; }//���ݴ����ߣ�������
-        public GameObject player { get; set; }//���
-        public string content { get; set; } //�ı�
+        public List<InputActionType> actionTypeList;//要提示的交互键位类型列表
+        public GameObject creator { get; set; }//气泡的创建者
+        public GameObject player { get; set; }
+        public string content { get; set; } //显示交互的提示文本
 
-        public BubbleInfo(ControlType controlType, List<InputActionType> actionTypeList, GameObject creator, GameObject player, string content)
+        public string itemName;//产生气泡的物体名
+
+        public BubbleInfo(ControlType controlType, List<InputActionType> actionTypeList, GameObject creator, GameObject player, string content, string itemName)
         {
             this.controlType = controlType;
             this.actionTypeList = actionTypeList;
             this.creator = creator;
             this.player = player;
             this.content = content;
+            this.itemName = itemName;
         }
 
-        public int CompareTo(BubbleInfo other)//�Զ���������򣺸��ݺ���ҵľ�������
+        public int CompareTo(BubbleInfo other)
         {
             float myDist = Vector3.Distance(creator.transform.position, player.transform.position);
             float otherDist = Vector3.Distance(other.creator.transform.position, other.player.transform.position);
@@ -37,23 +40,18 @@ namespace KidGame.UI
     }
 
     /// <summary>
-    /// ���ݹ�����
+    /// 气泡管理器
     /// </summary>
     public class BubbleManager : Singleton<BubbleManager>
     {
-        public GameObject BubblePrefab; // ���ݵ�Ԥ����
+        public GameObject BubblePrefab;
 
-        private GameObject currentBubble;//��ǰ��ʾ������
+        private GameObject currentBubble;
         private BubbleInfo currentBubbleInfo;
 
-        /// <summary>
-        /// ������Ϣ���� ����װ�����п�����ʾ������ 
-        /// ��������ͬʱֻ����ʾһ��������ֻ����������Ч ������ʾ�Ķ��Ǿ�����������
-        /// </summary>
         public List<BubbleInfo> bubbleInfoList;
 
 
-        //������
         private void Start()
         {
             Init();
@@ -74,32 +72,23 @@ namespace KidGame.UI
             SortBubbleQueueByDist();
         }
 
-        /// <summary>
-        /// �������� ��Ҫ���� �Ƿ��ж������ͬʱ���ڵ������
-        /// </summary>
-        /// <param name="info"></param>
         private void RefreshBubble()
         {
             if (bubbleInfoList == null || bubbleInfoList.Count == 0) return;
 
-            //ȡ��������������bubbleinfo
             BubbleInfo tmpBubbleInfo = bubbleInfoList[0];
-            //���ڻ�������������
             if (currentBubbleInfo != null && tmpBubbleInfo.creator == currentBubbleInfo.creator) return;
-            // �������е�����
             if (currentBubble != null)
             {
                 DestroyBubble();
             }
-            //���µ�ǰ������Ϣ
             currentBubbleInfo = tmpBubbleInfo;
-            // ʵ��������
             currentBubble = Instantiate(BubblePrefab);
 
             UIBubbleItem bubbleItem = currentBubble.GetComponent<UIBubbleItem>();
             currentBubble.transform.parent = transform;
 
-            string keyStr = "";//������ʾ�ı�
+            string keyStr = "";
             if (bubbleItem != null)
             {
                 for (int i = 0; i < tmpBubbleInfo.actionTypeList.Count; i++)
@@ -107,7 +96,7 @@ namespace KidGame.UI
                     keyStr += PlayerUtil.Instance.GetSettingKey(tmpBubbleInfo.actionTypeList[i], tmpBubbleInfo.controlType);
                     if (i < tmpBubbleInfo.actionTypeList.Count - 1) keyStr += "/";
                 }
-                bubbleItem.Init(tmpBubbleInfo, keyStr); // ��ʼ������
+                bubbleItem.Init(tmpBubbleInfo, keyStr);
             }
         }
 
@@ -123,15 +112,14 @@ namespace KidGame.UI
         {
             if (bubbleInfoList == null) return;
             if (bubbleInfoList.Find(x => x.creator == info.creator) != null) return;
-            //����������� ����Ҫ���� ��Ϊ�����Ѿ���ÿ֡���ã��Ż�����
             bubbleInfoList.Add(info);
             RefreshBubble();
         }
 
-        public void RemoveBubbleInfoFromList(BubbleInfo info)
+        public void RemoveBubbleInfoFromList(GameObject creator)
         {
             if (bubbleInfoList == null) return;
-            BubbleInfo tmpInfo = bubbleInfoList.Find(x => x.creator == info.creator);
+            BubbleInfo tmpInfo = bubbleInfoList.Find(x => x.creator == creator);
             if (tmpInfo == null) return;
             bubbleInfoList.Remove(tmpInfo);
             if (bubbleInfoList.Count == 0)

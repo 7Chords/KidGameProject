@@ -20,6 +20,8 @@ namespace KidGame.Core
         protected ParticleSystem recyclePartical;
         public ParticleSystem RecyclePartical { get => recyclePartical; set { recyclePartical = value; } }
 
+        public override string itemName => _trapData.trapName;
+
         [Space(20)]
 
 
@@ -177,8 +179,7 @@ namespace KidGame.Core
         {
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerController.Instance.RemoveRecyclableFromList(this);
-            BubbleManager.Instance.RemoveBubbleInfoFromList(new BubbleInfo(ControlType.Keyborad, null,
-gameObject, null, ""));
+            BubbleManager.Instance.RemoveBubbleInfoFromList(gameObject);
         }
     }
 }

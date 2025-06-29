@@ -17,6 +17,8 @@ namespace KidGame.Core
         protected ParticleSystem interactPartical;
         public ParticleSystem InteractPartical { get => interactPartical; set { interactPartical = value; } }
 
+        public string itemName { get => "好看的装饰物"; set { } }
+
         public virtual void InteractNegative() 
         {
 
