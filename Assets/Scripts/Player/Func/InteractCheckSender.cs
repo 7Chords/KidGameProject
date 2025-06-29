@@ -22,9 +22,9 @@ namespace KidGame.Core
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.gameObject.layer != LayerMask.NameToLayer("Interactive")) return;
             bubbleStr = "";
             tmpActionTypeList.Clear();
-            if (other.gameObject.layer != LayerMask.NameToLayer("Interactive")) return;
             player.AddInteractiveToList(other.gameObject.GetComponent<IInteractive>(),
                 Vector3.Distance(other.gameObject.transform.position, player.transform.position));
             //����Ҫ��ʾ�ļ�λ��ʾ
@@ -44,8 +44,6 @@ namespace KidGame.Core
 
         private void OnTriggerExit(Collider other)
         {
-            bubbleStr = "";
-            tmpActionTypeList.Clear();
             if (other.gameObject.layer != LayerMask.NameToLayer("Interactive")) return;
             player.RemoveInteractiveFromList(other.gameObject.GetComponent<IInteractive>());
             IRecyclable recyclable = other.gameObject.GetComponent<IRecyclable>();

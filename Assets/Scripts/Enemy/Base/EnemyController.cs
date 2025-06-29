@@ -199,15 +199,15 @@ namespace KidGame.Core
             if (angleToPlayer > enemyBaseData.VisionAngle / 2f) return false;
 
             // 视线遮挡检查
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, dirToPlayer.normalized, out hit, distanceToPlayer))
-            {
-                if (hit.collider.transform != player)
-                {
-                    // 有物体遮挡玩家
-                    return false;
-                }
-            }
+            //RaycastHit hit;
+            //if (Physics.Raycast(transform.position, dirToPlayer.normalized, out hit, distanceToPlayer))
+            //{
+            //    if (hit.collider.transform != player)
+            //    {
+            //        // 有物体遮挡玩家
+            //        return false;
+            //    }
+            //}
 
             return true;
         }

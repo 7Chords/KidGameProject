@@ -17,15 +17,16 @@ namespace KidGame.Core
         {
             if (enemy.CheckArriveDestination())
             {
+                enemy.SetRoomCheckState(searchRoomType, true);
                 return TaskStatus.Success;
             }
             return TaskStatus.Running;
 
         }
-        public override void OnEnd()
-        {
-            enemy.SetRoomCheckState(searchRoomType, true);
-        }
+        //public override void OnEnd()
+        //{
+        //    enemy.SetRoomCheckState(searchRoomType, true);
+        //}
     }
 
 
