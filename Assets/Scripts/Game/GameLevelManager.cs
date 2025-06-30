@@ -14,16 +14,14 @@ namespace KidGame.Core
         private bool _levelStarted;
         public bool levelStarted => _levelStarted;
 
-
         private bool _levelFinished;
         public bool levelFinished => _levelFinished;
 
         #endregion
-        
+
         private float _phaseDuration = 0f; // 当前阶段总时长
 
         private List<GameLevelData> _levelDataList;
-
 
         public List<Transform> bornPointList;
 
@@ -40,17 +38,20 @@ namespace KidGame.Core
 
         private LevelPhase _currentPhase = LevelPhase.Day;
         private int _currentLoopScore = 0;
-        public int scoreThreshold = 100;    
-        
+        public int scoreThreshold = 100;
+
         private float _phaseTimer = 0f;
-        public float dayDuration = 30f;   // 白天持续时间（秒）
-        public float nightDuration = 60f; // 夜晚持续时间（秒）
+        private float dayDuration = 90f; // 白天持续时间（秒）
+        private float nightDuration = 60f; // 夜晚持续时间（秒）
         private bool _timerRunning = false;
-        
+
         [SerializeField] private Material skyMaterial;
 
+        private int _totalDays = 3; // 总天数
+        private int _currentDay = 0; // 当前天数
+
         #endregion
-        
+
         public void Init(List<GameLevelData> levelDataList)
         {
             _levelDataList = levelDataList;
@@ -58,9 +59,9 @@ namespace KidGame.Core
             EnemyManager.Instance.Init();
             LevelResManager.Instance.Init();
         }
+
         public void Discard()
         {
-
         }
 
         private void Update()
@@ -98,15 +99,20 @@ namespace KidGame.Core
         // 初始第一关
         public void InitFirstLevel()
         {
-            EnemyManager.Instance.InitEnemy(_levelDataList[0].enemyDataList, bornPointList);
+            _currentDay = 1; // 从第一天开始
             LevelResManager.Instance.InitLevelRes(_levelDataList[0].levelResData);
+            StartDayPhase(); // 开始第一天的白天
         }
 
         // 初始化下一关卡，在这里保存进度，供玩家读档
         public void InitNextLevel()
         {
             levelIndex++;
-            EnemyManager.Instance.InitEnemy(_levelDataList[levelIndex].enemyDataList, bornPointList);
+            if (levelIndex >= _levelDataList.Count)
+            {
+                levelIndex = 0; // 循环关卡或者你可以结束游戏
+            }
+            
             LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].levelResData);
         }
 
@@ -114,7 +120,7 @@ namespace KidGame.Core
         {
             EnemyManager.Instance.DiscardEnemy();
         }
-        
+
         public void StartLevel()
         {
             _levelStarted = true;
@@ -123,14 +129,23 @@ namespace KidGame.Core
         public void FinishLevel()
         {
             _levelFinished = true;
-        }        
+        }
 
         #endregion
-        
+
         #region 昼夜循环
 
         public void StartDayPhase()
         {
+            if (_currentDay > _totalDays)
+            {
+                // 所有天数已完成
+                GameManager.Instance.FinishGame();
+                return;
+            }
+
+            Debug.Log($"第 {_currentDay} 天开始");
+            
             _currentPhase = LevelPhase.Day;
             _phaseDuration = dayDuration;
             _phaseTimer = dayDuration;
@@ -141,39 +156,60 @@ namespace KidGame.Core
 
             GameManager.Instance.ResetLoopScore();
         }
-        
+
         public void StartNightPhase()
         {
+            Debug.Log($"第 {_currentDay} 天夜晚开始");
+            
+            // 生成敌人
+            EnemyManager.Instance.InitEnemy(_levelDataList[levelIndex].enemyDataList, bornPointList);
+            
+            // 更新状态
             _currentPhase = LevelPhase.Night;
             _phaseDuration = nightDuration;
             _phaseTimer = nightDuration;
             _timerRunning = true;
-
-            Debug.Log("敌人开始入侵，玩家需诱导敌人踩陷阱");
         }
-        
+
         public void EndNightPhase()
         {
+            Debug.Log($"第 {_currentDay} 天结束");
+            
             _levelFinished = true;
             _currentPhase = LevelPhase.End;
             _timerRunning = false;
-            
-            _currentLoopScore = GameManager.Instance.GetCurrentLoopScore();
 
-            if (_currentLoopScore >= scoreThreshold)
+            _currentLoopScore = GameManager.Instance.GetCurrentLoopScore();
+            
+            _currentDay++;
+            
+            if (_currentDay <= _totalDays)
             {
-                Debug.Log("得分足够，进入下一天");
                 InitNextLevel();
-                StartDayPhase(); // 自动进入下一轮
+                StartDayPhase();
             }
             else
             {
-                Debug.Log("得分不足，游戏结束");
+                // 所有天数完成
                 GameManager.Instance.FinishGame();
             }
         }
-
         
+        public void SetTotalDays(int days)
+        {
+            _totalDays = days;
+        }
+        
+        public int GetCurrentDay()
+        {
+            return _currentDay;
+        }
+        
+        public int GetTotalDays()
+        {
+            return _totalDays;
+        }
+
         #endregion
     }
 }

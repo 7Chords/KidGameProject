@@ -10,8 +10,13 @@ namespace KidGame.Core
     {
         private LevelResData _resData;
 
-        public void Init() { }
-        public void Discard() { }
+        public void Init()
+        {
+        }
+
+        public void Discard()
+        {
+        }
 
         public void InitLevelRes(LevelResData resData)
         {
@@ -42,6 +47,7 @@ namespace KidGame.Core
                             Random.Range(item.randomAmount_min, item.randomAmount_max + 1)
                         ));
                     }
+
                     mapFurniture.Init(true, tmpMaterialItemList);
                 }
             }
@@ -117,6 +123,7 @@ namespace KidGame.Core
             {
                 total += Random.Range(resCfg.randomAmount_min, resCfg.randomAmount_max + 1);
             }
+
             return total;
         }
 

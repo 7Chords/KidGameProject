@@ -52,9 +52,6 @@ namespace KidGame.Core
         public void Init()
         {
             PlayerUtil.Instance.RegPlayerPickItem(PlayerPickItem);
-
-            //_trapBag = new List<TrapSlotInfo>();
-            //_materialBag = new List<MaterialSlotInfo>();
         }
 
         public void Discard()
@@ -78,8 +75,6 @@ namespace KidGame.Core
         
         #endregion
         
-
-
         private void PlayerPickItem(IPickable iPickable)
         {
             if (iPickable == null) return;

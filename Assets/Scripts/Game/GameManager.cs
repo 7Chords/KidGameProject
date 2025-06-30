@@ -25,7 +25,6 @@ namespace KidGame.Core
 
         #endregion
 
-
         //test public
         public MapData mapData;
 
