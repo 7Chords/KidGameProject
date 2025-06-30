@@ -195,6 +195,11 @@ namespace KidGame.Core
             }
         }
         
+        public void SetCurrentDay(int day)
+        {
+            _currentDay = day;
+        }
+        
         public void SetTotalDays(int days)
         {
             _totalDays = days;

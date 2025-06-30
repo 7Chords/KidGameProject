@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using KidGame.Core;
 using KidGame.Interface;
-using UnityEngine;
+
 
 namespace KidGame.Core
 {
     #region 单个物品的信息结构
-    
     
     [Serializable]
     public class TrapSlotInfo
@@ -71,6 +70,13 @@ namespace KidGame.Core
         public List<MaterialSlotInfo> GetMaterialSlots()
         {
             return _materialBag;
+        }
+        
+        // 加载背包数据
+        public void LoadBagData(List<TrapSlotInfo> trapSlots, List<MaterialSlotInfo> materialSlots)
+        {
+            _trapBag = trapSlots ?? new List<TrapSlotInfo>();
+            _materialBag = materialSlots ?? new List<MaterialSlotInfo>();
         }
         
         #endregion
