@@ -478,6 +478,8 @@ GameObject:
   - component: {fileID: 327504023756517323}
   - component: {fileID: 4370705138539774008}
   - component: {fileID: 327504023756517321}
+  - component: {fileID: 6617275898789749953}
+  - component: {fileID: 3374415233043549487}
   m_Layer: 5
   m_Name: SaveWindow
   m_TagString: Untagged
@@ -526,14 +528,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9854033104d6dba43a3ebc612238b084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animIn: {fileID: 6617275898789749953}
+  animOut: {fileID: 3374415233043549487}
+  properties:
+    hideOnForegroundLost: 1
+    windowQueuePriority: 0
+    isPopup: 0
   grid: {fileID: 327504023950438473}
   recordPrefab: {fileID: 1913719470317747583, guid: 602697a8ba87aed4eb03a7e27b7deb11,
     type: 3}
   detail: {fileID: 327504025065367167}
-  screenShot: {fileID: 327504024327615143}
   gameTime: {fileID: 327504025068813409}
   sceneName: {fileID: 327504024102108366}
-  level: {fileID: 327504023486842445}
 --- !u!114 &327504023756517321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,6 +570,42 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6617275898789749953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327504023756517327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba1e145d32ecc1418c1b103ff6a7b8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOutAnimation: 0
+  duration: 0.5
+  doFade: 0
+  fadeDurationPercent: 0.5
+  ease: 1
+  xYSplit: 0.25
+--- !u!114 &3374415233043549487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327504023756517327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba1e145d32ecc1418c1b103ff6a7b8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOutAnimation: 1
+  duration: 0.5
+  doFade: 0
+  fadeDurationPercent: 0.5
+  ease: 1
+  xYSplit: 0.25
 --- !u!1 &327504023950438472
 GameObject:
   m_ObjectHideFlags: 0

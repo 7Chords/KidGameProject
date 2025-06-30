@@ -29,5 +29,7 @@ namespace KidGame.UI.Game
         public const string PauseSelectPanel = "PauseSelectPanel";
         
         public const string BackpackWindow = "BackpackWindow";
+        
+        public const string SaveWindow = "SaveWindow";
     }
 }

@@ -10,7 +10,6 @@ namespace KidGame.Core
         public int level; //玩家等级
         public string scensName; //保存时所在场景名  
         public float gameTime; //游戏时长
-        public bool isFullScreen; //是否全屏
 
 
         public class SaveData
@@ -18,8 +17,6 @@ namespace KidGame.Core
             public string scensName;
             public int level;
             public float gameTime;
-            public bool isFullScreen;
-            public Color color;
         }
 
         SaveData ForSave()
@@ -28,7 +25,6 @@ namespace KidGame.Core
             savedata.scensName = scensName;
             savedata.level = level;
             savedata.gameTime = gameTime;
-            savedata.isFullScreen = isFullScreen;
             return savedata;
         }
 
@@ -37,7 +33,6 @@ namespace KidGame.Core
             scensName = savedata.scensName;
             level = savedata.level;
             gameTime = savedata.gameTime;
-            isFullScreen = savedata.isFullScreen;
         }
 
         public void Save(int id)

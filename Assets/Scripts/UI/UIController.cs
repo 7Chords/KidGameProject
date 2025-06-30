@@ -24,6 +24,7 @@ namespace KidGame.UI.Game
             uiCanvas = uiFrame.GetComponent<Canvas>();
             Signals.Get<StartGameSignal>().AddListener(OnStartDemo);
             Signals.Get<ToSettingsWindowSignal>().AddListener(OnToSettingsWindow);
+            Signals.Get<ContinueGameSignal>().AddListener(OnToSaveWindow);
             Signals.Get<GamePauseSignal>().AddListener(OnShowPauseSelectPanel);
             
 
@@ -47,12 +48,10 @@ namespace KidGame.UI.Game
             uiFrame.OpenWindow(ScreenIds.StartGameWindow);
         }
 
-        #region 开关panel
+        #region 开关
 
         private void OnStartDemo()
         {
-            /*uiFrame.ShowPanel(ScreenIds.NavigationPanel);
-            uiFrame.ShowPanel(ScreenIds.ToastPanel);*/
             uiFrame.ShowPanel(ScreenIds.GamePlayPanel);
         }
         
@@ -60,6 +59,11 @@ namespace KidGame.UI.Game
         private void OnToSettingsWindow()
         {
             uiFrame.OpenWindow(ScreenIds.SettingWindow);
+        }
+
+        private void OnToSaveWindow()
+        {
+            uiFrame.OpenWindow(ScreenIds.SaveWindow);
         }
 
         private void OnNavigateToWindow(string windowId)

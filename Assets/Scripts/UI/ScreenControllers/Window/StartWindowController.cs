@@ -40,10 +40,8 @@ namespace KidGame.UI
 
         public void UI_Continue()
         {
-            //读取最新存档
-            LoadRecord(RecordData.Instance.lastID);
-            
-            recordPanel.SetActive(!recordPanel.activeSelf);
+            // 读取最新存档
+            // LoadRecord(RecordData.Instance.lastID);
             
             Signals.Get<ContinueGameSignal>().Dispatch();
         }
@@ -58,19 +56,6 @@ namespace KidGame.UI
             Signals.Get<ExitGameSignal>().Dispatch();
         }
 
-        public GameObject recordPanel;
-
-        private void Awake()
-        {
-            //存档被点击时调用
-            SaveWindowController.OnLoad += LoadRecord;
-        }
-
-        private void OnDestroy()
-        {
-            SaveWindowController.OnLoad -= LoadRecord;
-        }
-
         private void Start()
         {
             //读取存档列表
@@ -80,22 +65,6 @@ namespace KidGame.UI
             {
                 //有存档才激活按钮
             }
-        }
-
-        void LoadRecord(int i)
-        {
-            //载入指定存档数据
-            PlayerSaveData.Instance.Load(i);
-
-            //如果最新存档不是i，就更新最新存档的序号，并保存
-            if (i != RecordData.Instance.lastID)
-            {
-                RecordData.Instance.lastID = i;
-                RecordData.Instance.Save();
-            }
-
-            //跳转场景
-            SceneManager.LoadScene(PlayerSaveData.Instance.scensName);
         }
     }
 }
