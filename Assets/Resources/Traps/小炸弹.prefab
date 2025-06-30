@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 461235686993463108}
   - component: {fileID: 162969340268553711}
   m_Layer: 6
-  m_Name: "\u6D4B\u8BD5\u9677\u96311"
+  m_Name: "\u5C0F\u70B8\u5F39"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,6 +121,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c834171996cfd7449ddd59b50495d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomInteractSfxList: []
+  interactPartical: {fileID: 0}
+  randomPickSfxList: []
+  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  randomRecycleSfxList: []
+  recyclePartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   _trapData: {fileID: 11400000, guid: 83800e49de4b65c4cb15a70dc80e950a, type: 2}
 --- !u!54 &162969340268553711
 Rigidbody:
@@ -232,7 +238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1639249628877236370
 Transform:
   m_ObjectHideFlags: 0

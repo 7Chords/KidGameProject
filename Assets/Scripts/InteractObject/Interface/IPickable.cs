@@ -14,6 +14,6 @@ namespace KidGame.Interface
         public abstract List<string> RandomPickSfxList { get; set; }
 
         //捡起粒子特效
-        public abstract ParticleSystem PickPartical { get; set; }
+        public abstract GameObject PickPartical { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace KidGame.Core
             }
             if (enemy.CheckCatchPlayer())
             {
+                PlayerController.Instance.Dead();
                 return TaskStatus.Success;
             }
             return TaskStatus.Running;

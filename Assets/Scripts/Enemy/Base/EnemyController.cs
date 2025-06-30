@@ -58,6 +58,7 @@ namespace KidGame.Core
         public Color NoSeePlayerColor;
         public Color SeePlayerColor;
 
+        private float curSanity;
 
         #region 有目的搜索
 
@@ -125,7 +126,7 @@ namespace KidGame.Core
         public void Init(EnemyBaseData enemyData)
         {
             enemyBaseData = enemyData;
-
+            curSanity = enemyBaseData.MaxSanity;
             //stateMachine = PoolManager.Instance.GetObject<StateMachine>();
             //stateMachine.Init(this);
             //ChangeState(EnemyState.Idle); // 初始状态
@@ -353,7 +354,9 @@ namespace KidGame.Core
         public void TakeDamage(DamageInfo damageInfo)
         {
             // 现有伤害处理逻辑...
-
+            curSanity = Mathf.Clamp(curSanity - damageInfo.damage, 0, enemyBaseData.MaxSanity);
+            //TODO:临时表现
+            Rb.AddForce(-6 * (damageInfo.creator.transform.position - transform.position).normalized,ForceMode.Impulse);
             // 检查被击中时触发的技能
             foreach (var skillInstance in _activeSkillInstances)
             {

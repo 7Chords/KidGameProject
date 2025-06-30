@@ -17,8 +17,8 @@ namespace KidGame.Core
         public List<string> RandomRecycleSfxList { get => randomRecycleSfxList; set { randomRecycleSfxList = value; } }
 
         [SerializeField]
-        protected ParticleSystem recyclePartical;
-        public ParticleSystem RecyclePartical { get => recyclePartical; set { recyclePartical = value; } }
+        protected GameObject recyclePartical;
+        public GameObject RecyclePartical { get => recyclePartical; set { recyclePartical = value; } }
 
         public override string itemName => _trapData.trapName;
 
@@ -30,6 +30,9 @@ namespace KidGame.Core
 
         public TrapData trapData => _trapData;
 
+        private Rigidbody rb;
+        public Rigidbody Rb => rb;
+
 
         #region 时间型陷阱相关参数
 
@@ -40,6 +43,11 @@ namespace KidGame.Core
         #endregion
 
         private CatalystBase _catalyst;
+
+        private void Awake()
+        {
+            rb = GetComponent<Rigidbody>();
+        }
 
         /// <summary>
         /// 初始化
@@ -112,6 +120,7 @@ namespace KidGame.Core
         {
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
+            MonoManager.Instance.InstantiateGameObject(recyclePartical, transform.position,Quaternion.identity);
             Destroy(gameObject);
         }
 

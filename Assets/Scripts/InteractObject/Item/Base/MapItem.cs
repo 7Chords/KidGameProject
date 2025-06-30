@@ -14,17 +14,17 @@ namespace KidGame.Core
         [SerializeField]
         protected List<string> randomInteractSfxList;
         [SerializeField]
-        protected ParticleSystem interactPartical;
+        protected GameObject interactPartical;
 
         [SerializeField]
         protected List<string> randomPickSfxList;
         [SerializeField]
-        protected ParticleSystem pickPartical;
+        protected GameObject pickPartical;
 
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
-        public ParticleSystem InteractPartical { get => interactPartical; set { interactPartical = value; } }
+        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
         public List<string> RandomPickSfxList { get => randomPickSfxList; set { randomPickSfxList = value; } }
-        public ParticleSystem PickPartical { get => pickPartical; set { pickPartical = value; } }
+        public GameObject PickPartical { get => pickPartical; set { pickPartical = value; } }
 
         public virtual string itemName { get => "default item name"; set { } }
 

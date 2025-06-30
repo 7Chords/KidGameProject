@@ -83,4 +83,15 @@ public class MonoManager : Singleton<MonoManager>
         return go;
     }
 
+    public GameObject InstantiateGameObject(GameObject obj,Vector3 pos,Quaternion rotation)
+    {
+        GameObject go = Instantiate(obj,pos,rotation);
+        return go;
+    }
+    public GameObject InstantiateGameObject(GameObject obj, Vector3 pos, Quaternion rotation,float delayToDestroy)
+    {
+        GameObject go = Instantiate(obj, pos, rotation);
+        Destroy(go, delayToDestroy);
+        return go;
+    }
 }

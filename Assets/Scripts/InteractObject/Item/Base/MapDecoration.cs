@@ -14,8 +14,8 @@ namespace KidGame.Core
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
 
         [SerializeField]
-        protected ParticleSystem interactPartical;
-        public ParticleSystem InteractPartical { get => interactPartical; set { interactPartical = value; } }
+        protected GameObject interactPartical;
+        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
 
         public string itemName { get => "好看的装饰物"; set { } }
 

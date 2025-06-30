@@ -272,6 +272,12 @@ namespace KidGame.Core
             
         }
 
+        public void Dead()
+        {
+            //TODO:临时测试
+            Destroy(gameObject);
+        }
+
         #endregion
 
 

@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _DayNightLerp: 0.12744014
+    - _DayNightLerp: 0.20201187
     - _HorizonLineContribution: 0.177
     - _HorizonLineExponent: 4
     - _SkyGradientExponent: 2.5

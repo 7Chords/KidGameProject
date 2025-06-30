@@ -18,7 +18,7 @@ namespace KidGame.Interface
         public abstract List<string> RandomInteractSfxList { get; set; }
 
         //互动粒子特效
-        public abstract ParticleSystem InteractPartical { get; set; }
+        public abstract GameObject InteractPartical { get; set; }
 
         public abstract string itemName { get; set;}
 

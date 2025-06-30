@@ -146,4 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74a5091414306384696551eea892b2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomInteractSfxList: []
+  interactPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  randomPickSfxList: []
+  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   _materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}

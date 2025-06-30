@@ -16,6 +16,6 @@ namespace KidGame.Interface
         public abstract List<string> RandomRecycleSfxList { get; set; }
 
         //回收粒子特效
-        public abstract ParticleSystem RecyclePartical { get; set; }
+        public abstract GameObject RecyclePartical { get; set; }
     }
 }

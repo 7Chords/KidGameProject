@@ -30,8 +30,8 @@ namespace KidGame.Core
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
 
         [SerializeField]
-        private ParticleSystem interactPartical;
-        public ParticleSystem InteractPartical { get => interactPartical; set { interactPartical = value; } }
+        private GameObject interactPartical;
+        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
 
         public string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
 
