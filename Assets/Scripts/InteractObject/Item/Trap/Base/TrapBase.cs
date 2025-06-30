@@ -120,7 +120,8 @@ namespace KidGame.Core
         {
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
-            MonoManager.Instance.InstantiateGameObject(recyclePartical, transform.position,Quaternion.identity);
+            MonoManager.Instance.InstantiateGameObject(recyclePartical, transform.position,Quaternion.identity,1f);
+            UIHelper.Instance.ShowTip("ªÒµ√¡À" + itemName+"°¡1",gameObject);
             Destroy(gameObject);
         }
 
@@ -188,7 +189,7 @@ namespace KidGame.Core
         {
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerController.Instance.RemoveRecyclableFromList(this);
-            BubbleManager.Instance.RemoveBubbleInfoFromList(gameObject);
+            UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
         }
     }
 }

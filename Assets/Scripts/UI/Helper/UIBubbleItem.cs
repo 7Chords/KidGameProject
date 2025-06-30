@@ -54,7 +54,7 @@ namespace KidGame.UI
         {
             screenPos = Camera.main.WorldToScreenPoint(creator.transform.position) * (1080f / 300);
             // 屏幕坐标转UI坐标
-            rectTran.localPosition = ScreenPointToUIPoint(rectTran, screenPos);
+            rectTran.localPosition = UIHelper.Instance.ScreenPointToUIPoint(rectTran, screenPos);
         }
 
         public void DestoryBubble()
@@ -67,18 +67,6 @@ namespace KidGame.UI
         {
             yield return _tweener.WaitForCompletion();
             Destroy(gameObject);
-        }
-
-        public Vector2 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
-        {
-            Vector2 localPoint;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                rt.parent as RectTransform,
-                screenPoint,
-                null,
-                out localPoint
-            );
-            return localPoint;
         }
     }
 }

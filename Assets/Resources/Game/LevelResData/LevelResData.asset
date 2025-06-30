@@ -24,3 +24,18 @@ MonoBehaviour:
     - materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
       randomAmount_min: 1
       randomAmount_max: 5
+  - roomType: 4
+    materialDataList:
+    - materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
+      randomAmount_min: 1
+      randomAmount_max: 5
+  - roomType: 2
+    materialDataList:
+    - materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
+      randomAmount_min: 1
+      randomAmount_max: 5
+  - roomType: 6
+    materialDataList:
+    - materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
+      randomAmount_min: 1
+      randomAmount_max: 5

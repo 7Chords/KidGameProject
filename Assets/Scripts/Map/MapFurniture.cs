@@ -2,6 +2,7 @@ using KidGame.Core.Data;
 using UnityEngine;
 using KidGame.Interface;
 using System.Collections.Generic;
+using KidGame.UI;
 
 namespace KidGame.Core
 {
@@ -19,7 +20,7 @@ namespace KidGame.Core
     }
 
 
-    public class MapFurniture : MonoBehaviour,IInteractive
+    public class MapFurniture : MonoBehaviour, IInteractive
     {
         public MapFurnitureData mapFurnitureData;
 
@@ -49,7 +50,7 @@ namespace KidGame.Core
         {
             this.canInteract = canInteract;
             materialHoldList = materialList;
-            if(canInteract)
+            if (canInteract)
             {
                 gameObject.layer = LayerMask.NameToLayer("Interactive");
             }
@@ -69,7 +70,14 @@ namespace KidGame.Core
         public void InteractPositive()
         {
             if (!canInteract) return;
-            Debug.Log("和" + mapFurnitureData.furnitureData.furnitureName + "互动了！可以获得里面的材料！");
+            if (materialHoldList == null || materialHoldList.Count ==0)
+            {
+                UIHelper.Instance.ShowTip("空空如也",gameObject);
+            }
+            else
+            {
+                //TODO:
+            }
         }
 
 

@@ -37,7 +37,7 @@ namespace KidGame.Core
                 tmpActionTypeList.Add(InputActionType.Recycle);
                 bubbleStr += "/回收";
             }
-            BubbleManager.Instance.AddBubbleInfoToList(new BubbleInfo(ControlType.Keyborad, tmpActionTypeList,
+            UIHelper.Instance.AddBubbleInfoToList(new BubbleInfo(ControlType.Keyborad, tmpActionTypeList,
                 other.gameObject, player.gameObject, bubbleStr, collInteractive.itemName));
         }
 
@@ -50,7 +50,7 @@ namespace KidGame.Core
             {
                 player.RemoveRecyclableFromList(other.gameObject.GetComponent<IRecyclable>());
             }
-            BubbleManager.Instance.RemoveBubbleInfoFromList(other.gameObject);
+            UIHelper.Instance.RemoveBubbleInfoFromList(other.gameObject);
         }
     }
 }

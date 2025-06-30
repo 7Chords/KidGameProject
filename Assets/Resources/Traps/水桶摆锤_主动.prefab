@@ -124,9 +124,9 @@ MonoBehaviour:
   randomInteractSfxList: []
   interactPartical: {fileID: 0}
   randomPickSfxList: []
-  pickPartical: {fileID: 0}
+  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   randomRecycleSfxList: []
-  recyclePartical: {fileID: 0}
+  recyclePartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   _trapData: {fileID: 0}
 --- !u!54 &6581023207055364294
 Rigidbody:

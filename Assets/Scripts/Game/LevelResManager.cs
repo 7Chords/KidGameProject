@@ -58,7 +58,12 @@ namespace KidGame.Core
             foreach (var mapping in _resData.r2MMappingList)
             {
                 var roomTiles = MapManager.Instance.mapTileDic[mapping.roomType];
-                var roomFurniture = MapManager.Instance.mapFurnitureDic[mapping.roomType];
+                //TODO:
+                List<MapFurniture> roomFurniture = new List<MapFurniture>();
+                if (MapManager.Instance.mapFurnitureDic.ContainsKey(mapping.roomType))
+                {
+                     roomFurniture = MapManager.Instance.mapFurnitureDic[mapping.roomType];
+                }
                 var roomWalls = MapManager.Instance.mapWallList;
 
                 // 获取可生成材料的有效位置

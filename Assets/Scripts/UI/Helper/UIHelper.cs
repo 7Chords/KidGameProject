@@ -1,24 +1,26 @@
-ï»¿using KidGame.Core;
+using KidGame.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace KidGame.UI
 {
     /// <summary>
-    /// æ°”æ³¡ä¿¡æ¯ç±»
+    /// ÆøÅİĞÅÏ¢Àà
     /// </summary>
     public class BubbleInfo : IComparable<BubbleInfo>
     {
 
-        public ControlType controlType; //ç©å®¶çš„æ§åˆ¶ç±»å‹ï¼šæ‰‹æŸ„/é”®ç›˜...
+        public ControlType controlType; //Íæ¼ÒµÄ¿ØÖÆÀàĞÍ£ºÊÖ±ú/¼üÅÌ...
 
-        public List<InputActionType> actionTypeList;//è¦æç¤ºçš„äº¤äº’é”®ä½ç±»å‹åˆ—è¡¨
-        public GameObject creator { get; set; }//æ°”æ³¡çš„åˆ›å»ºè€…
+        public List<InputActionType> actionTypeList;//ÒªÌáÊ¾µÄ½»»¥¼üÎ»ÀàĞÍÁĞ±í
+        public GameObject creator { get; set; }//ÆøÅİµÄ´´½¨Õß
         public GameObject player { get; set; }
-        public string content { get; set; } //æ˜¾ç¤ºäº¤äº’çš„æç¤ºæ–‡æœ¬
+        public string content { get; set; } //ÏÔÊ¾½»»¥µÄÌáÊ¾ÎÄ±¾
 
-        public string itemName;//äº§ç”Ÿæ°”æ³¡çš„ç‰©ä½“å
+        public string itemName;//²úÉúÆøÅİµÄÎïÌåÃû
 
         public BubbleInfo(ControlType controlType, List<InputActionType> actionTypeList, GameObject creator, GameObject player, string content, string itemName)
         {
@@ -39,19 +41,19 @@ namespace KidGame.UI
         }
     }
 
+
+
     /// <summary>
-    /// æ°”æ³¡ç®¡ç†å™¨
+    /// ¹ÜÀíÒ»Ğ©Ğ¡µÄ¶ÀÁ¢µÄĞ¡UI
     /// </summary>
-    public class BubbleManager : Singleton<BubbleManager>
+    public class UIHelper : Singleton<UIHelper>
     {
         public GameObject BubblePrefab;
-
         private GameObject currentBubble;
         private BubbleInfo currentBubbleInfo;
-
         public List<BubbleInfo> bubbleInfoList;
 
-
+        public GameObject TipPrefab;
         private void Start()
         {
             Init();
@@ -65,12 +67,13 @@ namespace KidGame.UI
             bubbleInfoList.Clear();
             bubbleInfoList = null;
         }
-        
+
         private void Update()
         {
             SortBubbleQueueByDist();
         }
 
+        #region Bubble
         private void RefreshBubble()
         {
             if (bubbleInfoList == null || bubbleInfoList.Count == 0) return;
@@ -134,5 +137,31 @@ namespace KidGame.UI
             if (bubbleInfoList == null) return;
             bubbleInfoList.Sort();
         }
+
+        #endregion
+
+        #region Tip
+        public void ShowTip(string content,GameObject creator)
+        {
+            GameObject tipGO = Instantiate(TipPrefab);
+            tipGO.transform.parent = transform;
+            tipGO.GetComponent<UITipItem>().Init(creator, content);
+        }
+        #endregion
+
+        #region Util
+        public Vector2 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
+        {
+            Vector2 localPoint;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rt.parent as RectTransform,
+                screenPoint,
+                null,
+                out localPoint
+            );
+            return localPoint;
+        }
+
+        #endregion
     }
 }

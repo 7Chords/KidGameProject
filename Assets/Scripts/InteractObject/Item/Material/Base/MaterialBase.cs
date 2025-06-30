@@ -38,8 +38,9 @@ namespace KidGame.Core
         {
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerUtil.Instance.CallPlayerPickItem(this);
-            BubbleManager.Instance.RemoveBubbleInfoFromList(gameObject);
-            MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity);
+            UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
+            MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity,1f);
+            UIHelper.Instance.ShowTip("获得了" + itemName + "×1", gameObject);
             //TODO:工厂回收？
             Destroy(gameObject);
         }
