@@ -25,14 +25,8 @@ namespace KidGame.Core
 
 
 
-        [SerializeField] private EnemyBaseData enemyBaseData;
-        public EnemyBaseData EnemyBaseData => enemyBaseData;
 
-        //private StateMachine stateMachine;
-
-        private Transform player;
-
-
+        #region Comp
 
         private Rigidbody rb;
         public Rigidbody Rb => rb;
@@ -47,11 +41,23 @@ namespace KidGame.Core
 
         private BehaviorTree behaviorTree;
 
+        #endregion
+
+        [SerializeField] private EnemyBaseData enemyBaseData;
+        public EnemyBaseData EnemyBaseData => enemyBaseData;
+
+        private Transform player;
+
         private Dictionary<RoomType, bool> roomSearchStateDic;//房间搜索情况字典
 
         private List<RoomInfo> _roomsToCheck = new List<RoomInfo>();
 
         private Vector3 targetPos;
+
+        public Renderer VisionIndicatorRenderer;
+        public Color NoSeePlayerColor;
+        public Color SeePlayerColor;
+
 
         #region 有目的搜索
 
@@ -192,13 +198,20 @@ namespace KidGame.Core
             // 距离检查
             Vector3 dirToPlayer = player.position - transform.position;
             float distanceToPlayer = dirToPlayer.magnitude;
-            if (distanceToPlayer > enemyBaseData.VisionRange) return false;
-
+            if (distanceToPlayer > enemyBaseData.VisionRange)
+            {
+                SetVisionIndicator(false);
+                return false;
+            }
             // 扇形角度检查
             float angleToPlayer = Vector3.Angle(transform.forward, dirToPlayer);
-            if (angleToPlayer > enemyBaseData.VisionAngle / 2f) return false;
+            if (angleToPlayer > enemyBaseData.VisionAngle / 2f)
+            {
+                SetVisionIndicator(false);
+                return false;
+            }
 
-            // 视线遮挡检查
+            // TODO:视线遮挡检查(视线被挡住也不算看到玩家）
             //RaycastHit hit;
             //if (Physics.Raycast(transform.position, dirToPlayer.normalized, out hit, distanceToPlayer))
             //{
@@ -208,7 +221,7 @@ namespace KidGame.Core
             //        return false;
             //    }
             //}
-
+            SetVisionIndicator(true);
             return true;
         }
 
@@ -471,5 +484,23 @@ namespace KidGame.Core
             Agent.speed = enemyBaseData.MoveSpeed;
             Agent.SetDestination(targetPos);
         }
+
+
+        private void SetVisionIndicator(bool seePlayer)
+        {
+            VisionIndicatorRenderer.material.SetColor("_Color", seePlayer ? SeePlayerColor : NoSeePlayerColor);
+        }
+
+        #region Gizoms
+
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, enemyBaseData.VisionRange);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, enemyBaseData.HearingRange);
+        }
+        #endregion
     }
 }

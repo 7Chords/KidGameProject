@@ -19,7 +19,7 @@ MonoBehaviour:
   ChaseSpeed: 3
   Resistance: 0.5
   VisionRange: 4
-  VisionAngle: 180
+  VisionAngle: 120
   HearingRange: 8
   AttackRange: 0.5
   activeSkills:

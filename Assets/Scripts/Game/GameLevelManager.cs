@@ -41,7 +41,7 @@ namespace KidGame.Core
         public int scoreThreshold = 100;
 
         private float _phaseTimer = 0f;
-        private float dayDuration = 90f; // 白天持续时间（秒）
+        private float dayDuration = 1f; // 白天持续时间（秒）
         private float nightDuration = 60f; // 夜晚持续时间（秒）
         private bool _timerRunning = false;
 
