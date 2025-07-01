@@ -10,22 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d586ab34f5de9c643b34554280c3136b, type: 3}
-  m_Name: TestDamageBuffData
+  m_Name: AddForceBuffData
   m_EditorClassIdentifier: 
-  id: Buf_001
-  buffName: "\u57FA\u7840\u53D7\u4F24buff"
-  description: "\u57FA\u7840\u53D7\u4F24buff"
-  icon: {fileID: 21300000, guid: a870499683d4b694993f6f6c51ea5bc1, type: 3}
+  id: Buf_002
+  buffName: "\u51B2\u51FB"
+  description: "\u51B2\u51FB"
+  icon: {fileID: 21300002, guid: b27bcf37600cca24196520251965a496, type: 3}
   priority: 0
   maxStack: 0
-  tags:
-  - Damageable
+  tags: []
   isForever: 0
-  duration: 5
-  tickTime: 1
+  duration: 0
+  tickTime: 0
   buffUpdateTime: 0
   buffRemoveStackUpdate: 0
-  OnCreate: {fileID: 11400000, guid: 315563794e5cd16478956124f92672b2, type: 2}
+  OnCreate: {fileID: 11400000, guid: 81a959eeb3e5dc64d9c82b8abfb13a34, type: 2}
   OnRemove: {fileID: 0}
   OnTick: {fileID: 0}
   OnHit: {fileID: 0}

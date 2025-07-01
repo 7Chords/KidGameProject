@@ -128,6 +128,9 @@ MonoBehaviour:
   randomRecycleSfxList: []
   recyclePartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   _trapData: {fileID: 11400000, guid: 83800e49de4b65c4cb15a70dc80e950a, type: 2}
+  damage: 10
+  force: 7
+  buffData: {fileID: 11400000, guid: 8ca0db8cd28c1194f81b6b508c9412bc, type: 2}
 --- !u!54 &162969340268553711
 Rigidbody:
   m_ObjectHideFlags: 0

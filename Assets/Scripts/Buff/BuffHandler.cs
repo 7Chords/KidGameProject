@@ -91,7 +91,7 @@ namespace KidGame.Core
             else
             {
                 buffInfo.durationTimer = buffInfo.buffData.duration;
-                buffInfo.buffData.OnCreate.Apply(buffInfo);
+                buffInfo.buffData.OnCreate?.Apply(buffInfo);
                 buffList.Add(buffInfo);
                 //对buffList进行排序
                 //按照优先级降序排序 优先级数字越大排得越前面
@@ -124,7 +124,7 @@ namespace KidGame.Core
                     break;
             }
 
-            buffInfo.buffData.OnRemove.Apply(buffInfo);
+            buffInfo.buffData.OnRemove?.Apply(buffInfo);
         }
 
         /// <summary>

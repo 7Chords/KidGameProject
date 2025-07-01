@@ -6,19 +6,25 @@ namespace KidGame.Core
 {
     public class SmallBoom : TrapBase
     {
+        public float damage;
+        public float force;
+        public BuffData buffData;
         public override void Trigger()
         {
             Collider[] colls = Physics.OverlapSphere(transform.position, 5);
             IDamageable damageable;
+            Vector3 dir = Vector3.zero;
             foreach(var coll in colls)
             {
                 damageable = coll.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.TakeDamage(new DamageInfo(gameObject, 5));
+                    dir = (coll.transform.position - transform.position).normalized;
+                    damageable.TakeDamage(new DamageInfo(gameObject, damage, 
+                        new BuffInfo(buffData,coll.gameObject,new object[] { dir * force })));//额外传递一个力的参数
                 }
             }
-            Debug.Log("TestTrap_1触发了");
+
             Destroy(gameObject);
         }
     }

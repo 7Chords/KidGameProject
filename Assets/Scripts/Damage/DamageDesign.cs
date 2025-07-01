@@ -10,10 +10,13 @@ namespace KidGame.Core
 
         public float damage;
 
-        public DamageInfo(GameObject creator, float damage)
+        public BuffInfo buffInfo;
+
+        public DamageInfo(GameObject creator, float damage, BuffInfo info = null)
         {
             this.creator = creator;
             this.damage = damage;
+            buffInfo = info;
         }
     }
 }

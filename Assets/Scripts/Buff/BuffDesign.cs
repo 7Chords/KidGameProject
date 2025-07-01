@@ -22,9 +22,7 @@ namespace KidGame.Core
     {
         public BuffData buffData;
 
-        public GameObject creator;//创建者
-
-        public GameObject target;//目标者
+        public GameObject target;
 
         public float durationTimer;//持续时间计时器
 
@@ -32,7 +30,13 @@ namespace KidGame.Core
 
         public float curStack = 1;//当前层数
 
-
+        public object[] exParams;//自定义传递的一些额外参数
+        public BuffInfo(BuffData buffData, GameObject target, object[] paramArr = null)
+        {
+            this.buffData = buffData;
+            this.target = target;
+            exParams = paramArr;
+        }
     }
 
 }
