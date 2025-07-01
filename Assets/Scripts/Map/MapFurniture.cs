@@ -20,19 +20,20 @@ namespace KidGame.Core
     }
 
 
-    public class MapFurniture : MonoBehaviour, IInteractive
+    public class MapFurniture : MonoBehaviour, IPickable
     {
         public MapFurnitureData mapFurnitureData;
 
         public List<MaterialItem> materialHoldList;
 
         [SerializeField]
-        private List<string> randomInteractSfxList;
-        public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
+        private List<string> randomPickSfxList;
+        public List<string> RandomPickSfxList { get => randomPickSfxList; set { } }
 
         [SerializeField]
-        private GameObject interactPartical;
-        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
+        private GameObject pickPartical;
+        public GameObject PickPartical { get => pickPartical; set { } }
+
 
         public string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
 
@@ -80,6 +81,9 @@ namespace KidGame.Core
             }
         }
 
-
+        public void Pick()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

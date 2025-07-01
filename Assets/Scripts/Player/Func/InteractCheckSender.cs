@@ -26,29 +26,36 @@ namespace KidGame.Core
             bubbleStr = "";
             tmpActionTypeList.Clear();
             IInteractive collInteractive = other.gameObject.GetComponent<IInteractive>();
-            player.AddInteractiveToList(collInteractive,Vector3.Distance(other.gameObject.transform.position, player.transform.position));
-            tmpActionTypeList.Add(InputActionType.Interaction);
-            bubbleStr += "交互";//TODO:根据不同的交互者调整合适的文本
-            IRecyclable recyclable = other.gameObject.GetComponent<IRecyclable>();
-            if (recyclable != null)
+            if(collInteractive != null)
             {
-                player.AddIRecyclableToList(other.gameObject.GetComponent<IRecyclable>(),
+                player.AddInteractiveToList(collInteractive, Vector3.Distance(other.gameObject.transform.position, player.transform.position));
+                tmpActionTypeList.Add(InputActionType.Interaction);
+                bubbleStr += "交互";//TODO:根据不同的交互者调整合适的文本
+            }
+            IPickable pickable = other.gameObject.GetComponent<IPickable>();
+            if (pickable != null)
+            {
+                player.AddPickableToList(other.gameObject.GetComponent<IPickable>(),
                     Vector3.Distance(other.gameObject.transform.position, player.transform.position));
-                tmpActionTypeList.Add(InputActionType.Recycle);
+                tmpActionTypeList.Add(InputActionType.Pick);
                 bubbleStr += "/回收";
             }
             UIHelper.Instance.AddBubbleInfoToList(new BubbleInfo(ControlType.Keyborad, tmpActionTypeList,
-                other.gameObject, player.gameObject, bubbleStr, collInteractive.itemName));
+                other.gameObject, player.gameObject, bubbleStr, pickable.itemName));
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (other.gameObject.layer != LayerMask.NameToLayer("Interactive")) return;
-            player.RemoveInteractiveFromList(other.gameObject.GetComponent<IInteractive>());
-            IRecyclable recyclable = other.gameObject.GetComponent<IRecyclable>();
-            if (recyclable != null)
+            IInteractive collInteractive = other.gameObject.GetComponent<IInteractive>();
+            if(collInteractive != null)
             {
-                player.RemoveRecyclableFromList(other.gameObject.GetComponent<IRecyclable>());
+                player.RemoveInteractiveFromList(other.gameObject.GetComponent<IInteractive>());
+            }
+            IPickable pickable = other.gameObject.GetComponent<IPickable>();
+            if (pickable != null)
+            {
+                player.RemovePickableFromList(other.gameObject.GetComponent<IPickable>());
             }
             UIHelper.Instance.RemoveBubbleInfoFromList(other.gameObject);
         }

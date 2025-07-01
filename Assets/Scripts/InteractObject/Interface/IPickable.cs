@@ -15,5 +15,7 @@ namespace KidGame.Interface
 
         //捡起粒子特效
         public abstract GameObject PickPartical { get; set; }
+
+        public abstract string itemName { get; set; }
     }
 }

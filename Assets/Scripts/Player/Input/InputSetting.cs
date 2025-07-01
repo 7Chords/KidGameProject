@@ -18,10 +18,9 @@ namespace KidGame.Core
         private InputAction useAction;
         private InputAction throwAction;
         private InputAction bagAction;
-        private InputAction recycleAction;
+        private InputAction pickAction;
         private InputAction mouseWheelAction;
 
-        // ???????????
         public event Action OnInteractionPress;
         public event Action OnDashPress;
         public event Action OnRunPress;
@@ -29,7 +28,7 @@ namespace KidGame.Core
         public event Action OnUsePress;
         public event Action OnThrowPress;
         public event Action OnBagPress;
-        public event Action OnRecyclePress;
+        public event Action OnPickPress;
 
         private void Awake()
         {
@@ -46,7 +45,7 @@ namespace KidGame.Core
                 useAction = inputActionAsset.FindAction("Use");
                 throwAction = inputActionAsset.FindAction("Throw");
                 bagAction = inputActionAsset.FindAction("Bag");
-                recycleAction = inputActionAsset.FindAction("Recycle");
+                pickAction = inputActionAsset.FindAction("Pick");
                 mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
                 // ?????????????
                 interactionAction.performed += OnInteractionActionPerformed;
@@ -56,7 +55,7 @@ namespace KidGame.Core
                 useAction.performed += OnUseActionPerformed;
                 throwAction.performed += OnThrowActionPerformed;
                 bagAction.performed += OnBagActionPerformed;
-                recycleAction.performed += OnRecycleActionPerformed;
+                pickAction.performed += OnPickActionPerformed;
             }
             catch (Exception e)
             {
@@ -75,7 +74,7 @@ namespace KidGame.Core
             useAction.performed -= OnUseActionPerformed;
             throwAction.performed -= OnThrowActionPerformed;
             bagAction.performed -= OnBagActionPerformed;
-            recycleAction.performed -= OnRecycleActionPerformed;
+            pickAction.performed -= OnPickActionPerformed;
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ namespace KidGame.Core
         public virtual bool GetThrowDown() => throwAction.WasPerformedThisFrame();
         public virtual bool GetBagDown() => bagAction.WasPerformedThisFrame();
         public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
-        public virtual bool GetRecycleDown() => recycleAction.WasPerformedThisFrame();
+        public virtual bool GetPickDown() => pickAction.WasPerformedThisFrame();
 
         #region ???????????
 
@@ -144,9 +143,9 @@ namespace KidGame.Core
             OnBagPress?.Invoke();
         }
 
-        private void OnRecycleActionPerformed(InputAction.CallbackContext context)
+        private void OnPickActionPerformed(InputAction.CallbackContext context)
         {
-            OnRecyclePress?.Invoke();
+            OnPickPress?.Invoke();
         }
 
         #endregion

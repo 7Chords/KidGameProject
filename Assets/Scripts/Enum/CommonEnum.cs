@@ -15,7 +15,7 @@
         Bag = 4,
         Use = 5,
         Throw = 6,
-        Recycle = 7,
+        Pick = 7,
         Switch = 8,
     }
 }

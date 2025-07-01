@@ -36,7 +36,7 @@ namespace KidGame.Core
 
         public override void Pick()
         {
-            PlayerController.Instance.RemoveInteractiveFromList(this);
+            PlayerController.Instance.RemovePickableFromList(this);
             PlayerUtil.Instance.CallPlayerPickItem(this);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
             MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity,1f);

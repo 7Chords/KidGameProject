@@ -40,7 +40,7 @@ namespace KidGame.Core
         private Dictionary<IInteractive,float> interactiveDict;
 
         //key:可回收 value:和玩家距离
-        private Dictionary<IRecyclable, float> recyclableDict;
+        private Dictionary<IPickable, float> pickableDict;
 
         protected override void Awake()
         {
@@ -65,7 +65,7 @@ namespace KidGame.Core
 
             //初始化字典
             interactiveDict = new Dictionary<IInteractive, float>();
-            recyclableDict = new Dictionary<IRecyclable, float>();
+            pickableDict = new Dictionary<IPickable, float>();
         }
 
         public void Discard()
@@ -129,7 +129,7 @@ namespace KidGame.Core
         private void RegActions()
         {
             inputSettings.OnInteractionPress += PlayerInteraction;
-            inputSettings.OnRecyclePress += PlayerRecycle;
+            inputSettings.OnPickPress += PlayerPick;
             inputSettings.OnUsePress += TryPlaceTrap;
         }
 
@@ -139,7 +139,7 @@ namespace KidGame.Core
         private void UnregActions()
         {
             inputSettings.OnInteractionPress -= PlayerInteraction;
-            inputSettings.OnRecyclePress -= PlayerRecycle;
+            inputSettings.OnPickPress -= PlayerPick;
             inputSettings.OnUsePress -= TryPlaceTrap;
         }
 
@@ -156,10 +156,10 @@ namespace KidGame.Core
             GetClosestInteractive()?.InteractPositive();
         }
 
-        public void PlayerRecycle()
+        public void PlayerPick()
         {
-            if (recyclableDict == null || recyclableDict.Count == 0) return;
-            GetClosestRecyclable()?.Recycle();
+            if (pickableDict == null || pickableDict.Count == 0) return;
+            GetClosestPickable()?.Pick();
         }
 
         /// <summary>
@@ -225,40 +225,40 @@ namespace KidGame.Core
         /// 添加到可回收列表
         /// </summary>
         /// <param name="interactive"></param>
-        public void AddIRecyclableToList(IRecyclable recyclable, float distance)
+        public void AddPickableToList(IPickable pickable, float distance)
         {
-            if (recyclableDict == null) return;
-            if (recyclableDict.ContainsKey(recyclable)) return;
-            recyclableDict.Add(recyclable, distance);
+            if (pickableDict == null) return;
+            if (pickableDict.ContainsKey(pickable)) return;
+            pickableDict.Add(pickable, distance);
         }
 
         /// <summary>
         /// 从可回收列表中移除
         /// </summary>
         /// <param name="interactive"></param>
-        public void RemoveRecyclableFromList(IRecyclable recyclable)
+        public void RemovePickableFromList(IPickable pickable)
         {
-            if (recyclableDict == null) return;
-            if (!recyclableDict.ContainsKey(recyclable)) return;
-            recyclableDict.Remove(recyclable);
+            if (pickableDict == null) return;
+            if (!pickableDict.ContainsKey(pickable)) return;
+            pickableDict.Remove(pickable);
         }
 
         /// <summary>
-        /// 获得最近的可回收者
+        /// 获得最近的可拾取者
         /// </summary>
-        private IRecyclable GetClosestRecyclable()
+        private IPickable GetClosestPickable()
         {
             float min = 999;
-            IRecyclable closestIRecyclable = null;
-            foreach (var pair in recyclableDict)
+            IPickable closestIPickable = null;
+            foreach (var pair in pickableDict)
             {
                 if (pair.Value < min)
                 {
                     min = pair.Value;
-                    closestIRecyclable = pair.Key;
+                    closestIPickable = pair.Key;
                 }
             }
-            return closestIRecyclable;
+            return closestIPickable;
         }
 
 

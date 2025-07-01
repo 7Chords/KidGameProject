@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -57,17 +56,15 @@ namespace KidGame.Core
         {
             foreach (var mapping in _resData.r2MMappingList)
             {
-                var roomTiles = MapManager.Instance.mapTileDic[mapping.roomType];
-                //TODO:
-                List<MapFurniture> roomFurniture = new List<MapFurniture>();
-                if (MapManager.Instance.mapFurnitureDic.ContainsKey(mapping.roomType))
-                {
-                     roomFurniture = MapManager.Instance.mapFurnitureDic[mapping.roomType];
-                }
-                var roomWalls = MapManager.Instance.mapWallList;
+                // 获取所有地板格子
+                var allTiles = MapManager.Instance.mapTileDic.Values.SelectMany(x => x).ToList();
+
+                // 获取所有家具和墙
+                var allFurniture = MapManager.Instance.mapFurnitureList;
+                var allWalls = MapManager.Instance.mapWallList;
 
                 // 获取可生成材料的有效位置
-                List<MapTile> validTiles = GetValidSpawnTiles(roomTiles, roomFurniture, roomWalls);
+                List<MapTile> validTiles = GetValidSpawnTiles(allTiles, allFurniture, allWalls);
 
                 // 计算要生成的材料总数
                 int totalMaterials = CalculateTotalMaterials(mapping.materialDataList);

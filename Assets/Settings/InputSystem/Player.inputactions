@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Recycle",
+                    "name": "Pick",
                     "type": "Button",
                     "id": "1ef19e2f-4b3e-4890-972c-e60763b1f87f",
                     "expectedControlType": "Button",
@@ -304,7 +304,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Recycle",
+                    "action": "Pick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

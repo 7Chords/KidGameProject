@@ -10,15 +10,20 @@ namespace KidGame.Core
     /// <summary>
     /// 陷阱基类
     /// </summary>
-    public class TrapBase : MapItem,IRecyclable
+    public class TrapBase : MapItem,IInteractive
     {
-        [SerializeField]
-        protected List<string> randomRecycleSfxList;
-        public List<string> RandomRecycleSfxList { get => randomRecycleSfxList; set { randomRecycleSfxList = value; } }
+        //[SerializeField]
+        //protected List<string> randomRecycleSfxList;
+        //public List<string> RandomRecycleSfxList { get => randomRecycleSfxList; set { randomRecycleSfxList = value; } }
 
-        [SerializeField]
-        protected GameObject recyclePartical;
-        public GameObject RecyclePartical { get => recyclePartical; set { recyclePartical = value; } }
+        //[SerializeField]
+        //protected GameObject recyclePartical;
+        //public GameObject RecyclePartical { get => recyclePartical; set { recyclePartical = value; } }
+
+        public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
+        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
+
+
 
         public override string itemName => _trapData.trapName;
 
@@ -120,7 +125,7 @@ namespace KidGame.Core
         {
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
-            MonoManager.Instance.InstantiateGameObject(recyclePartical, transform.position,Quaternion.identity,1f);
+            MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position,Quaternion.identity,1f);
             UIHelper.Instance.ShowTip("获得了" + itemName+"×1",gameObject);
             Destroy(gameObject);
         }
@@ -188,7 +193,7 @@ namespace KidGame.Core
         private void RemoveFormPlayerUsingList()
         {
             PlayerController.Instance.RemoveInteractiveFromList(this);
-            PlayerController.Instance.RemoveRecyclableFromList(this);
+            PlayerController.Instance.RemovePickableFromList(this);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
         }
     }

@@ -4,13 +4,11 @@ using KidGame.Interface;
 namespace KidGame.Core
 {
     /// <summary>
-    /// ����¼�����
+    /// 玩家util 事件
     /// </summary>
     public class PlayerUtil : Singleton<PlayerUtil>
     {
         private InputSettings inputSettings;
-
-        //��Ҽ񵽳�����Ʒ������͵��ߣ����¼�
         private Action<IPickable> onPlayerPickItem;
 
         protected override void Awake()
