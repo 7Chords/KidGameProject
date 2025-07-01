@@ -12,13 +12,6 @@ namespace KidGame.Core
     /// </summary>
     public class TrapBase : MapItem,IInteractive
     {
-        //[SerializeField]
-        //protected List<string> randomRecycleSfxList;
-        //public List<string> RandomRecycleSfxList { get => randomRecycleSfxList; set { randomRecycleSfxList = value; } }
-
-        //[SerializeField]
-        //protected GameObject recyclePartical;
-        //public GameObject RecyclePartical { get => recyclePartical; set { recyclePartical = value; } }
 
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
         public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
