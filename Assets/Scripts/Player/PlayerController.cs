@@ -1,22 +1,33 @@
 ﻿using KidGame.Interface;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 namespace KidGame.Core
 {
     /// <summary>
     /// 玩家控制器
     /// </summary>
-    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner,IDamageable
+    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner, IDamageable
     {
-        [SerializeField]
-        private List<string> randomDamgeSfxList;
-        public List<string> RandomDamgeSfxList { get => randomDamgeSfxList; set { randomDamgeSfxList = value; } }
+        #region 玩家受伤
 
-        [SerializeField]
-        private ParticleSystem damagePartical;
-        public ParticleSystem DamagePartical { get => damagePartical; set { damagePartical = value; } }
+        [SerializeField] private List<string> randomDamgeSfxList;
+
+        public List<string> RandomDamgeSfxList
+        {
+            get => randomDamgeSfxList;
+            set { randomDamgeSfxList = value; }
+        }
+
+        [SerializeField] private ParticleSystem damagePartical;
+
+        #endregion
+        
+        public ParticleSystem DamagePartical
+        {
+            get => damagePartical;
+            set { damagePartical = value; }
+        }
 
         private InputSettings inputSettings;
         public InputSettings InputSettings => inputSettings;
@@ -37,10 +48,23 @@ namespace KidGame.Core
         private BuffHandler playerBuffHandler;
 
         //key:可交互 value:和玩家距离
-        private Dictionary<IInteractive,float> interactiveDict;
-
+        private Dictionary<IInteractive, float> interactiveDict;
         //key:可回收 value:和玩家距离
         private Dictionary<IPickable, float> pickableDict;
+
+        #region 玩家体力值
+
+        private float currentHealth;
+        private bool isInvulnerable = false;
+        private float invulnerabilityTimer = 1f;
+        public float CurrentHealth => currentHealth;
+        public float MaxHealth => PlayerBaseData.Hp;
+
+        public event System.Action<float> OnHealthChanged;
+        public event System.Action OnPlayerDeath;
+
+        #endregion
+
 
         protected override void Awake()
         {
@@ -48,6 +72,7 @@ namespace KidGame.Core
             inputSettings = GetComponent<InputSettings>();
 
             rb = GetComponent<Rigidbody>();
+            currentHealth = PlayerBaseData.Hp;
         }
 
         public void Init()
@@ -82,7 +107,6 @@ namespace KidGame.Core
         {
             transform.rotation = Quaternion.LookRotation(dir);
         }
-
 
         /// <summary>
         /// 修改状态
@@ -131,6 +155,8 @@ namespace KidGame.Core
             inputSettings.OnInteractionPress += PlayerInteraction;
             inputSettings.OnPickPress += PlayerPick;
             inputSettings.OnUsePress += TryPlaceTrap;
+            
+            inputSettings.OnGamePause += GamePause;
         }
 
         /// <summary>
@@ -141,12 +167,19 @@ namespace KidGame.Core
             inputSettings.OnInteractionPress -= PlayerInteraction;
             inputSettings.OnPickPress -= PlayerPick;
             inputSettings.OnUsePress -= TryPlaceTrap;
+            
+            inputSettings.OnGamePause -= GamePause;
         }
 
         #endregion
-
-
+        
         #region 功能
+
+        public void GamePause()
+        {
+            
+        }
+
         /// <summary>
         /// 玩家交互
         /// </summary>
@@ -185,11 +218,11 @@ namespace KidGame.Core
         /// 添加到可交互列表
         /// </summary>
         /// <param name="interactive"></param>
-        public void AddInteractiveToList(IInteractive interactive,float distance)
+        public void AddInteractiveToList(IInteractive interactive, float distance)
         {
             if (interactiveDict == null) return;
             if (interactiveDict.ContainsKey(interactive)) return;
-            interactiveDict.Add(interactive,distance);
+            interactiveDict.Add(interactive, distance);
         }
 
         /// <summary>
@@ -210,14 +243,15 @@ namespace KidGame.Core
         {
             float min = 999;
             IInteractive closestInteractive = null;
-            foreach(var pair in interactiveDict)
+            foreach (var pair in interactiveDict)
             {
-                if(pair.Value<min)
+                if (pair.Value < min)
                 {
                     min = pair.Value;
                     closestInteractive = pair.Key;
                 }
             }
+
             return closestInteractive;
         }
 
@@ -258,9 +292,9 @@ namespace KidGame.Core
                     closestIPickable = pair.Key;
                 }
             }
+
             return closestIPickable;
         }
-
 
 
         /// <summary>
@@ -269,7 +303,41 @@ namespace KidGame.Core
         /// <param name="damageInfo"></param>
         public void TakeDamage(DamageInfo damageInfo)
         {
+            if (isInvulnerable) return;
+
+            Debug.Log(damageInfo.damage);
+            currentHealth -= damageInfo.damage;
+            currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
             
+            
+            if (damagePartical != null) damagePartical.Play();
+            if (randomDamgeSfxList != null && randomDamgeSfxList.Count > 0)
+            {
+                // 播放特效
+            }
+            
+            // ui改变
+            OnHealthChanged?.Invoke(currentHealth / MaxHealth);
+            
+            // 无敌状态
+            isInvulnerable = true;
+            invulnerabilityTimer = 0f;
+            
+            if (currentHealth <= 0)
+            {
+                Dead();
+            }
+        }
+        
+        /// <summary>
+        /// 治疗
+        /// </summary>
+        /// <param name="healAmount">恢复值</param>
+        public void Heal(float healAmount)
+        {
+            currentHealth += healAmount;
+            currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
+            OnHealthChanged?.Invoke(currentHealth / MaxHealth);
         }
 
         public void Dead()
@@ -279,8 +347,7 @@ namespace KidGame.Core
         }
 
         #endregion
-
-
+        
         #region Gizoms
 
         private void OnDrawGizmos()

@@ -21,11 +21,7 @@ namespace KidGame.Core
         [SerializeField]
         private ParticleSystem damagePartical;
         public ParticleSystem DamagePartical { get => damagePartical; set { damagePartical = value; } }
-
-
-
-
-
+        
         #region Comp
 
         private Rigidbody rb;
