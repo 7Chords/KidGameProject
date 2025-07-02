@@ -31,7 +31,14 @@ namespace KidGame.Core
             PlayerController.Instance.RemovePickableFromList(this);
             PlayerUtil.Instance.CallPlayerPickItem(this);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
-            MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity,1f);
+            if (RandomPickSfxList != null && RandomPickSfxList.Count > 0)
+            {
+                AudioManager.Instance.PlaySfx(RandomPickSfxList[Random.Range(0, RandomPickSfxList.Count)]);
+            }
+            if (pickPartical != null)
+            {
+                MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
+            }
             UIHelper.Instance.ShowTip("获得了" + itemName + "×1", gameObject);
             //TODO:工厂回收？
             Destroy(gameObject);

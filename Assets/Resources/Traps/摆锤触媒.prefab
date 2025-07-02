@@ -199,7 +199,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomInteractSfxList: []
   interactPartical: {fileID: 0}
-  randomPickSfxList: []
+  randomPickSfxList:
+  - pick_item
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   _trapData: {fileID: 0}
   _trap: {fileID: 0}

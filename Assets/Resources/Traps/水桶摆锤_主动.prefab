@@ -47,9 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583bba501837a2049b65a20dbfea355e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomInteractSfxList: []
+  randomInteractSfxList:
+  - interact_trap
   interactPartical: {fileID: 0}
-  randomPickSfxList: []
+  randomPickSfxList:
+  - pick_item
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   _trapData: {fileID: 0}
 --- !u!136 &6716146203614758786

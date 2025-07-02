@@ -144,7 +144,7 @@ namespace KidGame.UI
         public void ShowTip(string content,GameObject creator)
         {
             GameObject tipGO = Instantiate(TipPrefab);
-            tipGO.transform.parent = transform;
+            tipGO.transform.SetParent(transform);
             tipGO.GetComponent<UITipItem>().Init(creator, content);
         }
         #endregion

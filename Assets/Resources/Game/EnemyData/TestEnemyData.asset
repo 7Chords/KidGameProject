@@ -24,4 +24,5 @@ MonoBehaviour:
   AttackRange: 0.5
   activeSkills:
   - {fileID: 11400000, guid: ad1b238d39336436688d071fd6a0b202, type: 2}
-  passiveSkills: []
+  passiveSkills:
+  - {fileID: 0}

@@ -70,7 +70,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomInteractSfxList: []
   interactPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
-  randomPickSfxList: []
+  randomPickSfxList:
+  - pick_item
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   _materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
 --- !u!54 &4495062984980425206

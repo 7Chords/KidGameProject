@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74e71f92ca6be467c8fea50d89d8a1ab, type: 3}
   m_Name: AudioDataList
   m_EditorClassIdentifier: 
-  audioDataList: []
+  audioDataList:
+  - audioName: pick_item
+    audioPath: Audios/sfx/DM-CGS-01
+  - audioName: interact_trap
+    audioPath: Audios/sfx/DM-CGS-05
