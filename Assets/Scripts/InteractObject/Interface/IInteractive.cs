@@ -9,10 +9,10 @@ namespace KidGame.Interface
     public interface IInteractive
     {
         //主动互动
-        public abstract void InteractPositive();
+        public abstract void InteractPositive(GameObject interactor);
 
         //被动互动
-        public abstract void InteractNegative();
+        public abstract void InteractNegative(GameObject interactor);
         
         //互动随机音效列表
         public abstract List<string> RandomInteractSfxList { get; set; }

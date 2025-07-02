@@ -25,14 +25,6 @@ namespace KidGame.Core
         {
             _materialData = materialData;
         }
-        public override void InteractPositive()
-        {
-            if (_materialData == null) return;
-            Pick();
-        }
-        public override void InteractNegative()
-        {
-        }
 
         public override void Pick()
         {

@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch",
+                    "name": "MouseWheel",
                     "type": "Button",
                     "id": "f8bb8e5e-2b38-4d6b-a0a6-90d64e1d1a78",
                     "expectedControlType": "Button",
@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
+                    "name": "GamePause",
                     "type": "Button",
                     "id": "2f7c8188-d4f5-4475-8242-13fa341fabcc",
                     "expectedControlType": "Button",
@@ -324,7 +324,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch",
+                    "action": "MouseWheel",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -335,7 +335,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch",
+                    "action": "MouseWheel",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -346,7 +346,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch",
+                    "action": "MouseWheel",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -357,7 +357,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pause",
+                    "action": "GamePause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

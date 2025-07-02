@@ -9,7 +9,7 @@ namespace KidGame.Core
         public float damage;
         public float force;
         public BuffData buffData;
-        public override void Trigger()
+        public override void Trigger(GameObject interactor)
         {
             Collider[] colls = Physics.OverlapSphere(transform.position, 5);
             IDamageable damageable;

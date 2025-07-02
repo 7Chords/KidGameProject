@@ -186,7 +186,7 @@ namespace KidGame.Core
         public void PlayerInteraction()
         {
             if (interactiveDict == null || interactiveDict.Count == 0) return;
-            GetClosestInteractive()?.InteractPositive();
+            GetClosestInteractive()?.InteractPositive(gameObject);
         }
 
         public void PlayerPick()

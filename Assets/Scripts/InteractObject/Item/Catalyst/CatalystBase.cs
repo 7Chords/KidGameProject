@@ -5,9 +5,9 @@ using UnityEngine;
 namespace KidGame.Core
 {
     /// <summary>
-    /// 触媒基类
+    /// 触媒基类 触媒也算是陷阱类
     /// </summary>
-    public class CatalystBase : MapItem
+    public class CatalystBase : TrapBase
     {
         [SerializeField] protected TrapBase _trap;
 
@@ -15,19 +15,17 @@ namespace KidGame.Core
         {
         }
 
-        public override void InteractNegative()
+        public override void InteractNegative(GameObject interactor)
         {
             if (_trap == null) return;
-            _trap.TriggerByCatalyst(this);
+            _trap.TriggerByCatalyst(this, interactor);
+            Destroy(gameObject);
         }
 
-        public override void InteractPositive()
+        public override void InteractPositive(GameObject interactor)
         {
         }
 
-        public override void Pick()
-        {
-        }
 
         public virtual void SetTrap(TrapBase trap)
         {

@@ -66,7 +66,7 @@ namespace KidGame.Core
 
         #region 交互接口方法实现
 
-        public override void InteractPositive()
+        public virtual void InteractPositive(GameObject interactor)
         {
             if (_trapData == null) return;
             //需要触媒
@@ -87,10 +87,11 @@ namespace KidGame.Core
                 Instantiate(interactPartical, transform.position, Quaternion.identity);
             }
             RemoveFormPlayerUsingList();
-            Trigger();
+            Trigger(interactor);
         }
 
-        public override void InteractNegative()
+
+        public virtual void InteractNegative(GameObject interactor)
         {
             if (_trapData == null) return;
             //需要触媒
@@ -111,7 +112,7 @@ namespace KidGame.Core
                 Instantiate(interactPartical, transform.position, Quaternion.identity);
             }
             RemoveFormPlayerUsingList();
-            Trigger();
+            Trigger(interactor);
         }
 
         public override void Pick()
@@ -121,11 +122,6 @@ namespace KidGame.Core
             MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position,Quaternion.identity,1f);
             UIHelper.Instance.ShowTip("获得了" + itemName+"×1",gameObject);
             Destroy(gameObject);
-        }
-
-        public virtual void Recycle()
-        {
-            Pick();
         }
 
         #endregion
@@ -165,17 +161,17 @@ namespace KidGame.Core
         /// <summary>
         /// 通过触媒触发
         /// </summary>
-        public void TriggerByCatalyst(CatalystBase catalyst)
+        public void TriggerByCatalyst(CatalystBase catalyst, GameObject interactor)
         {
             if (_trapData == null || _trapData.triggerType != TrapTriggerType.Catalyst) return;
             if (_catalyst == null || _catalyst != catalyst) return;
-            Trigger();
+            Trigger(interactor);
         }
 
         /// <summary>
         /// 陷阱触发的效果代码
         /// </summary>
-        public virtual void Trigger()
+        public virtual void Trigger(GameObject interactor)
         {
             Debug.Log(gameObject.name + "陷阱触发了");
         }

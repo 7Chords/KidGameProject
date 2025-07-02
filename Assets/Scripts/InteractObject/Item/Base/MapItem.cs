@@ -27,16 +27,6 @@ namespace KidGame.Core
         public virtual string itemName { get => "default item name"; set { } }
 
         /// <summary>
-        /// 主动交互
-        /// </summary>
-        public virtual void InteractPositive() { }
-
-        /// <summary>
-        /// 被动交互
-        /// </summary>
-        public virtual void InteractNegative() { }
-
-        /// <summary>
         /// 拾取
         /// </summary>
         public virtual void Pick() { }

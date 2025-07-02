@@ -15,6 +15,7 @@ namespace KidGame.Core
 //陷阱触发枚举
     public enum TrapTriggerType
     {
+        None,
         Self, //自己能作用
         Catalyst, //触媒引发
     }
@@ -32,5 +33,7 @@ namespace KidGame.Core
         public float validTime = -1; //有效时间 -1为可以立刻生效
         public List<TrapType> trapTypeList;
         public TrapTriggerType triggerType;
+
+        public bool isCatalyst;//是否是触媒
     }
 }

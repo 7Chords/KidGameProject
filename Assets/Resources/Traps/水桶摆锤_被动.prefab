@@ -226,9 +226,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2343007501665330555}
-  - component: {fileID: 2894394568229040816}
-  - component: {fileID: 5719343875485821406}
   - component: {fileID: 3589995936496060400}
+  - component: {fileID: 552689375162999720}
+  - component: {fileID: 1084441173694802222}
   m_Layer: 6
   m_Name: "\u6C34\u6876\u6446\u9524_\u88AB\u52A8"
   m_TagString: Untagged
@@ -252,46 +252,6 @@ Transform:
   - {fileID: 6379331313528087264}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2894394568229040816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6370431587108260529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 583bba501837a2049b65a20dbfea355e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  randomInteractSfxList: []
-  interactPartical: {fileID: 0}
-  randomPickSfxList: []
-  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
-  _trapData: {fileID: 0}
---- !u!136 &5719343875485821406
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6370431587108260529}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3589995936496060400
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -300,7 +260,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6370431587108260529}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -319,3 +279,41 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &552689375162999720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6370431587108260529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 139230c87ae4b8d4c8832b9974bd596a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomInteractSfxList: []
+  interactPartical: {fileID: 0}
+  randomPickSfxList: []
+  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  _trapData: {fileID: 0}
+--- !u!65 &1084441173694802222
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6370431587108260529}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.80000246, y: 1, z: 0.61288065}
+  m_Center: {x: 0, y: 0, z: 0}

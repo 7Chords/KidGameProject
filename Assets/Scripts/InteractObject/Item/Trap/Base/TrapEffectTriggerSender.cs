@@ -19,7 +19,7 @@ namespace KidGame.Core
             if (_trap == null) return;
             //被动触发了
             if (other.gameObject.tag != "Enemy") return;
-            _trap.InteractNegative();
+            _trap.InteractNegative(other.gameObject);
         }
     }
 }

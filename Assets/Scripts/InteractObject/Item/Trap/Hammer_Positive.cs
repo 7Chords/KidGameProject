@@ -8,9 +8,9 @@ namespace KidGame.Core
 
     public class Hammer_Positive : TrapBase
     {
-        public override void Trigger()
+        public override void Trigger(GameObject interactor)
         {
-            Rb.AddForce((transform.position - PlayerController.Instance.transform.position).normalized * 10f,
+            Rb.AddForce((transform.position - interactor.transform.position).normalized * 10f,
                 ForceMode.Impulse);
             Destroy(gameObject, 2f);
         }

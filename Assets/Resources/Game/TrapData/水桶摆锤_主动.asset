@@ -20,4 +20,5 @@ MonoBehaviour:
   trapDamage: 0
   validTime: -1
   trapTypeList: 00000000
-  triggerType: 0
+  triggerType: 1
+  isCatalyst: 0
