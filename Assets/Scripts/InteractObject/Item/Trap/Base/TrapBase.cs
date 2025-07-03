@@ -10,37 +10,41 @@ namespace KidGame.Core
     /// <summary>
     /// 陷阱基类
     /// </summary>
-    public class TrapBase : MapItem,IInteractive
+    public class TrapBase : MapItem,IInteractive,IStateMachineOwner
     {
 
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
         public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
-
-
-
-        public override string itemName => _trapData.trapName;
+        public override string itemName => trapData.trapName;
 
         [Space(20)]
 
 
-        //测试public
-        public TrapData _trapData;
-
-        public TrapData trapData => _trapData;
 
         private Rigidbody rb;
         public Rigidbody Rb => rb;
 
 
-        #region 时间型陷阱相关参数
 
-        protected bool _isTimeValid;
-        protected float _validTime;
-        protected float _validTimer;
+        private TrapData trapData;
+        public TrapData TrapData => trapData;
 
-        #endregion
+
 
         private CatalystBase _catalyst;
+        public CatalystBase Catalyst => _catalyst;
+
+
+
+        protected GameObject interactor;
+        public GameObject Interactor => interactor;
+
+
+
+
+        private StateMachine stateMachine;
+        private TrapState trapState;
+
 
         private void Awake()
         {
@@ -53,29 +57,32 @@ namespace KidGame.Core
         /// <param name="trapData"></param>
         public virtual void Init(TrapData trapData)
         {
-            _trapData = trapData;
-            _isTimeValid = _trapData.trapTypeList.Contains(TrapType.Time_Valid);
-            _validTime = _trapData.validTime;
-            _validTimer = 0;
+            this.trapData = trapData;
+
+            stateMachine = PoolManager.Instance.GetObject<StateMachine>();
+            stateMachine.Init(this);
+            //初始化为Idle状态
+            ChangeState(TrapState.NoReady);
+
         }
 
-        protected virtual void Update()
+        public virtual void Discard()
         {
-            TimeValidTick();
+            stateMachine.ObjectPushPool();
+            Destroy(gameObject);
         }
-
         #region 交互接口方法实现
 
         public virtual void InteractPositive(GameObject interactor)
         {
-            if (_trapData == null) return;
+            if (trapData == null) return;
             //需要触媒
-            if (_trapData.triggerType == TrapTriggerType.Catalyst) return;
+            if (trapData.triggerType == TrapTriggerType.Catalyst) return;
             //不是主动触发型交互
-            if (!_trapData.trapTypeList.Contains(TrapType.Positive))
+            if (!trapData.trapTypeList.Contains(TrapType.Positive))
                 return;
             //判断陷阱是否有效
-            if (!GetValidState()) return;
+            if (trapState != TrapState.Ready) return;
             PlayerController.Instance.RemoveInteractiveFromList(this);
             //todo:播放音效和特效
             if(RandomInteractSfxList != null && RandomInteractSfxList.Count>0)
@@ -84,23 +91,24 @@ namespace KidGame.Core
             }
             if(interactPartical != null)
             {
-                Instantiate(interactPartical, transform.position, Quaternion.identity);
+                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity,1f);
             }
             RemoveFormPlayerUsingList();
-            Trigger(interactor);
+            this.interactor = interactor;
+            ChangeState(TrapState.Running);
         }
 
 
         public virtual void InteractNegative(GameObject interactor)
         {
-            if (_trapData == null) return;
+            if (trapData == null) return;
             //需要触媒
-            if (_trapData.triggerType == TrapTriggerType.Catalyst) return;
+            if (trapData.triggerType == TrapTriggerType.Catalyst) return;
             //不是被动触发型交互
-            if (!_trapData.trapTypeList.Contains(TrapType.Negative))
+            if (!trapData.trapTypeList.Contains(TrapType.Negative))
                 return;
             //判断陷阱是否有效
-            if (!GetValidState()) return;
+            if (trapState != TrapState.Ready) return;
             PlayerController.Instance.RemoveInteractiveFromList(this);
             //todo:播放音效和特效
             if (RandomInteractSfxList != null && RandomInteractSfxList.Count > 0)
@@ -109,10 +117,11 @@ namespace KidGame.Core
             }
             if (interactPartical != null)
             {
-                Instantiate(interactPartical, transform.position, Quaternion.identity);
+                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity, 1f);
             }
             RemoveFormPlayerUsingList();
-            Trigger(interactor);
+            this.interactor = interactor;
+            ChangeState(TrapState.Running);
         }
 
         public override void Pick()
@@ -129,33 +138,14 @@ namespace KidGame.Core
                 MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
             }
             UIHelper.Instance.ShowTip("获得了" + itemName+"×1",gameObject);
-            Destroy(gameObject);
+            ChangeState(TrapState.Dead);
         }
 
         #endregion
 
         #region 功能性
 
-        /// <summary>
-        /// 时间型陷阱计时更新
-        /// </summary>
-        public virtual void TimeValidTick()
-        {
-            if (!_isTimeValid) return;
-            if (GetValidState()) return;
-            _validTimer += Time.deltaTime;
-        }
 
-        /// <summary>
-        /// 陷阱是否有效
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool GetValidState()
-        {
-            if (!_isTimeValid) return true;
-            if (_validTimer >= _validTime) return true;
-            return false;
-        }
 
         /// <summary>
         /// 设置触媒
@@ -171,20 +161,59 @@ namespace KidGame.Core
         /// </summary>
         public void TriggerByCatalyst(CatalystBase catalyst, GameObject interactor)
         {
-            if (_trapData == null || _trapData.triggerType != TrapTriggerType.Catalyst) return;
+            if (trapData == null || trapData.triggerType != TrapTriggerType.Catalyst) return;
             if (_catalyst == null || _catalyst != catalyst) return;
-            Trigger(interactor);
+            this.interactor = interactor;
+            ChangeState(TrapState.Running);
         }
 
         /// <summary>
         /// 陷阱触发的效果代码
         /// </summary>
-        public virtual void Trigger(GameObject interactor)
+        public virtual void Trigger()
         {
             Debug.Log(gameObject.name + "陷阱触发了");
+
+        }
+
+        /// <summary>
+        /// 外部事件导致陷阱死亡
+        /// </summary>
+        public virtual void DeadByExternal()
+        {
+            if (trapState == TrapState.Running && 
+                trapData.deadConfig.conditions.Contains(TrapDeadType.ExternalEvent))
+            {
+                ChangeState(TrapState.Dead);
+            }
         }
 
         #endregion
+
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        public virtual void ChangeState(TrapState trapState, bool reCurrstate = false)
+        {
+            this.trapState = trapState;
+            switch (trapState)
+            {
+                case TrapState.NoReady:
+                    stateMachine.ChangeState<TrapNoReadyStateBase>((int)trapState, reCurrstate);
+                    break;
+                case TrapState.Ready:
+                    stateMachine.ChangeState<TrapReadyStateBase>((int)trapState, reCurrstate);
+                    break;
+                case TrapState.Running:
+                    stateMachine.ChangeState<TrapRunningStateBase>((int)trapState, reCurrstate);
+                    break;
+                case TrapState.Dead:
+                    stateMachine.ChangeState<TrapDeadStateBase>((int)trapState, reCurrstate);
+                    break;
+                default:
+                    break;
+            }
+        }
 
 
         private void RemoveFormPlayerUsingList()

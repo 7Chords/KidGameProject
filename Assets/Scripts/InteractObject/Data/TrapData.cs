@@ -19,6 +19,29 @@ namespace KidGame.Core
         Self, //自己能作用
         Catalyst, //触媒引发
     }
+//陷阱放置枚举
+    public enum TrapPlacedType
+    {
+        Normal,
+        Attach2Furniture,
+    }
+
+ //陷阱死亡枚举
+    public enum TrapDeadType
+    {
+        Immediate,      // 立即死亡
+        TimeDelay,      // 延迟死亡
+        ExternalEvent   // 外部事件触发死亡
+    }
+
+    [System.Serializable]
+    public class TrapDeadConfig
+    {
+        public List<TrapDeadType> conditions;
+
+        [Tooltip("仅当包含TimeDelay时有效")]
+        public float delayTime;
+    }
 
 
     [CreateAssetMenu(fileName = "TrapData", menuName = "KidGameSO/Interactive/TrapData")]
@@ -33,7 +56,8 @@ namespace KidGame.Core
         public float validTime = -1; //有效时间 -1为可以立刻生效
         public List<TrapType> trapTypeList;
         public TrapTriggerType triggerType;
-
+        public TrapPlacedType placedType;
+        public TrapDeadConfig deadConfig;
         public bool isCatalyst;//是否是触媒
     }
 }

@@ -9,7 +9,7 @@ namespace KidGame.Core
     /// </summary>
     public class CatalystBase : TrapBase
     {
-        [SerializeField] protected TrapBase _trap;
+        protected TrapBase _trap;
 
         public void Init()
         {
@@ -19,7 +19,7 @@ namespace KidGame.Core
         {
             if (_trap == null) return;
             _trap.TriggerByCatalyst(this, interactor);
-            Destroy(gameObject);
+            ChangeState(TrapState.Dead);
         }
 
         public override void InteractPositive(GameObject interactor)

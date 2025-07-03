@@ -7,11 +7,10 @@ namespace KidGame.Core
 {
     public class Hammer_Passive : TrapBase
     {
-        public override void Trigger(GameObject interactor)
+        public override void Trigger()
         {
             Rb.AddForce((interactor.transform.position - transform.position).normalized * 1000f,
                 ForceMode.Impulse);
-            Destroy(gameObject, 2f);
         }
     }
 

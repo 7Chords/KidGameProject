@@ -86,7 +86,7 @@ namespace KidGame.Core
             if (iPickable == null) return;
             if (iPickable is TrapBase)
             {
-                TrapData trapData = (iPickable as TrapBase).trapData;
+                TrapData trapData = (iPickable as TrapBase).TrapData;
                 if (trapData == null) return;
                 TrapSlotInfo trapSlotInfo = _trapBag.Find(x => x.trapData.trapID == trapData.trapID);
                 if (trapSlotInfo == null)

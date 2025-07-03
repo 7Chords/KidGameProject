@@ -20,7 +20,7 @@ namespace KidGame.Core
     }
 
 
-    public class MapFurniture : MonoBehaviour, IPickable
+    public class MapFurniture : MonoBehaviour, IPickable,IInteractive
     {
         public MapFurnitureData mapFurnitureData;
 
@@ -35,7 +35,19 @@ namespace KidGame.Core
         public GameObject PickPartical { get => pickPartical; set { } }
 
 
+        [SerializeField]
+        private List<string> randomInteractSfxList;
+        public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
+
+        [SerializeField]
+        public GameObject interactPartical;
+        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
+
         public string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
+
+        public GameObject TrapDependPos;//陷阱放在家具上的放置位置
+
+        private TrapBase takeTrap;//家具上有的陷阱
 
         private bool canInteract;
         public MapFurniture(MapFurnitureData data)
@@ -45,6 +57,11 @@ namespace KidGame.Core
         public void SetData(MapFurnitureData data)
         {
             mapFurnitureData = data;
+        }
+
+        public void SetTrap(TrapBase trap)
+        {
+            takeTrap = trap;
         }
 
         public void Init(bool canInteract, List<MaterialItem> materialList = null)
@@ -63,27 +80,14 @@ namespace KidGame.Core
             materialHoldList = null;
         }
 
-        public void InteractNegative()
+        public virtual void Pick()
         {
-            if (!canInteract) return;
+
         }
 
-        public void InteractPositive()
-        {
-            if (!canInteract) return;
-            if (materialHoldList == null || materialHoldList.Count ==0)
-            {
-                UIHelper.Instance.ShowTip("空空如也",gameObject);
-            }
-            else
-            {
-                //TODO:
-            }
-        }
+        public virtual void InteractPositive(GameObject interactor) { }
 
-        public void Pick()
-        {
-            throw new System.NotImplementedException();
-        }
+        public virtual void InteractNegative(GameObject interactor) { }
+
     }
 }

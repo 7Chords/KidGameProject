@@ -1,3 +1,4 @@
+using KidGame.Interface;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,16 +48,23 @@ namespace KidGame.Core
                 PlayerBag.Instance._trapBag.RemoveAt(0);
             }
 
-            // 计算放置位置
-            // 需要根据网格系统调整
-            Vector3 placePosition = player.transform.position + player.transform.forward + Vector3.up;
-
-            // 实例化陷阱预制体
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, placePosition);
-            if (newTrap != null)
+            if(trapToPlace.trapData.placedType == TrapPlacedType.Normal)
             {
-                newTrap.transform.rotation = player.transform.rotation;
-                hasPlaced = true;
+                // 计算放置位置
+                // 需要根据网格系统调整
+                Vector3 placePosition = player.transform.position + player.transform.forward + Vector3.up;
+
+                // 实例化陷阱预制体
+                GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, placePosition);
+                if (newTrap != null)
+                {
+                    newTrap.transform.rotation = player.transform.rotation;
+                    hasPlaced = true;
+                }
+            }
+            else
+            {
+
             }
         }
     }
