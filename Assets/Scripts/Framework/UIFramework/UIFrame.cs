@@ -327,7 +327,5 @@ namespace KidGame.UI
                 graphicRaycaster.enabled = true;
             }
         }
-
-        
     }
 }

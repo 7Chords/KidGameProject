@@ -304,8 +304,7 @@ namespace KidGame.Core
         public void TakeDamage(DamageInfo damageInfo)
         {
             if (isInvulnerable) return;
-
-            Debug.Log(damageInfo.damage);
+            
             currentHealth -= damageInfo.damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
             

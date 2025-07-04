@@ -4,36 +4,54 @@ using UnityEngine;
 using Utils;
 using KidGame.Core;
 
-
 public class GamePauseSignal : ASignal
 {
 }
 
-public class GamePlayPanelController : PanelController
+public class GamePlayPanelController : MonoBehaviour
 {
-    [SerializeField] private HealthBar healthBar;
-    
-    private bool _isPlayerRegistered = false;
-
-    #region 生命周期
-
-    private void OnEnable()
-    {
-        TryRegisterPlayerHealth();
-    }
-
-    private void OnDisable()
-    {
-        UnregisterPlayerHealth();
-    }
+    [SerializeField] private ProgressBar progressBar;
+    [SerializeField] private ClockProgressBar clockBar;
 
     private void Start()
     {
-        if (healthBar != null)
+        RegisterEvents();
+    }
+    
+    private void OnDestroy()
+    {
+        UnregisterAllEvents();
+    }
+
+    #region 事件管理
+
+    private void RegisterEvents()
+    {
+        if (PlayerController.Instance != null)
         {
-            healthBar.Initialize();
+            PlayerController.Instance.OnHealthChanged += UpdateHealthBar;
+        }
+        
+        if (GameLevelManager.Instance != null)
+        {
+            GameLevelManager.Instance.OnPhaseTimeUpdated += UpdateTimeClock;
         }
     }
+
+    private void UnregisterAllEvents()
+    {
+        if (PlayerController.Instance != null)
+        {
+            PlayerController.Instance.OnHealthChanged -= UpdateHealthBar;
+        }
+        
+        if (GameLevelManager.Instance != null)
+        {
+            GameLevelManager.Instance.OnPhaseTimeUpdated -= UpdateTimeClock;
+        }
+    }
+
+    #endregion
 
     private void Update()
     {
@@ -41,50 +59,21 @@ public class GamePlayPanelController : PanelController
         {
             Signals.Get<GamePauseSignal>().Dispatch();
         }
-        
-        if (!_isPlayerRegistered)
-        {
-            TryRegisterPlayerHealth();
-        }
-    }    
-
-    #endregion
-    
-    #region 注册体力条
-
-    private void TryRegisterPlayerHealth()
-    {
-        if (_isPlayerRegistered) return;
-        
-        if (PlayerController.Instance != null)
-        {
-            PlayerController.Instance.OnHealthChanged += UpdateHealthBar;
-            _isPlayerRegistered = true;
-            
-            if (healthBar != null)
-            {
-                float healthPercentage = PlayerController.Instance.CurrentHealth / PlayerController.Instance.MaxHealth;
-                healthBar.SetHealth(healthPercentage);
-            }
-        }
     }
-    
-    private void UnregisterPlayerHealth()
-    {
-        if (_isPlayerRegistered && PlayerController.Instance != null)
-        {
-            PlayerController.Instance.OnHealthChanged -= UpdateHealthBar;
-            _isPlayerRegistered = false;
-        }
-    }    
-
-    #endregion
     
     private void UpdateHealthBar(float healthPercentage)
     {
-        if (healthBar != null)
+        if (progressBar != null)
         {
-            healthBar.SetHealth(healthPercentage);
+            progressBar.SetProgress(healthPercentage);
+        }
+    }
+
+    private void UpdateTimeClock(GameLevelManager.LevelPhase phase, float timePercentage)
+    {
+        if (clockBar != null)
+        {
+            clockBar.UpdatePhaseTime(phase, timePercentage);
         }
     }
 }

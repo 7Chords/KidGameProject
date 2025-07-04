@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace KidGame.Core
 
         #region 昼夜状态
 
-        private enum LevelPhase
+        public enum LevelPhase
         {
             Day,
             Night,
@@ -37,11 +38,9 @@ namespace KidGame.Core
         }
 
         private LevelPhase _currentPhase = LevelPhase.Day;
-        private int _currentLoopScore = 0;
-        public int scoreThreshold = 100;
 
         private float _phaseTimer = 0f;
-        private float dayDuration = 1f; // 白天持续时间（秒）
+        private float dayDuration = 10f; // 白天持续时间（秒）
         private float nightDuration = 60f; // 夜晚持续时间（秒）
         private bool _timerRunning = false;
 
@@ -49,6 +48,8 @@ namespace KidGame.Core
 
         private int _totalDays = 3; // 总天数
         private int _currentDay = 0; // 当前天数
+        
+        public event Action<LevelPhase, float> OnPhaseTimeUpdated;
 
         #endregion
 
@@ -70,7 +71,9 @@ namespace KidGame.Core
 
             _phaseTimer -= Time.deltaTime;
 
-            float t = Mathf.Clamp01(1f - (_phaseTimer / _phaseDuration));
+            float t = Mathf.Clamp01(1f - _phaseTimer / _phaseDuration);
+            OnPhaseTimeUpdated?.Invoke(_currentPhase, t);
+            
             float lerpValue = _currentPhase switch
             {
                 LevelPhase.Day => Mathf.Lerp(1f, 0f, t),
@@ -178,8 +181,6 @@ namespace KidGame.Core
             _levelFinished = true;
             _currentPhase = LevelPhase.End;
             _timerRunning = false;
-
-            _currentLoopScore = GameManager.Instance.GetCurrentLoopScore();
             
             _currentDay++;
             

@@ -39,7 +39,7 @@ namespace KidGame.Core
                 return;
             }
 
-            // 获取当前选中的陷阱
+            // todo.获取当前选中的陷阱
             var trapToPlace = PlayerBag.Instance._trapBag[0];
 
             // 减少数量或移除

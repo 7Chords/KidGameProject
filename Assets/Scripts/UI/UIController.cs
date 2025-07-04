@@ -22,11 +22,10 @@ namespace KidGame.UI.Game
             
             uiFrame = defaultUISettings.CreateUIInstance();
             uiCanvas = uiFrame.GetComponent<Canvas>();
-            Signals.Get<StartGameSignal>().AddListener(OnStartDemo);
+            Signals.Get<StartGameSignal>().AddListener(OnToGameScene);
             Signals.Get<ToSettingsWindowSignal>().AddListener(OnToSettingsWindow);
             Signals.Get<ContinueGameSignal>().AddListener(OnToSaveWindow);
             Signals.Get<GamePauseSignal>().AddListener(OnShowPauseSelectPanel);
-            
 
             Signals.Get<NavigateToWindowSignal>().AddListener(OnNavigateToWindow);
             Signals.Get<ShowConfirmationPopupSignal>().AddListener(OnShowConfirmationPopup);
@@ -34,7 +33,7 @@ namespace KidGame.UI.Game
 
         private void OnDestroy()
         {
-            Signals.Get<StartGameSignal>().RemoveListener(OnStartDemo);
+            Signals.Get<StartGameSignal>().RemoveListener(OnToGameScene);
             Signals.Get<ToSettingsWindowSignal>().RemoveListener(OnToSettingsWindow);
             Signals.Get<GamePauseSignal>().RemoveListener(OnShowPauseSelectPanel);
             
@@ -50,11 +49,10 @@ namespace KidGame.UI.Game
 
         #region 开关
 
-        private void OnStartDemo()
+        private void OnToGameScene()
         {
-            uiFrame.ShowPanel(ScreenIds.GamePlayPanel);
+            // uiFrame.ShowPanel(ScreenIds.GamePlayPanel);
         }
-        
 
         private void OnToSettingsWindow()
         {
@@ -76,7 +74,6 @@ namespace KidGame.UI.Game
                     uiFrame.OpenWindow(windowId);
                     break;
                 case ScreenIds.BackpackWindow:
-                    //uiFrame.OpenWindow(windowId);
                     uiFrame.OpenWindow(windowId);
                     break;
                 default:

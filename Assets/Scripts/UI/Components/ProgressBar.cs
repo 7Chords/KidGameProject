@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,12 @@ using UnityEngine.UI;
 
 namespace KidGame.UI
 {
-    public class HealthBar : MonoBehaviour
+    public class ProgressBar : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private Image fillImage;
-        [SerializeField] private Image delayedFillImage;
-        [SerializeField] private Gradient healthGradient;
+        [SerializeField] protected Image fillImage;
+        [SerializeField] protected Image delayedFillImage;
+        [SerializeField] protected Gradient progressGradient;
         
         [Header("Settings")]
         [SerializeField] private float delayDuration = 0.5f;
@@ -18,7 +19,13 @@ namespace KidGame.UI
         private float _currentFillAmount = 1f;
         private float _targetFillAmount = 1f;
         private float _delayTimer = 0f;
-        
+
+
+        protected virtual void Start()
+        {
+            Initialize();
+        }
+
         private void Update()
         {
             if (_delayTimer > 0)
@@ -32,13 +39,13 @@ namespace KidGame.UI
             }
         }
 
-        public void SetHealth(float healthPercentage)
+        public virtual void SetProgress(float progressPercentage)
         {
-            healthPercentage = Mathf.Clamp01(healthPercentage);
+            progressPercentage = Mathf.Clamp01(progressPercentage);
 
-            _targetFillAmount = healthPercentage;
+            _targetFillAmount = progressPercentage;
             fillImage.fillAmount = _targetFillAmount;
-            fillImage.color = healthGradient.Evaluate(_targetFillAmount);
+            fillImage.color = progressGradient.Evaluate(_targetFillAmount);
             
             _delayTimer = delayDuration;
             _currentFillAmount = delayedFillImage.fillAmount;
@@ -50,7 +57,7 @@ namespace KidGame.UI
             _targetFillAmount = 1f;
             fillImage.fillAmount = 1f;
             delayedFillImage.fillAmount = 1f;
-            fillImage.color = healthGradient.Evaluate(1f);
+            fillImage.color = progressGradient.Evaluate(1f);
         }
     }
 }

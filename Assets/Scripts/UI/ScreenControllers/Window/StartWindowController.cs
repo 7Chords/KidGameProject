@@ -34,7 +34,6 @@ namespace KidGame.UI
             SceneLoader.Instance.LoadSceneWithTransition("GameScene",
                 UIController.Instance.UICameraBindingVertexCamera);
             
-            Signals.Get<StartGameSignal>().Dispatch();
             Hide();
         }
 
