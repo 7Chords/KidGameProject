@@ -2,38 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace KidGame.Core
 {
-
-    public class Hammer_Positive : TrapBase
+    public class ElectricTrolley : TrapBase
     {
+        public float Power;
+        public float PowerCostPerSecond;
+        public float Speed;
         public float Damage;
         public Vector3 HalfDamageArea;
         public BuffData Buff;
+
+        private Vector3 dir;
         private bool hasCausedDamage;
         public override void Trigger()
         {
-            Rb.AddForce((transform.position - interactor.transform.position).normalized * 100f,
-                ForceMode.Impulse);
+            trapData.deadDelayTime = Power / PowerCostPerSecond;
+            Vector3 noFixDir = (transform.position - interactor.transform.position).normalized;
+            dir = new Vector3(noFixDir.x, 0, noFixDir.z);
+            transform.LookAt(dir);
             this.OnFixedUpdate(PerformTick);
         }
 
         public override void Discard()
         {
+            Debug.Log("电动小车discard");
             this.RemoveFixedUpdate(PerformTick);
             base.Discard();
         }
 
         private void PerformTick()
         {
-            if (!hasCausedDamage)//todo:fix
+            if(Rb) Rb.velocity = dir * Speed;
+
+            if(!hasCausedDamage)//todo:fix
             {
                 Collider[] colls = Physics.OverlapBox(transform.position, HalfDamageArea);
-                foreach (var coll in colls)
+                foreach(var coll in colls)
                 {
                     if (coll == null) return;
-                    if (coll.gameObject.tag == "Enemy")
+                    if(coll.gameObject.tag == "Enemy")
                     {
                         coll.GetComponent<EnemyController>().TakeDamage(
                             new DamageInfo(gameObject, Damage, Buff ? new BuffInfo(Buff, coll.gameObject) : null));
@@ -47,7 +55,6 @@ namespace KidGame.Core
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(transform.position, HalfDamageArea);
         }
-
 
     }
 }

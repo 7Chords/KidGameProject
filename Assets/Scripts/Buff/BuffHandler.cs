@@ -12,12 +12,12 @@ namespace KidGame.Core
 
         public void Init()
         {
-            MonoManager.Instance.AddUpdateListener(BuffTickAndRemove);
+            this.OnUpdate(BuffTickAndRemove);
         }
 
         public void Discard()
         {
-            MonoManager.Instance.RemoveUpdateListener(BuffTickAndRemove);
+            this.RemoveUpdate(BuffTickAndRemove);
         }
 
 
@@ -64,6 +64,7 @@ namespace KidGame.Core
         /// <param name="buffInfo"></param>
         public void AddBuff(BuffInfo buffInfo)
         {
+            if (buffInfo == null) return;
             BuffInfo findBuffInfo = FindBuff(buffInfo.buffData.id);
 
             if (findBuffInfo != null)

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2104674793486769672}
   - component: {fileID: 4512478080700835577}
   - component: {fileID: 7228116336593780425}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 6212978372895573497}
   - component: {fileID: 6140514454639784241}
   - component: {fileID: 5164013179150538849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TrapEffectSender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 6819547138379385176}
   - component: {fileID: 3077201855474146433}
   - component: {fileID: 7527775879606056025}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CatalystPutSender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,6 +320,9 @@ MonoBehaviour:
   randomPickSfxList:
   - pick_item
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  Damage: 1
+  HalfDamageArea: {x: 0.9, y: 0.9, z: 0.9}
+  Buff: {fileID: 0}
 --- !u!208 &6590951284150574801
 NavMeshObstacle:
   m_ObjectHideFlags: 0
