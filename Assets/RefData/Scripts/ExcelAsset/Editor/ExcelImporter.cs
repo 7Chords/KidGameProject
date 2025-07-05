@@ -139,7 +139,48 @@ public class ExcelImporter : AssetPostprocessor
 		}
 	}
 
-	static object CreateEntityFromRow(IRow row, List<string> columnNames, Type entityType, string sheetName)
+    // 新增方法：处理列表类型的单元格
+    static object CellToListFieldObject(ICell cell, FieldInfo fieldInfo, bool isFormulaEvaluate = false)
+    {
+        var listType = fieldInfo.FieldType;
+
+        Type elementType = listType.GetGenericArguments()[0];
+        // 创建List实例
+        object list = Activator.CreateInstance(listType);
+        MethodInfo addMethod = listType.GetMethod("Add");
+
+        // 如果单元格是空的，返回空列表
+        if (cell == null || cell.CellType == CellType.Blank)
+        {
+            return list;
+        }
+
+        // 分割单元格内容
+        string[] values = cell.StringCellValue.Split(';');
+        foreach (string value in values)
+        {
+			//去除首位的空白部分
+            string trimmedValue = value.Trim();
+            if (!string.IsNullOrEmpty(trimmedValue))
+            {
+				//Debug.Log(trimmedValue);
+                //Debug.Log(elementType);
+                try
+                {
+                    object elementValue = Convert.ChangeType(trimmedValue, elementType);
+                    addMethod.Invoke(list, new object[] { elementValue });
+                }
+                catch
+                {
+                    Debug.LogWarning($"Failed to convert value '{trimmedValue}' to type {elementType.Name}");
+                }
+            }
+        }
+
+        return list;
+    }
+
+    /*static object CreateEntityFromRow(IRow row, List<string> columnNames, Type entityType, string sheetName)
 	{
 		var entity = Activator.CreateInstance(entityType);
 
@@ -166,9 +207,52 @@ public class ExcelImporter : AssetPostprocessor
 			}
 		}
 		return entity;
-	}
+	}*/
 
-	static object GetEntityListFromSheet(ISheet sheet, Type entityType)
+    static object CreateEntityFromRow(IRow row, List<string> columnNames, Type entityType, string sheetName)
+    {
+        var entity = Activator.CreateInstance(entityType);
+
+        for (int i = 0; i < columnNames.Count; i++)
+        {
+            FieldInfo entityField = entityType.GetField(
+                columnNames[i],
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+            );
+
+            if (entityField == null) continue;
+            if (!entityField.IsPublic && entityField.GetCustomAttributes(typeof(SerializeField), false).Length == 0) continue;
+
+            ICell cell = row.GetCell(i);
+            if (cell == null) continue;
+
+            try
+            {
+                object fieldValue;
+
+                // 检查是否是List类型
+                if (entityField.FieldType.IsGenericType &&
+                    entityField.FieldType.GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    fieldValue = CellToListFieldObject(cell, entityField);
+                }
+                else
+                {
+                    fieldValue = CellToFieldObject(cell, entityField);
+                }
+
+                entityField.SetValue(entity, fieldValue);
+            }
+            catch
+            {
+                throw new Exception(string.Format("Invalid excel cell type at row {0}, column {1}, {2} sheet.",
+                    row.RowNum, cell.ColumnIndex, sheetName));
+            }
+        }
+        return entity;
+    }
+
+    static object GetEntityListFromSheet(ISheet sheet, Type entityType)
 	{
 		List<string> excelColumnNames = GetFieldNamesFromSheetHeader(sheet);
 
@@ -229,6 +313,7 @@ public class ExcelImporter : AssetPostprocessor
 			assetField.SetValue(asset, entities);
 			sheetCount++;
 		}
+
 
 		if(info.Attribute.LogOnImport)
 		{
