@@ -8,10 +8,11 @@ namespace KidGame.Core
     {
         public float damage;
         public float force;
+        public float damageArea;
         public BuffData buffData;
         public override void Trigger()
         {
-            Collider[] colls = Physics.OverlapSphere(transform.position, 5);
+            Collider[] colls = Physics.OverlapSphere(transform.position, damageArea);
             IDamageable damageable;
             Vector3 dir = Vector3.zero;
             foreach(var coll in colls)
@@ -25,6 +26,11 @@ namespace KidGame.Core
                         new BuffInfo(buffData,coll.gameObject,new object[] { dir * force })));//额外传递一个力的参数
                 }
             }
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, damageArea);
         }
     }
 }

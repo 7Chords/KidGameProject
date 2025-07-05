@@ -129,7 +129,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ÒÆ³ýUpdate¼àÌý
+        /// ÒÆ³ýFixedUpdate¼àÌý
         /// </summary>
         public static void RemoveFixedUpdate(this object obj, Action action)
         {

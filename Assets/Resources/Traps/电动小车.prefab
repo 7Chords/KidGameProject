@@ -228,6 +228,9 @@ MonoBehaviour:
   Power: 5
   PowerCostPerSecond: 1
   Speed: 5
+  Damage: 1
+  HalfDamageArea: {x: 1, y: 1, z: 1.5}
+  Buff: {fileID: 0}
 --- !u!1 &2733098285984356051
 GameObject:
   m_ObjectHideFlags: 0

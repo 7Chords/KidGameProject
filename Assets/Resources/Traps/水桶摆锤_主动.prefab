@@ -54,6 +54,9 @@ MonoBehaviour:
   randomPickSfxList:
   - pick_item
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  Damage: 1
+  HalfDamageArea: {x: 0.9, y: 0.9, z: 0.9}
+  Buff: {fileID: 0}
 --- !u!54 &7970254089266403970
 Rigidbody:
   m_ObjectHideFlags: 0
