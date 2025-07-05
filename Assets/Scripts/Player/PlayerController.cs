@@ -280,7 +280,7 @@ namespace KidGame.Core
         /// <summary>
         /// 获得最近的可拾取者
         /// </summary>
-        private IPickable GetClosestPickable()
+        public IPickable GetClosestPickable()
         {
             float min = 999;
             IPickable closestIPickable = null;

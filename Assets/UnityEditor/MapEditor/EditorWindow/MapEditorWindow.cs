@@ -177,7 +177,7 @@ namespace KidGame.Editor
                 GameObject tileGO = Instantiate(tile.tileData.tilePrefab,
                     new Vector3(tile.mapPos.x, 0, -tile.mapPos.y),
                     Quaternion.identity);
-                MapTile mapTile = tileGO.AddComponent<MapTile>();
+                MapTile mapTile = tileGO.GetComponent<MapTile>();
                 mapTile.SetData(tile);
                 tileGO.transform.SetParent(tileRoot.transform);
                 tileGO.transform.position += generatePoint.position;
@@ -196,7 +196,7 @@ namespace KidGame.Editor
                 averageZ /= furniture.mapPosList.Count;
                 GameObject furnitureGO = Instantiate(furniture.furnitureData.furniturePrefab);
                 furnitureGO.transform.position = new Vector3(averageX, 0, -averageZ);
-                MapFurniture mapFurniture = furnitureGO.AddComponent<MapFurniture>();
+                MapFurniture mapFurniture = furnitureGO.GetComponent<MapFurniture>();
                 mapFurniture.SetData(furniture);
                 furnitureGO.transform.SetParent(furnitureRoot.transform);
                 furnitureGO.transform.position += generatePoint.position;
@@ -220,7 +220,7 @@ namespace KidGame.Editor
                         new Vector3(averageX, 3 * i, -averageZ),
                         Quaternion.identity);
                     wallGO.transform.rotation = wall.wallData.wallPrefab.transform.rotation;
-                    MapWall mapWall = wallGO.AddComponent<MapWall>();
+                    MapWall mapWall = wallGO.GetComponent<MapWall>();
                     mapWall.SetData(wall);
                     wallGO.transform.SetParent(wallRoot.transform);
                     wallGO.transform.position += generatePoint.position;

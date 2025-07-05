@@ -215,7 +215,7 @@ MonoBehaviour:
     type: 3}
   TipPrefab: {fileID: 6944888077476667840, guid: 32d25b97efe1430468cce84325f222dc,
     type: 3}
---- !u!84 &275905337
+--- !u!84 &287861677
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -998,7 +998,7 @@ Transform:
   m_GameObject: {fileID: 1633150989}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: 1.077, z: -11.602}
+  m_LocalPosition: {x: 22.5, y: 1.077, z: -21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1581,7 +1581,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 275905337}
+      objectReference: {fileID: 287861677}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size

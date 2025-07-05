@@ -20,7 +20,7 @@ namespace KidGame.Core
     }
 
 
-    public class MapFurniture : MonoBehaviour, IPickable,IInteractive
+    public class MapFurniture : MonoBehaviour, IPickable
     {
         public MapFurnitureData mapFurnitureData;
 
@@ -39,9 +39,9 @@ namespace KidGame.Core
         private List<string> randomInteractSfxList;
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
 
-        [SerializeField]
-        public GameObject interactPartical;
-        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
+        //[SerializeField]
+        //public GameObject interactPartical;
+        //public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
 
         public string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
 
@@ -59,9 +59,11 @@ namespace KidGame.Core
             mapFurnitureData = data;
         }
 
-        public void SetTrap(TrapBase trap)
+        public void SetTrap(GameObject trap)
         {
-            takeTrap = trap;
+            trap.transform.position = TrapDependPos.transform.position;
+            trap.transform.localScale *= 0.5f;
+            takeTrap = trap.GetComponent<TrapBase>();
         }
 
         public void Init(bool canInteract, List<MaterialItem> materialList = null)
@@ -84,10 +86,6 @@ namespace KidGame.Core
         {
 
         }
-
-        public virtual void InteractPositive(GameObject interactor) { }
-
-        public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor) { }
 
     }
 }
