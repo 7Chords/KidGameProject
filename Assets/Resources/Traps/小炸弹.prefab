@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6731559350173266548}
   - component: {fileID: 6732944837418998394}
   - component: {fileID: 3934181801747726404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 8490157788486465100}
   - component: {fileID: 8407771367958665255}
   - component: {fileID: 2779398220805965692}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TrapEffectSender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 4871733532341728574}
   - component: {fileID: 7742240014938944030}
   - component: {fileID: 2141523947710026147}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CatalystPutSender
   m_TagString: Untagged
   m_Icon: {fileID: 0}

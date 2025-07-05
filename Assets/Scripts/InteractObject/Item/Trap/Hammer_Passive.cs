@@ -9,7 +9,7 @@ namespace KidGame.Core
     {
         public override void Trigger()
         {
-            Rb.AddForce((interactor.transform.position - transform.position).normalized * 10f,
+            Rb.AddForce((interactor.transform.position - transform.position).normalized * 100f,
                 ForceMode.Impulse);
         }
     }

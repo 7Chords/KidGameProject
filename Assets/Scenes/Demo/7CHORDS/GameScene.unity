@@ -215,7 +215,7 @@ MonoBehaviour:
     type: 3}
   TipPrefab: {fileID: 6944888077476667840, guid: 32d25b97efe1430468cce84325f222dc,
     type: 3}
---- !u!84 &287861677
+--- !u!84 &344215683
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -602,6 +602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Step
+      objectReference: {fileID: 0}
+    - target: {fileID: 8776480129306739047, guid: 11d4df1887c914634a47ae88306ddd39,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1581,7 +1586,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 287861677}
+      objectReference: {fileID: 344215683}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size
