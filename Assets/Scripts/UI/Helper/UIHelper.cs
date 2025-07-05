@@ -88,7 +88,7 @@ namespace KidGame.UI
             currentBubble = Instantiate(BubblePrefab);
 
             UIBubbleItem bubbleItem = currentBubble.GetComponent<UIBubbleItem>();
-            currentBubble.transform.parent = transform;
+            currentBubble.transform.SetParent(transform);
 
             string keyStr = "";
             if (bubbleItem != null)

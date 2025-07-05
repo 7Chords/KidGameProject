@@ -23,6 +23,6 @@ MonoBehaviour:
   triggerType: 1
   placedType: 0
   deadConfig:
-    conditions: 00000000
-    delayTime: 0
+    conditions: 01000000
+    delayTime: 1
   isCatalyst: 0

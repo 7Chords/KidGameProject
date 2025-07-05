@@ -24,14 +24,16 @@ namespace KidGame.Core
         private Rigidbody rb;
         public Rigidbody Rb => rb;
 
+        private Collider coll;
+        public Collider Coll => coll;
 
 
-        private TrapData trapData;
+        protected TrapData trapData;
         public TrapData TrapData => trapData;
 
 
 
-        private CatalystBase _catalyst;
+        protected CatalystBase _catalyst;
         public CatalystBase Catalyst => _catalyst;
 
 
@@ -42,13 +44,14 @@ namespace KidGame.Core
 
 
 
-        private StateMachine stateMachine;
+        protected StateMachine stateMachine;
         private TrapState trapState;
 
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
+            coll = GetComponent<Collider>();
         }
 
         /// <summary>
@@ -68,9 +71,12 @@ namespace KidGame.Core
 
         public virtual void Discard()
         {
-            stateMachine.ObjectPushPool();
+            //todo:fix
+            //stateMachine.Destory();
             Destroy(gameObject);
         }
+
+        
         #region 交互接口方法实现
 
         public virtual void InteractPositive(GameObject interactor)
@@ -163,6 +169,7 @@ namespace KidGame.Core
         {
             if (trapData == null || trapData.triggerType != TrapTriggerType.Catalyst) return;
             if (_catalyst == null || _catalyst != catalyst) return;
+            RemoveFormPlayerUsingList();
             this.interactor = interactor;
             ChangeState(TrapState.Running);
         }
@@ -218,6 +225,7 @@ namespace KidGame.Core
 
         private void RemoveFormPlayerUsingList()
         {
+            coll.enabled = false;
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerController.Instance.RemovePickableFromList(this);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);

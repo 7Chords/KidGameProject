@@ -21,4 +21,8 @@ MonoBehaviour:
   validTime: -1
   trapTypeList: 01000000
   triggerType: 1
-  isCatalyst: 1
+  placedType: 0
+  deadConfig:
+    conditions: 
+    delayTime: 0
+  isCatalyst: 0

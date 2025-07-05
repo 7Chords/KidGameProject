@@ -10,5 +10,9 @@ namespace KidGame.Core
         {
             trap.Discard();
         }
+
+
+
+
     }
 }

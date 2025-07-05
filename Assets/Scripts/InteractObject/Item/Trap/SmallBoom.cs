@@ -9,6 +9,16 @@ namespace KidGame.Core
         public float damage;
         public float force;
         public BuffData buffData;
+
+        //public override void Init(TrapData trapData)
+        //{
+        //    this.trapData = trapData;
+
+        //    stateMachine = PoolManager.Instance.GetObject<StateMachine>();
+        //    stateMachine.Init(this);
+        //    //³õÊ¼»¯ÎªIdle×´Ì¬
+        //    ChangeState(TrapState.NoReady);
+        //}
         public override void Trigger()
         {
             Collider[] colls = Physics.OverlapSphere(transform.position, 5);
