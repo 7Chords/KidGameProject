@@ -19,8 +19,8 @@ namespace KidGame.Core
 
         public string itemName { get => "好看的装饰物"; set { } }
 
-        public virtual void InteractNegative(GameObject interactor) { }
-
         public virtual void InteractPositive(GameObject interactor) { }
+
+        public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor) { }//不会去写任何东西
     }
 }

@@ -18,11 +18,10 @@ MonoBehaviour:
   trapIcon: {fileID: 21300000, guid: ff8b2c345452818449c57d99b7cebaff, type: 3}
   trapLevel: 0.5
   trapDamage: 1
+  triggerType: 0
+  validType: 0
   validTime: 10
-  trapTypeList: 00000000
-  triggerType: 1
   placedType: 0
-  deadConfig:
-    conditions: 00000000
-    delayTime: 0
+  deadTypeList: 00000000
+  deadDelayTime: 0
   isCatalyst: 0

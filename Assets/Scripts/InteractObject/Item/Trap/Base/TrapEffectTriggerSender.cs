@@ -19,7 +19,8 @@ namespace KidGame.Core
             if (_trap == null) return;
             //被动触发了
             if (other.gameObject.tag != "Enemy") return;
-            _trap.InteractNegative(other.gameObject);
+            //tip：触媒也是陷阱 敌人是和触媒主动交互 但是对于陷阱来说是被动交互 触媒的trigger效果就是触发陷阱的被动交互
+            _trap.InteractPositive(other.gameObject);
         }
     }
 }

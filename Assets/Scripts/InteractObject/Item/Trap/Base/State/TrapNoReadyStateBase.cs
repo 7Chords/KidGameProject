@@ -13,10 +13,10 @@ namespace KidGame.Core
 
         public override void Enter()
         {
-            _isTimeValid = trap.TrapData.trapTypeList.Contains(TrapType.Time_Valid);
+            _isTimeValid = trap.TrapData.validType == TrapValidType.TimeDelay;
             _validTime = trap.TrapData.validTime;
             _validTimer = 0;
-            _needCatalyst = trap.TrapData.triggerType == TrapTriggerType.Catalyst;
+            _needCatalyst = trap.TrapData.triggerType == TrapTriggerType.Negative;
 
             // 如果既不需要时间也不需要媒介，直接变为Ready状态
             if (!_isTimeValid && !_needCatalyst)

@@ -83,13 +83,9 @@ namespace KidGame.Core
         {
             if (trapData == null) return;
             //需要触媒
-            if (trapData.triggerType == TrapTriggerType.Catalyst) return;
-            //不是主动触发型交互
-            if (!trapData.trapTypeList.Contains(TrapType.Positive))
-                return;
+            if (trapData.triggerType == TrapTriggerType.Negative) return;
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
-            PlayerController.Instance.RemoveInteractiveFromList(this);
             //todo:播放音效和特效
             if(RandomInteractSfxList != null && RandomInteractSfxList.Count>0)
             {
@@ -105,17 +101,12 @@ namespace KidGame.Core
         }
 
 
-        public virtual void InteractNegative(GameObject interactor)
+        public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor)
         {
-            if (trapData == null) return;
-            //需要触媒
-            if (trapData.triggerType == TrapTriggerType.Catalyst) return;
-            //不是被动触发型交互
-            if (!trapData.trapTypeList.Contains(TrapType.Negative))
-                return;
+            if (trapData == null || trapData.triggerType != TrapTriggerType.Negative) return;
+            if (_catalyst == null || _catalyst != catalyst) return;
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
-            PlayerController.Instance.RemoveInteractiveFromList(this);
             //todo:播放音效和特效
             if (RandomInteractSfxList != null && RandomInteractSfxList.Count > 0)
             {
@@ -163,18 +154,6 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// 通过触媒触发
-        /// </summary>
-        public void TriggerByCatalyst(CatalystBase catalyst, GameObject interactor)
-        {
-            if (trapData == null || trapData.triggerType != TrapTriggerType.Catalyst) return;
-            if (_catalyst == null || _catalyst != catalyst) return;
-            RemoveFormPlayerUsingList();
-            this.interactor = interactor;
-            ChangeState(TrapState.Running);
-        }
-
-        /// <summary>
         /// 陷阱触发的效果代码
         /// </summary>
         public virtual void Trigger()
@@ -189,7 +168,7 @@ namespace KidGame.Core
         public virtual void DeadByExternal()
         {
             if (trapState == TrapState.Running && 
-                trapData.deadConfig.conditions.Contains(TrapDeadType.ExternalEvent))
+                trapData.deadTypeList.Contains(TrapDeadType.ExternalEvent))
             {
                 ChangeState(TrapState.Dead);
             }

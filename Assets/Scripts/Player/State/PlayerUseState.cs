@@ -48,7 +48,7 @@ namespace KidGame.Core
                 PlayerBag.Instance._trapBag.RemoveAt(0);
             }
 
-            if(trapToPlace.trapData.placedType == TrapPlacedType.Normal)
+            if(trapToPlace.trapData.placedType == TrapPlacedType.Ground)
             {
                 // 计算放置位置
                 // 需要根据网格系统调整

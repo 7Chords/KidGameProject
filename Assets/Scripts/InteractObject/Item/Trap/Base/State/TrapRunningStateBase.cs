@@ -12,12 +12,12 @@ namespace KidGame.Core
         {
             trap.Trigger();
 
-            _conditions = trap.TrapData.deadConfig.conditions;
+            _conditions = trap.TrapData.deadTypeList;
 
             // 初始化条件
             if (_conditions.Contains(TrapDeadType.TimeDelay))
             {
-                _deadTimer = trap.TrapData.deadConfig.delayTime;
+                _deadTimer = trap.TrapData.deadDelayTime;
             }
 
             // 如果只包含Immediate或者没有条件，立即死亡

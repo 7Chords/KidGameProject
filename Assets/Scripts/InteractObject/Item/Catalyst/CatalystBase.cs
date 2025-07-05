@@ -9,27 +9,21 @@ namespace KidGame.Core
     /// </summary>
     public class CatalystBase : TrapBase
     {
-        protected TrapBase _trap;
+        protected TrapBase _connectTrap;
 
         public void Init()
         {
         }
 
-        public override void InteractNegative(GameObject interactor)
+        public override void Trigger()
         {
-            if (_trap == null) return;
-            _trap.TriggerByCatalyst(this, interactor);
-            ChangeState(TrapState.Dead);
+            if (_connectTrap == null) return;
+            _connectTrap.InteractNegative(this, interactor);
         }
-
-        public override void InteractPositive(GameObject interactor)
-        {
-        }
-
 
         public virtual void SetTrap(TrapBase trap)
         {
-            _trap = trap;
+            _connectTrap = trap;
         }
     }
 }
