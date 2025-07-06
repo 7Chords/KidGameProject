@@ -155,7 +155,6 @@ namespace KidGame.Core
             inputSettings.OnInteractionPress += PlayerInteraction;
             inputSettings.OnPickPress += PlayerPick;
             inputSettings.OnUsePress += TryPlaceTrap;
-            
             inputSettings.OnGamePause += GamePause;
         }
 
@@ -167,7 +166,6 @@ namespace KidGame.Core
             inputSettings.OnInteractionPress -= PlayerInteraction;
             inputSettings.OnPickPress -= PlayerPick;
             inputSettings.OnUsePress -= TryPlaceTrap;
-            
             inputSettings.OnGamePause -= GamePause;
         }
 
@@ -343,14 +341,6 @@ namespace KidGame.Core
         {
             //TODO:临时测试
             Destroy(gameObject);
-        }
-
-        #endregion
-        
-        #region Gizoms
-
-        private void OnDrawGizmos()
-        {
         }
 
         #endregion
