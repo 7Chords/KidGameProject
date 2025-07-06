@@ -6,13 +6,18 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace KidGame.UI
 {
+    public class RefreshSecBtnSignal : ASignal
+    {
+        
+    }
     public class SecMakeMenuBtn : MonoBehaviour
     {
         private RecipeData recipeData;
-        private Button makeMenuButton;
+        public Button makeMenuButton;
         public TextMeshProUGUI makeMenuText;
 
         private void Awake()
@@ -20,7 +25,14 @@ namespace KidGame.UI
             makeMenuButton = GetComponentInChildren<Button>();
             makeMenuText = GetComponentInChildren<TextMeshProUGUI>();
             makeMenuButton.onClick.AddListener(ShowDetail);
+            Signals.Get<RefreshSecBtnSignal>().AddListener(RefreshButton);
         }
+
+        private void OnDestroy()
+        {
+            Signals.Get<RefreshSecBtnSignal>().RemoveListener(RefreshButton);
+        }
+
         public void InitBtnData(RecipeData recipeData)
         {
             
@@ -32,6 +44,14 @@ namespace KidGame.UI
         public void ShowDetail()
         {
             
+            Signals.Get<RefreshSecBtnSignal>().Dispatch();
+            Signals.Get<ShowRecipeSignal>().Dispatch(recipeData);
+            makeMenuButton.interactable = false;
+        }
+
+        public void RefreshButton()
+        {
+            makeMenuButton.interactable = true;
         }
     }
     

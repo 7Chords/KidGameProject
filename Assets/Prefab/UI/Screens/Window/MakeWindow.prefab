@@ -274,6 +274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808b109449045c24bacec935ee10aa12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  makeMenuButton: {fileID: 0}
+  makeMenuText: {fileID: 0}
 --- !u!1 &1215482249167803080
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,6 +1497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef966d08b96dbe4c83abf08f6aa1736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  makeMenuButton: {fileID: 0}
   makeMenuText: {fileID: 0}
 --- !u!1 &7157081196741692593
 GameObject:
@@ -1898,6 +1901,9 @@ MonoBehaviour:
   firstSelection: {fileID: 1977864367782495688}
   secondSelection: {fileID: 8771531241642759473}
   recipes: {fileID: 11400000, guid: c0727c6087c33c34eb368b253d81d461, type: 2}
+  recipeImage: {fileID: 0}
+  recipeNameText: {fileID: 530802310322257991}
+  recipeDescriptionText: {fileID: 9073423468977705871}
 --- !u!1 &7806511817214202329
 GameObject:
   m_ObjectHideFlags: 0

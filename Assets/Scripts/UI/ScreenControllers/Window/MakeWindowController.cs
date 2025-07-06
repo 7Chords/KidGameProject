@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using KidGame.Core;
 using KidGame.UI;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Utils;
 
 namespace KidGame.UI
 {
+    public class ShowRecipeSignal : ASignal<RecipeData>
+    {
+        
+    }
     public class MakeWindowController : WindowController
     {
         public UICircularScrollView firstSelection;
@@ -17,10 +24,22 @@ namespace KidGame.UI
         private Dictionary<int, List<RecipeData>> recipesDictionary = new Dictionary<int, List<RecipeData>>();
         private string[] names = new[] { "陷阱", "手持道具" };
         
+        public Image recipeImage;
+        public TextMeshProUGUI recipeNameText;
+        public TextMeshProUGUI recipeDescriptionText;
+        
+        private List<MakeMenuButton> makeMenuButtons = new List<MakeMenuButton>();
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            Signals.Get<ShowRecipeSignal>().AddListener(ShowRecipe);
+        }
 
         protected override void OnPropertiesSet()
         {
-            
+            recipeImage = transform.Find("Right/Icon").GetComponent<Image>();
             
             //根据so初始化列表和其中按钮即可
             //scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count,OnCellUpdate,null);
@@ -32,9 +51,15 @@ namespace KidGame.UI
             {
                 MakeMenuButton button = cell.GetComponent<MakeMenuButton>();
                 button.InitFirstSelect(secondSelection,names[index-1],recipesDictionary[index-1]);
-                if(index-1 == 0)button.InitSecondSelect();
+                makeMenuButtons.Add(button);
             });
+            makeMenuButtons[0].InitSecondSelect();
+        }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            Signals.Get<ShowRecipeSignal>().RemoveListener(ShowRecipe);
         }
 
         private void SetRecipeList()
@@ -55,5 +80,16 @@ namespace KidGame.UI
             recipesDictionary.Add(0,trapRecipes);
             recipesDictionary.Add(1,equipRecipes);
         }
+
+        private void ShowRecipe(RecipeData recipe)
+        {
+            recipeNameText.text = recipe.trapData.name;
+            if (recipe.recipeType == RecipeType.Trap)
+                recipeImage.sprite = recipe.trapData.trapIcon;
+            else if (recipe.recipeType == RecipeType.Equip)
+                recipeImage.sprite = recipe.trapData.trapIcon;//todo
+            recipeDescriptionText.text = recipe.trapData.trapDesc;
+        }
+        
     }
 }
