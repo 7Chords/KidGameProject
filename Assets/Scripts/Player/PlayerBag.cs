@@ -120,6 +120,9 @@ namespace KidGame.Core
             return _trapBag[SelectedTrapIndex];
         }
         
+        
+        
+        
         #endregion
         
         

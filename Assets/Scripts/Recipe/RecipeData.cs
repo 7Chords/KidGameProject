@@ -12,12 +12,7 @@ namespace KidGame.Core
         Equip,
         Mix,
     }
-    [Serializable]
-    public class MaterialRequirement
-    {
-        public MaterialData material;
-        public int count;
-    }
+    
     [CreateAssetMenu(fileName = "RecipeData", menuName = "KidGameSO/Interactive/RecipeData")]
     public class RecipeData : ScriptableObject
     {
@@ -25,7 +20,7 @@ namespace KidGame.Core
         //之后放其他类型数据
         public RecipeType recipeType;
         
-        public List<MaterialRequirement> materialDatas;
+        public List<MaterialSlotInfo> materialDatas;
         
         
     }

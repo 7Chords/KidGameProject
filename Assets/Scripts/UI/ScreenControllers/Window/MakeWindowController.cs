@@ -17,7 +17,8 @@ namespace KidGame.UI
     {
         public UICircularScrollView firstSelection;
         public UICircularScrollView secondSelection;
-
+        public UICircularScrollView materialScrollView;
+        
         public RecipeListData recipes;
         private List<RecipeData> trapRecipes = new List<RecipeData>();
         private List<RecipeData> equipRecipes = new List<RecipeData>();
@@ -89,6 +90,17 @@ namespace KidGame.UI
             else if (recipe.recipeType == RecipeType.Equip)
                 recipeImage.sprite = recipe.trapData.trapIcon;//todo
             recipeDescriptionText.text = recipe.trapData.trapDesc;
+            
+            materialScrollView.Init(recipe.materialDatas.Count, (cell, index) =>
+            {
+                CellUI cellUI = cell.GetComponent<CellUI>();
+                if (index - 1 < recipe.materialDatas.Count)
+                {
+                    cellUI.SetUIWithMaterial(recipe.materialDatas[index - 1]);
+                }
+               
+            });
+            
         }
         
     }
