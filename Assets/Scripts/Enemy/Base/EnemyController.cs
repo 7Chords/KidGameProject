@@ -145,6 +145,7 @@ namespace KidGame.Core
 
 
             behaviorTree.Start();
+            agent.enabled = true;
         }
         public void Discard()
         {
@@ -458,10 +459,14 @@ namespace KidGame.Core
         }
         public void ResetAllRoomsCheckState()
         {
-            foreach(var key in roomSearchStateDic.Keys)
+            var roomTypeList = new List<RoomType>(roomSearchStateDic.Keys);
+            for (int i = 0; i < roomTypeList.Count; i++)//不要foreach里面修改 会报错
             {
-                SetRoomCheckState(key, false);
+                var roomType = roomTypeList[i];
+                // 现在可以安全地修改roomCheckStates集合
+                SetRoomCheckState(roomType,false);
             }
+
         }
         public void SetRoomCheckState(RoomType roomType,bool state)
         {
