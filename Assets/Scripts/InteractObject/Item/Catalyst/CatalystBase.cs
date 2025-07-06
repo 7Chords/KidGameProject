@@ -15,6 +15,12 @@ namespace KidGame.Core
         {
         }
 
+        public override void InteractPositive(GameObject interactor)
+        {
+            if (_connectTrap == null) return;//没有关联时被触发不进入running状态
+            base.InteractPositive(interactor);
+        }
+
         public override void Trigger()
         {
             if (_connectTrap == null) return;
@@ -23,6 +29,10 @@ namespace KidGame.Core
 
         public virtual void SetTrap(TrapBase trap)
         {
+            if(_connectTrap!=null)//先取消之前关联陷阱的媒介引用
+            {
+                _connectTrap.SetCatalyst(null);
+            }
             _connectTrap = trap;
         }
     }

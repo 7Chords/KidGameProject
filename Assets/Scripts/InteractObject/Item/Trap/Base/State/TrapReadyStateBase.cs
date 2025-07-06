@@ -8,6 +8,9 @@ namespace KidGame.Core
     public class TrapReadyStateBase : TrapStateBase
     {
 
-
+        public override void Enter()
+        {
+            trap.ReadyIndicator.material.SetColor("_Color", trap.ReadyColor);
+        }
     }
 }

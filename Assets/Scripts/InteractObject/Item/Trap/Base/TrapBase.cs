@@ -17,6 +17,14 @@ namespace KidGame.Core
         public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
         public override string itemName => trapData.trapName;
 
+        [ColorUsage(true,true)]
+        public Color NoReadyColor;
+
+        [ColorUsage(true, true)]
+        public Color ReadyColor;
+
+        public Renderer ReadyIndicator;
+
         [Space(20)]
 
 
@@ -151,6 +159,10 @@ namespace KidGame.Core
         public void SetCatalyst(CatalystBase catalyst)
         {
             _catalyst = catalyst;
+            if(_catalyst == null)
+            {
+                ChangeState(TrapState.NoReady);
+            }
         }
 
         /// <summary>
