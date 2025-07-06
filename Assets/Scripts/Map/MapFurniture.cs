@@ -20,53 +20,44 @@ namespace KidGame.Core
     }
 
 
-    public class MapFurniture : MonoBehaviour, IPickable
+    public class MapFurniture : MapItem, IInteractive
     {
         public MapFurnitureData mapFurnitureData;
 
         public List<MaterialItem> materialHoldList;
-
-        [SerializeField]
-        private List<string> randomPickSfxList;
-        public List<string> RandomPickSfxList { get => randomPickSfxList; set { } }
-
-        [SerializeField]
-        private GameObject pickPartical;
-        public GameObject PickPartical { get => pickPartical; set { } }
 
 
         [SerializeField]
         private List<string> randomInteractSfxList;
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
 
-        //[SerializeField]
-        //public GameObject interactPartical;
-        //public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
 
-        public string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
+        [SerializeField]
+        private GameObject interactPartical;
+        public GameObject InteractPartical { get => interactPartical; set{ interactPartical = value; } }
+
+
+        public override string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
+
 
         public GameObject TrapDependPos;//陷阱放在家具上的放置位置
 
-        private TrapBase takeTrap;//家具上有的陷阱
+        protected TrapBase takeTrap;//家具上有的陷阱
 
-        private bool canInteract;
-        public MapFurniture(MapFurnitureData data)
-        {
-            mapFurnitureData = data;
-        }
+        protected bool canInteract;
         public void SetData(MapFurnitureData data)
         {
             mapFurnitureData = data;
         }
 
-        public void SetTrap(GameObject trap)
+        public virtual void SetTrap(GameObject trap)
         {
             trap.transform.position = TrapDependPos.transform.position;
             trap.transform.localScale *= 0.5f;
             takeTrap = trap.GetComponent<TrapBase>();
         }
 
-        public void Init(bool canInteract, List<MaterialItem> materialList = null)
+        public virtual void Init(bool canInteract, List<MaterialItem> materialList = null)
         {
             this.canInteract = canInteract;
             materialHoldList = materialList;
@@ -76,16 +67,23 @@ namespace KidGame.Core
             }
         }
 
-        public void Discard()
+        public virtual void Discard()
         {
             materialHoldList.Clear();
             materialHoldList = null;
         }
 
-        public virtual void Pick()
+        public override void Pick()
         {
 
         }
 
+        public virtual void InteractPositive(GameObject interactor)
+        {
+        }
+
+        public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor)
+        {
+        }
     }
 }

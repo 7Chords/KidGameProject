@@ -18,6 +18,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
   - {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
   - {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
+  - {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
   WallList:
   - {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
   - {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}

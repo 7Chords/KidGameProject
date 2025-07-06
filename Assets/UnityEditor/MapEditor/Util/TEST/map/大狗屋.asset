@@ -3854,3 +3854,88 @@ MonoBehaviour:
     - x: 5
       y: 1
     roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 8
+      y: 3
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 1
+      y: 7
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 1
+      y: 13
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 1
+      y: 16
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 1
+      y: 21
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 1
+      y: 27
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 14
+      y: 21
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 19
+      y: 21
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 16
+      y: 16
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 12
+      y: 15
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 12
+      y: 8
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 14
+      y: 1
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 19
+      y: 1
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 20
+      y: 5
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 13
+      y: 27
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 22
+      y: 27
+    roomType: 0
+  - furnitureData: {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
+    mapPosList:
+    - x: 26
+      y: 25
+    roomType: 0

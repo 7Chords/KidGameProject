@@ -48,8 +48,11 @@ namespace KidGame.Core
                             Random.Range(item.randomAmount_min, item.randomAmount_max + 1)
                         ));
                     }
-
                     mapFurniture.Init(true, tmpMaterialItemList);
+                }
+                else
+                {
+                    mapFurniture.Init(true, null);
                 }
             }
         }

@@ -10,12 +10,6 @@ namespace KidGame.Core
     public class MapItem : MonoBehaviour, IPickable
     {
 
-
-        [SerializeField]
-        protected List<string> randomInteractSfxList;
-        [SerializeField]
-        protected GameObject interactPartical;
-
         [SerializeField]
         protected List<string> randomPickSfxList;
         [SerializeField]

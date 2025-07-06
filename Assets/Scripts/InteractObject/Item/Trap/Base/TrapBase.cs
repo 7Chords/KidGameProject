@@ -13,7 +13,12 @@ namespace KidGame.Core
     public class TrapBase : MapItem,IInteractive,IStateMachineOwner
     {
 
+        [SerializeField]
+        private List<string> randomInteractSfxList;
         public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
+
+        [SerializeField]
+        private GameObject interactPartical;
         public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
         public override string itemName => trapData.trapName;
 
