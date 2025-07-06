@@ -26,7 +26,6 @@ namespace KidGame.Core
 
         public override void Discard()
         {
-            Debug.Log("电动小车discard");
             this.RemoveFixedUpdate(PerformTick);
             base.Discard();
         }

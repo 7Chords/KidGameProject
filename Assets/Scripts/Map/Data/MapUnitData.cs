@@ -11,6 +11,8 @@ namespace KidGame.Core.Data
         public List<GridPos> mapPosList;
 
         public RoomType roomType;
+
+        public float rotation;
     }
 
     [Serializable]
@@ -21,6 +23,7 @@ namespace KidGame.Core.Data
         public GridPos mapPos;
 
         public RoomType roomType;
+
     }
 
     [Serializable]

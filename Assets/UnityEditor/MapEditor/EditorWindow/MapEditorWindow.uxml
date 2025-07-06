@@ -8,10 +8,11 @@
         </ui:VisualElement>
         <ui:VisualElement name="DataFieldGroup" style="flex-grow: 1; flex-direction: row; left: auto; width: auto; height: 43px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; -unity-font-style: normal;">
             <uie:ObjectField label="生成位置" name="GeneratePointField" allow-scene-objects="false" style="align-items: auto; width: 150px; -unity-text-align: middle-center; flex-direction: column; overflow: hidden; opacity: 1; align-self: auto; margin-right: 4px; padding-right: 0; text-overflow: clip; padding-left: 0; justify-content: flex-start;" />
+            <ui:FloatField label="地图缩放" value="1" name="ScaleField" style="width: 50px; -unity-text-align: middle-center; align-items: center; flex-direction: column;" />
             <uie:ObjectField label="地图数据" name="MapDataField" allow-scene-objects="false" style="align-items: center; width: 150px; -unity-text-align: middle-center; margin-left: 0; font-size: 14px; white-space: normal; flex-direction: column;" />
             <uie:ObjectField label="菜单配置" name="ItemConfigField" allow-scene-objects="false" style="align-items: center; width: 250px; -unity-text-align: middle-center; flex-direction: column;" />
-            <ui:FloatField label="生成的地图缩放" value="1" name="ScaleField" style="width: 150px; -unity-text-align: middle-center; align-items: center; flex-direction: column;" />
-            <ui:EnumField label="房间类型" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" name="RoomTypeField" style="width: 150px; align-items: center; -unity-text-align: middle-center; flex-direction: column;" />
+            <ui:EnumField label="房间类型" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" name="RoomTypeField" style="width: 100px; align-items: center; -unity-text-align: middle-center; flex-direction: column;" />
+            <ui:FloatField label="家具Y轴旋转(90x)" value="0" name="PlaceRotationField" usage-hints="None" style="width: 120px; -unity-text-align: middle-center; align-items: center; flex-direction: column;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="Content" style="flex-grow: 1; justify-content: flex-start; left: auto; top: auto; align-items: center; height: auto; align-self: auto; width: auto; flex-direction: row; min-height: auto; max-height: none;">

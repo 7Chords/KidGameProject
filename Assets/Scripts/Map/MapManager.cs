@@ -91,6 +91,7 @@ namespace KidGame.Core
                 averageZ /= furniture.mapPosList.Count;
                 GameObject furnitureGO = Instantiate(furniture.furnitureData.furniturePrefab);
                 furnitureGO.transform.position = new Vector3(averageX, 0, -averageZ);
+                furnitureGO.transform.rotation = Quaternion.Euler(0, furniture.rotation, 0);
                 MapFurniture mapFurniture = furnitureGO.GetComponent<MapFurniture>();
                 mapFurniture.SetData(furniture);
                 furnitureGO.transform.SetParent(furnitureRoot.transform);

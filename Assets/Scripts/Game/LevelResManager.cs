@@ -178,7 +178,6 @@ namespace KidGame.Core
             materialGO.transform.SetParent(_materialRoot.transform);
             MaterialBase materialBase = materialGO.GetComponent<MaterialBase>();
             materialBase.Init(materialData);
-            Debug.Log(materialGO + "Éú³ÉÔÚ" + position);
         }
     }
 }

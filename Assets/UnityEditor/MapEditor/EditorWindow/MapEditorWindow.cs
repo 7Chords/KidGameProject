@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using KidGame.Core;
 using KidGame.Core.Data;
 using UnityEditor;
@@ -17,6 +18,9 @@ namespace KidGame.Editor
 
         public Color unSelectColor = new Color(0.7372549f, 0.7372549f, 0.7372549f, 1);
         public Color selectColor = Color.yellow;
+
+        private Stack<MapData> historyStack = new Stack<MapData>();
+        private const int maxHistorySteps = 20; // 最大撤销步数
 
         public static List<Color> colorList = new List<Color>()
         {
@@ -50,18 +54,36 @@ namespace KidGame.Editor
             VisualElement labelFromUXML = visualTree.Instantiate();
             root.Add(labelFromUXML);
 
+            //root.RegisterCallback<KeyDownEvent>(OnKeyDown);
+
             InitTopMenu();
             InitItemMenu();
             InitWorkSpace();
 
             ResetView();
         }
-
+        //private void OnKeyDown(KeyDownEvent evt)
+        //{
+        //    if (evt.keyCode == KeyCode.Z && evt.ctrlKey)
+        //    {
+        //        Undo();
+        //        evt.StopPropagation();
+        //    }
+        //}
         public void ResetView()
         {
             MapData tmpMapData = mapData;
             MapDataField.value = null;
             MapDataField.value = tmpMapData;
+
+            // 清空历史记录
+            historyStack.Clear();
+
+            //// 如果有地图数据，保存初始状态
+            //if (mapData != null)
+            //{
+            //    SaveToHistory();
+            //}
         }
 
 
@@ -76,13 +98,14 @@ namespace KidGame.Editor
         private ObjectField ItemConfigField; //菜单栏配置数据
         private FloatField ScaleField; //生成地图缩放系数
         private EnumField RoomTypeField; //房间类型枚举下拉
+        private FloatField PlaceRotationField;
 
         private MapData mapData;
         private MapEditorItemGroupConfig mapEditorItemGroupConfig;
         private RoomType roomType;
         private float spawnMapScale = 1;
         private Transform generatePoint;
-
+        private float furniturePlaceYRotation;
         private void InitTopMenu()
         {
             EditMapButton = root.Q<Button>(nameof(EditMapButton));
@@ -117,6 +140,9 @@ namespace KidGame.Editor
             RoomTypeField.RegisterValueChangedCallback(RoomTypeFieldValueChanged);
             RoomTypeField.Init(RoomType.Corridor);
             roomType = RoomType.Corridor;
+
+            PlaceRotationField = root.Q<FloatField>(nameof(PlaceRotationField));
+            PlaceRotationField.RegisterValueChangedCallback(PlaceRotationFieldValueChanged);
 
             //默认是房间编辑模式
             OnEditMapButtonClicked();
@@ -196,6 +222,7 @@ namespace KidGame.Editor
                 averageZ /= furniture.mapPosList.Count;
                 GameObject furnitureGO = Instantiate(furniture.furnitureData.furniturePrefab);
                 furnitureGO.transform.position = new Vector3(averageX, 0, -averageZ);
+                furnitureGO.transform.rotation = Quaternion.Euler(0, furniture.rotation, 0);
                 MapFurniture mapFurniture = furnitureGO.GetComponent<MapFurniture>();
                 mapFurniture.SetData(furniture);
                 furnitureGO.transform.SetParent(furnitureRoot.transform);
@@ -272,6 +299,11 @@ namespace KidGame.Editor
         private void RoomTypeFieldValueChanged(ChangeEvent<Enum> evt)
         {
             roomType = (RoomType)evt.newValue;
+        }
+
+        private void PlaceRotationFieldValueChanged(ChangeEvent<float> evt)
+        {
+            furniturePlaceYRotation = evt.newValue;
         }
 
         public void SaveConfig()
@@ -557,8 +589,8 @@ namespace KidGame.Editor
             else if (evt.button == 0)
             {
                 if (curSelectItem == null) return;
-
                 if (mapData == null) return;
+
                 int x = (int)((evt.localMousePosition.x) / mapEditorConfig.curGridUnitLength);
                 int y = (int)((evt.localMousePosition.y) / mapEditorConfig.curGridUnitLength);
                 int mapX = (int)(startOffsetX / mapEditorConfig.curGridUnitLength) + x;
@@ -600,10 +632,12 @@ namespace KidGame.Editor
                     mapFurniture.furnitureData = furnitureData;
                     mapFurniture.mapPosList = new List<GridPos>();
                     mapFurniture.roomType = roomType;
+                    mapFurniture.rotation = furniturePlaceYRotation;
                     foreach (var pos in furnitureData.posList)
                     {
-                        int GridPosX = pos.x + mapX;
-                        int GridPosY = pos.y + mapY;
+                        Vector2 rotatedPos = RotatePosition(pos, furniturePlaceYRotation);
+                        int GridPosX = Mathf.RoundToInt(rotatedPos.x) + mapX;
+                        int GridPosY = Mathf.RoundToInt(rotatedPos.y) + mapY;
                         GridPos mapPos = new GridPos(GridPosX, GridPosY);
                         //家具要摆的位置还没有瓦片 放不了
                         if (mapData.tileList.Find(x => x.mapPos.Equals(mapPos)) == null) return;
@@ -672,6 +706,7 @@ namespace KidGame.Editor
             else if (evt.button == 1)
             {
                 if (mapData == null) return;
+
                 int x = (int)((evt.localMousePosition.x) / mapEditorConfig.curGridUnitLength);
                 int y = (int)((evt.localMousePosition.y) / mapEditorConfig.curGridUnitLength);
                 int mapX = (int)(startOffsetX / mapEditorConfig.curGridUnitLength) + x;
@@ -721,6 +756,19 @@ namespace KidGame.Editor
             WorkContainer.MarkDirtyLayout();
         }
 
+        //计算旋转后的相对位置
+        private Vector2 RotatePosition(GridPos pos, float yRotation)
+        {
+            //将角度转换为弧度
+            float radians = yRotation * Mathf.Deg2Rad;
+
+            //计算旋转后的位置
+            float x = pos.x * Mathf.Cos(radians) - pos.y * Mathf.Sin(radians);
+            float y = pos.x * Mathf.Sin(radians) + pos.y * Mathf.Cos(radians);
+
+            return new Vector2(x, y);
+        }
+
         private void WorkSpaceMouseMove(MouseMoveEvent evt)
         {
             if (mouseCenterDrag)
@@ -764,6 +812,85 @@ namespace KidGame.Editor
         }
 
         #endregion
+
+
+        //#region 撤销(Ctrl+Z)
+        //private void SaveToHistory()
+        //{
+        //    if (mapData == null) return;
+
+        //    // 深拷贝当前地图数据
+        //    MapData copy = new MapData();
+        //    copy.tileList = new List<MapTileData>(mapData.tileList.Select(t => new MapTileData()
+        //    {
+        //        tileData = t.tileData,
+        //        mapPos = t.mapPos,
+        //        roomType = t.roomType
+        //    }));
+
+        //    copy.furnitureList = new List<MapFurnitureData>(mapData.furnitureList.Select(f => new MapFurnitureData()
+        //    {
+        //        furnitureData = f.furnitureData,
+        //        mapPosList = new List<GridPos>(f.mapPosList),
+        //        roomType = f.roomType,
+        //        rotation = f.rotation
+        //    }));
+
+        //    copy.wallList = new List<MapWallData>(mapData.wallList.Select(w => new MapWallData()
+        //    {
+        //        wallData = w.wallData,
+        //        mapPosList = new List<GridPos>(w.mapPosList),
+        //        stackLayer = w.stackLayer
+        //    }));
+
+        //    // 保存到历史记录
+        //    historyStack.Push(copy);
+
+        //    // 限制历史记录数量
+        //    if (historyStack.Count > maxHistorySteps)
+        //    {
+        //        // 移除最旧的历史记录
+        //        var list = historyStack.ToList();
+        //        list.RemoveAt(list.Count - 1);
+        //        historyStack = new Stack<MapData>(list);
+        //    }
+        //}
+
+        //private void Undo()
+        //{
+        //    if (historyStack.Count == 0 || mapData == null) return;
+
+        //    MapData previousState = historyStack.Pop();
+
+        //    // 恢复地图数据
+        //    mapData.tileList = new List<MapTileData>(previousState.tileList.Select(t => new MapTileData()
+        //    {
+        //        tileData = t.tileData,
+        //        mapPos = t.mapPos,
+        //        roomType = t.roomType
+        //    }));
+
+        //    mapData.furnitureList = new List<MapFurnitureData>(previousState.furnitureList.Select(f => new MapFurnitureData()
+        //    {
+        //        furnitureData = f.furnitureData,
+        //        mapPosList = new List<GridPos>(f.mapPosList),
+        //        roomType = f.roomType,
+        //        rotation = f.rotation
+        //    }));
+
+        //    mapData.wallList = new List<MapWallData>(previousState.wallList.Select(w => new MapWallData()
+        //    {
+        //        wallData = w.wallData,
+        //        mapPosList = new List<GridPos>(w.mapPosList),
+        //        stackLayer = w.stackLayer
+        //    }));
+
+        //    SaveConfig();
+        //    UpdateWorkSpaceView();
+        //}
+
+
+        //#endregion
     }
 
     public enum ItemMenuType
