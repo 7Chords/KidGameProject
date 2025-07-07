@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 namespace KidGame.UI.Game
 {
+    
+    
     [RequireComponent(typeof(Button))]
     public class NavigationPanelButton : MonoBehaviour
     {

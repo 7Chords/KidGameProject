@@ -310,7 +310,7 @@ MonoBehaviour:
   animIn: {fileID: 0}
   animOut: {fileID: 0}
   properties:
-    priority: 0
+    priority: 1
   navigationTargets:
   - sprite: {fileID: 21300000, guid: f3631f526401a10479488ceed9fb3f33, type: 3}
     buttonText: "\u80CC\u5305"
@@ -320,7 +320,7 @@ MonoBehaviour:
     targetScreen: MakeWindow
   - sprite: {fileID: 21300000, guid: ff8b2c345452818449c57d99b7cebaff, type: 3}
     buttonText: "\u56FE\u9274"
-    targetScreen: PlayerWindow
+    targetScreen: MakeWindow
   - sprite: {fileID: 21300000, guid: cb2abb7033b73b942bc51434daa6167d, type: 3}
     buttonText: "\u8BBE\u7F6E"
     targetScreen: SettingWindow

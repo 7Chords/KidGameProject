@@ -21,7 +21,6 @@ namespace KidGame.Core
             {
                 GameObject enemy = Instantiate(enemyPrefab);
                 EnemyController enemyCtl = enemy.GetComponent<EnemyController>();
-                enemyCtl.Init(enemyDataList[i]);
                 enemyList.Add(enemyCtl);
                 if (i <= bornPoints.Count - 1)
                 {
@@ -31,6 +30,7 @@ namespace KidGame.Core
                 {
                     enemy.transform.position = bornPoints[i % bornPoints.Count].position;
                 }
+                enemyCtl.Init(enemyDataList[i]);
             }
         }
 

@@ -13,8 +13,9 @@ namespace KidGame.Core
         private bool hasCausedDamage;
         public override void Trigger()
         {
-            Rb.AddForce((interactor.transform.position - transform.position).normalized * 100f,
-                ForceMode.Impulse);
+            Vector3 dir = (interactor.transform.position - transform.position).normalized;
+            dir.y = 0;
+            Rb.AddForce(dir * 100f,ForceMode.Impulse);
             this.OnFixedUpdate(PerformTick);
         }
 
