@@ -35,5 +35,14 @@ namespace KidGame.Core
             }
             _connectTrap = trap;
         }
+
+        public override void Pick()
+        {
+            if(_connectTrap != null)
+            {
+                _connectTrap.SetCatalyst(null);//取消关联陷阱的媒介引用
+            }
+            base.Pick();
+        }
     }
 }
