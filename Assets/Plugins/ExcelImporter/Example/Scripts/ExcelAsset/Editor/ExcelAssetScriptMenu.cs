@@ -63,8 +63,11 @@ public class ExcelAssetScriptMenu : EditorWindow
             CreateScript(relativePath);
         }
         GUILayout.Label("请前往脚本修改字段类型", EditorStyles.boldLabel);
+        GUILayout.Label("                                                       ", EditorStyles.boldLabel);
         GUILayout.Label("1.确保工作表(sheet)名与脚本字段名一致！！！", EditorStyles.boldLabel);
+        GUILayout.Label("                                                       ", EditorStyles.boldLabel);
         GUILayout.Label("2.确保脚本List<Entity> Entity数据类型 与 工作表第一行一致！！！", EditorStyles.boldLabel);
+        GUILayout.Label("                                                       ", EditorStyles.boldLabel);
         GUILayout.Label("----------------------------------------------------------", EditorStyles.boldLabel);
         GUILayout.Label("↓如果so没有正常生成或者更改 请尝试这个按钮↓", EditorStyles.boldLabel);
         if (GUILayout.Button("重新导入这个Excel", GUILayout.Width(222)))
@@ -83,8 +86,10 @@ public class ExcelAssetScriptMenu : EditorWindow
             fontSize = 14,
             normal = { textColor = Color.white }
         });
-        GUILayout.Label("1.So会自动生成在Excel表同目录下", EditorStyles.boldLabel);
+        GUILayout.Label("1.So会自动生成在Assets/Resources/ScriptableObject下", EditorStyles.boldLabel);
+        GUILayout.Label("                                                       ", EditorStyles.boldLabel);
         GUILayout.Label("2.Entity的定义建议都放在该目录下↓↓", EditorStyles.boldLabel);
+        GUILayout.Label("                                                       ", EditorStyles.boldLabel);
         GUILayout.Label("Asset/RefData/Scripts/Entity", EditorStyles.boldLabel);
     }
 

@@ -284,20 +284,17 @@ public class ExcelImporter : AssetPostprocessor
 
     static void ImportExcel(string excelPath, ExcelAssetInfo info)
     {
-        string assetPath = "";
+
         string assetName = info.AssetType.Name + ".asset";
 
-        if (string.IsNullOrEmpty(info.Attribute.AssetPath))
-        {
-            string basePath = Path.GetDirectoryName(excelPath);
-            assetPath = Path.Combine(basePath, assetName);
-        }
-        else
-        {
-            var path = Path.Combine("Assets", info.Attribute.AssetPath);
-            assetPath = Path.Combine(path, assetName);
-        }
+        // 直接强制路径，忽略Attribute中的AssetPath设置
+        string assetPath = Path.Combine("Assets/Resources/ScriptableObject", assetName);
+
+        // 确保目录存在
+        Directory.CreateDirectory(Path.GetDirectoryName(assetPath));
+
         UnityEngine.Object asset = LoadOrCreateAsset(assetPath, info.AssetType);
+
 
         IWorkbook book = LoadBook(excelPath);
 
