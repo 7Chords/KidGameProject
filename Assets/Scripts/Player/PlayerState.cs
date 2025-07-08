@@ -11,5 +11,6 @@ namespace KidGame.Core
         Use,
         Throw,
         Dead,
+        Struggle,
     }
 }

@@ -65,6 +65,12 @@ namespace KidGame.Core
 
         #endregion
 
+        #region 玩家挣扎
+        public float StruggleDemand;
+        public float StruggleAmountOneTime;
+        private float currentStruggle;
+        #endregion
+
 
         protected override void Awake()
         {
@@ -130,6 +136,12 @@ namespace KidGame.Core
                     break;
                 case PlayerState.Throw:
                     stateMachine.ChangeState<PlayerThrowState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Dead:
+                    stateMachine.ChangeState<PlayerDeadState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Struggle:
+                    stateMachine.ChangeState<PlayerStruggleState>((int)playerState, reCurrstate);
                     break;
                 default:
                     break;
@@ -316,13 +328,13 @@ namespace KidGame.Core
             // ui改变
             OnHealthChanged?.Invoke(currentHealth / MaxHealth);
             
-            // 无敌状态
-            isInvulnerable = true;
-            invulnerabilityTimer = 0f;
-            
             if (currentHealth <= 0)
             {
-                Dead();
+                ChangeState(PlayerState.Dead);
+            }
+            else
+            {
+                ChangeState(PlayerState.Struggle);
             }
         }
         
@@ -343,6 +355,19 @@ namespace KidGame.Core
             Destroy(gameObject);
         }
 
+        public void Struggle()
+        {
+            currentStruggle += StruggleAmountOneTime;
+            currentStruggle = Mathf.Clamp(currentStruggle, 0, StruggleDemand);
+            if(currentStruggle == StruggleDemand)
+            {
+                currentStruggle = 0;
+                ChangeState(PlayerState.Idle);
+                // 无敌状态
+                isInvulnerable = true;
+                invulnerabilityTimer = 0f;
+            }
+        }
         #endregion
     }
 }
