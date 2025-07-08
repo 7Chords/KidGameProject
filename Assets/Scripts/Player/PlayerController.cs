@@ -50,6 +50,12 @@ namespace KidGame.Core
 
         #endregion
         
+        #region 玩家挣扎
+        private float struggleDemand = 1f;
+        private float struggleAmountOneTime = 0.1f;
+        private float currentStruggle;
+        #endregion
+        
         #region 玩家生命值
 
         private float currentHealth;
@@ -101,7 +107,6 @@ namespace KidGame.Core
         {
             UpdateStamina();
         }
-
 
         public void Init()
         {
@@ -163,6 +168,12 @@ namespace KidGame.Core
                     break;
                 case PlayerState.Throw:
                     stateMachine.ChangeState<PlayerThrowState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Dead:
+                    stateMachine.ChangeState<PlayerDeadState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Struggle:
+                    stateMachine.ChangeState<PlayerStruggleState>((int)playerState, reCurrstate);
                     break;
                 default:
                     break;
@@ -341,7 +352,6 @@ namespace KidGame.Core
             currentHealth -= damageInfo.damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
             
-            
             if (damagePartical != null) damagePartical.Play();
             if (randomDamgeSfxList != null && randomDamgeSfxList.Count > 0)
             {
@@ -351,14 +361,30 @@ namespace KidGame.Core
             // ui改变
             OnHealthChanged?.Invoke(currentHealth / MaxHealth);
             
-            // 无敌状态
-            isInvulnerable = true;
-            invulnerabilityTimer = 0f;
-            
             if (currentHealth <= 0)
             {
-                Dead();
+                ChangeState(PlayerState.Dead);
             }
+            else
+            {
+                ChangeState(PlayerState.Struggle);
+            }
+        }
+
+        public void Struggle()
+        {
+            currentStruggle += struggleAmountOneTime;
+            currentStruggle = Mathf.Clamp(currentStruggle, 0, struggleDemand);
+            
+            if (currentStruggle >= struggleDemand)
+            {
+                currentStruggle = 0;
+                ChangeState(PlayerState.Idle);
+                // 无敌状态
+                isInvulnerable = false;
+                invulnerabilityTimer = 0f;
+            }
+            isInvulnerable = true;
         }
         
         /// <summary>
