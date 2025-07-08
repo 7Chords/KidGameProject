@@ -1,6 +1,7 @@
 ﻿using KidGame.Interface;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 namespace KidGame.Core
 {
@@ -22,37 +23,34 @@ namespace KidGame.Core
         [SerializeField] private ParticleSystem damagePartical;
 
         #endregion
+
+        #region 组件
         
         public ParticleSystem DamagePartical
         {
             get => damagePartical;
             set { damagePartical = value; }
         }
-
+        
         private InputSettings inputSettings;
         public InputSettings InputSettings => inputSettings;
 
         private Rigidbody rb;
         public Rigidbody Rb => rb;
-
-
+        
         public PlayerAnimator PlayerAnimator;
+        public PlayerBaseData PlayerBaseData;        
 
-        public PlayerBaseData PlayerBaseData;
-
-        public Transform ModelTransform;
+        #endregion
+        
+        #region 状态机
 
         private StateMachine stateMachine;
-        private PlayerState playerState; // 玩家的当前状态
+        private PlayerState playerState; // 玩家的当前状态        
 
-        private BuffHandler playerBuffHandler;
-
-        //key:可交互 value:和玩家距离
-        private Dictionary<IInteractive, float> interactiveDict;
-        //key:可回收 value:和玩家距离
-        private Dictionary<IPickable, float> pickableDict;
-
-        #region 玩家体力值
+        #endregion
+        
+        #region 玩家生命值
 
         private float currentHealth;
         private bool isInvulnerable = false;
@@ -64,7 +62,30 @@ namespace KidGame.Core
         public event System.Action OnPlayerDeath;
 
         #endregion
+        
+        #region 玩家体力值
 
+        private float currentStamina = 100f;
+        private float maxStamina = 100f;
+        private bool isExhausted = false;
+        private bool isRecovering = false;
+        
+        // 体力恢复速率
+        private float staminaRecoverRate = 2f;
+        private float recoverThreshold = 0.25f;
+        
+        public event System.Action<float> OnStaminaChanged;
+
+        #endregion
+        
+        private BuffHandler playerBuffHandler;
+
+        //key:可交互 value:和玩家距离
+        private Dictionary<IInteractive, float> interactiveDict;
+        //key:可回收 value:和玩家距离
+        private Dictionary<IPickable, float> pickableDict;
+
+        #region 生命周期
 
         protected override void Awake()
         {
@@ -73,7 +94,14 @@ namespace KidGame.Core
 
             rb = GetComponent<Rigidbody>();
             currentHealth = PlayerBaseData.Hp;
+            currentStamina = maxStamina;
         }
+        
+        private void Update()
+        {
+            UpdateStamina();
+        }
+
 
         public void Init()
         {
@@ -98,8 +126,10 @@ namespace KidGame.Core
             stateMachine.ObjectPushPool();
             playerBuffHandler.Discard();
             UnregActions();
-        }
+        }        
 
+        #endregion
+        
         /// <summary>
         /// 玩家旋转 TODO:优化？
         /// </summary>
@@ -108,11 +138,14 @@ namespace KidGame.Core
             transform.rotation = Quaternion.LookRotation(dir);
         }
 
-        /// <summary>
-        /// 修改状态
-        /// </summary>
         public void ChangeState(PlayerState playerState, bool reCurrstate = false)
         {
+            // 如果处于体力耗尽状态只能进入Idle状态
+            if (isExhausted && (playerState == PlayerState.Move || playerState == PlayerState.Dash))
+            {
+                playerState = PlayerState.Idle;
+            }
+            
             this.playerState = playerState;
             switch (playerState)
             {
@@ -135,7 +168,6 @@ namespace KidGame.Core
                     break;
             }
         }
-
         /// <summary>
         /// 播放动画
         /// </summary>
@@ -175,7 +207,7 @@ namespace KidGame.Core
 
         public void GamePause()
         {
-            
+            Signals.Get<GamePauseSignal>().Dispatch();
         }
 
         /// <summary>
@@ -294,7 +326,10 @@ namespace KidGame.Core
             return closestIPickable;
         }
 
+        #endregion
 
+        #region 体力与生命
+        
         /// <summary>
         /// 受伤
         /// </summary>
@@ -342,7 +377,66 @@ namespace KidGame.Core
             //TODO:临时测试
             Destroy(gameObject);
         }
+        
+        private void UpdateStamina()
+        {
+            if (isRecovering)
+            {
+                // 恢复体力
+                currentStamina += staminaRecoverRate * Time.deltaTime;
+                currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+                OnStaminaChanged?.Invoke(currentStamina / maxStamina);
+                
+                // 检查是否恢复足够
+                if (currentStamina >= maxStamina * recoverThreshold)
+                {
+                    isExhausted = false;
+                }
 
+                if (currentStamina >= maxStamina)
+                {
+                    currentHealth = maxStamina;
+                    isRecovering = false;
+                }
+            }
+            
+            if (isInvulnerable)
+            {
+                invulnerabilityTimer += Time.deltaTime;
+                if (invulnerabilityTimer >= 1f)
+                {
+                    isInvulnerable = false;
+                }
+            }
+        }
+        
+        public bool ConsumeStamina(float amount)
+        {
+            if (isExhausted) return false;
+            
+            currentStamina -= amount;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+            OnStaminaChanged?.Invoke(currentStamina / maxStamina);
+            
+            if (currentStamina <= 0)
+            {
+                currentStamina = 0;
+                return false;
+            }
+
+            if (currentStamina <= maxStamina * recoverThreshold)
+            {
+                isExhausted = true;
+            }
+
+            if (currentStamina <= maxStamina)
+            {
+                isRecovering = true;
+            }
+            
+            return true;
+        }
+        
         #endregion
     }
 }

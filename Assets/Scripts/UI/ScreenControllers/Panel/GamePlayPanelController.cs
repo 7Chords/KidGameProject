@@ -4,6 +4,7 @@ using KidGame.UI;
 using UnityEngine;
 using Utils;
 using KidGame.Core;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GamePauseSignal : ASignal
@@ -12,38 +13,45 @@ public class GamePauseSignal : ASignal
 
 public class GamePlayPanelController : MonoBehaviour
 {
-    [SerializeField] private ProgressBar progressBar;
+    [SerializeField] private ProgressBar energyProgressBar;
     [SerializeField] private ClockProgressBar clockBar;
-    
-    [SerializeField] private Transform trapHudContainer; // 用于放置陷阱图标的容器
-    [SerializeField] private GameObject trapIconPrefab; // 单个陷阱图标的预制体
-    [SerializeField] private int maxTrapSlots = 4; // 最大陷阱槽位数量
 
-    private List<TrapHudIcon> currentTrapIcons = new List<TrapHudIcon>(); // 当前显示的陷阱图标
-    private int selectedTrapIndex = 0; // 当前选中的陷阱索引
+    #region 生命值变量
+
+    [SerializeField] private Transform healthHudContainer;
+    [SerializeField] private GameObject healthIconPrefab;
+    [SerializeField] private GameObject lostHealthIconPrefab; // New prefab for lost health
+    [SerializeField] private int maxhealthSlots;
+    
+    private List<GameObject> healthIcons = new List<GameObject>();
+
+    #endregion
+    
+    #region 陷阱变量
+
+    [SerializeField] private Transform trapHudContainer;
+    [SerializeField] private GameObject trapIconPrefab;
+    [SerializeField] private int maxTrapSlots = 4;
+
+    private List<TrapHudIcon> currentTrapIcons = new List<TrapHudIcon>();
+    private int selectedTrapIndex = 0;
+
+    #endregion
 
     private void Start()
     {
         RegisterEvents();
-        
+        InitializeHealthHud();
         UpdateTrapHud();
     }
     
-    // 添加快捷键切换陷阱
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Signals.Get<GamePauseSignal>().Dispatch();
-        }
-        
-        // 数字键切换陷阱
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectTrap(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectTrap(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SelectTrap(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) SelectTrap(3);
         
-        // 滚轮切换陷阱
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0)
         {
@@ -63,13 +71,14 @@ public class GamePlayPanelController : MonoBehaviour
         UnregisterAllEvents();
     }
 
-    #region 事件管理
+    #region 注册事件
 
     private void RegisterEvents()
     {
         if (PlayerController.Instance != null)
         {
             PlayerController.Instance.OnHealthChanged += UpdateHealthBar;
+            PlayerController.Instance.OnStaminaChanged += UpdateStaminaBar; // 新增体力变化事件监听
         }
         
         if (GameLevelManager.Instance != null)
@@ -85,6 +94,7 @@ public class GamePlayPanelController : MonoBehaviour
         if (PlayerController.Instance != null)
         {
             PlayerController.Instance.OnHealthChanged -= UpdateHealthBar;
+            PlayerController.Instance.OnStaminaChanged -= UpdateStaminaBar; // 移除体力变化事件监听
         }
         
         if (GameLevelManager.Instance != null)
@@ -99,7 +109,86 @@ public class GamePlayPanelController : MonoBehaviour
     }
 
     #endregion
-    
+
+    #region 生命UI
+
+    private void InitializeHealthHud()
+    {
+        foreach (var icon in healthIcons)
+        {
+            Destroy(icon);
+        }
+        healthIcons.Clear();
+        
+        for (int i = 0; i < maxhealthSlots; i++)
+        {
+            var icon = Instantiate(healthIconPrefab, healthHudContainer);
+            healthIcons.Add(icon);
+        }
+    }
+
+    private void UpdateHealthBar(float healthPercentage)
+    {
+        if (healthHudContainer == null || healthIconPrefab == null || lostHealthIconPrefab == null) 
+            return;
+
+        float maxHealth = PlayerController.Instance.MaxHealth;
+        int currentHealth = Mathf.RoundToInt(maxHealth * healthPercentage);
+
+        while (healthIcons.Count < maxHealth)
+        {
+            var icon = Instantiate(healthIconPrefab, healthHudContainer);
+            healthIcons.Add(icon);
+        }
+
+        while (healthIcons.Count > maxHealth)
+        {
+            var lastIndex = healthIcons.Count - 1;
+            Destroy(healthIcons[lastIndex]);
+            healthIcons.RemoveAt(lastIndex);
+        }
+        
+        for (int i = 0; i < healthIcons.Count; i++)
+        {
+            if (i < currentHealth)
+            {
+                if (healthIcons[i].gameObject != healthIconPrefab)
+                {
+                    Destroy(healthIcons[i]);
+                    healthIcons[i] = Instantiate(healthIconPrefab, healthHudContainer);
+                }
+            }
+            else
+            {
+                if (healthIcons[i].gameObject != lostHealthIconPrefab)
+                {
+                    Destroy(healthIcons[i]);
+                    healthIcons[i] = Instantiate(lostHealthIconPrefab, healthHudContainer);
+                }
+            }
+        }
+    }
+
+    #endregion
+
+    #region 体力UI
+
+    /// <summary>
+    /// 更新体力进度条显示
+    /// </summary>
+    /// <param name="staminaPercentage">当前体力百分比</param>
+    private void UpdateStaminaBar(float staminaPercentage)
+    {
+        if (energyProgressBar != null)
+        {
+            energyProgressBar.SetProgress(staminaPercentage);
+        }
+    }
+
+    #endregion
+
+    #region 选择陷阱
+
     private void UpdateTrapHud()
     {
         foreach (var icon in currentTrapIcons)
@@ -110,7 +199,6 @@ public class GamePlayPanelController : MonoBehaviour
         
         var traps = PlayerBag.Instance.GetTrapSlots();
     
-        // 创建新图标
         for (int i = 0; i < Mathf.Min(traps.Count, maxTrapSlots); i++)
         {
             var iconObj = Instantiate(trapIconPrefab, trapHudContainer);
@@ -134,16 +222,10 @@ public class GamePlayPanelController : MonoBehaviour
     
         selectedTrapIndex = index;
         PlayerBag.Instance.SelectedTrapIndex = index;
-    }
-    
-    private void UpdateHealthBar(float healthPercentage)
-    {
-        if (progressBar != null)
-        {
-            progressBar.SetProgress(healthPercentage);
-        }
-    }
+    }    
 
+    #endregion
+    
     private void UpdateTimeClock(GameLevelManager.LevelPhase phase, float timePercentage)
     {
         if (clockBar != null)

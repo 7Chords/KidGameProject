@@ -10,9 +10,8 @@ namespace KidGame.Core
         {
             player.PlayAnimation("Dash");
             player.Rb.AddForce(player.transform.forward * 5f, ForceMode.Impulse);
-
+            // todo.ÏûºÄÌåÁ¦
+            player.ConsumeStamina(10f);
         }
-
-
     }
 }

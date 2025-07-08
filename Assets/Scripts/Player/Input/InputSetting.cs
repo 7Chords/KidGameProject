@@ -93,6 +93,8 @@ namespace KidGame.Core
         public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
         public virtual bool GetPickDown() => pickAction.WasPerformedThisFrame();
         public virtual bool GetGamePauseDown() => gamePauseAction.WasPerformedThisFrame();
+        //只要按了任意的一个移动键，就算是按了一次挣扎
+        public virtual bool GetStruggleDown() => moveAction.WasPressedThisFrame();
 
         #region Input Action Callbacks
 
