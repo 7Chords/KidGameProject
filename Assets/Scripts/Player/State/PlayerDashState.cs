@@ -9,7 +9,7 @@ namespace KidGame.Core
         public override void Enter()
         {
             player.PlayAnimation("Dash");
-            player.Rb.AddForce(player.transform.forward * 5f, ForceMode.Impulse);
+            player.Rb.AddForce(player.transform.forward * 10f, ForceMode.Impulse);
             // todo.ÏûºÄÌåÁ¦
             player.ConsumeStamina(10f);
         }
