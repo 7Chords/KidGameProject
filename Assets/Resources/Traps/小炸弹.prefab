@@ -239,17 +239,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c834171996cfd7449ddd59b50495d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomPickSfxList:
+  - pick_item
+  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   randomInteractSfxList:
   - interact_trap
   interactPartical: {fileID: 4938095755617958529, guid: ab30b913ef5cc47a1998140ca4726403,
     type: 3}
-  randomPickSfxList:
-  - pick_item
-  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
   ReadyIndicator: {fileID: 6937437612414161385}
-  damage: 1
+  damage: 10
   force: 7
   damageArea: 1
   buffData: {fileID: 11400000, guid: 8ca0db8cd28c1194f81b6b508c9412bc, type: 2}

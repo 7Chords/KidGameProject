@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyId: 
   EnemyName: ghost
-  MaxSanity: 100
+  MaxSanity: 1
   MoveSpeed: 2
   ChaseSpeed: 3
   Resistance: 0.5

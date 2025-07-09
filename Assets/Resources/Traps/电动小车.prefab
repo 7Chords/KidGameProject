@@ -222,17 +222,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28817c6bdbb9d904fba882bceae1be17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomInteractSfxList: []
-  interactPartical: {fileID: 0}
   randomPickSfxList: []
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  randomInteractSfxList: []
+  interactPartical: {fileID: 0}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
   ReadyIndicator: {fileID: 425567510535111511}
   Power: 5
   PowerCostPerSecond: 1
   Speed: 5
-  Damage: 1
+  Damage: 10
   HalfDamageArea: {x: 1, y: 1, z: 1.5}
   Buff: {fileID: 0}
 --- !u!1 &2733098285984356051

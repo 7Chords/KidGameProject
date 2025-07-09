@@ -55,6 +55,7 @@ namespace KidGame.Core
         public Color SeePlayerColor;
 
         private float curSanity;
+        public bool IsDizzying;
 
         #region 有目的搜索
 
@@ -238,7 +239,56 @@ namespace KidGame.Core
         #endregion
 
         #region 受击
+        public void TakeDamage(DamageInfo damageInfo)
+        {
+            // 现有伤害处理逻辑...
+            curSanity = Mathf.Clamp(curSanity - damageInfo.damage, 0, enemyBaseData.MaxSanity);
+            enemyBuffHandler.AddBuff(damageInfo.buffInfo);
 
+            // 检查被击中时触发的技能
+            foreach (var skillInstance in _activeSkillInstances)
+            {
+                var skillSO = skillInstance.skillSO;
+                if (skillSO.triggerCondition == SkillTriggerCondition.OnHit &&
+                    skillInstance.currentCooldown <= 0)
+                {
+                    TryTriggerSkill(skillSO);
+                }
+            }
+
+            // 检查低血量触发的技能
+            if (_currentHealth / enemyBaseData.MaxSanity <= 0.3f)
+            {
+                foreach (var skillInstance in _activeSkillInstances)
+                {
+                    var skillSO = skillInstance.skillSO;
+                    if (skillSO.triggerCondition == SkillTriggerCondition.OnLowHealth &&
+                        skillInstance.currentCooldown <= 0)
+                    {
+                        TryTriggerSkill(skillSO);
+                    }
+                }
+            }
+
+            //是否进入眩晕状态
+            if(curSanity == 0)
+            {
+                SetDizzyState(true);
+            }
+        }
+
+        public void SetDizzyState(bool newState)
+        {
+            IsDizzying = newState;
+            if(!IsDizzying)
+            {
+                curSanity = enemyBaseData.MaxSanity;
+            }
+        }
+        public bool CheckDizzyState()
+        {
+            return IsDizzying;
+        }
         public void Stun(float duration)
         {
             StartCoroutine(StunRoutine(duration));
@@ -345,38 +395,6 @@ namespace KidGame.Core
             {
                 yield return new WaitForSeconds(skillSO.timerInterval);
                 TryTriggerSkill(skillSO);
-            }
-        }
-
-        public void TakeDamage(DamageInfo damageInfo)
-        {
-            // 现有伤害处理逻辑...
-            curSanity = Mathf.Clamp(curSanity - damageInfo.damage, 0, enemyBaseData.MaxSanity);
-            enemyBuffHandler.AddBuff(damageInfo.buffInfo);
-
-            // 检查被击中时触发的技能
-            foreach (var skillInstance in _activeSkillInstances)
-            {
-                var skillSO = skillInstance.skillSO;
-                if (skillSO.triggerCondition == SkillTriggerCondition.OnHit &&
-                    skillInstance.currentCooldown <= 0)
-                {
-                    TryTriggerSkill(skillSO);
-                }
-            }
-
-            // 检查低血量触发的技能
-            if (_currentHealth / enemyBaseData.MaxSanity <= 0.3f)
-            {
-                foreach (var skillInstance in _activeSkillInstances)
-                {
-                    var skillSO = skillInstance.skillSO;
-                    if (skillSO.triggerCondition == SkillTriggerCondition.OnLowHealth &&
-                        skillInstance.currentCooldown <= 0)
-                    {
-                        TryTriggerSkill(skillSO);
-                    }
-                }
             }
         }
 
@@ -494,7 +512,14 @@ namespace KidGame.Core
         {
             VisionIndicatorRenderer.material.SetColor("_Color", seePlayer ? SeePlayerColor : NoSeePlayerColor);
         }
-
+        public void StopNav()
+        {
+            agent.isStopped = true;
+        }
+        public void StartNav()
+        {
+            agent.isStopped = false;
+        }
         #region Gizoms
 
 
