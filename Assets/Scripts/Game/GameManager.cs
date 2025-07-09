@@ -30,6 +30,8 @@ namespace KidGame.Core
         //test public
         public MapData mapData;
 
+        public bool TestMode;//启动后在该场景就可以直接启动游戏运行（临时生成一些需要开始场景带来的东西）
+
         //Start调用保证各个单例完成初始化
         private void Start()
         {

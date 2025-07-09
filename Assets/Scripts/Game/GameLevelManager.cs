@@ -102,9 +102,9 @@ namespace KidGame.Core
         // 初始第一关
         public void InitFirstLevel()
         {
-            _currentDay = 1; // 从第一天开始
+            _currentDay = 1;
             LevelResManager.Instance.InitLevelRes(_levelDataList[0].levelResData);
-            StartDayPhase(); // 开始第一天的白天
+            StartDayPhase();
         }
 
         // 初始化下一关卡，在这里保存进度，供玩家读档
@@ -113,9 +113,10 @@ namespace KidGame.Core
             levelIndex++;
             if (levelIndex >= _levelDataList.Count)
             {
-                levelIndex = 0; // 循环关卡或者你可以结束游戏
+                levelIndex = 0;
             }
             
+            PlayerSaveData.Instance.Save(1);
             LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].levelResData);
         }
 
@@ -146,9 +147,7 @@ namespace KidGame.Core
                 GameManager.Instance.FinishGame();
                 return;
             }
-
-            Debug.Log($"第 {_currentDay} 天开始");
-            
+  
             _currentPhase = LevelPhase.Day;
             _phaseDuration = dayDuration;
             _phaseTimer = dayDuration;
@@ -162,12 +161,8 @@ namespace KidGame.Core
 
         public void StartNightPhase()
         {
-            Debug.Log($"第 {_currentDay} 天夜晚开始");
-            
-            // 生成敌人
             EnemyManager.Instance.InitEnemy(_levelDataList[levelIndex].enemyDataList, bornPointList);
             
-            // 更新状态
             _currentPhase = LevelPhase.Night;
             _phaseDuration = nightDuration;
             _phaseTimer = nightDuration;
@@ -176,8 +171,6 @@ namespace KidGame.Core
 
         public void EndNightPhase()
         {
-            Debug.Log($"第 {_currentDay} 天结束");
-            
             _levelFinished = true;
             _currentPhase = LevelPhase.End;
             _timerRunning = false;

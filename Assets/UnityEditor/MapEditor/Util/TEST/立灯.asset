@@ -19,3 +19,4 @@ MonoBehaviour:
     y: 0
   furniturePrefab: {fileID: 3774746722516518128, guid: 616cdade2fddb2845a73c771237dcfc9,
     type: 3}
+  canInteract: 1

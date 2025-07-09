@@ -1,4 +1,5 @@
-﻿using KidGame.Interface;
+﻿using System.Collections;
+using KidGame.Interface;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
@@ -52,15 +53,15 @@ namespace KidGame.Core
         
         #region 玩家挣扎
         private float struggleDemand = 1f;
-        private float struggleAmountOneTime = 0.1f;
-        private float currentStruggle;
+        private float struggleAmountOneTime = 10f;
+        private float currentStruggle = 0f;
+        private float struggleInvulnerabilityDuration = 1f; // 挣扎后的无敌时间
         #endregion
         
         #region 玩家生命值
 
         private float currentHealth;
         private bool isInvulnerable = false;
-        private float invulnerabilityTimer = 1f;
         public float CurrentHealth => currentHealth;
         public float MaxHealth => PlayerBaseData.Hp;
 
@@ -216,8 +217,9 @@ namespace KidGame.Core
         
         #region 功能
 
-        public void GamePause()
+        private void GamePause()
         {
+            Debug.Log("Game Pause");
             Signals.Get<GamePauseSignal>().Dispatch();
         }
 
@@ -344,47 +346,54 @@ namespace KidGame.Core
         /// <summary>
         /// 受伤
         /// </summary>
-        /// <param name="damageInfo"></param>
         public void TakeDamage(DamageInfo damageInfo)
         {
             if (isInvulnerable) return;
-            
+    
             currentHealth -= damageInfo.damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
             
-            if (damagePartical != null) damagePartical.Play();
-            if (randomDamgeSfxList != null && randomDamgeSfxList.Count > 0)
-            {
-                // 播放特效
-            }
-            
-            // ui改变
             OnHealthChanged?.Invoke(currentHealth / MaxHealth);
-            
+    
             if (currentHealth <= 0)
             {
                 ChangeState(PlayerState.Dead);
             }
             else
             {
-                ChangeState(PlayerState.Struggle);
+                StartStruggle();
             }
+        }
+
+        private void StartStruggle()
+        {
+            ChangeState(PlayerState.Struggle);
+            isInvulnerable = true;
+            currentStruggle = 0f;
         }
 
         public void Struggle()
         {
-            currentStruggle += struggleAmountOneTime;
-            currentStruggle = Mathf.Clamp(currentStruggle, 0, struggleDemand);
-            
+           currentStruggle += Time.deltaTime * struggleAmountOneTime;
+           Debug.Log(currentStruggle);
+           
+            // 挣扎完成
             if (currentStruggle >= struggleDemand)
             {
-                currentStruggle = 0;
-                ChangeState(PlayerState.Idle);
-                // 无敌状态
-                isInvulnerable = false;
-                invulnerabilityTimer = 0f;
+                EndStruggle();
             }
-            isInvulnerable = true;
+        }
+
+        private void EndStruggle()
+        {
+            ChangeState(PlayerState.Idle);
+            StartCoroutine(EndInvulnerabilityAfterTime(struggleInvulnerabilityDuration));
+        }
+
+        private IEnumerator EndInvulnerabilityAfterTime(float time)
+        {
+            yield return new WaitForSeconds(time);
+            isInvulnerable = false;
         }
         
         /// <summary>
@@ -400,7 +409,7 @@ namespace KidGame.Core
 
         public void Dead()
         {
-            //TODO:临时测试
+            //TODO:临时测试，可以加上游戏结束UI
             Destroy(gameObject);
         }
         
@@ -423,15 +432,6 @@ namespace KidGame.Core
                 {
                     currentHealth = maxStamina;
                     isRecovering = false;
-                }
-            }
-            
-            if (isInvulnerable)
-            {
-                invulnerabilityTimer += Time.deltaTime;
-                if (invulnerabilityTimer >= 1f)
-                {
-                    isInvulnerable = false;
                 }
             }
         }

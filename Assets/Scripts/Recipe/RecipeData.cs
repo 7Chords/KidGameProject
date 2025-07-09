@@ -12,16 +12,17 @@ namespace KidGame.Core
         Equip,
         Mix,
     }
-    
+
     [CreateAssetMenu(fileName = "RecipeData", menuName = "KidGameSO/Interactive/RecipeData")]
     public class RecipeData : ScriptableObject
     {
+        public bool isUnlocked = false;
+        
         public TrapData trapData;
+
         //之后放其他类型数据
         public RecipeType recipeType;
-        
+
         public List<MaterialSlotInfo> materialDatas;
-        
-        
     }
 }

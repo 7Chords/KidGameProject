@@ -12,7 +12,6 @@ namespace KidGame.Core
         public MaterialData materialData;
         public int randomAmount_min;
         public int randomAmount_max;
-
     }
 
     [Serializable]
@@ -32,12 +31,10 @@ namespace KidGame.Core
     }
 
 
-
     [CreateAssetMenu(fileName = "LevelResData", menuName = "KidGameSO/Game/LevelResData")]
     public class LevelResData : ScriptableObject
     {
         public List<Furniture2MaterialMapping> f2MMappingList;
         public List<Room2MaterialMapping> r2MMappingList;
-
     }
 }

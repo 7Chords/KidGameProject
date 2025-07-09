@@ -41,7 +41,22 @@ namespace KidGame.UI
         }
     }
 
+    /// <summary>
+    /// 提示信息类
+    /// </summary>
+    public class TipInfo
+    {
+        public string content;
+        public GameObject creator;
+        public float showTime; // 显示时长
 
+        public TipInfo(string content, GameObject creator, float showTime = 0.75f)
+        {
+            this.content = content;
+            this.creator = creator;
+            this.showTime = showTime;
+        }
+    }
 
     /// <summary>
     /// 管理一些小的独立的小UI
@@ -53,7 +68,12 @@ namespace KidGame.UI
         private BubbleInfo currentBubbleInfo;
         public List<BubbleInfo> bubbleInfoList;
 
+
+        // 提示相关字段
         public GameObject TipPrefab;
+        private Queue<TipInfo> tipQueue = new Queue<TipInfo>();
+        private bool isShowingTip = false;
+        private Coroutine showTipCoroutine;
         private void Start()
         {
             Init();
@@ -141,11 +161,66 @@ namespace KidGame.UI
         #endregion
 
         #region Tip
-        public void ShowTip(string content,GameObject creator)
+
+        /// <summary>
+        /// 添加提示到队列
+        /// </summary>
+        /// <param name="content">提示内容</param>
+        /// <param name="creator">创建者</param>
+        /// <param name="showTime">显示时长</param>
+        public void ShowTipByQueue(TipInfo info,float intervalTime = 0.5f)
+        {
+            tipQueue.Enqueue(info);
+
+            // 如果没有正在显示的提示，立即开始显示
+            if (!isShowingTip && showTipCoroutine == null)
+            {
+                showTipCoroutine = StartCoroutine(ProcessTipQueue(intervalTime));
+            }
+        }
+
+        /// <summary>
+        /// 处理提示队列的协程
+        /// </summary>
+        private IEnumerator ProcessTipQueue(float intervalTime)
+        {
+            isShowingTip = true;
+
+            while (tipQueue.Count > 0)
+            {
+                TipInfo tipInfo = tipQueue.Dequeue();
+                ShowTipImmediate(tipInfo);
+                // 如果不是最后一个提示，等待间隔时间
+                yield return new WaitForSeconds(intervalTime);
+            }
+
+            isShowingTip = false;
+            showTipCoroutine = null;
+        }
+
+
+        public void ShowTipImmediate(TipInfo tipInfo)
         {
             GameObject tipGO = Instantiate(TipPrefab);
             tipGO.transform.SetParent(transform);
-            tipGO.GetComponent<UITipItem>().Init(creator, content);
+            tipGO.GetComponent<UITipItem>().Init(tipInfo.creator, tipInfo.content);
+            Destroy(tipGO, tipInfo.showTime);
+        }
+
+        /// <summary>
+        /// 清空提示队列
+        /// </summary>
+        public void ClearTipQueue()
+        {
+            tipQueue.Clear();
+
+            if (showTipCoroutine != null)
+            {
+                StopCoroutine(showTipCoroutine);
+                showTipCoroutine = null;
+            }
+
+            isShowingTip = false;
         }
         #endregion
 

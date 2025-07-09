@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using KidGame.Core;
-using KidGame.UI;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
@@ -11,47 +8,47 @@ namespace KidGame.UI
 {
     public class ShowRecipeSignal : ASignal<RecipeData>
     {
-        
     }
+
     public class MakeWindowController : WindowController
     {
         public UICircularScrollView firstSelection;
         public UICircularScrollView secondSelection;
         public UICircularScrollView materialScrollView;
-        
+
         public RecipeListData recipes;
         private List<RecipeData> trapRecipes = new List<RecipeData>();
         private List<RecipeData> equipRecipes = new List<RecipeData>();
         private Dictionary<int, List<RecipeData>> recipesDictionary = new Dictionary<int, List<RecipeData>>();
         private string[] names = new[] { "陷阱", "手持道具" };
-        
+
         public Image recipeImage;
         public TextMeshProUGUI recipeNameText;
         public TextMeshProUGUI recipeDescriptionText;
-        
+
         private List<MakeMenuButton> makeMenuButtons = new List<MakeMenuButton>();
-        
+
         protected override void Awake()
         {
             base.Awake();
-            
+
             Signals.Get<ShowRecipeSignal>().AddListener(ShowRecipe);
         }
 
         protected override void OnPropertiesSet()
         {
             recipeImage = transform.Find("Right/Icon").GetComponent<Image>();
-            
+
             //根据so初始化列表和其中按钮即可
             //scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count,OnCellUpdate,null);
-            
-            //todo获取最新数据
-            
+
+            //todo.获取最新数据
+
             SetRecipeList();
             firstSelection.Init(2, (cell, index) =>
             {
                 MakeMenuButton button = cell.GetComponent<MakeMenuButton>();
-                button.InitFirstSelect(secondSelection,names[index-1],recipesDictionary[index-1]);
+                button.InitFirstSelect(secondSelection, names[index - 1], recipesDictionary[index - 1]);
                 makeMenuButtons.Add(button);
             });
             makeMenuButtons[0].InitSecondSelect();
@@ -73,13 +70,15 @@ namespace KidGame.UI
                 if (recipe.recipeType == RecipeType.Trap)
                 {
                     trapRecipes.Add(recipe);
-                }else if (recipe.recipeType == RecipeType.Equip)
+                }
+                else if (recipe.recipeType == RecipeType.Equip)
                 {
                     equipRecipes.Add(recipe);
                 }
             }
-            recipesDictionary.Add(0,trapRecipes);
-            recipesDictionary.Add(1,equipRecipes);
+
+            recipesDictionary.Add(0, trapRecipes);
+            recipesDictionary.Add(1, equipRecipes);
         }
 
         private void ShowRecipe(RecipeData recipe)
@@ -88,9 +87,9 @@ namespace KidGame.UI
             if (recipe.recipeType == RecipeType.Trap)
                 recipeImage.sprite = recipe.trapData.trapIcon;
             else if (recipe.recipeType == RecipeType.Equip)
-                recipeImage.sprite = recipe.trapData.trapIcon;//todo
+                recipeImage.sprite = recipe.trapData.trapIcon; //todo
             recipeDescriptionText.text = recipe.trapData.trapDesc;
-            
+
             materialScrollView.Init(recipe.materialDatas.Count, (cell, index) =>
             {
                 CellUI cellUI = cell.GetComponent<CellUI>();
@@ -98,10 +97,7 @@ namespace KidGame.UI
                 {
                     cellUI.SetUIWithMaterial(recipe.materialDatas[index - 1]);
                 }
-               
             });
-            
         }
-        
     }
 }

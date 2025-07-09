@@ -88,6 +88,8 @@ GameObject:
   - component: {fileID: 5924150215548257719}
   - component: {fileID: 4705433561442730310}
   - component: {fileID: 2582112438795701029}
+  - component: {fileID: 7665579515782505893}
+  - component: {fileID: 816110792392101566}
   m_Layer: 5
   m_Name: ToastPanel
   m_TagString: Untagged
@@ -135,14 +137,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8605f786ebb9fa438c790fd56239290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animIn: {fileID: 0}
-  animOut: {fileID: 0}
+  animIn: {fileID: 7665579515782505893}
+  animOut: {fileID: 816110792392101566}
   properties:
     priority: 1
   toastRect: {fileID: 795429926949686570}
   toastDuration: 0.5
   toastPause: 3
   toastEase: 12
+--- !u!114 &7665579515782505893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2198531993298414313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f0ffd164e4450f439d7c219e6c88ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origin: 2
+  isOutAnimation: 0
+  duration: 0.5
+  doFade: 0
+  fadeDurationPercent: 0.5
+  ease: 30
+--- !u!114 &816110792392101566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2198531993298414313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f0ffd164e4450f439d7c219e6c88ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origin: 2
+  isOutAnimation: 1
+  duration: 0.5
+  doFade: 0
+  fadeDurationPercent: 0.5
+  ease: 30
 --- !u!1 &3826402163125325674
 GameObject:
   m_ObjectHideFlags: 0

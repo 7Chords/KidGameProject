@@ -398,16 +398,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139230c87ae4b8d4c8832b9974bd596a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomInteractSfxList:
-  - interact_trap
-  interactPartical: {fileID: 0}
   randomPickSfxList:
   - pick_item
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  randomInteractSfxList:
+  - interact_trap
+  interactPartical: {fileID: 0}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
   ReadyIndicator: {fileID: 1717664544680109426}
-  Damage: 1
+  Damage: 10
   HalfDamageArea: {x: 0.9, y: 0.9, z: 0.9}
   Buff: {fileID: 0}
 --- !u!208 &6590951284150574801

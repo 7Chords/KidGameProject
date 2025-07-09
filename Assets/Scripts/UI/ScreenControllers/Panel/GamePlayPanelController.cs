@@ -7,10 +7,6 @@ using KidGame.Core;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class GamePauseSignal : ASignal
-{
-}
-
 public class GamePlayPanelController : MonoBehaviour
 {
     [SerializeField] private ProgressBar energyProgressBar;

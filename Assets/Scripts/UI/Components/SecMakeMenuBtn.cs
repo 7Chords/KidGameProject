@@ -12,8 +12,8 @@ namespace KidGame.UI
 {
     public class RefreshSecBtnSignal : ASignal
     {
-        
     }
+
     public class SecMakeMenuBtn : MonoBehaviour
     {
         private RecipeData recipeData;
@@ -35,15 +35,12 @@ namespace KidGame.UI
 
         public void InitBtnData(RecipeData recipeData)
         {
-            
             this.recipeData = recipeData;
             makeMenuText.text = this.recipeData.trapData.trapName;
-            
         }
 
         public void ShowDetail()
         {
-            
             Signals.Get<RefreshSecBtnSignal>().Dispatch();
             Signals.Get<ShowRecipeSignal>().Dispatch(recipeData);
             makeMenuButton.interactable = false;
@@ -54,6 +51,4 @@ namespace KidGame.UI
             makeMenuButton.interactable = true;
         }
     }
-    
-    
 }
