@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8338613314173166000
 RectTransform:
   m_ObjectHideFlags: 0
@@ -95,7 +95,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &88630437134135246
 RectTransform:
   m_ObjectHideFlags: 0
@@ -112,9 +112,9 @@ RectTransform:
   - {fileID: 1522472831179331385}
   m_Father: {fileID: 7939089720915630041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1143.6467}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 188.69, y: 225}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7797202251746677583
@@ -256,8 +256,6 @@ GameObject:
   - component: {fileID: 7939089720915630041}
   - component: {fileID: 1483171869872550296}
   - component: {fileID: 1581788129724897019}
-  - component: {fileID: 7137240126342042863}
-  - component: {fileID: 3626000749755598332}
   - component: {fileID: 3071248926467063240}
   - component: {fileID: 6882409453483729433}
   m_Layer: 5
@@ -325,42 +323,6 @@ MonoBehaviour:
     buttonText: "\u8BBE\u7F6E"
     targetScreen: SettingWindow
   templateButton: {fileID: 1080301906137745222}
---- !u!114 &7137240126342042863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3955197997429667027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f0ffd164e4450f439d7c219e6c88ce7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: 2
-  isOutAnimation: 0
-  duration: 0.5
-  doFade: 0
-  fadeDurationPercent: 0.5
-  ease: 30
---- !u!114 &3626000749755598332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3955197997429667027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f0ffd164e4450f439d7c219e6c88ce7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: 2
-  isOutAnimation: 1
-  duration: 0.25
-  doFade: 0
-  fadeDurationPercent: 0.5
-  ease: 1
 --- !u!114 &3071248926467063240
 MonoBehaviour:
   m_ObjectHideFlags: 0

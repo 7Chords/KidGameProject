@@ -399,7 +399,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &777461776
+--- !u!84 &477546374
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -798,7 +798,6 @@ GameObject:
   - component: {fileID: 1406033295}
   - component: {fileID: 1406033296}
   - component: {fileID: 1406033297}
-  - component: {fileID: 1406033298}
   m_Layer: 0
   m_Name: '###MANAGERS###'
   m_TagString: Untagged
@@ -881,25 +880,6 @@ MonoBehaviour:
   updateIntervalSeconds: 0
   executionsPerTick: 0
   maxTaskExecutionsPerTick: 100
---- !u!114 &1406033298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1406033292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a69475b9b1e2d460a981c2f2057ab2cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bgmAudioInfoList: []
-  sfxAudioInfoList: []
-  mainVolumeFactor: 1
-  bgmVolumeFactor: 1
-  sfxVolumeFactor: 1
-  audioDatas: {fileID: 11400000, guid: b6a64427a303141a8bcdc8e1d81c0d6e, type: 2}
-  audioMixer: {fileID: 24100000, guid: 15c89fc4d2f3c48df881326d98f3ec05, type: 2}
 --- !u!1 &1529857601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1269,9 +1249,6 @@ MonoBehaviour:
   damagePartical: {fileID: 0}
   PlayerAnimator: {fileID: 2671674519919227657}
   PlayerBaseData: {fileID: 11400000, guid: b484f4bb0295fec4b9010f370afb8004, type: 2}
-  ModelTransform: {fileID: 2671674519919227655}
-  StruggleDemand: 10
-  StruggleAmountOneTime: 1
 --- !u!114 &1908909133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1590,7 +1567,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 777461776}
+      objectReference: {fileID: 477546374}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size

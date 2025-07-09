@@ -24,8 +24,6 @@ public class CellUI : MonoBehaviour
 
     public Image icon;
     public TextMeshProUGUI count;
-
-
     public string detailText;
 
     private float timer = 0f;
@@ -34,12 +32,7 @@ public class CellUI : MonoBehaviour
     private void Awake()
     {
         eventTrigger = GetComponent<EventTrigger>();
-
-        icon = transform.Find("Icon").GetComponent<Image>();
-        count = transform.Find("Count").GetComponent<TextMeshProUGUI>();
-
-
-        // 动态添加 EventTrigger 组件
+        
         AddEventTrigger();
     }
 
@@ -87,18 +80,15 @@ public class CellUI : MonoBehaviour
 
     private void AddEventTrigger()
     {
-        // 获取或添加 EventTrigger 组件
         EventTrigger trigger = gameObject.GetComponent<EventTrigger>() ?? gameObject.AddComponent<EventTrigger>();
-
-        // 添加 PointerEnter 事件
+        
         EventTrigger.Entry entryEnter = new EventTrigger.Entry
         {
             eventID = EventTriggerType.PointerEnter
         };
         entryEnter.callback.AddListener((data) => { OnPointerEnter((PointerEventData)data); });
         trigger.triggers.Add(entryEnter);
-
-        // 添加 PointerExit 事件
+        
         EventTrigger.Entry entryExit = new EventTrigger.Entry
         {
             eventID = EventTriggerType.PointerExit

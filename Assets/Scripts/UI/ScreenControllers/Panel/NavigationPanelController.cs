@@ -6,6 +6,11 @@ using Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class GamePauseSignal : ASignal
+{
+}
+
+
 [Serializable]
 public class NavigationPanelEntry
 {
@@ -13,20 +18,9 @@ public class NavigationPanelEntry
     [SerializeField] private string buttonText = "";
     [SerializeField] private string targetScreen = "";
 
-    public Sprite Sprite
-    {
-        get { return sprite; }
-    }
-
-    public string ButtonText
-    {
-        get { return buttonText; }
-    }
-
-    public string TargetScreen
-    {
-        get { return targetScreen; }
-    }
+    public Sprite Sprite => sprite;
+    public string ButtonText => buttonText;
+    public string TargetScreen => targetScreen;
 }
 
 public class NavigateToWindowSignal : ASignal<string>
@@ -57,6 +51,7 @@ public class NavigationPanelController : PanelController
     protected override void OnPropertiesSet()
     {
         ClearEntries();
+        
         foreach (var target in navigationTargets)
         {
             var newBtn = Instantiate(templateButton);
@@ -97,11 +92,13 @@ public class NavigationPanelController : PanelController
             button.ButtonClicked -= OnNavigationButtonClicked;
             Destroy(button.gameObject);
         }
+
         currentButtons.Clear();
     }
+
     private void Update()
     {
-        if (gameObject.activeInHierarchy&&Input.GetKeyDown(KeyCode.Escape))
+        if (gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.Escape))
         {
             Hide();
             UIController.Instance.CloseCurrentWindow();

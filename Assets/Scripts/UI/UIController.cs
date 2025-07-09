@@ -95,7 +95,6 @@ namespace KidGame.UI.Game
         private void OnShowPauseSelectPanel()
         {
             uiFrame.ShowPanel(ScreenIds.NavigationPanel);
-            //uiFrame.ShowPanel(ScreenIds.PauseSelectPanel);
         }
         #endregion
 

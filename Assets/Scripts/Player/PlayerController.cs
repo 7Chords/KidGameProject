@@ -217,8 +217,9 @@ namespace KidGame.Core
         
         #region 功能
 
-        public void GamePause()
+        private void GamePause()
         {
+            Debug.Log("Game Pause");
             Signals.Get<GamePauseSignal>().Dispatch();
         }
 
@@ -408,7 +409,7 @@ namespace KidGame.Core
 
         public void Dead()
         {
-            //TODO:临时测试
+            //TODO:临时测试，可以加上游戏结束UI
             Destroy(gameObject);
         }
         

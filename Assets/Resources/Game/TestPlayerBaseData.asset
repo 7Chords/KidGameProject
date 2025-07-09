@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WalkSpeed: 3
   RunSpeed: 5
-  Hp: 100
+  Hp: 5
   Sp: 50

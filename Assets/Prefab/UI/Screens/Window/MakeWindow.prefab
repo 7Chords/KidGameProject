@@ -2094,7 +2094,7 @@ MonoBehaviour:
   secondSelection: {fileID: 8771531241642759473}
   materialScrollView: {fileID: 984049649113680631}
   recipes: {fileID: 11400000, guid: c0727c6087c33c34eb368b253d81d461, type: 2}
-  recipeImage: {fileID: 0}
+  recipeImage: {fileID: 3942021486600325113}
   recipeNameText: {fileID: 530802310322257991}
   recipeDescriptionText: {fileID: 9073423468977705871}
 --- !u!1 &7806511817214202329
