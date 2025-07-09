@@ -39,7 +39,7 @@ namespace KidGame.Core
             {
                 MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
             }
-            UIHelper.Instance.ShowTip("获得了" + itemName + "×1", gameObject);
+            UIHelper.Instance.ShowTipImmediate(new TipInfo("获得了" + itemName + "×1", gameObject));
             //TODO:工厂回收？
             Destroy(gameObject);
         }

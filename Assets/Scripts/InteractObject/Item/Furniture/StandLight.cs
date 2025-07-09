@@ -12,9 +12,9 @@ namespace KidGame.Core
 
         private bool isLightOn;
 
-        public override void Init(bool canInteract, List<MaterialItem> materialList = null)
+        public override void Init(List<MaterialItem> materialList = null)
         {
-            base.Init(canInteract, materialList);
+            base.Init(materialList);
             isLightOn = true;
         }
         public override void InteractPositive(GameObject interactor)

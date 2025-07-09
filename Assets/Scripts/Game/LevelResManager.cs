@@ -22,20 +22,20 @@ namespace KidGame.Core
         public void InitLevelRes(LevelResData resData)
         {
             _resData = resData;
-            List<MaterialItem> tmpMaterialItemList = new List<MaterialItem>();
 
             // 初始化有材料的家具
-            InitializeFurnitureMaterials(tmpMaterialItemList);
+            InitializeFurnitureMaterials();
 
             // 生成房间里散落的材料
             SpawnRoomMaterials();
         }
 
-        private void InitializeFurnitureMaterials(List<MaterialItem> tmpMaterialItemList)
+        private void InitializeFurnitureMaterials()
         {
+            var furnitureMaterials = new List<MaterialItem>(); // 每个家具有自己的列表
             foreach (var mapFurniture in MapManager.Instance.mapFurnitureList)
             {
-                tmpMaterialItemList.Clear();
+                furnitureMaterials.Clear();
                 var mapping = _resData.f2MMappingList.Find(x =>
                     x.furnitureData.Equals(mapFurniture.mapFurnitureData.furnitureData));
 
@@ -43,16 +43,16 @@ namespace KidGame.Core
                 {
                     foreach (var item in mapping.materialDataList)
                     {
-                        tmpMaterialItemList.Add(new MaterialItem(
+                        furnitureMaterials.Add(new MaterialItem(
                             item.materialData,
                             Random.Range(item.randomAmount_min, item.randomAmount_max + 1)
                         ));
                     }
-                    mapFurniture.Init(true, tmpMaterialItemList);
+                    mapFurniture.Init(furnitureMaterials);
                 }
                 else
                 {
-                    mapFurniture.Init(true, null);
+                    mapFurniture.Init(null);
                 }
             }
         }

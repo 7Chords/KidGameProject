@@ -25,7 +25,7 @@ namespace KidGame.Core
         {
         }
 
-        #region �����¼�
+        #region 呼叫事件
 
         public void CallPlayerPickItem(IPickable iPickable)
         {
@@ -34,7 +34,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ע��ͷ�ע��
+        #region 订阅和反订阅事件
 
 
         public void RegPlayerPickItem(Action<IPickable> onPlayerPickItem)
@@ -49,7 +49,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ������
+        #region 功能
 
         /// <summary>
         /// ��ȡ������õļ�λ

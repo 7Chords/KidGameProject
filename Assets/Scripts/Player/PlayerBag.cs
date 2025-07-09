@@ -167,7 +167,7 @@ namespace KidGame.Core
             var trapToPlace = GetSelectedTrap();
             if (trapToPlace == null)
             {
-                UIHelper.Instance.ShowTip("没有可用的陷阱！", player.gameObject);
+                UIHelper.Instance.ShowTipImmediate(new TipInfo("没有可用的陷阱！", player.gameObject));
                 return false;
             }
 
@@ -181,7 +181,7 @@ namespace KidGame.Core
                 return PlaceFurnitureTrap(player, trapToPlace, position);
             }
 
-            UIHelper.Instance.ShowTip("该陷阱必须放置在家具上！", player.gameObject);
+            UIHelper.Instance.ShowTipImmediate(new TipInfo("该陷阱必须放置在家具上！", player.gameObject));
             return false;
         }
 

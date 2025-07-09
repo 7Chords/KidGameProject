@@ -57,10 +57,17 @@ namespace KidGame.Core
             takeTrap = trap.GetComponent<TrapBase>();
         }
 
-        public virtual void Init(bool canInteract, List<MaterialItem> materialList = null)
+        public virtual void Init(List<MaterialItem> materialList = null)
         {
-            this.canInteract = canInteract;
-            materialHoldList = materialList;
+            canInteract = mapFurnitureData.furnitureData.canInteract;
+            if(materialList!= null)
+            {
+                materialHoldList = new List<MaterialItem>();
+                foreach (var item in materialList)
+                {
+                    materialHoldList.Add(item);
+                }
+            }
             if (canInteract)
             {
                 gameObject.layer = LayerMask.NameToLayer("Interactive");
@@ -75,7 +82,24 @@ namespace KidGame.Core
 
         public override void Pick()
         {
-
+            if (materialHoldList == null || materialHoldList.Count == 0)
+            {
+                UIHelper.Instance.ShowTipImmediate(new TipInfo("空空如也",gameObject));
+            }
+            else
+            {
+                MaterialBase tmpMat = new MaterialBase();
+                foreach (var item in materialHoldList)
+                {
+                    for(int i =0;i<item.amount;i++)
+                    {
+                        tmpMat.Init(item.data);
+                        PlayerUtil.Instance.CallPlayerPickItem(tmpMat);
+                        UIHelper.Instance.ShowTipByQueue(new TipInfo("获得了" + item.data.materialName + "×1", gameObject,0.5f));
+                    }
+                }
+                materialHoldList.Clear();
+            }
         }
 
         public virtual void InteractPositive(GameObject interactor)
