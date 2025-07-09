@@ -62,6 +62,8 @@ namespace KidGame.Core
             trapBag = PlayerBag.Instance.GetTrapSlots();
             materialBag = PlayerBag.Instance.GetMaterialSlots();
             
+            RecordData.Instance.UpdateGlobalData();
+            
             SAVE.JsonSave(RecordData.Instance.recordName[id], ForSave());
         }
 

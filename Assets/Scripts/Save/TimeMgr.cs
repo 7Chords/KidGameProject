@@ -1,15 +1,12 @@
 using System;
 using UnityEngine;
 
-//TimeSpan
-
-
 namespace KidGame.Core
 {
     public static class TimeMgr
     {
-        public static float oriT;          //基准时间
-        public static float curT;          //当前时间    
+        public static float oriT; //基准时间
+        public static float curT; //当前时间    
 
         public static void SetOriTime()
         {
@@ -20,13 +17,10 @@ namespace KidGame.Core
 
         public static void SetCurTime()
         {
-            //当前时间不应该小于0
             curT = Mathf.Max(TimeMgr.oriT + Time.realtimeSinceStartup, 0);
-            PlayerSaveData.Instance.gameTime = curT;      
+            PlayerSaveData.Instance.gameTime = curT;
         }
-
-
-        //将秒数转化为00:00:00
+        
         public static string GetFormatTime(int seconds)
         {
             //把秒数转为时分秒
@@ -47,7 +41,5 @@ namespace KidGame.Core
             time = time.Insert(2, ":");
             time = time.Insert(5, ":");
         }
-
-
     }
 }

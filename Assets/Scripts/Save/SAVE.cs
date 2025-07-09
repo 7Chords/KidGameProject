@@ -81,6 +81,13 @@ namespace KidGame.Core
             }
             return "";
         }
+        
+        public static void ResetGlobalData()
+        {
+            RecordData.Instance.unlockedItems.Clear();
+            RecordData.Instance.Save();
+        }
+        
         #endregion
 
         #region 截图
@@ -203,6 +210,13 @@ namespace KidGame.Core
             ClearDirectory(shotPath);
             Debug.Log("已清空截图");
         }
+        
+        [UnityEditor.MenuItem("Delete/Global Data")]
+        public static void DeleteGlobalData()
+        {
+            ResetGlobalData();
+            Debug.Log("已清空全局数据");
+        }
 
         [UnityEditor.MenuItem("Delete/All")]
         public static void DeleteAll()
@@ -210,6 +224,7 @@ namespace KidGame.Core
             DeletePlayerData();
             DeleteRecord();
             DeleteScreenShot();
+            DeleteGlobalData();
         }
 #endif
         #endregion
