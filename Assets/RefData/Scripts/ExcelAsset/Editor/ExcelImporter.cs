@@ -288,7 +288,7 @@ public class ExcelImporter : AssetPostprocessor
         string assetName = info.AssetType.Name + ".asset";
 
         // 直接强制路径，忽略Attribute中的AssetPath设置
-        string assetPath = Path.Combine("Assets/Resources/ScriptableObject", assetName);
+        string assetPath = Path.Combine("Assets/Resources/ScriptObject", assetName);
 
         // 确保目录存在
         Directory.CreateDirectory(Path.GetDirectoryName(assetPath));
