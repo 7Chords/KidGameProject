@@ -10,31 +10,33 @@ namespace KidGame.Core
     /// <summary>
     /// 陷阱基类
     /// </summary>
-    public class TrapBase : MapItem,IInteractive,IStateMachineOwner
+    public class TrapBase : MapItem, IInteractive, IStateMachineOwner
     {
+        [SerializeField] private List<string> randomInteractSfxList;
 
-        [SerializeField]
-        private List<string> randomInteractSfxList;
-        public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
+        public List<string> RandomInteractSfxList
+        {
+            get => randomInteractSfxList;
+            set { randomInteractSfxList = value; }
+        }
 
-        [SerializeField]
-        private GameObject interactPartical;
-        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
+        [SerializeField] private GameObject interactPartical;
+
+        public GameObject InteractPartical
+        {
+            get => interactPartical;
+            set { interactPartical = value; }
+        }
+
         public override string itemName => trapData.trapName;
 
-        [ColorUsage(true,true)]
-        public Color NoReadyColor;
+        [ColorUsage(true, true)] public Color NoReadyColor;
 
-        [ColorUsage(true, true)]
-        public Color ReadyColor;
+        [ColorUsage(true, true)] public Color ReadyColor;
 
         public Renderer ReadyIndicator;
 
-        [Space(20)]
-
-
-
-        private Rigidbody rb;
+        [Space(20)] private Rigidbody rb;
         public Rigidbody Rb => rb;
 
         private Collider coll;
@@ -45,16 +47,12 @@ namespace KidGame.Core
         public TrapData TrapData => trapData;
 
 
-
         protected CatalystBase _catalyst;
         public CatalystBase Catalyst => _catalyst;
 
 
-
         protected GameObject interactor;
         public GameObject Interactor => interactor;
-
-
 
 
         protected StateMachine stateMachine;
@@ -79,7 +77,6 @@ namespace KidGame.Core
             stateMachine.Init(this);
             //初始化为Idle状态
             ChangeState(TrapState.NoReady);
-
         }
 
         public virtual void Discard()
@@ -89,7 +86,7 @@ namespace KidGame.Core
             Destroy(gameObject);
         }
 
-        
+
         #region 交互接口方法实现
 
         public virtual void InteractPositive(GameObject interactor)
@@ -100,14 +97,17 @@ namespace KidGame.Core
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
             //todo:播放音效和特效
-            if(RandomInteractSfxList != null && RandomInteractSfxList.Count>0)
+            if (RandomInteractSfxList != null && RandomInteractSfxList.Count > 0)
             {
                 AudioManager.Instance.PlaySfx(RandomInteractSfxList[Random.Range(0, RandomInteractSfxList.Count)]);
             }
-            if(interactPartical != null)
+
+            if (interactPartical != null)
             {
-                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity,1f);
+                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity,
+                    1f);
             }
+
             RemoveFormPlayerUsingList();
             this.interactor = interactor;
             ChangeState(TrapState.Running);
@@ -125,10 +125,13 @@ namespace KidGame.Core
             {
                 AudioManager.Instance.PlaySfx(RandomInteractSfxList[Random.Range(0, RandomInteractSfxList.Count)]);
             }
+
             if (interactPartical != null)
             {
-                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity, 1f);
+                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity,
+                    1f);
             }
+
             RemoveFormPlayerUsingList();
             this.interactor = interactor;
             ChangeState(TrapState.Running);
@@ -141,21 +144,21 @@ namespace KidGame.Core
             //todo:播放音效和特效
             if (RandomPickSfxList != null && RandomPickSfxList.Count > 0)
             {
-                AudioManager.Instance.PlaySfx(RandomPickSfxList[Random.Range(0, RandomPickSfxList.Count)]);
+                // AudioManager.Instance.PlaySfx(RandomPickSfxList[Random.Range(0, RandomPickSfxList.Count)]);
             }
-            if(pickPartical != null)
+
+            if (pickPartical != null)
             {
                 MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
             }
-            UIHelper.Instance.ShowTipImmediate(new TipInfo("获得了" + itemName+"×1",gameObject));
+
+            UIHelper.Instance.ShowTipImmediate(new TipInfo("获得了" + itemName + "×1", gameObject));
             ChangeState(TrapState.Dead);
         }
 
         #endregion
 
         #region 功能性
-
-
 
         /// <summary>
         /// 设置触媒
@@ -164,7 +167,7 @@ namespace KidGame.Core
         public void SetCatalyst(CatalystBase catalyst)
         {
             _catalyst = catalyst;
-            if(_catalyst == null)
+            if (_catalyst == null)
             {
                 ChangeState(TrapState.NoReady);
             }
@@ -176,7 +179,6 @@ namespace KidGame.Core
         public virtual void Trigger()
         {
             Debug.Log(gameObject.name + "陷阱触发了");
-
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace KidGame.Core
         /// </summary>
         public virtual void DeadByExternal()
         {
-            if (trapState == TrapState.Running && 
+            if (trapState == TrapState.Running &&
                 trapData.deadTypeList.Contains(TrapDeadType.ExternalEvent))
             {
                 ChangeState(TrapState.Dead);

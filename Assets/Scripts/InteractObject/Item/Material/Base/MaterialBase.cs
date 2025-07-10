@@ -35,14 +35,15 @@ namespace KidGame.Core
             {
                 AudioManager.Instance.PlaySfx(RandomPickSfxList[Random.Range(0, RandomPickSfxList.Count)]);
             }
+
             if (pickPartical != null)
             {
                 MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
             }
+
             UIHelper.Instance.ShowTipImmediate(new TipInfo("获得了" + itemName + "×1", gameObject));
             //TODO:工厂回收？
             Destroy(gameObject);
         }
-
     }
 }

@@ -37,12 +37,16 @@ namespace KidGame.Core
     }
 
     #endregion
-    
+
     public class PlayerBag : Singleton<PlayerBag>
     {
         #region 物品列表
 
         // 当前捡到的物品、以及从存档中读取数据、保存数据的逻辑
+        // 陷阱道具栏，最大为4个道具，拾取到的道具先放入道具栏，已满才放入背包
+        public List<TrapSlotInfo> _tempTrapBag = new List<TrapSlotInfo>();
+
+        // 陷阱背包
         public List<TrapSlotInfo> _trapBag = new List<TrapSlotInfo>();
         public List<MaterialSlotInfo> _materialBag = new List<MaterialSlotInfo>();
 
@@ -51,32 +55,34 @@ namespace KidGame.Core
         #region 选中
 
         private int _selectedTrapIndex = 0; // 当前选中的陷阱索引
-
+        
         public int SelectedTrapIndex
         {
             get => _selectedTrapIndex;
             set
             {
-                if (_trapBag.Count > 0)
+                int newIndex = _tempTrapBag.Count > 0 ? Mathf.Clamp(value, 0, _tempTrapBag.Count - 1) : 0;
+        
+                if (_selectedTrapIndex == newIndex) return;
+        
+                _selectedTrapIndex = newIndex;
+                if (_tempTrapBag.Count > _selectedTrapIndex)
                 {
-                    _selectedTrapIndex = Mathf.Clamp(value, 0, _trapBag.Count - 1);
-                    OnTrapBagUpdated?.Invoke();
+                    string trapName = _tempTrapBag[_selectedTrapIndex].trapData.name;
+                    UIHelper.Instance.ShowTipImmediate(new TipInfo($"已选择: {trapName}", PlayerController.Instance.gameObject));
                 }
-                else
-                {
-                    _selectedTrapIndex = 0;
-                }
+                OnTrapBagUpdated?.Invoke();
             }
         }
 
         #endregion
-        
+
         #region 背包事件
 
         public event Action OnTrapBagUpdated;
 
         #endregion
-        
+
         #region 注册事件
 
         public void Init()
@@ -102,47 +108,51 @@ namespace KidGame.Core
         {
             return _materialBag;
         }
-        
+
         // 加载背包数据
         public void LoadBagData(List<TrapSlotInfo> trapSlots, List<MaterialSlotInfo> materialSlots)
         {
             _trapBag = trapSlots ?? new List<TrapSlotInfo>();
             _materialBag = materialSlots ?? new List<MaterialSlotInfo>();
-            
+
             OnTrapBagUpdated?.Invoke();
         }
-        
-            
+
+
         // 获取当前选中的陷阱
         public TrapSlotInfo GetSelectedTrap()
         {
             if (_trapBag.Count == 0) return null;
             return _trapBag[SelectedTrapIndex];
         }
-        
-        
-        
-        
+
         #endregion
-        
-        
+
+        #region 基本方法
+
         private void PlayerPickItem(IPickable iPickable)
         {
             if (iPickable == null) return;
+        
             if (iPickable is TrapBase)
             {
                 TrapData trapData = (iPickable as TrapBase).TrapData;
                 if (trapData == null) return;
-                TrapSlotInfo trapSlotInfo = _trapBag.Find(x => x.trapData.trapID == trapData.trapID);
-                if (trapSlotInfo == null)
-                {
-                    _trapBag.Add(new TrapSlotInfo(trapData, 1));
-                }
-                else
-                {
-                    trapSlotInfo.amount++;
-                }
                 
+                if (!TryAddToTempTrapBag(trapData))
+                {
+                    // 道具栏已满，放入背包
+                    TrapSlotInfo trapSlotInfo = _trapBag.Find(x => x.trapData.trapID == trapData.trapID);
+                    if (trapSlotInfo == null)
+                    {
+                        _trapBag.Add(new TrapSlotInfo(trapData, 1));
+                    }
+                    else
+                    {
+                        trapSlotInfo.amount++;
+                    }
+                }
+            
                 OnTrapBagUpdated?.Invoke();
             }
             else if (iPickable is MaterialBase)
@@ -161,29 +171,6 @@ namespace KidGame.Core
                 }
             }
         }
-        
-        public bool TryUseSelectedTrap(PlayerController player, Vector3 position, Quaternion rotation)
-        {
-            var trapToPlace = GetSelectedTrap();
-            if (trapToPlace == null)
-            {
-                UIHelper.Instance.ShowTipImmediate(new TipInfo("没有可用的陷阱！", player.gameObject));
-                return false;
-            }
-
-            // 检查陷阱类型和放置条件
-            if (trapToPlace.trapData.placedType == TrapPlacedType.Ground)
-            {
-                return PlaceGroundTrap(trapToPlace, position, rotation);
-            }
-            else if (trapToPlace.trapData.placedType == TrapPlacedType.Furniture)
-            {
-                return PlaceFurnitureTrap(player, trapToPlace, position);
-            }
-
-            UIHelper.Instance.ShowTipImmediate(new TipInfo("该陷阱必须放置在家具上！", player.gameObject));
-            return false;
-        }
 
         private bool PlaceGroundTrap(TrapSlotInfo trapToPlace, Vector3 position, Quaternion rotation)
         {
@@ -191,7 +178,6 @@ namespace KidGame.Core
             if (newTrap != null)
             {
                 newTrap.transform.rotation = rotation;
-                ReduceTrapAmount(trapToPlace);
                 return true;
             }
 
@@ -207,34 +193,81 @@ namespace KidGame.Core
             if (newTrap != null)
             {
                 furniture.SetTrap(newTrap);
-                ReduceTrapAmount(trapToPlace);
                 return true;
             }
 
             return false;
         }
 
-        private void ReduceTrapAmount(TrapSlotInfo trapToPlace)
+        #endregion
+        
+        #region 道具栏方法
+        
+        public bool TryAddToTempTrapBag(TrapData trapData)
         {
-            if (--trapToPlace.amount <= 0)
+            var existingSlot = _tempTrapBag.Find(x => x.trapData.trapID == trapData.trapID);
+
+            if (existingSlot != null)
             {
-                int index = _trapBag.IndexOf(trapToPlace);
-                if (index >= 0)
-                {
-                    _trapBag.RemoveAt(index);
-                    // 自动调整选中索引
-                    if (SelectedTrapIndex >= _trapBag.Count && _trapBag.Count > 0)
-                    {
-                        SelectedTrapIndex = _trapBag.Count - 1;
-                    }
-                    else if (_trapBag.Count == 0)
-                    {
-                        SelectedTrapIndex = 0;
-                    }
-                }
+                existingSlot.amount++;
+                OnTrapBagUpdated?.Invoke();
+                return true;
             }
 
-            OnTrapBagUpdated?.Invoke();
+            // 如果没有相同陷阱且还有空位
+            if (_tempTrapBag.Count < 4)
+            {
+                _tempTrapBag.Add(new TrapSlotInfo(trapData, 1));
+                OnTrapBagUpdated?.Invoke();
+                return true;
+            }
+
+            return false;
         }
+        
+        public bool TryUseTrapFromTempBag(int index, PlayerController player, Vector3 position, Quaternion rotation)
+        {
+            if (index < 0 || index >= _tempTrapBag.Count)
+            {
+                UIHelper.Instance.ShowTipImmediate(new TipInfo("无效的陷阱选择", player.gameObject));
+                return false;
+            }
+
+            var trapToPlace = _tempTrapBag[index];
+            bool result = trapToPlace.trapData.placedType switch
+            {
+                TrapPlacedType.Ground => PlaceGroundTrap(trapToPlace, position, rotation),
+                TrapPlacedType.Furniture => PlaceFurnitureTrap(player, trapToPlace, position),
+                _ => false
+            };
+
+            if (!result)
+            {
+                UIHelper.Instance.ShowTipImmediate(new TipInfo("无法在此放置陷阱", player.gameObject));
+                return false;
+            }
+
+            trapToPlace.amount--;
+            if (trapToPlace.amount <= 0)
+            {
+                _tempTrapBag.RemoveAt(index);
+                SelectedTrapIndex = _tempTrapBag.Count > 0 ? Mathf.Min(SelectedTrapIndex, _tempTrapBag.Count - 1) : 0;
+                if (_tempTrapBag.Count == 0)
+                {
+                    UIHelper.Instance.ShowTipImmediate(new TipInfo("道具栏已空", player.gameObject));
+                }
+            }
+    
+            OnTrapBagUpdated?.Invoke();
+            return true;
+        }
+        
+        // 获取道具栏陷阱
+        public List<TrapSlotInfo> GetTempTrapSlots()
+        {
+            return _tempTrapBag;
+        }
+
+        #endregion
     }
 }

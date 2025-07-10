@@ -15,14 +15,20 @@ namespace KidGame.Core
         {
             useTimer = 0f;
             hasPlaced = false;
-            
+
             Vector3 placePosition = player.transform.position + player.transform.forward + Vector3.up;
             Quaternion rotation = player.transform.rotation;
-            
-            hasPlaced = PlayerBag.Instance.TryUseSelectedTrap(player, placePosition, rotation);
-            
+
+            hasPlaced = PlayerBag.Instance.TryUseTrapFromTempBag(
+                PlayerBag.Instance.SelectedTrapIndex,
+                player,
+                placePosition,
+                rotation
+            );
+
             if (!hasPlaced)
             {
+                UIHelper.Instance.ShowTipImmediate(new TipInfo("Œﬁ∑®∑≈÷√œ›⁄Â", player.gameObject));
                 player.ChangeState(PlayerState.Idle);
             }
         }

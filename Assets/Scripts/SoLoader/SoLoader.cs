@@ -5,6 +5,7 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 namespace KidGame.Core
 {
     public class SoLoader : MonoBehaviour
@@ -14,17 +15,16 @@ namespace KidGame.Core
 
         private void Awake()
         {
-            if(Instance == null)
+            if (Instance == null)
             {
                 Instance = this;
                 DontDestroyOnLoad(this.gameObject);
             }
             else Destroy(this.gameObject);
+
             soDic = new Dictionary<string, ScriptableObject>();
             InitialSoResource();
         }
-
-
 
 
         private void InitialSoResource()
@@ -37,14 +37,11 @@ namespace KidGame.Core
             {
                 if (so != null)
                 {
-                    if(!soDic.ContainsKey(so.name)) soDic.Add(so.name, so);
+                    if (!soDic.ContainsKey(so.name)) soDic.Add(so.name, so);
                     else Debug.LogWarning("重复加载！！ 检查是否有重名配表导致的重名SO！！");
                 }
                 else Debug.LogWarning("so为空！！");
             }
         }
-
-        
     }
-
 }

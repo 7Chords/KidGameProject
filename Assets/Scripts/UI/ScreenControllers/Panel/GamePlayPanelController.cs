@@ -43,17 +43,12 @@ public class GamePlayPanelController : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SelectTrap(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SelectTrap(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectTrap(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectTrap(3);
-        
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0)
         {
             int direction = scroll > 0 ? -1 : 1;
-            int newIndex = PlayerBag.Instance.SelectedTrapIndex + direction;
-            int trapCount = PlayerBag.Instance.GetTrapSlots().Count;
+            int newIndex = selectedTrapIndex + direction;
+            int trapCount = PlayerBag.Instance.GetTempTrapSlots().Count;
             if (trapCount > 0)
             {
                 newIndex = (newIndex + trapCount) % trapCount;
@@ -191,17 +186,18 @@ public class GamePlayPanelController : MonoBehaviour
         {
             Destroy(icon.gameObject);
         }
+
         currentTrapIcons.Clear();
-        
-        var traps = PlayerBag.Instance.GetTrapSlots();
-    
+
+        var traps = PlayerBag.Instance.GetTempTrapSlots();
+
         for (int i = 0; i < Mathf.Min(traps.Count, maxTrapSlots); i++)
         {
             var iconObj = Instantiate(trapIconPrefab, trapHudContainer);
             var icon = iconObj.GetComponent<TrapHudIcon>();
             icon.Setup(traps[i], i == selectedTrapIndex);
             currentTrapIcons.Add(icon);
-            
+
             int index = i;
             iconObj.GetComponent<Button>().onClick.AddListener(() => SelectTrap(index));
         }
@@ -210,15 +206,15 @@ public class GamePlayPanelController : MonoBehaviour
     private void SelectTrap(int index)
     {
         if (index < 0 || index >= currentTrapIcons.Count) return;
-        
+
         for (int i = 0; i < currentTrapIcons.Count; i++)
         {
             currentTrapIcons[i].SetSelected(i == index);
         }
-    
+
         selectedTrapIndex = index;
         PlayerBag.Instance.SelectedTrapIndex = index;
-    }    
+    }
 
     #endregion
     
