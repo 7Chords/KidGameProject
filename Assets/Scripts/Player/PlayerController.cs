@@ -9,7 +9,7 @@ namespace KidGame.Core
     /// <summary>
     /// 玩家控制器
     /// </summary>
-    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner, IDamageable
+    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner, IDamageable,ISoundable
     {
         #region 玩家受伤
 
@@ -135,59 +135,6 @@ namespace KidGame.Core
         }        
 
         #endregion
-        
-        /// <summary>
-        /// 玩家旋转 TODO:优化？
-        /// </summary>
-        public void Rotate(Vector3 dir)
-        {
-            transform.rotation = Quaternion.LookRotation(dir);
-        }
-
-        public void ChangeState(PlayerState playerState, bool reCurrstate = false)
-        {
-            // 如果处于体力耗尽状态只能进入Idle状态
-            if (isExhausted && (playerState == PlayerState.Move || playerState == PlayerState.Dash))
-            {
-                playerState = PlayerState.Idle;
-            }
-            
-            this.playerState = playerState;
-            switch (playerState)
-            {
-                case PlayerState.Idle:
-                    stateMachine.ChangeState<PlayerIdleState>((int)playerState, reCurrstate);
-                    break;
-                case PlayerState.Move:
-                    stateMachine.ChangeState<PlayerMoveState>((int)playerState, reCurrstate);
-                    break;
-                case PlayerState.Dash:
-                    stateMachine.ChangeState<PlayerDashState>((int)playerState, reCurrstate);
-                    break;
-                case PlayerState.Use:
-                    stateMachine.ChangeState<PlayerUseState>((int)playerState, reCurrstate);
-                    break;
-                case PlayerState.Throw:
-                    stateMachine.ChangeState<PlayerThrowState>((int)playerState, reCurrstate);
-                    break;
-                case PlayerState.Dead:
-                    stateMachine.ChangeState<PlayerDeadState>((int)playerState, reCurrstate);
-                    break;
-                case PlayerState.Struggle:
-                    stateMachine.ChangeState<PlayerStruggleState>((int)playerState, reCurrstate);
-                    break;
-                default:
-                    break;
-            }
-        }
-        /// <summary>
-        /// 播放动画
-        /// </summary>
-        /// <param name="animationName"></param>
-        public void PlayAnimation(string animationName)
-        {
-            PlayerAnimator.PlayAnimation(animationName);
-        }
 
         #region 事件相关
 
@@ -228,6 +175,59 @@ namespace KidGame.Core
         {
             Debug.Log("open bag");
             Signals.Get<OpenBagSignal>().Dispatch();
+        }
+
+        /// <summary>
+        /// 玩家旋转 TODO:优化？
+        /// </summary>
+        public void Rotate(Vector3 dir)
+        {
+            transform.rotation = Quaternion.LookRotation(dir);
+        }
+
+        public void ChangeState(PlayerState playerState, bool reCurrstate = false)
+        {
+            // 如果处于体力耗尽状态只能进入Idle状态
+            if (isExhausted && (playerState == PlayerState.Move || playerState == PlayerState.Dash))
+            {
+                playerState = PlayerState.Idle;
+            }
+
+            this.playerState = playerState;
+            switch (playerState)
+            {
+                case PlayerState.Idle:
+                    stateMachine.ChangeState<PlayerIdleState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Move:
+                    stateMachine.ChangeState<PlayerMoveState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Dash:
+                    stateMachine.ChangeState<PlayerDashState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Use:
+                    stateMachine.ChangeState<PlayerUseState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Throw:
+                    stateMachine.ChangeState<PlayerThrowState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Dead:
+                    stateMachine.ChangeState<PlayerDeadState>((int)playerState, reCurrstate);
+                    break;
+                case PlayerState.Struggle:
+                    stateMachine.ChangeState<PlayerStruggleState>((int)playerState, reCurrstate);
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// 播放动画
+        /// </summary>
+        /// <param name="animationName"></param>
+        public void PlayAnimation(string animationName)
+        {
+            PlayerAnimator.PlayAnimation(animationName);
         }
 
         /// <summary>
@@ -346,10 +346,33 @@ namespace KidGame.Core
             return closestIPickable;
         }
 
+
+        /// <summary>
+        /// 制造声音
+        /// </summary>
+        public void ProduceSound(float range)
+        {
+            Collider[] colls = Physics.OverlapSphere(transform.position, range);
+            if (colls.Length == 0) return;
+            ISoundable soundable = null;
+            foreach(var coll in colls)
+            {
+                soundable = coll.GetComponent<ISoundable>();
+                if (soundable == null) continue;
+                soundable.ReceiveSound(gameObject);
+            }
+        }
+
+        /// <summary>
+        /// 接收声音
+        /// </summary>
+        /// <param name="creator"></param>
+        public void ReceiveSound(GameObject creator) { }
+
         #endregion
 
         #region 体力与生命
-        
+
         /// <summary>
         /// 受伤
         /// </summary>
@@ -469,7 +492,7 @@ namespace KidGame.Core
             
             return true;
         }
-        
+
         #endregion
     }
 }

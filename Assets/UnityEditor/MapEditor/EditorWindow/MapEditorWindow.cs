@@ -650,13 +650,6 @@ namespace KidGame.Editor
                             {
                                 return;
                             }
-                            //foreach (var tmpPos in furniture.mapPosList)
-                            //{
-                            //    if (mapPos.Equals(tmpPos))
-                            //    {
-                            //        return;
-                            //    }
-                            //}
                         }
 
                         mapFurniture.mapPosList.Add(mapPos);

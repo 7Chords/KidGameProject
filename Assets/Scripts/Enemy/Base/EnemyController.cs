@@ -12,7 +12,7 @@ namespace KidGame.Core
     /// 封装敌人相关变量与方法
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-    public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable
+    public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable,ISoundable
     {
         [SerializeField]
         private List<string> randomDamgeSfxList;
@@ -56,6 +56,8 @@ namespace KidGame.Core
 
         private float curSanity;
         public bool IsDizzying;
+
+        private GameObject hearingGO;
 
         #region 有目的搜索
 
@@ -227,12 +229,14 @@ namespace KidGame.Core
         public bool PlayerInHearing()
         {
             if (player == null) return false;
-            
-            if ((player.position - transform.position).magnitude <= enemyBaseData.HearingRange)
-            {
-                targetPos = player.position;
-                return true;
-            }
+
+            //if ((player.position - transform.position).magnitude <= enemyBaseData.HearingRange)
+            //{
+            //    targetPos = player.position;
+            //    return true;
+            //}
+            //return false;
+            if (hearingGO != null) return true;
             return false;
         }
 
@@ -491,8 +495,12 @@ namespace KidGame.Core
             roomSearchStateDic[roomType] = state;
         }
 
-        public bool CheckArriveDestination()
+        public bool CheckArriveDestination(bool checkHearing = false)
         {
+            if(checkHearing)
+            {
+                hearingGO = null;
+            }
             return Vector3.Distance(transform.position, targetPos) < 0.5f;
         }
 
@@ -504,6 +512,7 @@ namespace KidGame.Core
         public void GoCheckHearPoint()
         {
             Agent.speed = enemyBaseData.MoveSpeed;
+            targetPos = hearingGO.transform.position;
             Agent.SetDestination(targetPos);
         }
 
@@ -520,6 +529,13 @@ namespace KidGame.Core
         {
             agent.isStopped = false;
         }
+
+        public void ProduceSound(float range) { }
+
+        public void ReceiveSound(GameObject creator)
+        {
+            hearingGO = creator;
+        }
         #region Gizoms
 
 
@@ -530,6 +546,7 @@ namespace KidGame.Core
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, enemyBaseData.HearingRange);
         }
+
         #endregion
     }
 }

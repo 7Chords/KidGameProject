@@ -17,7 +17,7 @@ namespace KidGame.Core
 
         public override TaskStatus OnUpdate()
         {
-            if(enemy.CheckArriveDestination())
+            if(enemy.CheckArriveDestination(true))
             {
                 return TaskStatus.Success;
             }

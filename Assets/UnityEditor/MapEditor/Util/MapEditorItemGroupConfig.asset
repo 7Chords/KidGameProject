@@ -25,3 +25,5 @@ MonoBehaviour:
   MapListList:
   - {fileID: 11400000, guid: 8d1eebedc64564d4b99f71d8e09a5d98, type: 2}
   - {fileID: 11400000, guid: 7bc200724a03a15459ddf605391cf50e, type: 2}
+  FurntureRoomTypeNoMatchWarningSprite: {fileID: 21300000, guid: 1154d6a15c8ea684cb7c1dbd0c011c8c,
+    type: 3}

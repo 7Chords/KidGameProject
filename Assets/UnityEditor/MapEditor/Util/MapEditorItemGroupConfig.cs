@@ -15,5 +15,8 @@ namespace KidGame.Editor
         [Header("Wall")] public List<WallData> WallList;
 
         [Header("Blueprint")] public List<MapData> MapListList;
+
+        [Header("Other")]
+        public Sprite FurntureRoomTypeNoMatchWarningSprite;
     }
 }
