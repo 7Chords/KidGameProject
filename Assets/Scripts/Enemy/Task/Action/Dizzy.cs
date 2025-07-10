@@ -14,12 +14,13 @@ namespace KidGame.Core
 
         public override void OnStart()
         {
+            dizzyTimer = 0;
             enemy.StopNav();
         }
         public override TaskStatus OnUpdate()
         {
             dizzyTimer += Time.deltaTime;
-            if(dizzyTimer == DizzyTime)
+            if(dizzyTimer >= DizzyTime)
             {
                 enemy.StartNav();
                 enemy.SetDizzyState(false);
