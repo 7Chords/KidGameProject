@@ -6,13 +6,13 @@ using Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GamePauseSignal : ASignal
+public class OpenBagSignal : ASignal
 {
 }
 
 
 [Serializable]
-public class NavigationPanelEntry
+public class BackpackPanel
 {
     [SerializeField] private Sprite sprite = null;
     [SerializeField] private string buttonText = "";
@@ -23,13 +23,13 @@ public class NavigationPanelEntry
     public string TargetScreen => targetScreen;
 }
 
-public class NavigateToWindowSignal : ASignal<string>
+public class GotoSelectedPanel : ASignal<string>
 {
 }
 
-public class NavigationPanelController : PanelController
+public class BackpackPanelController : PanelController
 {
-    [SerializeField] private List<NavigationPanelEntry> navigationTargets = new List<NavigationPanelEntry>();
+    [SerializeField] private List<BackpackPanel> navigationTargets = new List<BackpackPanel>();
     [SerializeField] private NavigationPanelButton templateButton = null;
 
     private readonly List<NavigationPanelButton> currentButtons = new List<NavigationPanelButton>();
@@ -37,12 +37,12 @@ public class NavigationPanelController : PanelController
     // 一般来说AddListeners和RemoveListeners都是成对出现的，别add完忘记remove
     protected override void AddListeners()
     {
-        Signals.Get<NavigateToWindowSignal>().AddListener(OnExternalNavigation);
+        Signals.Get<GotoSelectedPanel>().AddListener(OnExternalNavigation);
     }
 
     protected override void RemoveListeners()
     {
-        Signals.Get<NavigateToWindowSignal>().RemoveListener(OnExternalNavigation);
+        Signals.Get<GotoSelectedPanel>().RemoveListener(OnExternalNavigation);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class NavigationPanelController : PanelController
 
     private void OnNavigationButtonClicked(NavigationPanelButton currentlyClickedButton)
     {
-        Signals.Get<NavigateToWindowSignal>().Dispatch(currentlyClickedButton.Target);
+        Signals.Get<GotoSelectedPanel>().Dispatch(currentlyClickedButton.Target);
         foreach (var button in currentButtons)
         {
             button.SetCurrentNavigationTarget(currentlyClickedButton);

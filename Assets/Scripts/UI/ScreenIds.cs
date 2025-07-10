@@ -4,7 +4,9 @@ namespace KidGame.UI.Game
     {
         public const string ConfirmationPopup = "ConfirmationPopup";
 
-        public const string NavigationPanel = "NavigationPanel";
+        public const string BackpackPanel = "BackpackPanel";
+        
+        public const string PausePanel = "PausePanel";
 
         public const string SettingWindow = "SettingWindow";
 

@@ -25,9 +25,11 @@ namespace KidGame.UI.Game
             Signals.Get<StartGameSignal>().AddListener(OnToGameScene);
             Signals.Get<ToSettingsWindowSignal>().AddListener(OnToSettingsWindow);
             Signals.Get<ContinueGameSignal>().AddListener(OnToSaveWindow);
-            Signals.Get<GamePauseSignal>().AddListener(OnShowPauseSelectPanel);
+            
+            Signals.Get<OpenBagSignal>().AddListener(OnShowBackpackPanel);
+            Signals.Get<OpenPauseSignal>().AddListener(OnShowPausePanel);
 
-            Signals.Get<NavigateToWindowSignal>().AddListener(OnNavigateToWindow);
+            Signals.Get<GotoSelectedPanel>().AddListener(OnNavigateToWindow);
             Signals.Get<ShowConfirmationPopupSignal>().AddListener(OnShowConfirmationPopup);
         }
 
@@ -35,9 +37,11 @@ namespace KidGame.UI.Game
         {
             Signals.Get<StartGameSignal>().RemoveListener(OnToGameScene);
             Signals.Get<ToSettingsWindowSignal>().RemoveListener(OnToSettingsWindow);
-            Signals.Get<GamePauseSignal>().RemoveListener(OnShowPauseSelectPanel);
             
-            Signals.Get<NavigateToWindowSignal>().RemoveListener(OnNavigateToWindow);
+            Signals.Get<OpenBagSignal>().RemoveListener(OnShowBackpackPanel);
+            Signals.Get<OpenPauseSignal>().RemoveListener(OnShowPausePanel);
+            
+            Signals.Get<GotoSelectedPanel>().RemoveListener(OnNavigateToWindow);
             Signals.Get<ShowConfirmationPopupSignal>().RemoveListener(OnShowConfirmationPopup);
         }
 
@@ -92,10 +96,17 @@ namespace KidGame.UI.Game
             uiFrame.OpenWindow(ScreenIds.ConfirmationPopup, popupPayload);
         }
 
-        private void OnShowPauseSelectPanel()
+        private void OnShowBackpackPanel()
         {
-            uiFrame.ShowPanel(ScreenIds.NavigationPanel);
+            uiFrame.ShowPanel(ScreenIds.BackpackPanel);
         }
+
+        private void OnShowPausePanel()
+        {
+            uiFrame.ShowPanel(ScreenIds.PausePanel);
+        }
+        
+        
         #endregion
 
         #region 转场

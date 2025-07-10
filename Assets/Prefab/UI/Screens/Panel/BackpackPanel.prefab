@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 3071248926467063240}
   - component: {fileID: 6882409453483729433}
   m_Layer: 5
-  m_Name: NavigationPanel
+  m_Name: BackpackPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,9 +319,6 @@ MonoBehaviour:
   - sprite: {fileID: 21300000, guid: ff8b2c345452818449c57d99b7cebaff, type: 3}
     buttonText: "\u56FE\u9274"
     targetScreen: MakeWindow
-  - sprite: {fileID: 21300000, guid: cb2abb7033b73b942bc51434daa6167d, type: 3}
-    buttonText: "\u8BBE\u7F6E"
-    targetScreen: SettingWindow
   templateButton: {fileID: 1080301906137745222}
 --- !u!114 &3071248926467063240
 MonoBehaviour:

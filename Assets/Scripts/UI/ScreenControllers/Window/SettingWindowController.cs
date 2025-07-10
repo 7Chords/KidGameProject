@@ -33,9 +33,9 @@ public class SettingWindowController : WindowController
 
     protected override void OnPropertiesSet()
     {
-        /*mainSlider.value = AudioManager.Instance.mainVolumeFactor;
+        mainSlider.value = AudioManager.Instance.mainVolumeFactor;
         bgmSlider.value = AudioManager.Instance.bgmVolumeFactor;
-        sfxSlider.value = AudioManager.Instance.sfxVolumeFactor;*/
+        sfxSlider.value = AudioManager.Instance.sfxVolumeFactor;
     }
 
     public void UI_Save()

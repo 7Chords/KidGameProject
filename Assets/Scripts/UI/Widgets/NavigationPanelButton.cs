@@ -15,7 +15,7 @@ namespace KidGame.UI.Game
 
         public event Action<NavigationPanelButton> ButtonClicked;
 
-        private NavigationPanelEntry navigationData = null;
+        private BackpackPanel backpackData = null;
         private Button _button = null;
 
         private Button button
@@ -33,12 +33,12 @@ namespace KidGame.UI.Game
 
         public string Target
         {
-            get { return navigationData.TargetScreen; }
+            get { return backpackData.TargetScreen; }
         }
 
-        public void SetData(NavigationPanelEntry target)
+        public void SetData(BackpackPanel target)
         {
-            navigationData = target;
+            backpackData = target;
             buttonLabel.text = target.ButtonText;
             icon.sprite = target.Sprite;
         }
@@ -50,9 +50,9 @@ namespace KidGame.UI.Game
 
         public void SetCurrentNavigationTarget(string screenId)
         {
-            if (navigationData != null)
+            if (backpackData != null)
             {
-                button.interactable = navigationData.TargetScreen == screenId;
+                button.interactable = backpackData.TargetScreen == screenId;
             }
         }
 
