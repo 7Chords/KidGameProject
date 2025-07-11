@@ -52,7 +52,7 @@ namespace KidGame.Core
             runAction.canceled += OnRunActionCanceled;
             useAction.performed += OnUseActionPerformed;
             throwAction.performed += OnThrowActionPerformed;
-            bagAction.performed += OnBagActionPerformed;
+            bagAction.performed+= OnBagActionPerformed;
             pickAction.performed += OnPickActionPerformed;
             mouseWheelAction.performed += OnMouseWheelActionPerformed;
             gamePauseAction.performed += OnGamePauseActionPerformed;

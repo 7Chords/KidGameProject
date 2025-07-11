@@ -73,7 +73,7 @@ public class BackpackWindowController : WindowController
         // 设置详细描述面板的位置
         detailPanel.GetComponent<RectTransform>().anchoredPosition = localMousePosition;*/
 
-        detailPanel.transform.position = cellUI.transform.position + new Vector3(1.7f, -1.7f, 0f);
+        detailPanel.transform.position = cellUI.detailPoint.position;
         detailText.text = cellUI.detailText;
         detailPanel.SetActive(true);
     }

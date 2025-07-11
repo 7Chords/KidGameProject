@@ -25,6 +25,7 @@ public class CellUI : MonoBehaviour
     public Image icon;
     public TextMeshProUGUI count;
     public string detailText;
+    public Transform detailPoint;
 
     private float timer = 0f;
     private const float delay = 0.6f; // –¸Õ£ ±º‰„–÷µ

@@ -15,5 +15,5 @@ MonoBehaviour:
   trapData: {fileID: 11400000, guid: 575bb4f0d9d6cf140964fe0a0a44b45c, type: 2}
   recipeType: 2
   materialDatas:
-  - material: {fileID: 11400000, guid: 60d11bcfb5e8d8c4ba8a23aba5c39261, type: 2}
-    count: 2
+  - materialData: {fileID: 11400000, guid: 60d11bcfb5e8d8c4ba8a23aba5c39261, type: 2}
+    amount: 1

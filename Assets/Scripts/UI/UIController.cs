@@ -26,7 +26,7 @@ namespace KidGame.UI.Game
             Signals.Get<ToSettingsWindowSignal>().AddListener(OnToSettingsWindow);
             Signals.Get<ContinueGameSignal>().AddListener(OnToSaveWindow);
             
-            Signals.Get<OpenBagSignal>().AddListener(OnShowBackpackPanel);
+            
             Signals.Get<OpenPauseSignal>().AddListener(OnShowPausePanel);
 
             Signals.Get<GotoSelectedPanel>().AddListener(OnNavigateToWindow);
@@ -38,7 +38,6 @@ namespace KidGame.UI.Game
             Signals.Get<StartGameSignal>().RemoveListener(OnToGameScene);
             Signals.Get<ToSettingsWindowSignal>().RemoveListener(OnToSettingsWindow);
             
-            Signals.Get<OpenBagSignal>().RemoveListener(OnShowBackpackPanel);
             Signals.Get<OpenPauseSignal>().RemoveListener(OnShowPausePanel);
             
             Signals.Get<GotoSelectedPanel>().RemoveListener(OnNavigateToWindow);
@@ -96,10 +95,7 @@ namespace KidGame.UI.Game
             uiFrame.OpenWindow(ScreenIds.ConfirmationPopup, popupPayload);
         }
 
-        private void OnShowBackpackPanel()
-        {
-            uiFrame.ShowPanel(ScreenIds.BackpackPanel);
-        }
+       
 
         private void OnShowPausePanel()
         {

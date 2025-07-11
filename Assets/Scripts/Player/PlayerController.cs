@@ -146,7 +146,7 @@ namespace KidGame.Core
             inputSettings.OnInteractionPress += PlayerInteraction;
             inputSettings.OnPickPress += PlayerPick;
             inputSettings.OnUsePress += TryPlaceTrap;
-            inputSettings.OnBagPress += OpenBag;
+            inputSettings.OnBagPress += ControlBag;
             inputSettings.OnGamePause += GamePause;
         }
 
@@ -158,7 +158,7 @@ namespace KidGame.Core
             inputSettings.OnInteractionPress -= PlayerInteraction;
             inputSettings.OnPickPress -= PlayerPick;
             inputSettings.OnUsePress -= TryPlaceTrap;
-            inputSettings.OnBagPress -= OpenBag;
+            inputSettings.OnBagPress -= ControlBag;
             inputSettings.OnGamePause -= GamePause;
         }
 
@@ -171,10 +171,10 @@ namespace KidGame.Core
             Signals.Get<OpenPauseSignal>().Dispatch();
         }
 
-        private void OpenBag()
+        private void ControlBag()
         {
-            Debug.Log("open bag");
-            Signals.Get<OpenBagSignal>().Dispatch();
+            Debug.Log("control bag");
+            Signals.Get<ControlBagSignal>().Dispatch();
         }
 
         /// <summary>

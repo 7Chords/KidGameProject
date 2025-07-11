@@ -6,7 +6,7 @@ using Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OpenBagSignal : ASignal
+public class ControlBagSignal : ASignal
 {
 }
 
@@ -38,13 +38,29 @@ public class BackpackPanelController : PanelController
     protected override void AddListeners()
     {
         Signals.Get<GotoSelectedPanel>().AddListener(OnExternalNavigation);
+        Signals.Get<ControlBagSignal>().AddListener(Control);
     }
+
+    
 
     protected override void RemoveListeners()
     {
         Signals.Get<GotoSelectedPanel>().RemoveListener(OnExternalNavigation);
+        Signals.Get<ControlBagSignal>().RemoveListener(Control);
     }
-
+    
+    private void Control()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            CloseBag();
+        }
+        else
+        {
+            Show(null);
+        }
+            
+    }
     /// <summary>
     /// 当界面打开时候，这个函数被调用
     /// </summary>
@@ -96,12 +112,11 @@ public class BackpackPanelController : PanelController
         currentButtons.Clear();
     }
 
-    private void Update()
+    public void CloseBag()
     {
-        if (gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.Escape))
-        {
-            Hide();
-            UIController.Instance.CloseCurrentWindow();
-        }
+        Hide();
+        UIController.Instance.CloseCurrentWindow();
     }
+
+    
 }
