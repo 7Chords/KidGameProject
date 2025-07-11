@@ -28,7 +28,7 @@ namespace KidGame.Core
 
             if (!hasPlaced)
             {
-                UIHelper.Instance.ShowTipImmediate(new TipInfo("无法放置陷阱", player.gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("无法放置陷阱", player.gameObject));
                 player.ChangeState(PlayerState.Idle);
             }
         }

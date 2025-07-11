@@ -11,5 +11,11 @@ namespace KidGame
         public const float MIDDLE_RANGE_SOUND_SPREAD = 7.5f;
         public const float LARGE_RANGE_SOUND_SPREAD = 10f;
 
+
+
+
+        public const string SIGN_ICON_DIZZY_PATH = "GUI/Icon/dizzy";
+        public const string SIGN_ICON_ATTENTION_PATH = "GUI/Icon/attention";
+
     }
 }

@@ -84,7 +84,7 @@ namespace KidGame.Core
         {
             if (materialHoldList == null || materialHoldList.Count == 0)
             {
-                UIHelper.Instance.ShowTipImmediate(new TipInfo("空空如也",gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("空空如也",gameObject));
             }
             else
             {

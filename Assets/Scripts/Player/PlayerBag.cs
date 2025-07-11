@@ -69,7 +69,7 @@ namespace KidGame.Core
                 if (_tempTrapBag.Count > _selectedTrapIndex)
                 {
                     string trapName = _tempTrapBag[_selectedTrapIndex].trapData.name;
-                    UIHelper.Instance.ShowTipImmediate(new TipInfo($"已选择: {trapName}", PlayerController.Instance.gameObject));
+                    UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {trapName}", PlayerController.Instance.gameObject));
                 }
                 OnTrapBagUpdated?.Invoke();
             }
@@ -229,7 +229,7 @@ namespace KidGame.Core
         {
             if (index < 0 || index >= _tempTrapBag.Count)
             {
-                UIHelper.Instance.ShowTipImmediate(new TipInfo("无效的陷阱选择", player.gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("无效的陷阱选择", player.gameObject));
                 return false;
             }
 
@@ -243,7 +243,7 @@ namespace KidGame.Core
 
             if (!result)
             {
-                UIHelper.Instance.ShowTipImmediate(new TipInfo("无法在此放置陷阱", player.gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("无法在此放置陷阱", player.gameObject));
                 return false;
             }
 
@@ -254,7 +254,7 @@ namespace KidGame.Core
                 SelectedTrapIndex = _tempTrapBag.Count > 0 ? Mathf.Min(SelectedTrapIndex, _tempTrapBag.Count - 1) : 0;
                 if (_tempTrapBag.Count == 0)
                 {
-                    UIHelper.Instance.ShowTipImmediate(new TipInfo("道具栏已空", player.gameObject));
+                    UIHelper.Instance.ShowOneTip(new TipInfo("道具栏已空", player.gameObject));
                 }
             }
     

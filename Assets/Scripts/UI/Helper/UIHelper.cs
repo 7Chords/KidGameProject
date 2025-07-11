@@ -59,21 +59,43 @@ namespace KidGame.UI
     }
 
     /// <summary>
+    /// 提示图标类
+    /// </summary>
+    public class SignInfo 
+    {
+        public string signIconPath;
+        public GameObject creator;
+        public float showTime;
+
+        public SignInfo(string signIconPath, GameObject creator, float showTime = 0.75f)
+        {
+            this.signIconPath = signIconPath;
+            this.creator = creator;
+            this.showTime = showTime;
+        }
+    }
+
+
+    /// <summary>
     /// 管理一些小的独立的小UI
     /// </summary>
     public class UIHelper : Singleton<UIHelper>
     {
+        //气泡相关字段
         public GameObject BubblePrefab;
         private GameObject currentBubble;
         private BubbleInfo currentBubbleInfo;
         public List<BubbleInfo> bubbleInfoList;
 
 
-        // 提示相关字段
+        // 文字提示相关字段
         public GameObject TipPrefab;
         private Queue<TipInfo> tipQueue = new Queue<TipInfo>();
         private bool isShowingTip = false;
         private Coroutine showTipCoroutine;
+
+        //图标提示相关字段
+        public GameObject SignPrefab;
         private void Start()
         {
             Init();
@@ -189,7 +211,7 @@ namespace KidGame.UI
             while (tipQueue.Count > 0)
             {
                 TipInfo tipInfo = tipQueue.Dequeue();
-                ShowTipImmediate(tipInfo);
+                ShowOneTip(tipInfo);
                 // 如果不是最后一个提示，等待间隔时间
                 yield return new WaitForSeconds(intervalTime);
             }
@@ -198,8 +220,11 @@ namespace KidGame.UI
             showTipCoroutine = null;
         }
 
-
-        public void ShowTipImmediate(TipInfo tipInfo)
+        /// <summary>
+        /// 直接展示一个提示信息
+        /// </summary>
+        /// <param name="tipInfo"></param>
+        public void ShowOneTip(TipInfo tipInfo)
         {
             GameObject tipGO = Instantiate(TipPrefab);
             tipGO.transform.SetParent(transform);
@@ -221,6 +246,21 @@ namespace KidGame.UI
             }
 
             isShowingTip = false;
+        }
+        #endregion
+
+        #region Sign
+
+        /// <summary>
+        /// 直接展示一个图标信息
+        /// </summary>
+        /// <param name="signInfo"></param>
+        public void ShowOneSign(SignInfo signInfo)
+        {
+            GameObject signGO = Instantiate(SignPrefab);
+            signGO.transform.SetParent(transform);
+            signGO.GetComponent<UISignItem>().Init(signInfo.creator, signInfo.signIconPath);
+            Destroy(signGO, signInfo.showTime);
         }
         #endregion
 
