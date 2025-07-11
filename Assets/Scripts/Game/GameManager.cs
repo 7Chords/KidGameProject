@@ -49,9 +49,6 @@ namespace KidGame.Core
             PlayerManager.Instance.Init();
             MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(gameData.levelDataList);
-            
-            //uiController´ò¿ªhud
-            Signals.Get<StartGameSignal>().Dispatch();
         }
 
         private void DiscardGame()
