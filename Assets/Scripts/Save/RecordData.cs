@@ -8,11 +8,11 @@ namespace KidGame.Core
         public const int recordNum = 3; //档位数
         public const string NAME = "RecordData"; //存档列表名
         
-        // 游戏外数据字段
-        public List<string> unlockedItems = new List<string>(); // 已解锁物品
-
         public string[] recordName = new string[recordNum]; //存档文件名
         public int lastID; //最新存档序号(用于重启时自动读档)
+        
+        // 游戏外数据字段
+        public List<string> unlockedItems = new List<string>(); // 已解锁物品
 
         class SaveData
         {
@@ -47,8 +47,7 @@ namespace KidGame.Core
             {
                 recordName[i] = savedata.recordName[i];
             }
-
-
+            
             // 游戏外数据加载
             unlockedItems = savedata.unlockedItems ?? new List<string>();
         }

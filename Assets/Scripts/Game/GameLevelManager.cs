@@ -116,7 +116,7 @@ namespace KidGame.Core
                 levelIndex = 0;
             }
             
-            PlayerSaveData.Instance.Save(1);
+            PlayerSaveData.Instance.AutoSave();
             LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].levelResData);
         }
 

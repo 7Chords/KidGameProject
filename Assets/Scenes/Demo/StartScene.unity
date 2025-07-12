@@ -357,12 +357,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193729fe642096c45aa93a1f85c04594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlockedItems: []
   recordName:
   - 
   - 
   - 
-  lastID: 999
+  lastID: 0
+  unlockedItems: []
 --- !u!4 &626871472
 Transform:
   m_ObjectHideFlags: 0
@@ -372,7 +372,7 @@ Transform:
   m_GameObject: {fileID: 626871470}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1821.9471, y: -1195.3622, z: -53.292645}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -393,6 +393,7 @@ MonoBehaviour:
   level: 0
   scensName: 
   gameTime: 0
+  currentSaveSlot: -1
   trapBag: []
   materialBag: []
   currentDay: 0

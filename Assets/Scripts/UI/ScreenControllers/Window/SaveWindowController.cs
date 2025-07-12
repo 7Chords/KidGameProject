@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 namespace KidGame.UI
 {
     public class SaveWindowController : WindowController
@@ -12,9 +13,14 @@ namespace KidGame.UI
         public Transform grid; //档位父对象
         public GameObject recordPrefab; //档位预制体
 
-        [Header("存档详情")] public GameObject detail; //存档详情
+        [Header("存档详情")] 
+        public GameObject detail; //存档详情
         public Text gameTime; //时长
         public Text sceneName; //所在场景
+        public Button loadButton; //读取按钮
+        public Button deleteButton; //删除按钮
+
+        private int currentSelectedID = -1; //当前选中的档位ID
 
         private void Start()
         {
@@ -32,6 +38,9 @@ namespace KidGame.UI
             SaveCell.OnLeftClick += LeftClickGrid;
             SaveCell.OnEnter += ShowDetails;
             SaveCell.OnExit += HideDetails;
+            
+            loadButton.onClick.AddListener(OnLoadButtonClick);
+            deleteButton.onClick.AddListener(OnDeleteButtonClick);
         }
 
         private void OnDestroy()
@@ -39,34 +48,65 @@ namespace KidGame.UI
             SaveCell.OnLeftClick -= LeftClickGrid;
             SaveCell.OnEnter -= ShowDetails;
             SaveCell.OnExit -= HideDetails;
+            
+            loadButton.onClick.RemoveListener(OnLoadButtonClick);
+            deleteButton.onClick.RemoveListener(OnDeleteButtonClick);
         }
 
         void ShowDetails(int i)
         {
-            //读取存档，但不修改玩家数据，仅用于显示
+            currentSelectedID = i;
+            
             var data = PlayerSaveData.Instance.ReadForShow(i);
             gameTime.text = $"游戏时长  {TimeMgr.GetFormatTime((int)data.gameTime)}";
             sceneName.text = $"所在场景  {data.scensName}";
+
+            // 只有有存档时才显示按钮
+            bool hasSave = RecordData.Instance.recordName[i] != "";
+            loadButton.gameObject.SetActive(hasSave);
+            deleteButton.gameObject.SetActive(hasSave);
 
             detail.SetActive(true);
         }
 
         void HideDetails()
         {
-            //隐藏详情
+            currentSelectedID = -1;
             detail.SetActive(false);
         }
 
-        //左击加载存档
+        // 读取按钮点击事件
+        void OnLoadButtonClick()
+        {
+            if (currentSelectedID != -1)
+            {
+                LoadRecord(currentSelectedID);
+            }
+        }
+
+        // 删除按钮点击事件
+        void OnDeleteButtonClick()
+        {
+            if (currentSelectedID != -1)
+            {
+                // 删除存档
+                RecordData.Instance.recordName[currentSelectedID] = "";
+                PlayerSaveData.Instance.Delete(currentSelectedID);
+                
+                // 更新UI
+                Transform cell = grid.GetChild(currentSelectedID);
+                cell.GetComponent<SaveCell>().SetName(currentSelectedID);
+                
+                // 隐藏详情和按钮
+                detail.SetActive(false);
+                currentSelectedID = -1;
+            }
+        }
+        
         void LeftClickGrid(int gridID)
         {
-            //空档什么都不做
-            if (RecordData.Instance.recordName[gridID] == "")
-                return;
-            else
-            {
-                LoadRecord(gridID);
-            }
+            currentSelectedID = gridID;
+            ShowDetails(gridID);
         }
 
         void LoadRecord(int i)
@@ -80,6 +120,8 @@ namespace KidGame.UI
                 RecordData.Instance.lastID = i;
                 RecordData.Instance.Save();
             }
+            
+            PlayerSaveData.Instance.currentSaveSlot = i;
 
             //跳转场景
             SceneManager.LoadScene(PlayerSaveData.Instance.scensName);

@@ -1,10 +1,8 @@
 ﻿using KidGame.Core;
 using KidGame.UI.Game;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
+
 
 namespace KidGame.UI
 {
@@ -36,7 +34,7 @@ namespace KidGame.UI
             //读取存档列表
             RecordData.Instance.Load();
             
-            if (RecordData.Instance.lastID >= 4)
+            if (RecordData.Instance.lastID != 123)
             {
                 continueButton.gameObject.SetActive(false);
             }
@@ -49,21 +47,45 @@ namespace KidGame.UI
         
         public void UI_Start()
         {
-            //初始化玩家数据
-            //可以在Player里写个Init函数，也可以在预制体上直接设置
-
-            //跳转至默认场景
+            // 创建新存档
+            int saveSlot = GetAvailableSaveSlot();
+            
+            string saveName = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            RecordData.Instance.recordName[saveSlot] = saveName;
+            RecordData.Instance.lastID = saveSlot;
+            RecordData.Instance.Save();
+            
+            PlayerSaveData.Instance.scensName = "GameScene";
+            PlayerSaveData.Instance.level = 1;
+            PlayerSaveData.Instance.gameTime = 0;
+            PlayerSaveData.Instance.currentSaveSlot = saveSlot; // 设置当前存档编号
+            PlayerSaveData.Instance.Save(saveSlot);
+    
+            // 跳转场景
             SceneLoader.Instance.LoadSceneWithTransition("GameScene",
                 UIController.Instance.UICameraBindingVertexCamera);
             
             Hide();
         }
 
+        private int GetAvailableSaveSlot()
+        {
+            // 检查是否有空存档位
+            for (int i = 0; i < RecordData.recordNum; i++)
+            {
+                if (string.IsNullOrEmpty(RecordData.Instance.recordName[i]))
+                {
+                    return i;
+                }
+            }
+            
+            // 如果没有空位，默认覆盖第一个存档
+            return 0;
+        }
+
         public void UI_Continue()
         {
             // 读取最新存档
-            // LoadRecord(RecordData.Instance.lastID);
-            
             Signals.Get<ContinueGameSignal>().Dispatch();
         }
 

@@ -1,22 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 namespace KidGame.Core
 {
-    /// <summary>
-    /// 玩家存档数据
-    /// </summary>
     public class PlayerSaveData : SingletonPersistent<PlayerSaveData>
     {
         public int level; // 当前等级
         public string scensName; // 场景名称  
         public float gameTime; // 游戏时间
+        public int currentSaveSlot = -1; // 当前存档编号(-1表示未存档)
         
         // 背包数据
         public List<TrapSlotInfo> trapBag = new List<TrapSlotInfo>();
         public List<MaterialSlotInfo> materialBag = new List<MaterialSlotInfo>();
         
-        // 只保存当前天数
+        // 当前天数
         public int currentDay;
 
         [System.Serializable]
@@ -25,6 +24,7 @@ namespace KidGame.Core
             public string scensName;
             public int level;
             public float gameTime;
+            public int currentSaveSlot;
             
             public List<TrapSlotInfo> trapBag;
             public List<MaterialSlotInfo> materialBag;
@@ -37,10 +37,16 @@ namespace KidGame.Core
             savedata.scensName = scensName;
             savedata.level = level;
             savedata.gameTime = gameTime;
-            
-            savedata.trapBag = trapBag;
-            savedata.materialBag = materialBag;
-            savedata.currentDay = GameLevelManager.Instance.GetCurrentDay();
+            savedata.currentSaveSlot = currentSaveSlot;
+
+            // 保存数据
+            if (PlayerBag.Instance != null)
+            {
+                savedata.trapBag = PlayerBag.Instance._trapBag;
+                savedata.materialBag = PlayerBag.Instance._materialBag;
+            }
+            if (GameLevelManager.Instance != null)
+                savedata.currentDay = GameLevelManager.Instance.GetCurrentDay();
             
             return savedata;
         }
@@ -50,6 +56,7 @@ namespace KidGame.Core
             scensName = savedata.scensName;
             level = savedata.level;
             gameTime = savedata.gameTime;
+            currentSaveSlot = savedata.currentSaveSlot;
             
             trapBag = savedata.trapBag ?? new List<TrapSlotInfo>();
             materialBag = savedata.materialBag ?? new List<MaterialSlotInfo>();
@@ -58,13 +65,21 @@ namespace KidGame.Core
 
         public void Save(int id)
         {
-            // 保存前更新数据
-            trapBag = PlayerBag.Instance.GetTrapSlots();
-            materialBag = PlayerBag.Instance.GetMaterialSlots();
+            // 更新当前存档编号
+            currentSaveSlot = id;
             
             RecordData.Instance.UpdateGlobalData();
             
             SAVE.JsonSave(RecordData.Instance.recordName[id], ForSave());
+        }
+
+        // 自动保存到当前存档
+        public void AutoSave()
+        {
+            if (currentSaveSlot >= 0)
+            {
+                Save(currentSaveSlot);
+            }
         }
 
         public void Load(int id)
@@ -77,6 +92,9 @@ namespace KidGame.Core
                 // 加载后更新数据
                 PlayerBag.Instance.LoadBagData(trapBag, materialBag);
                 GameLevelManager.Instance.SetCurrentDay(currentDay);
+                
+                // 设置当前存档编号
+                currentSaveSlot = id;
             }
         }
 
@@ -88,6 +106,10 @@ namespace KidGame.Core
         public void Delete(int id)
         {
             SAVE.JsonDelete(RecordData.Instance.recordName[id]);
+            if (currentSaveSlot == id)
+            {
+                currentSaveSlot = -1;
+            }
         }
     }
 }
