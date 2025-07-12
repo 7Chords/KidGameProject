@@ -2,13 +2,14 @@ using KidGame.Core;
 using KidGame.Interface;
 using KidGame.UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace KidGame.Core
 {
     ///perosona!!
     public class SmallBoom : TrapBase
     {
-        public float damage;
+        [FormerlySerializedAs("damage")] public float damage2;
         public float force;
         public float damageArea;
         public BuffData buffData;
@@ -28,7 +29,7 @@ namespace KidGame.Core
                 {
                     if (coll.gameObject.tag != "Enemy") continue;
                     dir = (coll.transform.position - transform.position).normalized;
-                    damageable.TakeDamage(new DamageInfo(gameObject, damage, 
+                    damageable.TakeDamage(new DamageInfo(gameObject, damage2, 
                         new BuffInfo(buffData,coll.gameObject,new object[] { dir * force })));//额外传递一个力的参数
                     //todo
                     GameManager.Instance.AddScore(Score);
