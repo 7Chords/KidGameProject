@@ -3949,15 +3949,3 @@ MonoBehaviour:
       y: 14
     roomType: 0
     rotation: 90
-  - furnitureData: {fileID: 11400000, guid: 4b32c2ae4114ba543974a1f26fc426aa, type: 2}
-    mapPosList:
-    - x: 13
-      y: 3
-    - x: 13
-      y: 2
-    - x: 12
-      y: 3
-    - x: 12
-      y: 2
-    roomType: 0
-    rotation: 180
