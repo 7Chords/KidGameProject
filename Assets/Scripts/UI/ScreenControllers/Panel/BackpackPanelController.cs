@@ -41,9 +41,7 @@ public class BackpackPanelController : PanelController
         Signals.Get<GotoSelectedPanel>().AddListener(OnExternalNavigation);
         Signals.Get<ControlBagSignal>().AddListener(Control);
     }
-
     
-
     protected override void RemoveListeners()
     {
         Signals.Get<GotoSelectedPanel>().RemoveListener(OnExternalNavigation);
@@ -62,8 +60,8 @@ public class BackpackPanelController : PanelController
             GameManager.Instance.GamePause();
             Show(null);
         }
-            
     }
+    
     /// <summary>
     /// 当界面打开时候，这个函数被调用
     /// </summary>

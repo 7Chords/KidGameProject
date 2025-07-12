@@ -357,11 +357,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193729fe642096c45aa93a1f85c04594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unlockedItems: []
   recordName:
   - 
   - 
   - 
-  lastID: 0
+  lastID: 999
 --- !u!4 &626871472
 Transform:
   m_ObjectHideFlags: 0

@@ -1,13 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using KidGame.Core;
 using KidGame.UI;
-using UnityEngine;
 using UnityEngine.UI;
+using Utils;
+
+public class GameFailSignal : ASignal
+{
+}
 
 public class GameFailWindowController : WindowController
 {
+    public Text scoreText;
+    
     public Button restartButton;
     public Button quitButton;
 

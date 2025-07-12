@@ -90,13 +90,13 @@ namespace KidGame.Core
 
         public int GetCurrentLoopScore()
         {
-            return currentLoopScore;
+            return _currentLoopScore;
         }
 
         // 清空分数方法，每个新白天开始时调用
         public void ResetLoopScore()
         {
-            currentLoopScore = 0;
+            _currentLoopScore = 0;
         }
 
         #endregion

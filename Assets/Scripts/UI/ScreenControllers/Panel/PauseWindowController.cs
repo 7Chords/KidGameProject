@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using KidGame.Core;
 using KidGame.UI;
 using KidGame.UI.Game;
@@ -12,7 +9,7 @@ public class OpenPauseSignal : ASignal
 {
 }
 
-public class PausePanelController : PanelController
+public class PauseWindowController : WindowController
 {
     [Header("UI Elements")]
     [SerializeField] private Button resumeButton;
@@ -72,8 +69,8 @@ public class PausePanelController : PanelController
     
     public void UI_Quit()
     {
-        // SceneLoader.Instance.LoadSceneWithTransition("StartScene",
-        //     UIController.Instance.UICameraBindingVertexCamera);
+        SceneLoader.Instance.LoadSceneWithTransition("StartScene",
+            UIController.Instance.UICameraBindingVertexCamera);
     }    
 
     #endregion

@@ -194,19 +194,9 @@ namespace KidGame.Core
             _currentDay = day;
         }
         
-        public void SetTotalDays(int days)
-        {
-            _totalDays = days;
-        }
-        
         public int GetCurrentDay()
         {
             return _currentDay;
-        }
-        
-        public int GetTotalDays()
-        {
-            return _totalDays;
         }
 
         #endregion

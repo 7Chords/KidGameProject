@@ -1,5 +1,6 @@
 ﻿using KidGame.Core;
 using KidGame.UI.Game;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -25,6 +26,27 @@ namespace KidGame.UI
 
     public class StartWindowController : WindowController
     {
+        public Button startButton;
+        public Button continueButton;
+        public Button settingsButton;
+        public Button exitButton;
+        
+        private void Start()
+        {
+            //读取存档列表
+            RecordData.Instance.Load();
+            
+            if (RecordData.Instance.lastID >= 4)
+            {
+                continueButton.gameObject.SetActive(false);
+            }
+            
+            startButton.onClick.AddListener(UI_Start);
+            continueButton.onClick.AddListener(UI_Continue);
+            settingsButton.onClick.AddListener(UI_Setting);
+            exitButton.onClick.AddListener(UI_Exit);
+        }
+        
         public void UI_Start()
         {
             //初始化玩家数据
@@ -53,17 +75,6 @@ namespace KidGame.UI
         public void UI_Exit()
         {
             Signals.Get<ExitGameSignal>().Dispatch();
-        }
-
-        private void Start()
-        {
-            //读取存档列表
-            RecordData.Instance.Load();
-            
-            if (RecordData.Instance.lastID != 233)
-            {
-                //有存档才激活按钮
-            }
         }
     }
 }

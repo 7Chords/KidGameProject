@@ -6,7 +6,9 @@ namespace KidGame.UI.Game
 
         public const string BackpackPanel = "BackpackPanel";
         
-        public const string PausePanel = "PausePanel";
+        public const string PauseWindow = "PauseWindow";
+        
+        public const string GameFailWindow = "GameFailWindow";
 
         public const string SettingWindow = "SettingWindow";
 

@@ -26,7 +26,7 @@ namespace KidGame.UI.Game
             Signals.Get<ToSettingsWindowSignal>().AddListener(OnToSettingsWindow);
             Signals.Get<ContinueGameSignal>().AddListener(OnToSaveWindow);
             
-            
+            Signals.Get<GameFailSignal>().AddListener(OnShowFailPanel);
             Signals.Get<OpenPauseSignal>().AddListener(OnShowPausePanel);
 
             Signals.Get<GotoSelectedPanel>().AddListener(OnNavigateToWindow);
@@ -38,6 +38,7 @@ namespace KidGame.UI.Game
             Signals.Get<StartGameSignal>().RemoveListener(OnToGameScene);
             Signals.Get<ToSettingsWindowSignal>().RemoveListener(OnToSettingsWindow);
             
+            Signals.Get<GameFailSignal>().RemoveListener(OnShowFailPanel);
             Signals.Get<OpenPauseSignal>().RemoveListener(OnShowPausePanel);
             
             Signals.Get<GotoSelectedPanel>().RemoveListener(OnNavigateToWindow);
@@ -94,14 +95,16 @@ namespace KidGame.UI.Game
         {
             uiFrame.OpenWindow(ScreenIds.ConfirmationPopup, popupPayload);
         }
-
-       
-
+        
         private void OnShowPausePanel()
         {
-            uiFrame.ShowPanel(ScreenIds.PausePanel);
+            uiFrame.OpenWindow(ScreenIds.PauseWindow);
         }
-        
+
+        private void OnShowFailPanel()
+        {
+            uiFrame.OpenWindow(ScreenIds.GameFailWindow);
+        }
         
         #endregion
 

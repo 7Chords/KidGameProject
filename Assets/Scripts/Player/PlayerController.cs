@@ -169,7 +169,6 @@ namespace KidGame.Core
 
         private void ControlBag()
         {
-            Debug.Log("control bag");
             Signals.Get<ControlBagSignal>().Dispatch();
         }
 
@@ -435,7 +434,8 @@ namespace KidGame.Core
 
         public void Dead()
         {
-            //TODO:临时测试，可以加上游戏结束UI
+            //TODO:临时测试
+            GameManager.Instance.GameOver();
             Destroy(gameObject);
         }
         
