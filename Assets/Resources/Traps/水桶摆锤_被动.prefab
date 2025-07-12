@@ -410,6 +410,7 @@ MonoBehaviour:
   Damage: 10
   HalfDamageArea: {x: 0.9, y: 0.9, z: 0.9}
   Buff: {fileID: 0}
+  Score: 100
 --- !u!208 &6590951284150574801
 NavMeshObstacle:
   m_ObjectHideFlags: 0

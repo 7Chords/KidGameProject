@@ -34,6 +34,10 @@ public class GamePlayPanelController : MonoBehaviour
 
     #endregion
 
+    #region 分数变量
+    public Text ScoreText;
+    #endregion
+
     private void Start()
     {
         RegisterEvents();
@@ -78,7 +82,9 @@ public class GamePlayPanelController : MonoBehaviour
         }
         
         PlayerBag.Instance.OnTrapBagUpdated += UpdateTrapHud;
+        GameManager.Instance.OnCurrentLoopScoreChanged += CurrentLoopScoreChanged;
     }
+
 
     private void UnregisterAllEvents()
     {
@@ -217,7 +223,14 @@ public class GamePlayPanelController : MonoBehaviour
     }
 
     #endregion
-    
+
+    #region 分数UI
+    private void CurrentLoopScoreChanged(int score)
+    {
+        ScoreText.text = score.ToString();
+    }
+    #endregion
+
     private void UpdateTimeClock(GameLevelManager.LevelPhase phase, float timePercentage)
     {
         if (clockBar != null)

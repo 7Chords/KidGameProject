@@ -10,7 +10,8 @@ namespace KidGame.Core
         {
             player.PlayAnimation("Dash");
             player.ProduceSound(GlobalValue.MIDDLE_RANGE_SOUND_SPREAD);
-            player.Rb.AddForce(player.transform.forward * 10f, ForceMode.Impulse);
+            //todo
+            player.Rb.AddForce(player.transform.forward * 50f, ForceMode.Impulse);
             // todo.ÏûºÄÌåÁ¦
             player.ConsumeStamina(10f);
         }

@@ -15,13 +15,17 @@ namespace KidGame.Core
 
         private Vector3 dir;
         private bool hasCausedDamage;
+        public int Score;
+        public ParticleSystem FireTailPartical;
         public override void Trigger()
         {
             trapData.deadDelayTime = Power / PowerCostPerSecond;
             Vector3 noFixDir = (transform.position - interactor.transform.position).normalized;
             dir = new Vector3(noFixDir.x, 0, noFixDir.z);
-            transform.LookAt(dir);
+            transform.rotation = Quaternion.LookRotation(dir);
+            //transform.LookAt(dir);
             this.OnFixedUpdate(PerformTick);
+            FireTailPartical.Play();
         }
 
         public override void Discard()
@@ -42,8 +46,10 @@ namespace KidGame.Core
                     if (coll == null) return;
                     if(coll.gameObject.tag == "Enemy")
                     {
+                        hasCausedDamage = true;
                         coll.GetComponent<EnemyController>().TakeDamage(
                             new DamageInfo(gameObject, Damage, Buff ? new BuffInfo(Buff, coll.gameObject) : null));
+                        GameManager.Instance.AddScore(Score);
                     }
                 }
             }

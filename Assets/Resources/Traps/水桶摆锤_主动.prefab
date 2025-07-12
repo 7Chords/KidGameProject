@@ -61,6 +61,7 @@ MonoBehaviour:
   Damage: 10
   HalfDamageArea: {x: 0.9, y: 0.9, z: 0.9}
   Buff: {fileID: 0}
+  Score: 75
 --- !u!54 &7970254089266403970
 Rigidbody:
   m_ObjectHideFlags: 0

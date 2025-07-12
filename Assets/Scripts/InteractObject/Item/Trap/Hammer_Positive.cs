@@ -12,6 +12,7 @@ namespace KidGame.Core
         public Vector3 HalfDamageArea;
         public BuffData Buff;
         private bool hasCausedDamage;
+        public int Score;
         public override void Trigger()
         {
             Vector3 dir = (transform.position - interactor.transform.position).normalized;
@@ -36,8 +37,10 @@ namespace KidGame.Core
                     if (coll == null) return;
                     if (coll.gameObject.tag == "Enemy")
                     {
+                        hasCausedDamage = true;
                         coll.GetComponent<EnemyController>().TakeDamage(
                             new DamageInfo(gameObject, Damage, Buff ? new BuffInfo(Buff, coll.gameObject) : null));
+                        GameManager.Instance.AddScore(Score);
                     }
                 }
             }

@@ -2,6 +2,7 @@ using UnityEngine;
 using KidGame.Core.Data;
 using KidGame.UI;
 using Utils;
+using System;
 
 namespace KidGame.Core
 {
@@ -26,7 +27,10 @@ namespace KidGame.Core
 
         // 用于本轮（白天+夜晚）的总得分
         private int currentLoopScore;
+
         public int CurrentLoopScore => currentLoopScore;
+
+        public Action<int> OnCurrentLoopScoreChanged;
 
         #endregion
 
@@ -76,12 +80,12 @@ namespace KidGame.Core
         {
             gameFinished = true;
         }
-
         public void GameOver()
         {
             gameFinished = true;
             Signals.Get<GameFailSignal>().Dispatch();
         }
+
 
         #endregion
 
@@ -91,17 +95,25 @@ namespace KidGame.Core
         public void AddScore(int score)
         {
             currentLoopScore += score;
+            OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
+            UIHelper.Instance.ShowOneSildUIText("+" + score, 0.75f);
+        }
+
+        public int GetCurrentLoopScore()
+        {
+            return currentLoopScore;
         }
 
         // 清空分数方法，每个新白天开始时调用
         public void ResetLoopScore()
         {
             currentLoopScore = 0;
+            OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
         }
 
         #endregion
 
-        #region 功能性
+        #region 游戏暂停
         public void GamePause()
         {
             isGamePuased = true;

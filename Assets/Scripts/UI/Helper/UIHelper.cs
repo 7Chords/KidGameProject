@@ -96,6 +96,10 @@ namespace KidGame.UI
 
         //图标提示相关字段
         public GameObject SignPrefab;
+
+        //固定UI位置相关字段
+        public GameObject SideTextPrefab;
+        public Transform SideShowPos;
         private void Start()
         {
             Init();
@@ -262,6 +266,20 @@ namespace KidGame.UI
             signGO.GetComponent<UISignItem>().Init(signInfo.creator, signInfo.signIconPath);
             Destroy(signGO, signInfo.showTime);
         }
+        #endregion
+
+        #region SideText
+        /// <summary>
+        /// 展示一个屏幕侧边的UI文本（用于分数等）
+        /// </summary>
+        public void ShowOneSildUIText(string content,float showTime)
+        {
+            GameObject sideTextGO = Instantiate(SideTextPrefab);
+            sideTextGO.transform.SetParent(transform);
+            sideTextGO.GetComponent<UISideTextItem>().Init(content);
+            Destroy(sideTextGO, showTime);
+        }
+
         #endregion
 
         #region Util

@@ -253,6 +253,7 @@ MonoBehaviour:
   force: 7
   damageArea: 1
   buffData: {fileID: 11400000, guid: 8ca0db8cd28c1194f81b6b508c9412bc, type: 2}
+  Score: 50
 --- !u!54 &3837358763428482020
 Rigidbody:
   m_ObjectHideFlags: 0
