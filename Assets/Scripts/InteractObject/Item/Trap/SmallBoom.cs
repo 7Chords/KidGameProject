@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+    ///perosona!!
     public class SmallBoom : TrapBase
     {
         public float damage;
