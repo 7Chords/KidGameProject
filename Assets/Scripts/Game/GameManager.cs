@@ -26,7 +26,6 @@ namespace KidGame.Core
 
         // 用于本轮（白天+夜晚）的总得分
         private int currentLoopScore;
-
         public int CurrentLoopScore => currentLoopScore;
 
         #endregion
@@ -78,6 +77,12 @@ namespace KidGame.Core
             gameFinished = true;
         }
 
+        public void GameOver()
+        {
+            gameFinished = true;
+            Signals.Get<GameFailSignal>().Dispatch();
+        }
+
         #endregion
 
         #region 分数统计
@@ -88,15 +93,10 @@ namespace KidGame.Core
             currentLoopScore += score;
         }
 
-        public int GetCurrentLoopScore()
-        {
-            return _currentLoopScore;
-        }
-
         // 清空分数方法，每个新白天开始时调用
         public void ResetLoopScore()
         {
-            _currentLoopScore = 0;
+            currentLoopScore = 0;
         }
 
         #endregion
