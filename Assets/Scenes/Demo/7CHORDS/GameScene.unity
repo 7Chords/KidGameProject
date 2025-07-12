@@ -401,7 +401,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &751655038
+--- !u!84 &553616184
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -838,7 +838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89aed9d37c2c0943894d959fe2c47c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameData: {fileID: 11400000, guid: a52eb694c66d0394d8303d3b69706507, type: 2}
+  GameData: {fileID: 11400000, guid: a52eb694c66d0394d8303d3b69706507, type: 2}
   mapData: {fileID: 11400000, guid: 7bc200724a03a15459ddf605391cf50e, type: 2}
   TestMode: 0
 --- !u!114 &1406033295
@@ -1603,7 +1603,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 751655038}
+      objectReference: {fileID: 553616184}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size

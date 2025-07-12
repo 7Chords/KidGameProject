@@ -52,13 +52,13 @@ public class PausePanelController : PanelController
 
     private void PauseGame()
     {
-        Time.timeScale = 0f;
+        GameManager.Instance.GamePause();
         Show();
     }
 
     private void ResumeGame()
     {
-        Time.timeScale = 1f;
+        GameManager.Instance.GameResume();
         Hide();
         isPaused = false;
     }

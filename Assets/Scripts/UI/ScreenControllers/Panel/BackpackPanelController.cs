@@ -5,6 +5,7 @@ using KidGame.UI.Game;
 using Utils;
 using UnityEngine;
 using UnityEngine.UI;
+using KidGame.Core;
 
 public class ControlBagSignal : ASignal
 {
@@ -53,10 +54,12 @@ public class BackpackPanelController : PanelController
     {
         if (gameObject.activeInHierarchy)
         {
+            GameManager.Instance.GameResume();
             CloseBag();
         }
         else
         {
+            GameManager.Instance.GamePause();
             Show(null);
         }
             

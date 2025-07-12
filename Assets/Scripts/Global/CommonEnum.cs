@@ -16,6 +16,7 @@
         Use = 5,
         Throw = 6,
         Pick = 7,
-        Switch = 8,
+        MouseWheel = 8,
+        GamePause = 9,
     }
 }

@@ -7,23 +7,27 @@ namespace KidGame.Core
 {
     public class GameManager : Singleton<GameManager>
     {
-        public GameData gameData;
+        public GameData GameData;
 
         //总的游戏开始
-        private bool _gameStarted;
+        private bool gameStarted;
 
         //总的游戏结束
-        private bool _gameFinished;
+        private bool gameFinished;
 
 
-        private int _levelIndex;
+        private int levelIndex;
+
+        //游戏暂停
+        private bool isGamePuased;
+        public bool IsGamePaused => isGamePuased;
 
         #region 分数变量
 
         // 用于本轮（白天+夜晚）的总得分
-        private int _currentLoopScore;
+        private int currentLoopScore;
 
-        public int CurrentLoopScore => _currentLoopScore;
+        public int CurrentLoopScore => currentLoopScore;
 
         #endregion
 
@@ -48,7 +52,7 @@ namespace KidGame.Core
             //如果点击继续游戏，需要读取存档数据
             PlayerManager.Instance.Init();
             MapManager.Instance.Init(mapData);
-            GameLevelManager.Instance.Init(gameData.levelDataList);
+            GameLevelManager.Instance.Init(GameData.levelDataList);
         }
 
         private void DiscardGame()
@@ -64,14 +68,14 @@ namespace KidGame.Core
         /// </summary>
         public void StartGame()
         {
-            _gameStarted = true;
+            gameStarted = true;
             GameLevelManager.Instance.InitFirstLevel();
             GameLevelManager.Instance.StartDayPhase();
         }
 
         public void FinishGame()
         {
-            _gameFinished = true;
+            gameFinished = true;
         }
 
         #endregion
@@ -81,20 +85,33 @@ namespace KidGame.Core
         // 外部调用，比如陷阱命中、击杀敌人时调用
         public void AddScore(int score)
         {
-            _currentLoopScore += score;
+            currentLoopScore += score;
         }
 
         public int GetCurrentLoopScore()
         {
-            return _currentLoopScore;
+            return currentLoopScore;
         }
 
         // 清空分数方法，每个新白天开始时调用
         public void ResetLoopScore()
         {
-            _currentLoopScore = 0;
+            currentLoopScore = 0;
         }
 
+        #endregion
+
+        #region 功能性
+        public void GamePause()
+        {
+            isGamePuased = true;
+            Time.timeScale = 0;
+        }
+        public void GameResume()
+        {
+            isGamePuased = false;
+            Time.timeScale = 1;
+        }
         #endregion
     }
 }

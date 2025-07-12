@@ -16,6 +16,7 @@ namespace KidGame.Core
 
         public override void Update()
         {
+            base.Update();
         }
 
         private void TryPlaceTrap()

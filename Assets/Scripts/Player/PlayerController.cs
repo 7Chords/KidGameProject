@@ -104,10 +104,6 @@ namespace KidGame.Core
             currentStamina = maxStamina;
         }
         
-        private void Update()
-        {
-            UpdateStamina();
-        }
 
         public void Init()
         {
@@ -443,7 +439,7 @@ namespace KidGame.Core
             Destroy(gameObject);
         }
         
-        private void UpdateStamina()
+        public void UpdateStamina()
         {
             if (isRecovering)
             {

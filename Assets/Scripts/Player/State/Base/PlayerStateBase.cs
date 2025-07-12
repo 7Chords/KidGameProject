@@ -15,5 +15,10 @@ namespace KidGame.Core
             player = (PlayerController)owner;
         }
 
+        public override void Update()
+        {
+            player.UpdateStamina();
+        }
+
     }
 }

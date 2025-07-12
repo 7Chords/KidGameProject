@@ -7,6 +7,7 @@ namespace KidGame.Core
     {
         public override void Update()
         {
+            base.Update();
             if(player.InputSettings.GetStruggleDown())
             {
                 player.Struggle();

@@ -100,31 +100,37 @@ namespace KidGame.Core
 
         private void OnInteractionActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnInteractionPress?.Invoke();
         }
 
         private void OnDashActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnDashPress?.Invoke();
         }
 
         private void OnRunActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnRunPress?.Invoke();
         }
 
         private void OnRunActionCanceled(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnRunRelease?.Invoke();
         }
 
         private void OnUseActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnUsePress?.Invoke();
         }
 
         private void OnThrowActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnThrowPress?.Invoke();
         }
 
@@ -135,16 +141,19 @@ namespace KidGame.Core
 
         private void OnPickActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnPickPress?.Invoke();
         }
 
         private void OnMouseWheelActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnMouseWheelPress?.Invoke();
         }
 
         private void OnGamePauseActionPerformed(InputAction.CallbackContext context)
         {
+            if (GameManager.Instance.IsGamePaused) return;
             OnGamePause?.Invoke();
         }
 
