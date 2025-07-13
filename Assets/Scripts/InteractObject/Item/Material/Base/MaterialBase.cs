@@ -15,7 +15,7 @@ namespace KidGame.Core
 
         public MaterialData materialData => _materialData;
 
-        public override string itemName => _materialData.materialName;
+        public override string EntityName => _materialData.materialName;
 
         /// <summary>
         /// 初始化
@@ -41,7 +41,7 @@ namespace KidGame.Core
                 MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
             }
 
-            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + itemName + "×1", gameObject));
+            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
             //TODO:工厂回收？
             Destroy(gameObject);
         }

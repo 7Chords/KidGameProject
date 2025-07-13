@@ -13,4 +13,33 @@ MonoBehaviour:
   m_Name: "\u6D4B\u8BD5\u5730\u56FE"
   m_EditorClassIdentifier: 
   MapName: 
-  itemList: []
+  tileList:
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 0
+      y: 0
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 1
+      y: 1
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 0
+      y: 1
+    roomType: 0
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 1
+      y: 0
+    roomType: 0
+  wallList: []
+  furnitureList:
+  - furnitureData: {fileID: 11400000, guid: 37922ba863f448d41a2a187166fc49b4, type: 2}
+    mapPosList:
+    - x: 0
+      y: 0
+    - x: 0
+      y: 1
+    roomType: 0
