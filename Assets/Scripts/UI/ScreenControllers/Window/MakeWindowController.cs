@@ -27,18 +27,19 @@ namespace KidGame.UI
         public TextMeshProUGUI recipeDescriptionText;
 
         private List<MakeMenuButton> makeMenuButtons = new List<MakeMenuButton>();
-
+        private RecipeData currentRecipe;
+        public Button makeButton;
         protected override void Awake()
         {
             base.Awake();
 
             Signals.Get<ShowRecipeSignal>().AddListener(ShowRecipe);
+            makeButton.onClick.AddListener(OnClickMake);
         }
 
         protected override void OnPropertiesSet()
         {
             recipeImage = transform.Find("Right/Icon").GetComponent<Image>();
-
             //根据so初始化列表和其中按钮即可
             //scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count,OnCellUpdate,null);
 
@@ -83,6 +84,7 @@ namespace KidGame.UI
 
         private void ShowRecipe(RecipeData recipe)
         {
+            currentRecipe = recipe;
             recipeNameText.text = recipe.trapData.name;
             if (recipe.recipeType == RecipeType.Trap)
                 recipeImage.sprite = recipe.trapData.trapIcon;
@@ -98,6 +100,20 @@ namespace KidGame.UI
                     cellUI.SetUIWithMaterial(recipe.materialDatas[index - 1]);
                 }
             });
+        }
+
+        private void OnClickMake()
+        {
+            if (PlayerBag.Instance.TryDelItemInBag(null, currentRecipe.materialDatas))
+            {
+
+                PlayerBag.Instance.TryAddToTempTrapBag(currentRecipe.trapData);
+                UIHelper.Instance.ShowOneTipWithParent(new TipInfo("打造了"+currentRecipe.trapData.trapName,gameObject),transform);
+            }
+            else
+            {
+                UIHelper.Instance.ShowOneTipWithParent(new TipInfo("材料不足！",gameObject),transform);
+            }
         }
     }
 }

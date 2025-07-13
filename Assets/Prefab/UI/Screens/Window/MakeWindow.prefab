@@ -1779,7 +1779,7 @@ GameObject:
   - component: {fileID: 2461389443313025307}
   - component: {fileID: 4468904168865772101}
   m_Layer: 5
-  m_Name: Button
+  m_Name: MakeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2097,6 +2097,7 @@ MonoBehaviour:
   recipeImage: {fileID: 3942021486600325113}
   recipeNameText: {fileID: 530802310322257991}
   recipeDescriptionText: {fileID: 9073423468977705871}
+  makeButton: {fileID: 4468904168865772101}
 --- !u!1 &7806511817214202329
 GameObject:
   m_ObjectHideFlags: 0

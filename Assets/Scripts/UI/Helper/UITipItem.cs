@@ -34,6 +34,22 @@ namespace KidGame.UI
             // 播放动画
             PlayShowAnimation();
         }
+        public void InitWithRectTransform(GameObject creator, string content)
+        {
+            ContentText.text = content;
+            this.creator = creator;
+
+            // 初始状态
+            transform.localScale = Vector3.one;
+
+            // 计算位置
+            screenPos = this.creator.GetComponent<RectTransform>().anchoredPosition;
+            rectTran.localPosition = screenPos;
+            originalY = rectTran.localPosition.y;
+
+            // 播放动画
+            PlayShowAnimation();
+        }
 
         private void PlayShowAnimation()
         {

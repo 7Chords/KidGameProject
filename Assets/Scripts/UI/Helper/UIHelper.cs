@@ -2,6 +2,7 @@ using KidGame.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 
@@ -235,7 +236,21 @@ namespace KidGame.UI
             tipGO.GetComponent<UITipItem>().Init(tipInfo.creator, tipInfo.content);
             Destroy(tipGO, tipInfo.showTime);
         }
+        
+        public void ShowOneTipWithParent(TipInfo tipInfo,Transform parent)
+        {
+            GameObject tipGO = Instantiate(TipPrefab);
+            tipGO.transform.SetParent(parent);
+            tipGO.GetComponent<UITipItem>().InitWithRectTransform(tipInfo.creator, tipInfo.content);
 
+            DOVirtual.DelayedCall(tipInfo.showTime, () =>
+            {
+                tipGO.transform.SetParent(transform);
+                Destroy(tipGO);
+            });
+        }
+
+        
         /// <summary>
         /// 清空提示队列
         /// </summary>
