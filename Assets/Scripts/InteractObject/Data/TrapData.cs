@@ -23,6 +23,7 @@ namespace KidGame.Core
     {
         Ground,
         Furniture,
+        HandWeapon,
     }
 
     //ÏİÚåËÀÍöÃ¶¾Ù

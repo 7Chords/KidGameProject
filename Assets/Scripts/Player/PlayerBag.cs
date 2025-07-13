@@ -4,6 +4,7 @@ using KidGame.Core;
 using KidGame.Interface;
 using KidGame.UI;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 
 namespace KidGame.Core
@@ -191,6 +192,18 @@ namespace KidGame.Core
             return false;
         }
 
+        //使用的道具为手持道具：
+        private bool UseThrowHandWeapon(PlayerController player, TrapSlotInfo trapToPlace, Vector3 position, Vector3 mousePosition)
+        {
+            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
+            if (newTrap != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private bool PlaceFurnitureTrap(PlayerController player, TrapSlotInfo trapToPlace, Vector3 position)
         {
             var furniture = player.GetClosestPickable() as MapFurniture;
@@ -245,6 +258,7 @@ namespace KidGame.Core
             {
                 TrapPlacedType.Ground => PlaceGroundTrap(trapToPlace, position, rotation),
                 TrapPlacedType.Furniture => PlaceFurnitureTrap(player, trapToPlace, position),
+                TrapPlacedType.HandWeapon => UseThrowHandWeapon(player, trapToPlace, position, MouseRaycaster.Instance._mousePosition),
                 _ => false
             };
 
