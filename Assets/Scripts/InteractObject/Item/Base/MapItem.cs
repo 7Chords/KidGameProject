@@ -7,7 +7,7 @@ namespace KidGame.Core
     /// <summary>
     ///  场景中的可拾取物品
     /// </summary>
-    public class MapItem : MonoBehaviour, IPickable
+    public class MapItem : MapEntity, IPickable
     {
 
         [SerializeField]
@@ -17,8 +17,6 @@ namespace KidGame.Core
 
         public List<string> RandomPickSfxList { get => randomPickSfxList; set { randomPickSfxList = value; } }
         public GameObject PickPartical { get => pickPartical; set { pickPartical = value; } }
-
-        public virtual string itemName { get => "default item name"; set { } }
 
         /// <summary>
         /// 拾取

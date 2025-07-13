@@ -8,7 +8,7 @@ namespace KidGame.Core
     public enum TrapTriggerType
     {
         Positive, //主动的
-        Negative, //被动的（需要媒介）
+        Negative, //被动的
     }
 
     //陷阱生效枚举
@@ -58,6 +58,6 @@ namespace KidGame.Core
         public TrapPlacedType placedType;
         public List<TrapDeadType> deadTypeList;
         public float deadDelayTime;//死亡延迟时间 deadTypeList包含TimeDelay才有效
-        public bool isCatalyst;//是否是触媒
+        //public bool isCatalyst;//是否是触媒
     }
 }

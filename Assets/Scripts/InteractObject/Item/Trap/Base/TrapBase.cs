@@ -47,10 +47,6 @@ namespace KidGame.Core
         public TrapData TrapData => trapData;
 
 
-        protected CatalystBase _catalyst;
-        public CatalystBase Catalyst => _catalyst;
-
-
         protected GameObject interactor;
         public GameObject Interactor => interactor;
 
@@ -114,10 +110,9 @@ namespace KidGame.Core
         }
 
 
-        public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor)
+        public virtual void InteractNegative( GameObject interactor)
         {
             if (trapData == null || trapData.triggerType != TrapTriggerType.Negative) return;
-            if (_catalyst == null || _catalyst != catalyst) return;
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
             //todo:播放音效和特效
@@ -159,19 +154,6 @@ namespace KidGame.Core
         #endregion
 
         #region 功能性
-
-        /// <summary>
-        /// 设置触媒
-        /// </summary>
-        /// <param name="catalyst"></param>
-        public void SetCatalyst(CatalystBase catalyst)
-        {
-            _catalyst = catalyst;
-            if (_catalyst == null)
-            {
-                ChangeState(TrapState.NoReady);
-            }
-        }
 
         /// <summary>
         /// 陷阱触发的效果代码

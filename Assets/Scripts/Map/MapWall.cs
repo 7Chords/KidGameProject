@@ -3,9 +3,11 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public class MapWall : MonoBehaviour
+    public class MapWall : MapEntity
     {
         public MapWallData mapWallData;
+
+        public override string itemName { get => mapWallData.wallData.wallName; set { } }
 
         public MapWall(MapWallData data)
         {

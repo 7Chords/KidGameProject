@@ -1,8 +1,8 @@
 using KidGame.Core.Data;
-using UnityEngine;
 using KidGame.Interface;
-using System.Collections.Generic;
 using KidGame.UI;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace KidGame.Core
 {
@@ -20,21 +20,21 @@ namespace KidGame.Core
     }
 
 
-    public class MapFurniture : MapItem, IInteractive
+    public class MapFurniture : MapEntity
     {
         public MapFurnitureData mapFurnitureData;
 
         public List<MaterialItem> materialHoldList;
 
 
-        [SerializeField]
-        private List<string> randomInteractSfxList;
-        public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
+        //[SerializeField]
+        //private List<string> randomInteractSfxList;
+        //public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
 
 
-        [SerializeField]
-        private GameObject interactPartical;
-        public GameObject InteractPartical { get => interactPartical; set{ interactPartical = value; } }
+        //[SerializeField]
+        //private GameObject interactPartical;
+        //public GameObject InteractPartical { get => interactPartical; set{ interactPartical = value; } }
 
 
         public override string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
@@ -44,7 +44,6 @@ namespace KidGame.Core
 
         protected TrapBase takeTrap;//家具上有的陷阱
 
-        protected bool canInteract;
         public void SetData(MapFurnitureData data)
         {
             mapFurnitureData = data;
@@ -59,7 +58,6 @@ namespace KidGame.Core
 
         public virtual void Init(List<MaterialItem> materialList = null)
         {
-            canInteract = mapFurnitureData.furnitureData.canInteract;
             if(materialList!= null)
             {
                 materialHoldList = new List<MaterialItem>();
@@ -68,7 +66,7 @@ namespace KidGame.Core
                     materialHoldList.Add(item);
                 }
             }
-            if (canInteract)
+            if(this is IInteractive)
             {
                 gameObject.layer = LayerMask.NameToLayer("Interactive");
             }
@@ -80,34 +78,12 @@ namespace KidGame.Core
             materialHoldList = null;
         }
 
-        public override void Pick()
-        {
-            if (materialHoldList == null || materialHoldList.Count == 0)
-            {
-                UIHelper.Instance.ShowOneTip(new TipInfo("空空如也",gameObject));
-            }
-            else
-            {
-                MaterialBase tmpMat = new MaterialBase();
-                foreach (var item in materialHoldList)
-                {
-                    for(int i =0;i<item.amount;i++)
-                    {
-                        tmpMat.Init(item.data);
-                        PlayerUtil.Instance.CallPlayerPickItem(tmpMat);
-                        UIHelper.Instance.ShowTipByQueue(new TipInfo("获得了" + item.data.materialName + "×1", gameObject,0.5f));
-                    }
-                }
-                materialHoldList.Clear();
-            }
-        }
+        //public virtual void InteractPositive(GameObject interactor)
+        //{
+        //}
 
-        public virtual void InteractPositive(GameObject interactor)
-        {
-        }
-
-        public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor)
-        {
-        }
+        //public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor)
+        //{
+        //}
     }
 }

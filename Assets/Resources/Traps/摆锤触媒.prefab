@@ -242,12 +242,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2823261414758080026}
-  - component: {fileID: 2238171515437505501}
   - component: {fileID: 6529748101965942282}
   - component: {fileID: 8151613695021414017}
+  - component: {fileID: 2921576980608754677}
   m_Layer: 6
   m_Name: "\u6446\u9524\u89E6\u5A92"
-  m_TagString: Catalyst
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -269,26 +269,6 @@ Transform:
   - {fileID: 6622925227318306988}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2238171515437505501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8106824467566220627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ed3291bda4b5ca4f8c61d25117b144c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  randomInteractSfxList: []
-  interactPartical: {fileID: 0}
-  randomPickSfxList:
-  - pick_item
-  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
-  NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
-  ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
-  ReadyIndicator: {fileID: 320908489730130488}
 --- !u!54 &6529748101965942282
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -337,3 +317,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2921576980608754677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8106824467566220627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18f6bd7cc1a71744e81a202df180366c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomPickSfxList:
+  - pick_item
+  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
+  randomInteractSfxList: []
+  interactPartical: {fileID: 0}
+  NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
+  ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
+  ReadyIndicator: {fileID: 320908489730130488}

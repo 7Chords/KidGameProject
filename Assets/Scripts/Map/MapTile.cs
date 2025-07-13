@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public class MapTile : MonoBehaviour
+    public class MapTile : MapEntity
     {
         public MapTileData mapTileData;
 
+        public override string itemName { get => mapTileData.tileData.tileName; set { } }
         public MapTile(MapTileData data)
         {
             mapTileData = data;

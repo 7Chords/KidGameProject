@@ -129,7 +129,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d87e694dc586345cb9f688f7a40a43ed,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7367835319093540483}
+      addedObject: {fileID: 8129186652459041217}
   m_SourcePrefab: {fileID: 100100000, guid: d87e694dc586345cb9f688f7a40a43ed, type: 3}
 --- !u!1 &3513607862895903686 stripped
 GameObject:
@@ -158,7 +158,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.3, y: 0.4823188, z: 0.3}
   m_Center: {x: 0, y: 0.24115936, z: -0.000000007450581}
---- !u!114 &7367835319093540483
+--- !u!114 &8129186652459041217
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,18 +167,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3513607862895903686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8deb2ffedfa00f045841f1d68f2aabc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1452a5c88cfa02846816d559dc76527b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mapFurnitureData:
     furnitureData: {fileID: 0}
     mapPosList: []
     roomType: 0
+    rotation: 0
   materialHoldList: []
+  TrapDependPos: {fileID: 0}
   randomPickSfxList: []
   pickPartical: {fileID: 0}
-  randomInteractSfxList: []
-  TrapDependPos: {fileID: 7544372696730790124}
 --- !u!4 &4289967888994818428 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d87e694dc586345cb9f688f7a40a43ed,
