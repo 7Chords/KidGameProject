@@ -4,6 +4,7 @@ using KidGame.Core;
 using KidGame.Interface;
 using KidGame.UI;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 
 namespace KidGame.Core
@@ -219,6 +220,18 @@ namespace KidGame.Core
             if (newTrap != null)
             {
                 newTrap.transform.rotation = rotation;
+                return true;
+            }
+
+            return false;
+        }
+
+        //使用的道具为手持道具：
+        private bool UseThrowHandWeapon(PlayerController player, TrapSlotInfo trapToPlace, Vector3 position, Vector3 mousePosition)
+        {
+            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
+            if (newTrap != null)
+            {
                 return true;
             }
 
