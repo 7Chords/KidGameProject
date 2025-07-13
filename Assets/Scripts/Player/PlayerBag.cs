@@ -122,8 +122,42 @@ namespace KidGame.Core
 
             OnTrapBagUpdated?.Invoke();
         }
-
         
+        public bool TryDelItemInBag(List<TrapSlotInfo> requireTrapSlots = null, List<MaterialSlotInfo> requireMaterialSlots = null)
+        {
+            if(requireTrapSlots == null&&requireMaterialSlots==null) return true;
+            if(requireTrapSlots != null)
+            {
+                foreach (var trapSlot in requireTrapSlots)
+                {
+                    var existingSlot = _trapBag.Find(x => x.trapData.trapID == trapSlot.trapData.trapID);
+                    if (existingSlot != null&&existingSlot.amount >= trapSlot.amount)
+                    {
+                        existingSlot.amount-= trapSlot.amount;
+                        OnTrapBagUpdated?.Invoke();
+                    }else
+                        return false;
+                }
+            }
+
+            if (requireMaterialSlots != null)
+            {
+                foreach (var materialSlot in requireMaterialSlots)
+                {
+                    var existingSlot = _materialBag.Find(x => x.materialData.materialID == materialSlot.materialData.materialID);
+                    if (existingSlot != null&&existingSlot.amount >= materialSlot.amount)
+                    {
+                        existingSlot.amount-= materialSlot.amount;
+                        OnTrapBagUpdated?.Invoke();
+                    }else
+                        return false;
+                }
+            }
+
+            
+
+            return true;
+        }
         
 
         // 获取当前选中的陷阱
@@ -231,6 +265,7 @@ namespace KidGame.Core
 
             return false;
         }
+        
         
         public bool TryUseTrapFromTempBag(int index, PlayerController player, Vector3 position, Quaternion rotation)
         {
