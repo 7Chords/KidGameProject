@@ -96,5 +96,7 @@ public class CellUI : MonoBehaviour
         };
         entryExit.callback.AddListener((data) => { OnPointerExit((PointerEventData)data); });
         trigger.triggers.Add(entryExit);
+        
+        
     }
 }

@@ -142,6 +142,7 @@ public class UICircularScrollView : MonoBehaviour, IBeginDragHandler, IEndDragHa
         Init(null, count, callBack, onClickCallBack, onRecycle);
         ShowList(count);
     }
+    
 
     public virtual void Init(Action<bool, string> dragBack, int count, Action<GameObject, int> callBack,
         Action<GameObject, int> onClickCallBack, Action<GameObject> onRecycle = null)
@@ -582,6 +583,8 @@ public class UICircularScrollView : MonoBehaviour, IBeginDragHandler, IEndDragHa
         if (cell == null)
         {
             cell = Instantiate(m_CellGameObject, m_Content.transform) as GameObject;
+            // 添加点击事件监听
+            AddCellClickEvent(cell);
         }
 
         cell.transform.SetParent(m_Content.transform);
@@ -602,6 +605,22 @@ public class UICircularScrollView : MonoBehaviour, IBeginDragHandler, IEndDragHa
         }
     }
 
+    // 绑定点击事件到Cell
+    private void AddCellClickEvent(GameObject cell)
+    {
+        EventTrigger trigger = cell.GetComponent<EventTrigger>() ?? cell.AddComponent<EventTrigger>();
+        EventTrigger.Entry entryClick = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
+        entryClick.callback.AddListener((data) => 
+        {
+            if (m_FuncOnClickCallBack != null)
+            {
+                int index = int.Parse(cell.name) + 1; // 转换为1-based索引
+                m_FuncOnClickCallBack(cell, index);
+            }
+        });
+        trigger.triggers.Add(entryClick);
+    }
+    
     //回调
     protected void Func(Action<GameObject, int> func, GameObject selectObject, bool isUpdate = false)
     {

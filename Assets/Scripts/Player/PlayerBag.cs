@@ -108,8 +108,12 @@ namespace KidGame.Core
         {
             return _materialBag;
         }
-        
-        
+
+        public void TrapBagUpdated()
+        {
+            OnTrapBagUpdated?.Invoke();
+        }
+
         // 加载背包数据
         public void LoadBagData(List<TrapSlotInfo> trapSlots, List<MaterialSlotInfo> materialSlots)
         {
@@ -119,6 +123,8 @@ namespace KidGame.Core
             OnTrapBagUpdated?.Invoke();
         }
 
+        
+        
 
         // 获取当前选中的陷阱
         public TrapSlotInfo GetSelectedTrap()
