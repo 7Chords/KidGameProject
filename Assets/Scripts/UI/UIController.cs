@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Utils;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 namespace KidGame.UI.Game
 {
@@ -48,7 +49,15 @@ namespace KidGame.UI.Game
         private void Start()
         {
             // 开始游戏立即打开开始面板
-            uiFrame.OpenWindow(ScreenIds.StartGameWindow);
+            if (SceneManager.GetActiveScene().buildIndex == 0)
+            {
+                uiFrame.OpenWindow(ScreenIds.StartGameWindow);
+            }
+            else
+            {
+                UICameraBindingVertexCamera();
+            }
+            
         }
 
         #region 开关
