@@ -40,7 +40,7 @@ namespace KidGame.Core
                 bubbleStr += bubbleStr.Length == 0?"回收":"/回收";
             }
             UIHelper.Instance.AddBubbleInfoToList(new BubbleInfo(ControlType.Keyborad, tmpActionTypeList,
-                other.gameObject, player.gameObject, bubbleStr, other.GetComponent<MapEntity>()?.itemName));
+                other.gameObject, player.gameObject, bubbleStr, other.GetComponent<MapEntity>()?.EntityName));
         }
 
         private void OnTriggerExit(Collider other)

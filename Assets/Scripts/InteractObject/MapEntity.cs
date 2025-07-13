@@ -5,8 +5,11 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+    /// <summary>
+    /// 地图场景物体基类
+    /// </summary>
     public class MapEntity : MonoBehaviour
     {
-        public virtual string itemName { get => "default entity name"; set { } }
+        public virtual string EntityName { get => "default entity name"; set { } }
     }
 }

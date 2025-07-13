@@ -37,7 +37,7 @@ namespace KidGame.Core
         //public GameObject InteractPartical { get => interactPartical; set{ interactPartical = value; } }
 
 
-        public override string itemName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
+        public override string EntityName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
 
 
         public GameObject TrapDependPos;//陷阱放在家具上的放置位置

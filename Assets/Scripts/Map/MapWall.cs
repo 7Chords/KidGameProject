@@ -7,7 +7,7 @@ namespace KidGame.Core
     {
         public MapWallData mapWallData;
 
-        public override string itemName { get => mapWallData.wallData.wallName; set { } }
+        public override string EntityName { get => mapWallData.wallData.wallName; set { } }
 
         public MapWall(MapWallData data)
         {

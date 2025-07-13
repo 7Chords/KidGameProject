@@ -7,7 +7,7 @@ namespace KidGame.Core
     {
         public MapTileData mapTileData;
 
-        public override string itemName { get => mapTileData.tileData.tileName; set { } }
+        public override string EntityName { get => mapTileData.tileData.tileName; set { } }
         public MapTile(MapTileData data)
         {
             mapTileData = data;

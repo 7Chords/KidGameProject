@@ -14,8 +14,6 @@ namespace KidGame.Core
         public float damageArea;
         public BuffData buffData;
         public int Score;
-
-        public float xixi;
         public override void Trigger()
         {
             Collider[] colls = Physics.OverlapSphere(transform.position, damageArea);

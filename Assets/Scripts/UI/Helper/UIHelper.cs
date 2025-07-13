@@ -282,6 +282,10 @@ namespace KidGame.UI
 
         #endregion
 
+        #region Detail
+
+        #endregion
+
         #region Util
         public Vector2 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
         {

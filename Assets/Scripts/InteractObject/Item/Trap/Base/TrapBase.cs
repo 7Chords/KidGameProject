@@ -10,7 +10,7 @@ namespace KidGame.Core
     /// <summary>
     /// 陷阱基类
     /// </summary>
-    public class TrapBase : MapItem, IInteractive, IStateMachineOwner
+    public class TrapBase : MapItem, IInteractive, IStateMachineOwner,IMouseShowPreview
     {
         [SerializeField] private List<string> randomInteractSfxList;
 
@@ -27,8 +27,14 @@ namespace KidGame.Core
             get => interactPartical;
             set { interactPartical = value; }
         }
+        [SerializeField] private GameObject previewGO;
+        public GameObject PreviewGO 
+        {
+            get => previewGO;
+            set { previewGO = value; }
+        }
 
-        public override string itemName => trapData.trapName;
+        public override string EntityName => trapData.trapName;
 
         [ColorUsage(true, true)] public Color NoReadyColor;
 
@@ -50,7 +56,6 @@ namespace KidGame.Core
         protected GameObject interactor;
         public GameObject Interactor => interactor;
 
-
         protected StateMachine stateMachine;
         private TrapState trapState;
 
@@ -59,6 +64,7 @@ namespace KidGame.Core
         {
             rb = GetComponent<Rigidbody>();
             coll = GetComponent<Collider>();
+            gameObject.AddComponent<MousePreviewDetector>();
         }
 
         /// <summary>
@@ -147,7 +153,7 @@ namespace KidGame.Core
                 MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
             }
 
-            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + itemName + "×1", gameObject));
+            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
             ChangeState(TrapState.Dead);
         }
 
@@ -209,6 +215,15 @@ namespace KidGame.Core
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerController.Instance.RemovePickableFromList(this);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
+        }
+
+        public void ShowPreview()
+        {
+            PreviewGO.SetActive(true);
+        }
+        public void HidePreview()
+        {
+            PreviewGO.SetActive(false);
         }
     }
 }
