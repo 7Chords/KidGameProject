@@ -10,42 +10,55 @@ using Utils;
 public class BackpackWindowController : WindowController
 {
     private UICircularScrollView scrollView;
+    private UICircularScrollView pocketScrollView;
     private List<MaterialSlotInfo> _materialSlotInfos;
     private List<TrapSlotInfo> _trapSlotInfos;
+    private List<TrapSlotInfo> _tempTrapSlotInfos;
     private GameObject detailPanel;
     private TextMeshProUGUI detailText;
 
     protected override void Awake()
     {
         base.Awake();
-        detailPanel = transform.Find("BackPag/ScrollView/DetailPanel").gameObject;
-        detailText = transform.Find("BackPag/ScrollView/DetailPanel/DetailText").GetComponent<TextMeshProUGUI>();
+        detailPanel = transform.Find("DetailPanel").gameObject;
+        detailText = transform.Find("DetailPanel/DetailText").GetComponent<TextMeshProUGUI>();
         detailPanel.SetActive(false);
         Signals.Get<ShowItemDetailSignal>().AddListener(OnShowItemDetail);
         Signals.Get<HideItemDetailSignal>().AddListener(OnHideItemDetail);
+        PlayerBag.Instance.OnTrapBagUpdated += UpdateBackpack;
     }
 
     protected override void OnPropertiesSet()
     {
-        scrollView = gameObject.GetComponentInChildren<UICircularScrollView>();
+        scrollView = transform.Find("BackPag/ScrollView").GetComponent<UICircularScrollView>();
+        pocketScrollView = transform.Find("PlayerPocket/ScrollView").GetComponent<UICircularScrollView>();
         _materialSlotInfos = PlayerBag.Instance.GetMaterialSlots();
         _trapSlotInfos = PlayerBag.Instance.GetTrapSlots();
-        scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count, OnCellUpdate, null);
+        _tempTrapSlotInfos = PlayerBag.Instance.GetTempTrapSlots();
+        scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count, OnBagCellUpdate, null);
+        pocketScrollView.Init(_tempTrapSlotInfos.Count, OnPocketCellUpdate, null);
     }
 
-    protected override void WhileHiding()
-    {
-        OnHideItemDetail();
-    }
-
+   
     protected override void OnDestroy()
     {
         base.OnDestroy();
         Signals.Get<ShowItemDetailSignal>().RemoveListener(OnShowItemDetail);
         Signals.Get<HideItemDetailSignal>().RemoveListener(OnHideItemDetail);
+        PlayerBag.Instance.OnTrapBagUpdated -= UpdateBackpack;
+    }
+    
+    private void UpdateBackpack()
+    {
+        pocketScrollView.UpdateList();
+    }
+    protected override void WhileHiding()
+    {
+        OnHideItemDetail();
     }
 
-    private void OnCellUpdate(GameObject cell, int index)
+
+    private void OnBagCellUpdate(GameObject cell, int index)
     {
         CellUI cellUI = cell.GetComponent<CellUI>();
         if (index - 1 < _materialSlotInfos.Count)
@@ -58,6 +71,11 @@ public class BackpackWindowController : WindowController
         }
     }
 
+    private void OnPocketCellUpdate(GameObject cell, int index)
+    {
+        CellUI cellUI = cell.GetComponent<CellUI>();
+        cellUI.SetUIWithTrap(_tempTrapSlotInfos[index-1]);
+    }
     private void OnShowItemDetail(CellUI cellUI)
     {
         /*// 获取鼠标在屏幕上的位置

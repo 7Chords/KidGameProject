@@ -68,7 +68,7 @@ public class CellUI : MonoBehaviour
     {
         while (true)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledTime;
             if (timer >= delay)
             {
                 Signals.Get<ShowItemDetailSignal>().Dispatch(this);

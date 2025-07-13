@@ -108,7 +108,8 @@ namespace KidGame.Core
         {
             return _materialBag;
         }
-
+        
+        
         // 加载背包数据
         public void LoadBagData(List<TrapSlotInfo> trapSlots, List<MaterialSlotInfo> materialSlots)
         {
