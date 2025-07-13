@@ -334,6 +334,7 @@ MonoBehaviour:
   pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
   randomInteractSfxList: []
   interactPartical: {fileID: 0}
+  previewGO: {fileID: 0}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
   ReadyIndicator: {fileID: 320908489730130488}

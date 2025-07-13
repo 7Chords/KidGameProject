@@ -9,15 +9,6 @@ namespace KidGame.Core
     /// </summary>
     public class MapItem : MapEntity, IPickable
     {
-
-        [SerializeField]
-        protected List<string> randomPickSfxList;
-        [SerializeField]
-        protected GameObject pickPartical;
-
-        public List<string> RandomPickSfxList { get => randomPickSfxList; set { randomPickSfxList = value; } }
-        public GameObject PickPartical { get => pickPartical; set { pickPartical = value; } }
-
         /// <summary>
         /// ʰȡ
         /// </summary>

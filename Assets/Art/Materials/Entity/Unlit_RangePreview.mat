@@ -37,8 +37,10 @@ Material:
     - _PulseStrength: 0.5
     - _Range: 1
     - _Shape: 0
+    - _ShapeType: 1
     m_Colors:
     - _BorderColor: {r: 1, g: 0.6972787, b: 0, a: 1}
+    - _CubeSize: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0, g: 1, b: 0, a: 1}
     - _RectSize: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

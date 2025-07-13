@@ -27,16 +27,6 @@ namespace KidGame.Core
         public List<MaterialItem> materialHoldList;
 
 
-        //[SerializeField]
-        //private List<string> randomInteractSfxList;
-        //public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
-
-
-        //[SerializeField]
-        //private GameObject interactPartical;
-        //public GameObject InteractPartical { get => interactPartical; set{ interactPartical = value; } }
-
-
         public override string EntityName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
 
 
@@ -78,12 +68,5 @@ namespace KidGame.Core
             materialHoldList = null;
         }
 
-        //public virtual void InteractPositive(GameObject interactor)
-        //{
-        //}
-
-        //public virtual void InteractNegative(CatalystBase catalyst, GameObject interactor)
-        //{
-        //}
     }
 }

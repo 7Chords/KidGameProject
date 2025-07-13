@@ -276,12 +276,13 @@ namespace KidGame.Core
             }
 
             var trapToPlace = _tempTrapBag[index];
-            bool result = trapToPlace.trapData.placedType switch
-            {
-                TrapPlacedType.Ground => PlaceGroundTrap(trapToPlace, position, rotation),
-                TrapPlacedType.Furniture => PlaceFurnitureTrap(player, trapToPlace, position),
-                _ => false
-            };
+            //bool result = trapToPlace.trapData.placedType switch
+            //{
+            //    TrapPlacedType.Ground => PlaceGroundTrap(trapToPlace, position, rotation),
+            //    TrapPlacedType.Furniture => PlaceFurnitureTrap(player, trapToPlace, position),
+            //    _ => false
+            //};
+            bool result = PlaceGroundTrap(trapToPlace, position, rotation);
 
             if (!result)
             {

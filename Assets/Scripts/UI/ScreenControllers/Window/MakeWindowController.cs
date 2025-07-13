@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using KidGame.Core;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
@@ -87,9 +88,9 @@ namespace KidGame.UI
             currentRecipe = recipe;
             recipeNameText.text = recipe.trapData.name;
             if (recipe.recipeType == RecipeType.Trap)
-                recipeImage.sprite = recipe.trapData.trapIcon;
+                recipeImage.sprite = Resources.Load<Sprite>(recipe.trapData.trapIconPath);
             else if (recipe.recipeType == RecipeType.Equip)
-                recipeImage.sprite = recipe.trapData.trapIcon; //todo
+                recipeImage.sprite = Resources.Load<Sprite>(recipe.trapData.trapIconPath);//todo
             recipeDescriptionText.text = recipe.trapData.trapDesc;
 
             materialScrollView.Init(recipe.materialDatas.Count, (cell, index) =>

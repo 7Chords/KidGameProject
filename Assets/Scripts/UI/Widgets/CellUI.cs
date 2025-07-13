@@ -39,14 +39,14 @@ public class CellUI : MonoBehaviour
 
     public void SetUIWithMaterial(MaterialSlotInfo material)
     {
-        icon.sprite = material.materialData.materialIcon;
+        icon.sprite = Resources.Load<Sprite>(material.materialData.materialIconPath);
         count.text = material.amount.ToString();
         detailText = material.materialData.materialDesc;
     }
 
     public void SetUIWithTrap(TrapSlotInfo trap)
     {
-        icon.sprite = trap.trapData.trapIcon;
+        icon.sprite = Resources.Load<Sprite>(trap.trapData.trapIconPath);
         count.text = trap.amount.ToString();
         detailText = trap.trapData.trapDesc;
     }

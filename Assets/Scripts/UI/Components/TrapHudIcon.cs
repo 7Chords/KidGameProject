@@ -12,7 +12,7 @@ public class TrapHudIcon : MonoBehaviour
     
     public void Setup(TrapSlotInfo info, bool isSelected)
     {
-        iconImage.sprite = info.trapData.trapIcon;
+        iconImage.sprite = Resources.Load<Sprite>(info.trapData.trapIconPath);
         amountText.text = info.amount.ToString();
         selectedFrame.gameObject.SetActive(isSelected);
     }

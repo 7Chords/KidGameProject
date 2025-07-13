@@ -10,11 +10,5 @@ namespace KidGame.Interface
     {
         public abstract void Pick();
 
-        //捡起随机音效列表
-        public abstract List<string> RandomPickSfxList { get; set; }
-
-        //捡起粒子特效
-        public abstract GameObject PickPartical { get; set; }
-
     }
 }

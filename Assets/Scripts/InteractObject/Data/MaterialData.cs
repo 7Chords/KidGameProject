@@ -8,6 +8,9 @@ namespace KidGame.Core
         public string materialID;
         public string materialName;
         public string materialDesc;
-        public Sprite materialIcon;
+        public string materialIconPath;
+        public string pickSoundPath;
+        public string pickParticalPath;
+
     }
 }

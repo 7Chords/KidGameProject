@@ -12,21 +12,7 @@ namespace KidGame.Core
     /// </summary>
     public class TrapBase : MapItem, IInteractive, IStateMachineOwner,IMouseShowPreview
     {
-        [SerializeField] private List<string> randomInteractSfxList;
 
-        public List<string> RandomInteractSfxList
-        {
-            get => randomInteractSfxList;
-            set { randomInteractSfxList = value; }
-        }
-
-        [SerializeField] private GameObject interactPartical;
-
-        public GameObject InteractPartical
-        {
-            get => interactPartical;
-            set { interactPartical = value; }
-        }
         [SerializeField] private GameObject previewGO;
         public GameObject PreviewGO 
         {
@@ -42,7 +28,7 @@ namespace KidGame.Core
 
         public Renderer ReadyIndicator;
 
-        [Space(20)] private Rigidbody rb;
+        private Rigidbody rb;
         public Rigidbody Rb => rb;
 
         private Collider coll;
@@ -99,14 +85,17 @@ namespace KidGame.Core
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
             //todo:播放音效和特效
-            if (RandomInteractSfxList != null && RandomInteractSfxList.Count > 0)
+            if (!string.IsNullOrEmpty(trapData.interactSoundPath))
             {
-                AudioManager.Instance.PlaySfx(RandomInteractSfxList[Random.Range(0, RandomInteractSfxList.Count)]);
+                AudioManager.Instance.PlaySfx(trapData.interactSoundPath);
             }
 
-            if (interactPartical != null)
+            if (!string.IsNullOrEmpty(trapData.interactParticalPath))
             {
-                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity,
+                //todo:partical mgr?
+                MonoManager.Instance.InstantiateGameObject(
+                    Resources.Load<GameObject>(trapData.interactParticalPath),
+                    transform.position, Quaternion.identity,
                     1f);
             }
 
@@ -122,14 +111,17 @@ namespace KidGame.Core
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
             //todo:播放音效和特效
-            if (RandomInteractSfxList != null && RandomInteractSfxList.Count > 0)
+            if (!string.IsNullOrEmpty(trapData.interactSoundPath))
             {
-                AudioManager.Instance.PlaySfx(RandomInteractSfxList[Random.Range(0, RandomInteractSfxList.Count)]);
+                AudioManager.Instance.PlaySfx(trapData.interactSoundPath);
             }
 
-            if (interactPartical != null)
+            if (!string.IsNullOrEmpty(trapData.interactParticalPath))
             {
-                MonoManager.Instance.InstantiateGameObject(interactPartical, transform.position, Quaternion.identity,
+                //todo:partical mgr?
+                MonoManager.Instance.InstantiateGameObject(
+                    Resources.Load<GameObject>(trapData.interactParticalPath),
+                    transform.position, Quaternion.identity,
                     1f);
             }
 
@@ -143,14 +135,18 @@ namespace KidGame.Core
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
             //todo:播放音效和特效
-            if (RandomPickSfxList != null && RandomPickSfxList.Count > 0)
+            if (!string.IsNullOrEmpty(trapData.pickSoundPath))
             {
-                // AudioManager.Instance.PlaySfx(RandomPickSfxList[Random.Range(0, RandomPickSfxList.Count)]);
+                AudioManager.Instance.PlaySfx(trapData.pickSoundPath);
             }
 
-            if (pickPartical != null)
+            if (!string.IsNullOrEmpty(trapData.pickParticalPath))
             {
-                MonoManager.Instance.InstantiateGameObject(pickPartical, transform.position, Quaternion.identity, 1f);
+                //todo:partical mgr?
+                MonoManager.Instance.InstantiateGameObject(
+                    Resources.Load<GameObject>(trapData.pickParticalPath),
+                    transform.position, Quaternion.identity,
+                    1f);
             }
 
             UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));

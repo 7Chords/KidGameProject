@@ -10,8 +10,11 @@ Shader "KidGame/RangePreview"
         _BorderColor("Edge Color (RGB)", Color) = (0.8, 1, 1, 1)
         _BorderAlpha("Edge Transparency", Range(0.6, 1)) = 0.8
 
-        _Range("Range Radius", Float) = 5.0
+        _Range("Range Size", Float) = 5.0
         _BorderThickness("Edge Thickness", Float) = 0.2
+
+        _ShapeType("Shape Type (0=Sphere, 1=Cube)", Range(0, 1)) = 0 // 形状类型选择
+        _CubeSize("Cube Size Multiplier", Vector) = (1,1,1,1) // 长方体各轴尺寸缩放
     }
 
         SubShader
@@ -47,6 +50,8 @@ Shader "KidGame/RangePreview"
 
             float _Range;
             float _BorderThickness;
+            float _ShapeType; // 新增：形状类型参数
+            float4 _CubeSize; // 新增：长方体尺寸参数
             CBUFFER_END
 
             struct Attributes
@@ -71,11 +76,29 @@ Shader "KidGame/RangePreview"
                 return output;
             }
 
+            // 计算点到长方体的距离场函数
+            float DistanceToCube(float3 pointt, float3 center, float3 size)
+            {
+                float3 q = abs(pointt - center) - size;
+                return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+            }
+
             half4 frag(Varyings input) : SV_Target
             {
                 // Trap center in world space
                 float3 trapCenterWS = TransformObjectToWorld(float3(0,0,0));
-                float distanceToCenter = distance(input.positionWS, trapCenterWS);
+                float distanceToCenter = 0;
+
+                // 根据形状类型选择距离计算方式
+                if (_ShapeType < 0.5) // 球形
+                {
+                    distanceToCenter = distance(input.positionWS, trapCenterWS);
+                }
+                else // 长方体
+                {
+                    float3 cubeSize = _Range * _CubeSize.rgb;
+                    distanceToCenter = DistanceToCube(input.positionWS, trapCenterWS, cubeSize);
+                }
 
                 // Check if within range
                 if (distanceToCenter > _Range)

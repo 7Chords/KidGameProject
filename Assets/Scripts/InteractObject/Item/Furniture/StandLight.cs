@@ -13,15 +13,6 @@ namespace KidGame.Core
 
         private bool isLightOn;
 
-        [SerializeField]
-        private List<string> randomInteractSfxList;
-        public List<string> RandomInteractSfxList { get => randomInteractSfxList; set { randomInteractSfxList = value; } }
-
-
-        [SerializeField]
-        private GameObject interactPartical;
-        public GameObject InteractPartical { get => interactPartical; set { interactPartical = value; } }
-
         public override void Init(List<MaterialItem> materialList = null)
         {
             base.Init(materialList);
