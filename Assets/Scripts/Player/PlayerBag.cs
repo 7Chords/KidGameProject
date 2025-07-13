@@ -258,7 +258,6 @@ namespace KidGame.Core
             {
                 TrapPlacedType.Ground => PlaceGroundTrap(trapToPlace, position, rotation),
                 TrapPlacedType.Furniture => PlaceFurnitureTrap(player, trapToPlace, position),
-                TrapPlacedType.HandWeapon => UseThrowHandWeapon(player, trapToPlace, position, MouseRaycaster.Instance._mousePosition),
                 _ => false
             };
 
