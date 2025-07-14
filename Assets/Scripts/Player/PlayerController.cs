@@ -150,7 +150,10 @@ namespace KidGame.Core
             inputSettings.OnBagPress += ControlBag;
             inputSettings.OnGamePause += GamePause;
             inputSettings.OnMouseWheelValueChanged += SwitchSelectItem;
+
+            PlayerBag.Instance.SelectTrapAction += SpawnSelectTrapPreview;
         }
+
 
         /// <summary>
         /// 反注册事件们
@@ -163,6 +166,8 @@ namespace KidGame.Core
             inputSettings.OnBagPress -= ControlBag;
             inputSettings.OnGamePause -= GamePause;
             inputSettings.OnMouseWheelValueChanged -= SwitchSelectItem;
+
+            PlayerBag.Instance.SelectTrapAction -= SpawnSelectTrapPreview;
 
         }
 
@@ -373,10 +378,22 @@ namespace KidGame.Core
         public void ReceiveSound(GameObject creator) { }
 
 
-
+        /// <summary>
+        /// 切换选择的物品
+        /// </summary>
+        /// <param name="scrollValue">鼠标滚轮值</param>
         public void SwitchSelectItem(float scrollValue)
         {
             OnMouseWheelValueChanged?.Invoke(scrollValue);
+        }
+
+        /// <summary>
+        /// 生成预览的陷阱
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SpawnSelectTrapPreview(TrapData trapData)
+        {
+
         }
         #endregion
 

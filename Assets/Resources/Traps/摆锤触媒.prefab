@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 1844045102257228588}
   - component: {fileID: 320908489730130488}
   m_Layer: 6
-  m_Name: Quad
+  m_Name: State
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 6350804184858960920}
   - component: {fileID: 8665454118684580568}
   m_Layer: 8
-  m_Name: model
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,11 +329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f6bd7cc1a71744e81a202df180366c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomPickSfxList:
-  - pick_item
-  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
-  randomInteractSfxList: []
-  interactPartical: {fileID: 0}
   previewGO: {fileID: 0}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}

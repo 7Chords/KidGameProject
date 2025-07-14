@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6732944837418998394}
   - component: {fileID: 3934181801747726404}
   m_Layer: 8
-  m_Name: model
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -352,7 +352,7 @@ GameObject:
   - component: {fileID: 8822142233826207510}
   - component: {fileID: 8412467023274959124}
   m_Layer: 6
-  m_Name: Preview
+  m_Name: RangePreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 5389920741506282306}
   - component: {fileID: 425567510535111511}
   m_Layer: 6
-  m_Name: Quad
+  m_Name: State
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

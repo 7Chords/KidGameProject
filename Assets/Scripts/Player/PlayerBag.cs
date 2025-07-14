@@ -55,6 +55,8 @@ namespace KidGame.Core
 
         #region 选中
 
+        public event Action<TrapData> SelectTrapAction;
+
         private int _selectedTrapIndex = 0; // 当前选中的陷阱索引
         
         public int SelectedTrapIndex
@@ -73,6 +75,7 @@ namespace KidGame.Core
                     UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {trapName}", PlayerController.Instance.gameObject));
                 }
                 OnTrapBagUpdated?.Invoke();
+                SelectTrapAction?.Invoke(_tempTrapBag[_selectedTrapIndex].trapData);
             }
         }
 
