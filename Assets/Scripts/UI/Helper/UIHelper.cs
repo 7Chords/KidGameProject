@@ -9,19 +9,19 @@ using UnityEngine;
 namespace KidGame.UI
 {
     /// <summary>
-    /// ÆøÅİĞÅÏ¢Àà
+    /// æ°”æ³¡ä¿¡æ¯ç±»
     /// </summary>
     public class BubbleInfo : IComparable<BubbleInfo>
     {
 
-        public ControlType controlType; //Íæ¼ÒµÄ¿ØÖÆÀàĞÍ£ºÊÖ±ú/¼üÅÌ...
+        public ControlType controlType; //ç©å®¶çš„æ§åˆ¶ç±»å‹ï¼šæ‰‹æŸ„/é”®ç›˜...
 
-        public List<InputActionType> actionTypeList;//ÒªÌáÊ¾µÄ½»»¥¼üÎ»ÀàĞÍÁĞ±í
-        public GameObject creator { get; set; }//ÆøÅİµÄ´´½¨Õß
+        public List<InputActionType> actionTypeList;//è¦æç¤ºçš„äº¤äº’é”®ä½ç±»å‹åˆ—è¡¨
+        public GameObject creator { get; set; }//æ°”æ³¡çš„åˆ›å»ºè€…
         public GameObject player { get; set; }
-        public string content { get; set; } //ÏÔÊ¾½»»¥µÄÌáÊ¾ÎÄ±¾
+        public string content { get; set; } //æ˜¾ç¤ºäº¤äº’çš„æç¤ºæ–‡æœ¬
 
-        public string itemName;//²úÉúÆøÅİµÄÎïÌåÃû
+        public string itemName;//äº§ç”Ÿæ°”æ³¡çš„ç‰©ä½“å
 
         public BubbleInfo(ControlType controlType, List<InputActionType> actionTypeList, GameObject creator, GameObject player, string content, string itemName)
         {
@@ -43,13 +43,13 @@ namespace KidGame.UI
     }
 
     /// <summary>
-    /// ÌáÊ¾ĞÅÏ¢Àà
+    /// æç¤ºä¿¡æ¯ç±»
     /// </summary>
     public class TipInfo
     {
         public string content;
         public GameObject creator;
-        public float showTime; // ÏÔÊ¾Ê±³¤
+        public float showTime; // æ˜¾ç¤ºæ—¶é•¿
 
         public TipInfo(string content, GameObject creator, float showTime = 0.75f)
         {
@@ -60,7 +60,7 @@ namespace KidGame.UI
     }
 
     /// <summary>
-    /// ÌáÊ¾Í¼±êÀà
+    /// æç¤ºå›¾æ ‡ç±»
     /// </summary>
     public class SignInfo 
     {
@@ -78,27 +78,27 @@ namespace KidGame.UI
 
 
     /// <summary>
-    /// ¹ÜÀíÒ»Ğ©Ğ¡µÄ¶ÀÁ¢µÄĞ¡UI
+    /// ç®¡ç†ä¸€äº›å°çš„ç‹¬ç«‹çš„å°UI
     /// </summary>
     public class UIHelper : Singleton<UIHelper>
     {
-        //ÆøÅİÏà¹Ø×Ö¶Î
+        //æ°”æ³¡ç›¸å…³å­—æ®µ
         public GameObject BubblePrefab;
         private GameObject currentBubble;
         private BubbleInfo currentBubbleInfo;
         public List<BubbleInfo> bubbleInfoList;
 
 
-        // ÎÄ×ÖÌáÊ¾Ïà¹Ø×Ö¶Î
+        // æ–‡å­—æç¤ºç›¸å…³å­—æ®µ
         public GameObject TipPrefab;
         private Queue<TipInfo> tipQueue = new Queue<TipInfo>();
         private bool isShowingTip = false;
         private Coroutine showTipCoroutine;
 
-        //Í¼±êÌáÊ¾Ïà¹Ø×Ö¶Î
+        //å›¾æ ‡æç¤ºç›¸å…³å­—æ®µ
         public GameObject SignPrefab;
 
-        //¹Ì¶¨UIÎ»ÖÃÏà¹Ø×Ö¶Î
+        //å›ºå®šUIä½ç½®ç›¸å…³å­—æ®µ
         public GameObject SideTextPrefab;
         public Transform SideShowPos;
         private void Start()
@@ -190,16 +190,16 @@ namespace KidGame.UI
         #region Tip
 
         /// <summary>
-        /// Ìí¼ÓÌáÊ¾µ½¶ÓÁĞ
+        /// æ·»åŠ æç¤ºåˆ°é˜Ÿåˆ—
         /// </summary>
-        /// <param name="content">ÌáÊ¾ÄÚÈİ</param>
-        /// <param name="creator">´´½¨Õß</param>
-        /// <param name="showTime">ÏÔÊ¾Ê±³¤</param>
+        /// <param name="content">æç¤ºå†…å®¹</param>
+        /// <param name="creator">åˆ›å»ºè€…</param>
+        /// <param name="showTime">æ˜¾ç¤ºæ—¶é•¿</param>
         public void ShowTipByQueue(TipInfo info,float intervalTime = 0.5f)
         {
             tipQueue.Enqueue(info);
 
-            // Èç¹ûÃ»ÓĞÕıÔÚÏÔÊ¾µÄÌáÊ¾£¬Á¢¼´¿ªÊ¼ÏÔÊ¾
+            // å¦‚æœæ²¡æœ‰æ­£åœ¨æ˜¾ç¤ºçš„æç¤ºï¼Œç«‹å³å¼€å§‹æ˜¾ç¤º
             if (!isShowingTip && showTipCoroutine == null)
             {
                 showTipCoroutine = StartCoroutine(ProcessTipQueue(intervalTime));
@@ -207,7 +207,7 @@ namespace KidGame.UI
         }
 
         /// <summary>
-        /// ´¦ÀíÌáÊ¾¶ÓÁĞµÄĞ­³Ì
+        /// å¤„ç†æç¤ºé˜Ÿåˆ—çš„åç¨‹
         /// </summary>
         private IEnumerator ProcessTipQueue(float intervalTime)
         {
@@ -217,7 +217,7 @@ namespace KidGame.UI
             {
                 TipInfo tipInfo = tipQueue.Dequeue();
                 ShowOneTip(tipInfo);
-                // Èç¹û²»ÊÇ×îºóÒ»¸öÌáÊ¾£¬µÈ´ı¼ä¸ôÊ±¼ä
+                // å¦‚æœä¸æ˜¯æœ€åä¸€ä¸ªæç¤ºï¼Œç­‰å¾…é—´éš”æ—¶é—´
                 yield return new WaitForSeconds(intervalTime);
             }
 
@@ -226,7 +226,7 @@ namespace KidGame.UI
         }
 
         /// <summary>
-        /// Ö±½ÓÕ¹Ê¾Ò»¸öÌáÊ¾ĞÅÏ¢
+        /// ç›´æ¥å±•ç¤ºä¸€ä¸ªæç¤ºä¿¡æ¯
         /// </summary>
         /// <param name="tipInfo"></param>
         public void ShowOneTip(TipInfo tipInfo)
@@ -252,7 +252,7 @@ namespace KidGame.UI
 
         
         /// <summary>
-        /// Çå¿ÕÌáÊ¾¶ÓÁĞ
+        /// æ¸…ç©ºæç¤ºé˜Ÿåˆ—
         /// </summary>
         public void ClearTipQueue()
         {
@@ -271,7 +271,7 @@ namespace KidGame.UI
         #region Sign
 
         /// <summary>
-        /// Ö±½ÓÕ¹Ê¾Ò»¸öÍ¼±êĞÅÏ¢
+        /// ç›´æ¥å±•ç¤ºä¸€ä¸ªå›¾æ ‡ä¿¡æ¯
         /// </summary>
         /// <param name="signInfo"></param>
         public void ShowOneSign(SignInfo signInfo)
@@ -285,7 +285,7 @@ namespace KidGame.UI
 
         #region SideText
         /// <summary>
-        /// Õ¹Ê¾Ò»¸öÆÁÄ»²à±ßµÄUIÎÄ±¾£¨ÓÃÓÚ·ÖÊıµÈ£©
+        /// å±•ç¤ºä¸€ä¸ªå±å¹•ä¾§è¾¹çš„UIæ–‡æœ¬ï¼ˆç”¨äºåˆ†æ•°ç­‰ï¼‰
         /// </summary>
         public void ShowOneSildUIText(string content,float showTime)
         {

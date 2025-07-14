@@ -71,19 +71,6 @@ namespace KidGame.Core
 
         #endregion
 
-        #region 巡逻
-        
-        [HideInInspector] public int CurrentPatrolIndex;
-        [HideInInspector] public float PatrolTimer;
-        public Transform Player => player;
-
-        [Tooltip("巡逻点列表")] [SerializeField] private Transform[] patrolPoints;
-        public Transform[] PatrolPoints => patrolPoints;
-        public float PatrolWaitTime => patrolWaitTime;
-        [SerializeField] private float patrolWaitTime = 2.0f;
-
-        #endregion
-
         #region 所在房间
 
         private RoomType _currentRoomType;
@@ -91,18 +78,7 @@ namespace KidGame.Core
 
 
         #endregion
-
-        #region 技能
-
-        private List<ActiveSkillInstance> _activeSkillInstances = new List<ActiveSkillInstance>();
-        private List<PassiveSkillSO> _appliedPassiveSkills = new List<PassiveSkillSO>();
-        private class ActiveSkillInstance
-        {
-            public ActiveSkillSO skillSO;
-            public float currentCooldown;
-        }
         
-        #endregion
         
         #region 生命周期
 
@@ -118,8 +94,6 @@ namespace KidGame.Core
         private void Update()
         {
             UpdateCurrentRoomType();
-            UpdateSkillCooldowns();
-            CheckSkillTriggers();
         }
 
         public void Init(EnemyBaseData enemyData)
@@ -167,28 +141,7 @@ namespace KidGame.Core
             roomSearchStateDic = null;
         }
         #endregion
-
-        #region 状态机包装(DELETE)
-
-        //public bool ChangeState(EnemyState newState)
-        //{
-        //    switch (newState)
-        //    {
-        //        case EnemyState.Idle:
-        //            return stateMachine.ChangeState<EnemyIdleState>((int)newState);
-        //        case EnemyState.Patrol:
-        //            return stateMachine.ChangeState<EnemyPatrolState>((int)newState);
-        //        case EnemyState.Attack:
-        //            return stateMachine.ChangeState<EnemyAttackState>((int)newState);
-        //        case EnemyState.SearchTargetRoom:
-        //            return stateMachine.ChangeState<EnemySearchTargetRoomState>((int)newState);
-        //        default:
-        //            return false;
-        //    }
-        //}
-
-
-        #endregion
+        
 
         #region 感知判断
 
@@ -248,32 +201,6 @@ namespace KidGame.Core
             // 现有伤害处理逻辑...
             curSanity = Mathf.Clamp(curSanity - damageInfo.damage, 0, enemyBaseData.MaxSanity);
             enemyBuffHandler.AddBuff(damageInfo.buffInfo);
-
-            // 检查被击中时触发的技能
-            foreach (var skillInstance in _activeSkillInstances)
-            {
-                var skillSO = skillInstance.skillSO;
-                if (skillSO.triggerCondition == SkillTriggerCondition.OnHit &&
-                    skillInstance.currentCooldown <= 0)
-                {
-                    TryTriggerSkill(skillSO);
-                }
-            }
-
-            // 检查低血量触发的技能
-            if (_currentHealth / enemyBaseData.MaxSanity <= 0.3f)
-            {
-                foreach (var skillInstance in _activeSkillInstances)
-                {
-                    var skillSO = skillInstance.skillSO;
-                    if (skillSO.triggerCondition == SkillTriggerCondition.OnLowHealth &&
-                        skillInstance.currentCooldown <= 0)
-                    {
-                        TryTriggerSkill(skillSO);
-                    }
-                }
-            }
-
             //是否进入眩晕状态
             if(curSanity == 0)
             {
@@ -293,16 +220,9 @@ namespace KidGame.Core
         {
             return IsDizzying;
         }
-        public void Stun(float duration)
-        {
-            StartCoroutine(StunRoutine(duration));
-        }
+       
 
-        private IEnumerator StunRoutine(float duration)
-        {
-            rb.velocity = Vector3.zero;
-            yield return new WaitForSeconds(duration);
-        }
+     
 
         #endregion
 
@@ -318,117 +238,9 @@ namespace KidGame.Core
 
         #endregion
 
-        #region 技能
-        private void InitSkills()
-        {
-            // 初始化主动技能实例
-            foreach (var skillSO in enemyBaseData.activeSkills)
-            {
-                _activeSkillInstances.Add(new ActiveSkillInstance
-                {
-                    skillSO = skillSO,
-                    currentCooldown = 0f
-                });
+        
 
-                // 处理定时触发技能
-                if (skillSO.triggerCondition == SkillTriggerCondition.OnTimer)
-                {
-                    StartCoroutine(TimerSkillRoutine(skillSO));
-                }
-
-                // 处理生成时触发技能
-                if (skillSO.triggerCondition == SkillTriggerCondition.OnSpawn)
-                {
-                    TryTriggerSkill(skillSO);
-                }
-            }
-
-            // 应用被动技能
-            foreach (var skillSO in enemyBaseData.passiveSkills)
-            {
-                skillSO.Apply(this);
-                _appliedPassiveSkills.Add(skillSO);
-            }
-        }
-
-        private void DiscardSkills()
-        {
-            // 移除所有被动技能效果
-            foreach (var skillSO in _appliedPassiveSkills)
-            {
-                skillSO.Remove(this);
-            }
-        }
-        private void UpdateSkillCooldowns()
-        {
-            foreach (var skillInstance in _activeSkillInstances)
-            {
-                if (skillInstance.currentCooldown > 0)
-                {
-                    skillInstance.currentCooldown -= Time.deltaTime;
-                }
-            }
-        }
-
-        private void CheckSkillTriggers()
-        {
-            if (player == null) return;
-
-            foreach (var skillInstance in _activeSkillInstances)
-            {
-                if (skillInstance.currentCooldown > 0) continue;
-
-                var skillSO = skillInstance.skillSO;
-
-                switch (skillSO.triggerCondition)
-                {
-                    case SkillTriggerCondition.OnPlayerInRange:
-                        if (Vector3.Distance(transform.position, player.position) <= skillSO.triggerRange)
-                        {
-                            TryTriggerSkill(skillSO);
-                        }
-
-                        break;
-                }
-            }
-        }
-
-        private IEnumerator TimerSkillRoutine(ActiveSkillSO skillSO)
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(skillSO.timerInterval);
-                TryTriggerSkill(skillSO);
-            }
-        }
-
-        private void TryTriggerSkill(ActiveSkillSO skillSO)
-        {
-            var skillInstance = _activeSkillInstances.Find(s => s.skillSO == skillSO);
-            if (skillInstance == null || skillInstance.currentCooldown > 0) return;
-
-            skillSO.Execute(this);
-            skillInstance.currentCooldown = skillSO.cooldown;
-        }
-
-        #endregion
-
-        #region 攻击
-
-        public void OnAttack()
-        {
-            foreach (var skillInstance in _activeSkillInstances)
-            {
-                var skillSO = skillInstance.skillSO;
-                if (skillSO.triggerCondition == SkillTriggerCondition.OnAttack &&
-                    skillInstance.currentCooldown <= 0)
-                {
-                    TryTriggerSkill(skillSO);
-                }
-            }
-        }
-
-        #endregion
+        
 
         #region 行为树封装方法
 

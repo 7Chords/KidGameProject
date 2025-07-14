@@ -71,6 +71,7 @@ public class BackpackWindowController : WindowController
             if (trapIndex >= 0 && trapIndex < _trapSlotInfos.Count)
             {
                 MoveTrapToPocket(trapIndex);
+                detailPanel.SetActive(false);
             }
         }
     }
@@ -82,6 +83,7 @@ public class BackpackWindowController : WindowController
         if (cellIndex >= 0 && cellIndex < _tempTrapSlotInfos.Count)
         {
             MoveTrapToBackpack(cellIndex);
+            detailPanel.SetActive(false);
         }
     }
     // 移动陷阱到口袋（支持已满时交换）
