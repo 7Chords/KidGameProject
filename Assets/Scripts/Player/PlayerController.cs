@@ -3,6 +3,7 @@ using KidGame.Interface;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
+using System;
 
 namespace KidGame.Core
 {
@@ -40,10 +41,11 @@ namespace KidGame.Core
         public Rigidbody Rb => rb;
         
         public PlayerAnimator PlayerAnimator;
-        public PlayerBaseData PlayerBaseData;        
+        public PlayerBaseData PlayerBaseData;
 
+        private BuffHandler playerBuffHandler;
         #endregion
-        
+
         #region 状态机
 
         private StateMachine stateMachine;
@@ -65,8 +67,8 @@ namespace KidGame.Core
         public float CurrentHealth => currentHealth;
         public float MaxHealth => PlayerBaseData.Hp;
 
-        public event System.Action<float> OnHealthChanged;
-        public event System.Action OnPlayerDeath;
+        public event Action<float> OnHealthChanged;
+        public event Action OnPlayerDeath;
 
         #endregion
         
@@ -84,13 +86,16 @@ namespace KidGame.Core
         public event System.Action<float> OnStaminaChanged;
 
         #endregion
-        
-        private BuffHandler playerBuffHandler;
+
+        #region 玩家交互
 
         //key:可交互 value:和玩家距离
         private Dictionary<IInteractive, float> interactiveDict;
         //key:可回收 value:和玩家距离
         private Dictionary<IPickable, float> pickableDict;
+
+        public event Action<float> OnMouseWheelValueChanged;
+        #endregion
 
         #region 生命周期
 
@@ -144,6 +149,7 @@ namespace KidGame.Core
             inputSettings.OnUsePress += TryPlaceTrap;
             inputSettings.OnBagPress += ControlBag;
             inputSettings.OnGamePause += GamePause;
+            inputSettings.OnMouseWheelValueChanged += SwitchSelectItem;
         }
 
         /// <summary>
@@ -156,10 +162,12 @@ namespace KidGame.Core
             inputSettings.OnUsePress -= TryPlaceTrap;
             inputSettings.OnBagPress -= ControlBag;
             inputSettings.OnGamePause -= GamePause;
+            inputSettings.OnMouseWheelValueChanged -= SwitchSelectItem;
+
         }
 
         #endregion
-        
+
         #region 功能
 
         private void GamePause()
@@ -364,6 +372,12 @@ namespace KidGame.Core
         /// <param name="creator"></param>
         public void ReceiveSound(GameObject creator) { }
 
+
+
+        public void SwitchSelectItem(float scrollValue)
+        {
+            OnMouseWheelValueChanged?.Invoke(scrollValue);
+        }
         #endregion
 
         #region 体力与生命

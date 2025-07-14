@@ -28,8 +28,9 @@ namespace KidGame.Core
         public event Action OnBagPress;
         public event Action OnPickPress;
         public event Action OnMouseWheelPress;
+        //鼠标滚轮值变化事件（传递变化值）
+        public event Action<float> OnMouseWheelValueChanged;
         public event Action OnGamePause;
-
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
@@ -56,6 +57,8 @@ namespace KidGame.Core
             pickAction.performed += OnPickActionPerformed;
             mouseWheelAction.performed += OnMouseWheelActionPerformed;
             gamePauseAction.performed += OnGamePauseActionPerformed;
+
+            this.OnUpdate(CheckMouseWheelValueChange);
         }
 
         private void OnDestroy()
@@ -70,8 +73,19 @@ namespace KidGame.Core
             pickAction.performed -= OnPickActionPerformed;
             mouseWheelAction.performed -= OnMouseWheelActionPerformed;
             gamePauseAction.performed -= OnGamePauseActionPerformed;
+
+            this.RemoveUpdate(CheckMouseWheelValueChange);
+
         }
-        
+
+
+        //检测滚轮值变化的核心方法
+        private void CheckMouseWheelValueChange()
+        {
+            if (MouseWheelValue() == 0) return;
+            float currentValue = MouseWheelValue();
+            OnMouseWheelValueChanged?.Invoke(currentValue);
+        }
         public Vector2 MoveDir()
         {
             Vector2 inputDir = moveAction.ReadValue<Vector2>();

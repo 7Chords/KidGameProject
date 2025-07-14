@@ -45,21 +45,21 @@ public class GamePlayPanelController : MonoBehaviour
         UpdateTrapHud();
     }
     
-    private void Update()
-    {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0)
-        {
-            int direction = scroll > 0 ? -1 : 1;
-            int newIndex = selectedTrapIndex + direction;
-            int trapCount = PlayerBag.Instance.GetTempTrapSlots().Count;
-            if (trapCount > 0)
-            {
-                newIndex = (newIndex + trapCount) % trapCount;
-                SelectTrap(newIndex);
-            }
-        }
-    }
+    //private void Update()
+    //{
+    //    float scroll = Input.GetAxis("Mouse ScrollWheel");
+    //    if (scroll != 0)
+    //    {
+    //        int direction = scroll > 0 ? -1 : 1;
+    //        int newIndex = selectedTrapIndex + direction;
+    //        int trapCount = PlayerBag.Instance.GetTempTrapSlots().Count;
+    //        if (trapCount > 0)
+    //        {
+    //            newIndex = (newIndex + trapCount) % trapCount;
+    //            SelectTrap(newIndex);
+    //        }
+    //    }
+    //}
     
     private void OnDestroy()
     {
@@ -74,6 +74,7 @@ public class GamePlayPanelController : MonoBehaviour
         {
             PlayerController.Instance.OnHealthChanged += UpdateHealthBar;
             PlayerController.Instance.OnStaminaChanged += UpdateStaminaBar; // 新增体力变化事件监听
+            PlayerController.Instance.OnMouseWheelValueChanged += UpdateSelectItem;
         }
         
         if (GameLevelManager.Instance != null)
@@ -83,6 +84,7 @@ public class GamePlayPanelController : MonoBehaviour
         
         PlayerBag.Instance.OnTrapBagUpdated += UpdateTrapHud;
         GameManager.Instance.OnCurrentLoopScoreChanged += CurrentLoopScoreChanged;
+        
     }
 
 
@@ -92,8 +94,10 @@ public class GamePlayPanelController : MonoBehaviour
         {
             PlayerController.Instance.OnHealthChanged -= UpdateHealthBar;
             PlayerController.Instance.OnStaminaChanged -= UpdateStaminaBar; // 移除体力变化事件监听
+            PlayerController.Instance.OnMouseWheelValueChanged -= UpdateSelectItem;
+
         }
-        
+
         if (GameLevelManager.Instance != null)
         {
             GameLevelManager.Instance.OnPhaseTimeUpdated -= UpdateTimeClock;
@@ -186,6 +190,21 @@ public class GamePlayPanelController : MonoBehaviour
 
     #region 选择陷阱
 
+
+    private void UpdateSelectItem(float scrollValue)
+    {
+        if (scrollValue != 0)
+        {
+            int direction = scrollValue > 0 ? 1 : -1;
+            int newIndex = selectedTrapIndex + direction;
+            int trapCount = PlayerBag.Instance.GetTempTrapSlots().Count;
+            if (trapCount > 0)
+            {
+                newIndex = (newIndex + trapCount) % trapCount;
+                SelectTrap(newIndex);
+            }
+        }
+    }
     private void UpdateTrapHud()
     {
         foreach (var icon in currentTrapIcons)
@@ -230,6 +249,7 @@ public class GamePlayPanelController : MonoBehaviour
         ScoreText.text = score.ToString();
     }
     #endregion
+
 
     private void UpdateTimeClock(GameLevelManager.LevelPhase phase, float timePercentage)
     {
