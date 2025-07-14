@@ -20,7 +20,6 @@ namespace KidGame.Core
 
         public float AttackRange = 0.5f;
         
-        public List<ActiveSkillSO> activeSkills = new List<ActiveSkillSO>();
-        public List<PassiveSkillSO> passiveSkills = new List<PassiveSkillSO>();
+        
     }
 }

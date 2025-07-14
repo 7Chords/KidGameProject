@@ -22,7 +22,7 @@ namespace KidGame.Core
                 PlayerController.Instance.TakeDamage(new DamageInfo(gameObject, 1));
                 return TaskStatus.Success;
             }
-            return TaskStatus.Running;
+            return TaskStatus.Success;
         }
     }
 }
