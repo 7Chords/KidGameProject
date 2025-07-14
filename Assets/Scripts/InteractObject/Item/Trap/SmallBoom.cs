@@ -6,7 +6,6 @@ using UnityEngine.Serialization;
 
 namespace KidGame.Core
 {
-    ///perosona!!
     public class SmallBoom : TrapBase
     {
         public float Damage;

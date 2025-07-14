@@ -50,12 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583bba501837a2049b65a20dbfea355e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomPickSfxList:
-  - pick_item
-  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
-  randomInteractSfxList:
-  - interact_trap
-  interactPartical: {fileID: 0}
   previewGO: {fileID: 3281751691507936906}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
@@ -126,7 +120,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.2, y: 1.2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3281751691507936906
 GameObject:

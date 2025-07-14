@@ -208,7 +208,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 1.2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6758875044665024127
 MonoBehaviour:
@@ -222,10 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28817c6bdbb9d904fba882bceae1be17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomPickSfxList: []
-  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
-  randomInteractSfxList: []
-  interactPartical: {fileID: 0}
   previewGO: {fileID: 6699418676747035161}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}

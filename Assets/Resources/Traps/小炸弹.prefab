@@ -239,13 +239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c834171996cfd7449ddd59b50495d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomPickSfxList:
-  - pick_item
-  pickPartical: {fileID: 172870, guid: b17321ec2816b274fad797b242780090, type: 3}
-  randomInteractSfxList:
-  - interact_trap
-  interactPartical: {fileID: 4938095755617958529, guid: ab30b913ef5cc47a1998140ca4726403,
-    type: 3}
   previewGO: {fileID: 8988467854841509649}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
@@ -317,7 +310,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 1.2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2965644486588418161
 GameObject:

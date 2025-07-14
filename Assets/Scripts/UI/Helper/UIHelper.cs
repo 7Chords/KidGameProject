@@ -181,8 +181,13 @@ namespace KidGame.UI
 
         public void SortBubbleQueueByDist()
         {
-            if (bubbleInfoList == null) return;
+            if (bubbleInfoList == null || bubbleInfoList.Count == 0) return;
+            BubbleInfo oldNearestBubble = bubbleInfoList[0];
             bubbleInfoList.Sort();
+            if(oldNearestBubble != bubbleInfoList[0])
+            {
+                RefreshBubble();
+            }
         }
 
         #endregion
