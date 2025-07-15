@@ -8,7 +8,7 @@ namespace KidGame.Editor
 {
     public static class AudioDataGenerator
     {
-        [MenuItem("Tools/Audio/Generate Audio Data")]
+        [MenuItem("Tools/Generator/Generate Audio Data")]
         public static void GenerateAudioDataFromResources()
         {
             AudioDatas audioDatas = FindOrCreateAudioDatasAsset();
