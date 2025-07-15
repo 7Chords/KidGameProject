@@ -15,6 +15,7 @@ namespace KidGame.Core
         public int Score;
         public override void Trigger()
         {
+            base.Trigger();
             Collider[] colls = Physics.OverlapSphere(transform.position, damageArea);
             IDamageable damageable;
             Vector3 dir = Vector3.zero;

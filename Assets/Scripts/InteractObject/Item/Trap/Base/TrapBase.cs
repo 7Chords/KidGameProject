@@ -71,6 +71,20 @@ namespace KidGame.Core
         {
             //todo:fix
             //stateMachine.Destory();
+            if (!string.IsNullOrEmpty(trapData.deadSoundName))
+            {
+                AudioManager.Instance.PlaySfx(trapData.deadSoundName);
+            }
+
+            if (!string.IsNullOrEmpty(trapData.deadParticleName))
+            {
+                ParticleManager.Instance.PlayEffect(trapData.deadParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
+                    1f);
+            }
             Destroy(gameObject);
         }
 
@@ -84,18 +98,19 @@ namespace KidGame.Core
             if (trapData.triggerType == TrapTriggerType.Negative) return;
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
-            //todo:播放音效和特效
-            if (!string.IsNullOrEmpty(trapData.interactSoundPath))
+            //播放音效和特效
+            if (!string.IsNullOrEmpty(trapData.interactSoundName))
             {
-                AudioManager.Instance.PlaySfx(trapData.interactSoundPath);
+                AudioManager.Instance.PlaySfx(trapData.interactSoundName);
             }
 
-            if (!string.IsNullOrEmpty(trapData.interactParticalPath))
+            if (!string.IsNullOrEmpty(trapData.interactParticleName))
             {
-                //todo:partical mgr?
-                MonoManager.Instance.InstantiateGameObject(
-                    Resources.Load<GameObject>(trapData.interactParticalPath),
-                    transform.position, Quaternion.identity,
+                ParticleManager.Instance.PlayEffect(trapData.interactParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
                     1f);
             }
 
@@ -110,18 +125,19 @@ namespace KidGame.Core
             if (trapData == null || trapData.triggerType != TrapTriggerType.Negative) return;
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
-            //todo:播放音效和特效
-            if (!string.IsNullOrEmpty(trapData.interactSoundPath))
+            //播放音效和特效
+            if (!string.IsNullOrEmpty(trapData.interactSoundName))
             {
-                AudioManager.Instance.PlaySfx(trapData.interactSoundPath);
+                AudioManager.Instance.PlaySfx(trapData.interactSoundName);
             }
 
-            if (!string.IsNullOrEmpty(trapData.interactParticalPath))
+            if (!string.IsNullOrEmpty(trapData.interactParticleName))
             {
-                //todo:partical mgr?
-                MonoManager.Instance.InstantiateGameObject(
-                    Resources.Load<GameObject>(trapData.interactParticalPath),
-                    transform.position, Quaternion.identity,
+                ParticleManager.Instance.PlayEffect(trapData.interactParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
                     1f);
             }
 
@@ -135,17 +151,18 @@ namespace KidGame.Core
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
             //todo:播放音效和特效
-            if (!string.IsNullOrEmpty(trapData.pickSoundPath))
+            if (!string.IsNullOrEmpty(trapData.pickSoundName))
             {
-                AudioManager.Instance.PlaySfx(trapData.pickSoundPath);
+                AudioManager.Instance.PlaySfx(trapData.pickSoundName);
             }
 
-            if (!string.IsNullOrEmpty(trapData.pickParticalPath))
+            if (!string.IsNullOrEmpty(trapData.pickParticleName))
             {
-                //todo:partical mgr?
-                MonoManager.Instance.InstantiateGameObject(
-                    Resources.Load<GameObject>(trapData.pickParticalPath),
-                    transform.position, Quaternion.identity,
+                ParticleManager.Instance.PlayEffect(trapData.pickParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
                     1f);
             }
 
@@ -162,7 +179,20 @@ namespace KidGame.Core
         /// </summary>
         public virtual void Trigger()
         {
-            Debug.Log(gameObject.name + "陷阱触发了");
+            if (!string.IsNullOrEmpty(trapData.workSoundName))
+            {
+                AudioManager.Instance.PlaySfx(trapData.workSoundName);
+            }
+
+            if (!string.IsNullOrEmpty(trapData.workParticleName))
+            {
+                ParticleManager.Instance.PlayEffect(trapData.workParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
+                    1f);
+            }
         }
 
         /// <summary>

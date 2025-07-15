@@ -39,5 +39,7 @@ MonoBehaviour:
     effectPath: Particles/Sparkle_ellow
   - effectName: Step
     effectPath: Particles/Step
-  - effectName: Water Splash
-    effectPath: Particles/Water Splash
+  - effectName: Water_splash
+    effectPath: Particles/Water_splash
+  - effectName: Dizzy_star
+    effectPath: Particles/Dizzy_star

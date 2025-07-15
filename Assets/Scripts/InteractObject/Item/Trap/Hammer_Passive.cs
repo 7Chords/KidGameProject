@@ -14,6 +14,7 @@ namespace KidGame.Core
         public int Score;
         public override void Trigger()
         {
+            base.Trigger();
             Vector3 dir = (interactor.transform.position - transform.position).normalized;
             dir.y = 0;
             Rb.AddForce(dir * 100f,ForceMode.Impulse);

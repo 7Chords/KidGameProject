@@ -216,9 +216,6 @@ namespace KidGame.Core
                 case PlayerState.Use:
                     stateMachine.ChangeState<PlayerUseState>((int)playerState, reCurrstate);
                     break;
-                case PlayerState.Throw:
-                    stateMachine.ChangeState<PlayerThrowState>((int)playerState, reCurrstate);
-                    break;
                 case PlayerState.Dead:
                     stateMachine.ChangeState<PlayerDeadState>((int)playerState, reCurrstate);
                     break;
@@ -261,14 +258,6 @@ namespace KidGame.Core
             if (PlayerBag.Instance._trapBag.Count > 0)
             {
                 ChangeState(PlayerState.Use);
-            }
-        }
-
-        public void TryThrowTrap()
-        {
-            if (PlayerBag.Instance._trapBag.Count > 0)
-            {
-                ChangeState(PlayerState.Throw);
             }
         }
 

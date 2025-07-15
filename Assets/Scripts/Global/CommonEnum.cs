@@ -14,9 +14,8 @@
         Run = 3,
         Bag = 4,
         Use = 5,
-        Throw = 6,
-        Pick = 7,
-        MouseWheel = 8,
-        GamePause = 9,
+        Pick = 6,
+        MouseWheel = 7,
+        GamePause = 8,
     }
 }

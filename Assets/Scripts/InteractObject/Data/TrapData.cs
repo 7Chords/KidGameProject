@@ -41,14 +41,15 @@ namespace KidGame.Core
         public float validTime = -1; //有效时间 -1为可以立刻生效
         public List<TrapDeadType> deadTypeList;
         public float deadDelayTime;//死亡延迟时间 deadTypeList包含TimeDelay才有效
-        public string interactSoundPath;
-        public string pickSoundPath;
-        public string workSoundPath;
-        public string deadSoundPath;
-        public string interactParticalPath;
-        public string pickParticalPath;
-        public string workParticalPath;
-        public string deadParticalPath;
+        public float placeTime;//放置所需要的时间
+        public string interactSoundName;
+        public string pickSoundName;
+        public string workSoundName;
+        public string deadSoundName;
+        public string interactParticleName;
+        public string pickParticleName;
+        public string workParticleName;
+        public string deadParticleName;
 
     }
 }
