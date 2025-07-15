@@ -219,7 +219,7 @@ namespace KidGame.Core
 
         private bool PlaceGroundTrap(TrapSlotInfo trapToPlace, Vector3 position, Quaternion rotation)
         {
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
+            GameObject newTrap = TrapFactory.CreateEntity(trapToPlace.trapData, position);
             if (newTrap != null)
             {
                 newTrap.transform.rotation = rotation;
@@ -232,7 +232,7 @@ namespace KidGame.Core
         //使用的道具为手持道具：
         private bool UseThrowHandWeapon(PlayerController player, TrapSlotInfo trapToPlace, Vector3 position, Vector3 mousePosition)
         {
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
+            GameObject newTrap = TrapFactory.CreateEntity(trapToPlace.trapData, position);
             if (newTrap != null)
             {
                 return true;
@@ -246,7 +246,7 @@ namespace KidGame.Core
             var furniture = player.GetClosestPickable() as MapFurniture;
             if (furniture == null) return false;
 
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
+            GameObject newTrap = TrapFactory.CreateEntity(trapToPlace.trapData, position);
             if (newTrap != null)
             {
                 furniture.SetTrap(newTrap);

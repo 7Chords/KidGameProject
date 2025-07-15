@@ -44,6 +44,9 @@ namespace KidGame.Core
         public PlayerBaseData PlayerBaseData;
 
         private BuffHandler playerBuffHandler;
+
+        public Transform PlaceTrapPoint;
+        private GameObject curPreviewGO;
         #endregion
 
         #region 状态机
@@ -382,7 +385,8 @@ namespace KidGame.Core
         /// <param name="obj"></param>
         private void SpawnSelectTrapPreview(TrapData trapData)
         {
-
+            if(curPreviewGO) Destroy(curPreviewGO);
+            curPreviewGO = TrapFactory.CreatePreview(trapData, PlaceTrapPoint.position, transform);
         }
         #endregion
 

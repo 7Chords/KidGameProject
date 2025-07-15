@@ -1,25 +1,26 @@
-using KidGame.Core;
 using KidGame.Interface;
 using KidGame.UI;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 
 namespace KidGame.Core
 {
     /// <summary>
     /// 陷阱基类
     /// </summary>
-    public class TrapBase : MapItem, IInteractive, IStateMachineOwner,IMouseShowPreview
+    public class TrapBase : MapItem, IInteractive, IStateMachineOwner,IMouseShowDetail
     {
 
-        [SerializeField] private GameObject previewGO;
-        public GameObject PreviewGO 
+        [SerializeField] private GameObject detailGO;
+        public GameObject DetailGO 
         {
-            get => previewGO;
-            set { previewGO = value; }
+            get => detailGO;
+            set { detailGO = value; }
         }
 
+        [SerializeField] private GameObject previewGO;
+
+        [SerializeField] private GameObject model;
         public override string EntityName => trapData.trapName;
 
         [ColorUsage(true, true)] public Color NoReadyColor;
@@ -34,6 +35,9 @@ namespace KidGame.Core
         private Collider coll;
         public Collider Coll => coll;
 
+        private NavMeshObstacle naveObstacle;
+
+        public NavMeshObstacle NaveObstacle => naveObstacle;
 
         protected TrapData trapData;
         public TrapData TrapData => trapData;
@@ -51,6 +55,7 @@ namespace KidGame.Core
             rb = GetComponent<Rigidbody>();
             coll = GetComponent<Collider>();
             gameObject.AddComponent<MousePreviewDetector>();
+            naveObstacle = GetComponent<NavMeshObstacle>();
         }
 
         /// <summary>
@@ -65,6 +70,8 @@ namespace KidGame.Core
             stateMachine.Init(this);
             //初始化为Idle状态
             ChangeState(TrapState.NoReady);
+
+            model.SetActive(true);
         }
 
         public virtual void Discard()
@@ -234,7 +241,9 @@ namespace KidGame.Core
             }
         }
 
-
+        /// <summary>
+        /// 从玩家互动和回收列表中移除&&从气泡信息列表中移除
+        /// </summary>
         private void RemoveFormPlayerUsingList()
         {
             coll.enabled = false;
@@ -243,13 +252,26 @@ namespace KidGame.Core
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
         }
 
-        public void ShowPreview()
+        public void ShowDetail()
         {
-            PreviewGO.SetActive(true);
+            DetailGO.SetActive(true);
         }
-        public void HidePreview()
+        public void HideDetail()
         {
-            PreviewGO.SetActive(false);
+            DetailGO.SetActive(false);
+        }
+
+        /// <summary>
+        /// 展示陷阱放置预览
+        /// </summary>
+        public void ShowPlacePreview()
+        {
+            model.SetActive(false);
+            rb.isKinematic = true;
+            coll.enabled = false;
+            naveObstacle.enabled = false;
+            ReadyIndicator.gameObject.SetActive(false);
+            previewGO.SetActive(true);
         }
     }
 }

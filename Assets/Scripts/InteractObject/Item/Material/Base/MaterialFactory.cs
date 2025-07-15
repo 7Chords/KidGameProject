@@ -9,7 +9,7 @@ namespace KidGame.Core
     /// </summary>
     public static class MaterialFactory
     {
-        public static GameObject Create(MaterialData materialData, Vector3 position)
+        public static GameObject CreateEntity(MaterialData materialData, Vector3 position)
         {
             //这里应该根据trapID加载对应的预制体
             //实际项目中应该使用资源管理系统
