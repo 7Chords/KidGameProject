@@ -8,18 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Preview
-  m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
+  m_Shader: {fileID: 4800000, guid: ec121f3852e98a8489b62c42156e0dfb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _SURFACE_TYPE_TRANSPARENT
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses:
   - DepthOnly
   - SHADOWCASTER
@@ -67,6 +66,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShadowBaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -90,25 +93,41 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
+    - _Brightness: 0.25
     - _BumpScale: 1
+    - _CLOUDSENABLED: 1
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _Cloud_Change: 0.005
+    - _Cloud_Cover: 0.5
+    - _Cloud_Density: 0.01
+    - _Cloud_Strength: 1
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DepthEdgeStrength: 0.5
+    - _DepthThreshold: 0.01
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _DstBlendAlpha: 10
+    - _EdgeThickness: 0.02
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _MinimumDarkness: 0.2
+    - _NormalEdgeStrength: 0.3
+    - _NormalThreshold: 1
+    - _OUTLINESENABLED: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _QueueOffset: 0
+    - _QueueControl: 0
+    - _QueueOffset: 50
     - _ReceiveShadows: 1
     - _SampleGI: 0
+    - _Shades: 7
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -116,11 +135,21 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 1
     - _WorkflowMode: 1
+    - _ZTest: 4
     - _ZWrite: 0
+    - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0.101960786}
+    - _Cloud_Movement: {r: 1, g: 1, b: 0, a: 0}
+    - _Cloud_Step: {r: 13, g: 17, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 0.101960786}
+    - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MainColor: {r: 0.5169811, g: 0.49064434, b: 0.49064434, a: 0.5}
+    - _NormalBias: {r: 1, g: 1, b: 1, a: 0}
+    - _OccludedColor: {r: 0.5169811, g: 0.49064428, b: 0.49064428, a: 0.5}
+    - _Outline: {r: 1, g: 1, b: 0, a: 1}
+    - _ShadowDiffuseColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7253280636370082226

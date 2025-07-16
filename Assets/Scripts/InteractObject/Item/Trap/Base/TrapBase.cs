@@ -27,6 +27,11 @@ namespace KidGame.Core
 
         [ColorUsage(true, true)] public Color ReadyColor;
 
+        [ColorUsage(true, true)] public Color CanPlaceColor;
+
+        [ColorUsage(true, true)] public Color NoCanPlaceColor;
+
+
         public Renderer ReadyIndicator;
 
         private Rigidbody rb;
@@ -48,6 +53,10 @@ namespace KidGame.Core
 
         protected StateMachine stateMachine;
         private TrapState trapState;
+
+        private bool canPlaceTrap = true;
+        public bool CanPlaceTrap => canPlaceTrap;
+
 
 
         private void Awake()
@@ -72,6 +81,8 @@ namespace KidGame.Core
             ChangeState(TrapState.NoReady);
 
             model.SetActive(true);
+            coll.enabled = true;
+            naveObstacle.enabled = true;//todo:判断需不需要
         }
 
         public virtual void Discard()
@@ -272,6 +283,21 @@ namespace KidGame.Core
             naveObstacle.enabled = false;
             ReadyIndicator.gameObject.SetActive(false);
             previewGO.SetActive(true);
+        }
+
+        public void SetCanPlaceState(bool canPlace)
+        {
+            canPlaceTrap = canPlace;
+            if(canPlaceTrap)
+            {
+                previewGO.GetComponent<Renderer>().material.SetColor("_MainColor", CanPlaceColor);
+                previewGO.GetComponent<Renderer>().material.SetColor("_OccludedColor", CanPlaceColor);
+            }
+            else
+            {
+                previewGO.GetComponent<Renderer>().material.SetColor("_MainColor", NoCanPlaceColor);
+                previewGO.GetComponent<Renderer>().material.SetColor("_OccludedColor", NoCanPlaceColor);
+            }
         }
     }
 }

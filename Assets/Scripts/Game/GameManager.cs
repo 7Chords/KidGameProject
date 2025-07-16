@@ -56,6 +56,10 @@ namespace KidGame.Core
             PlayerManager.Instance.Init();
             MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
+
+            //todo
+            GamePlayPanelController.Instance.Init();
+            CameraController.Instance.Init();
         }
 
         private void DiscardGame()
@@ -64,6 +68,12 @@ namespace KidGame.Core
             PlayerManager.Instance.Discard();
             MapManager.Instance.Discard();
             GameLevelManager.Instance.Discard();
+
+
+            //todo
+            GamePlayPanelController.Instance.Discard();
+            CameraController.Instance.Discard();
+
         }
 
         /// <summary>

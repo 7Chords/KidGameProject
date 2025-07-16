@@ -181,7 +181,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1873150178419977476}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.3, y: 0.3, z: 0.56}
@@ -207,7 +207,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 1.2
   m_Center: {x: 0, y: 0, z: 0}
@@ -228,6 +228,8 @@ MonoBehaviour:
   model: {fileID: 1045574643344513049}
   NoReadyColor: {r: 1.8970414, g: 1.4002316, b: 0, a: 1}
   ReadyColor: {r: 0.111935385, g: 0.7550309, b: 0, a: 1}
+  CanPlaceColor: {r: 0.5169811, g: 0.49064428, b: 0.49064428, a: 0.5}
+  NoCanPlaceColor: {r: 1, g: 0, b: 0, a: 0.5}
   ReadyIndicator: {fileID: 425567510535111511}
   Power: 5
   PowerCostPerSecond: 1
@@ -248,7 +250,7 @@ GameObject:
   - component: {fileID: 5918343091492833075}
   - component: {fileID: 1837895084110863907}
   - component: {fileID: 2689009627905452868}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -563,7 +565,7 @@ GameObject:
   - component: {fileID: 172701105243856970}
   - component: {fileID: 6854844337626794579}
   - component: {fileID: 7523742919253048293}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -750,7 +752,9 @@ GameObject:
   - component: {fileID: 2641384736956035706}
   - component: {fileID: 2369992502527546530}
   - component: {fileID: 3826151570989725871}
-  m_Layer: 8
+  - component: {fileID: 6500791674693724246}
+  - component: {fileID: 6591000424399885126}
+  m_Layer: 0
   m_Name: Preview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,6 +828,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6500791674693724246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847441295151143786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b74dae9b1b7564e4faa83112b5f94d32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &6591000424399885126
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847441295151143786}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8778117906803741014
 GameObject:
   m_ObjectHideFlags: 0

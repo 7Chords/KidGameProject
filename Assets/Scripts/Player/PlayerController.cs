@@ -514,5 +514,11 @@ namespace KidGame.Core
         }
 
         #endregion
+
+        public bool GetCanPlaceTrap()
+        {
+            if (curPreviewGO == null) return false;
+            return curPreviewGO.GetComponentInParent<TrapBase>().CanPlaceTrap;
+        }
     }
 }

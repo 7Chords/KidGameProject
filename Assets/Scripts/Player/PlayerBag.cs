@@ -219,6 +219,11 @@ namespace KidGame.Core
 
         private bool PlaceGroundTrap(TrapSlotInfo trapToPlace, Vector3 position, Quaternion rotation)
         {
+            if (!PlayerController.Instance.GetCanPlaceTrap())
+            {
+                UIHelper.Instance.ShowOneTip(new TipInfo("这里无法放置陷阱", PlayerController.Instance.gameObject));
+                return false;
+            }
             GameObject newTrap = TrapFactory.CreateEntity(trapToPlace.trapData, position);
             if (newTrap != null)
             {
@@ -241,20 +246,6 @@ namespace KidGame.Core
             return false;
         }
 
-        private bool PlaceFurnitureTrap(PlayerController player, TrapSlotInfo trapToPlace, Vector3 position)
-        {
-            var furniture = player.GetClosestPickable() as MapFurniture;
-            if (furniture == null) return false;
-
-            GameObject newTrap = TrapFactory.CreateEntity(trapToPlace.trapData, position);
-            if (newTrap != null)
-            {
-                furniture.SetTrap(newTrap);
-                return true;
-            }
-
-            return false;
-        }
 
         #endregion
         

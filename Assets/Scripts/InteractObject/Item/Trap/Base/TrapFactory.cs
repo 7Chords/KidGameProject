@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using KidGame.Core;
+using KidGame.UI;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -14,7 +15,6 @@ namespace KidGame.Core
         {
             //这里应该根据trapID加载对应的预制体
             //实际项目中应该使用资源管理系统
-
             GameObject trapPrefab = Resources.Load<GameObject>("Traps/" + trapData.trapName);
             if (trapPrefab == null)
             {

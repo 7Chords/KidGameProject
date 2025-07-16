@@ -7,7 +7,7 @@ using KidGame.Core;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class GamePlayPanelController : MonoBehaviour
+public class GamePlayPanelController : Singleton<GamePlayPanelController>
 {
     [SerializeField] private ProgressBar energyProgressBar;
     [SerializeField] private ClockProgressBar clockBar;
@@ -38,7 +38,7 @@ public class GamePlayPanelController : MonoBehaviour
     public Text ScoreText;
     #endregion
 
-    private void Start()
+    public void Init()
     {
         RegisterEvents();
         InitializeHealthHud();
@@ -61,7 +61,7 @@ public class GamePlayPanelController : MonoBehaviour
     //    }
     //}
     
-    private void OnDestroy()
+    public void Discard()
     {
         UnregisterAllEvents();
     }

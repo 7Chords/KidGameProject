@@ -2,20 +2,25 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public class CameraController : MonoBehaviour
+    public class CameraController : Singleton<CameraController>
     {
         public Transform Player;
         public float smoothSpeed = 5f;
 
         private float initialDistance;
 
-        private void Start()
+        public void Init()
         {
             if (Player == null)
                 Player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
             if (Player == null) return;
             initialDistance = Vector3.Distance(transform.position, Player.position);
+        }
+
+        public void Discard()
+        {
+
         }
 
         private void LateUpdate()
