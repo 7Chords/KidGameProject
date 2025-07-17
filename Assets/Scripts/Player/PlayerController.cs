@@ -136,8 +136,12 @@ namespace KidGame.Core
             stateMachine.ObjectPushPool();
             playerBuffHandler.Discard();
             UnregActions();
-        }        
+        }
 
+        #endregion
+
+        #region 使用道具相关
+        public UseItemType useItemType = UseItemType.nothing;
         #endregion
 
         #region 事件相关
@@ -252,7 +256,6 @@ namespace KidGame.Core
             if (pickableDict == null || pickableDict.Count == 0) return;
             GetClosestPickable()?.Pick();
         }
-
         /// <summary>
         /// 尝试放陷阱
         /// </summary>

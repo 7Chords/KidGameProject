@@ -9,10 +9,20 @@ using static UnityEditor.FilePathAttribute;
 
 namespace KidGame.Core
 {
+    /// <summary>
+    /// 背包物品基类
+    /// </summary>
+    
+    public interface BagItemInfoBase
+    {
+        UseItemType UseItemType { get; }
+    }
+
+
     #region 单个物品的信息结构
     
     [Serializable]
-    public class TrapSlotInfo
+    public class TrapSlotInfo : BagItemInfoBase
     {
         public TrapData trapData;
         public int amount;
@@ -22,10 +32,12 @@ namespace KidGame.Core
             this.trapData = trapData;
             this.amount = amount;
         }
+
+        public UseItemType UseItemType => UseItemType.trap;
     }
 
     [Serializable]
-    public class MaterialSlotInfo
+    public class MaterialSlotInfo : BagItemInfoBase
     {
         public MaterialData materialData;
         public int amount;
@@ -35,8 +47,21 @@ namespace KidGame.Core
             this.materialData = materialData;
             this.amount = amount;
         }
+        public UseItemType UseItemType => UseItemType.Material;
     }
+    [Serializable]
+    public class WeaponSlotInfo
+    {
+        public WeaponData weaponData;
+        public int amount;
 
+        public WeaponSlotInfo(WeaponData weaponData, int amount)
+        {
+            this.weaponData = weaponData;
+            this.amount = amount;
+        }
+        public UseItemType UseItemType => UseItemType.weapon;
+    }
     #endregion
 
     public class PlayerBag : Singleton<PlayerBag>
@@ -49,7 +74,11 @@ namespace KidGame.Core
 
         // 陷阱背包
         public List<TrapSlotInfo> _trapBag = new List<TrapSlotInfo>();
+        // 材料背包
         public List<MaterialSlotInfo> _materialBag = new List<MaterialSlotInfo>();
+
+        // 手持背包
+        public List<WeaponSlotInfo>  _weaponBag = new List<WeaponSlotInfo>();
 
         #endregion
 

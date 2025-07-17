@@ -6,6 +6,16 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+    public enum UseItemType
+    {
+        trap,
+        weapon,
+        food,
+        Material,
+        nothing
+    }
+
+
     public class PlayerUseState : PlayerStateBase
     {
         private float useTimer;

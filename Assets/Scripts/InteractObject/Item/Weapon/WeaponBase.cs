@@ -6,15 +6,13 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+
     public class WeaponBase : MapItem, IInteractive
     {
-        /// <summary>
-        /// 捡起物体的时候调用
-        /// </summary>
-
-        private WeaponEntity _weaponData;
-
-        public WeaponEntity weaponData
+        //数据都去配表拿吧
+        private WeaponData _weaponData;
+        public override string EntityName { get => _weaponData.name;}
+        public WeaponData weaponData
         {
             get
             {
@@ -22,6 +20,27 @@ namespace KidGame.Core
             }
         }
 
+        protected virtual void Awake()
+        {
+            
+        }
+
+        protected virtual void Start()
+        {
+            //To do:生成的时候都要粘在角色手上
+        }
+
+        protected virtual void Update()
+        {
+            
+        }
+        protected virtual void InitWeaponData(string id, string dataName, string soName)
+        {
+            _weaponData = SoLoader.Instance.GetDataById(id, dataName, soName) as WeaponData;
+        }
+        /// <summary>
+        /// 捡起物体的时候调用
+        /// </summary>
         public override void Pick()
         {
             //他是通过Trigger类型Colider来增加物体的
@@ -34,14 +53,14 @@ namespace KidGame.Core
 
             //TODO:武器捡起来可能还有什么要触发的东西 待定
 
-
             UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
 
+            Destroy(gameObject);
         }
 
         public virtual void InteractPositive(GameObject interactor)
         {
-            //子类覆写各自交互功能 但是use是左键 ？？？
+            //To Do:武器可能会被用来附魔
         }
 
         //To Do:武器应该不需要被动互动 ？？  

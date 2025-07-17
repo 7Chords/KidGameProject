@@ -48,16 +48,16 @@ namespace KidGame.Core
 
         /// <summary>
         /// 传入值为想要找的某个物体的string类型的id
-        /// 以及这个Entity Type的名字
+        /// 以及这个Data Type的名字
         /// 和 装载这个Entity的 So名字
         /// </summary>
-        public object GetEntityById(string id, string entityName, string soName)
+        public object GetDataById(string id, string dataName, string soName)
         {
             // 直接从缓存中查找
-            string compositeKey = $"{entityName}_{id}";
-            if (entityDic.TryGetValue(compositeKey, out object cachedEntity))
+            string compositeKey = $"{dataName}_{id}";
+            if (entityDic.TryGetValue(compositeKey, out object cachedData))
             {
-                return cachedEntity;
+                return cachedData;
             }
 
             // 缓存中没有，从SO中查找

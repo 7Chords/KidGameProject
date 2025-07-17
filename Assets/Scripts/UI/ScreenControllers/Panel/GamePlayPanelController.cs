@@ -190,17 +190,17 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region Ñ¡ÔñÏÝÚå
 
-
+    
     private void UpdateSelectItem(float scrollValue)
     {
         if (scrollValue != 0)
         {
             int direction = scrollValue > 0 ? 1 : -1;
             int newIndex = selectedTrapIndex + direction;
-            int trapCount = PlayerBag.Instance.GetTempTrapSlots().Count;
-            if (trapCount > 0)
+            int itemCount = PlayerBag.Instance.GetTempTrapSlots().Count;
+            if (itemCount > 0)
             {
-                newIndex = (newIndex + trapCount) % trapCount;
+                newIndex = (newIndex + itemCount) % itemCount;
                 SelectTrap(newIndex);
             }
         }
