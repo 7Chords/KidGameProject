@@ -21,6 +21,7 @@ namespace KidGame.Core
         private float useTimer;
         private bool hasPlaced;
 
+        //To do: 根据现在玩家的手持物品类型 来做不一样的Use处理
         public override void Enter()
         {
             useTimer = 0f;

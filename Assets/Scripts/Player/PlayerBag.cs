@@ -305,6 +305,7 @@ namespace KidGame.Core
         
         public bool TryUseTrapFromTempBag(int index, PlayerController player, Vector3 position, Quaternion rotation)
         {
+            //To Do: 在选择武器的时候更改玩家现在的手持物品类型
             if (index < 0 || index >= _tempTrapBag.Count)
             {
                 UIHelper.Instance.ShowOneTip(new TipInfo("无效的陷阱选择", player.gameObject));

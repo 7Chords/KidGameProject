@@ -259,6 +259,8 @@ namespace KidGame.Core
         /// <summary>
         /// 尝试放陷阱
         /// </summary>
+        
+        // To Do: 更改一下判定
         public void TryPlaceTrap()
         {
             if (PlayerBag.Instance._trapBag.Count > 0)
