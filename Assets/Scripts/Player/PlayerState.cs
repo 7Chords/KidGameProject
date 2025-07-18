@@ -9,7 +9,6 @@ namespace KidGame.Core
         Move,
         Dash,
         Use,
-        Throw,
         Dead,
         Struggle,
     }

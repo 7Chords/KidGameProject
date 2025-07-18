@@ -9,10 +9,20 @@ using static UnityEditor.FilePathAttribute;
 
 namespace KidGame.Core
 {
+    /// <summary>
+    /// 背包物品基类
+    /// </summary>
+    
+    public interface BagItemInfoBase
+    {
+        UseItemType UseItemType { get; }
+    }
+
+
     #region 单个物品的信息结构
     
     [Serializable]
-    public class TrapSlotInfo
+    public class TrapSlotInfo : BagItemInfoBase
     {
         public TrapData trapData;
         public int amount;
@@ -22,10 +32,12 @@ namespace KidGame.Core
             this.trapData = trapData;
             this.amount = amount;
         }
+
+        public UseItemType UseItemType => UseItemType.trap;
     }
 
     [Serializable]
-    public class MaterialSlotInfo
+    public class MaterialSlotInfo : BagItemInfoBase
     {
         public MaterialData materialData;
         public int amount;
@@ -35,8 +47,21 @@ namespace KidGame.Core
             this.materialData = materialData;
             this.amount = amount;
         }
+        public UseItemType UseItemType => UseItemType.Material;
     }
+    [Serializable]
+    public class WeaponSlotInfo
+    {
+        public WeaponData weaponData;
+        public int amount;
 
+        public WeaponSlotInfo(WeaponData weaponData, int amount)
+        {
+            this.weaponData = weaponData;
+            this.amount = amount;
+        }
+        public UseItemType UseItemType => UseItemType.weapon;
+    }
     #endregion
 
     public class PlayerBag : Singleton<PlayerBag>
@@ -49,11 +74,17 @@ namespace KidGame.Core
 
         // 陷阱背包
         public List<TrapSlotInfo> _trapBag = new List<TrapSlotInfo>();
+        // 材料背包
         public List<MaterialSlotInfo> _materialBag = new List<MaterialSlotInfo>();
+
+        // 手持背包
+        public List<WeaponSlotInfo>  _weaponBag = new List<WeaponSlotInfo>();
 
         #endregion
 
         #region 选中
+
+        public event Action<TrapData> SelectTrapAction;
 
         private int _selectedTrapIndex = 0; // 当前选中的陷阱索引
         
@@ -73,6 +104,7 @@ namespace KidGame.Core
                     UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {trapName}", PlayerController.Instance.gameObject));
                 }
                 OnTrapBagUpdated?.Invoke();
+                SelectTrapAction?.Invoke(_tempTrapBag[_selectedTrapIndex].trapData);
             }
         }
 
@@ -216,7 +248,12 @@ namespace KidGame.Core
 
         private bool PlaceGroundTrap(TrapSlotInfo trapToPlace, Vector3 position, Quaternion rotation)
         {
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
+            if (!PlayerController.Instance.GetCanPlaceTrap())
+            {
+                UIHelper.Instance.ShowOneTip(new TipInfo("这里无法放置陷阱", PlayerController.Instance.gameObject));
+                return false;
+            }
+            GameObject newTrap = TrapFactory.CreateEntity(trapToPlace.trapData, position);
             if (newTrap != null)
             {
                 newTrap.transform.rotation = rotation;
@@ -229,7 +266,7 @@ namespace KidGame.Core
         //使用的道具为手持道具：
         private bool UseThrowHandWeapon(PlayerController player, TrapSlotInfo trapToPlace, Vector3 position, Vector3 mousePosition)
         {
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
+            GameObject newTrap = TrapFactory.CreateEntity(trapToPlace.trapData, position);
             if (newTrap != null)
             {
                 return true;
@@ -238,20 +275,6 @@ namespace KidGame.Core
             return false;
         }
 
-        private bool PlaceFurnitureTrap(PlayerController player, TrapSlotInfo trapToPlace, Vector3 position)
-        {
-            var furniture = player.GetClosestPickable() as MapFurniture;
-            if (furniture == null) return false;
-
-            GameObject newTrap = TrapFactory.Create(trapToPlace.trapData, position);
-            if (newTrap != null)
-            {
-                furniture.SetTrap(newTrap);
-                return true;
-            }
-
-            return false;
-        }
 
         #endregion
         
@@ -282,6 +305,7 @@ namespace KidGame.Core
         
         public bool TryUseTrapFromTempBag(int index, PlayerController player, Vector3 position, Quaternion rotation)
         {
+            //To Do: 在选择武器的时候更改玩家现在的手持物品类型
             if (index < 0 || index >= _tempTrapBag.Count)
             {
                 UIHelper.Instance.ShowOneTip(new TipInfo("无效的陷阱选择", player.gameObject));

@@ -13,14 +13,14 @@ namespace KidGame.UI
     [RequireComponent(typeof(Collider))]
     public class MousePreviewDetector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        private IMouseShowPreview previewTarget;
+        private IMouseShowDetail previewTarget;
         private GameObject currentPreview;
         private bool isPreviewShowing = false;
 
         private void Start()
         {
             // 获取实现了IMouseShowPreview接口的组件
-            previewTarget = GetComponent<IMouseShowPreview>();
+            previewTarget = GetComponent<IMouseShowDetail>();
 
             if (previewTarget == null)
             {
@@ -34,7 +34,7 @@ namespace KidGame.UI
         {
             if (previewTarget == null || isPreviewShowing) return;
             isPreviewShowing = true;
-            previewTarget.ShowPreview();
+            previewTarget.ShowDetail();
         }
 
         // 鼠标移出事件
@@ -42,7 +42,7 @@ namespace KidGame.UI
         {
             if (!isPreviewShowing) return;
             isPreviewShowing = false;
-            previewTarget.HidePreview();
+            previewTarget.HideDetail();
         }
 
 

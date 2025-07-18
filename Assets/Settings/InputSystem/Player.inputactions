@@ -60,15 +60,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Throw",
-                    "type": "Button",
-                    "id": "6e81ec3d-831c-4a44-b2c6-388fb26be5b9",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Pick",
                     "type": "Button",
                     "id": "1ef19e2f-4b3e-4890-972c-e60763b1f87f",
@@ -292,17 +283,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Use",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b4106f15-337d-4947-ac59-b4bd8314d430",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Throw",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

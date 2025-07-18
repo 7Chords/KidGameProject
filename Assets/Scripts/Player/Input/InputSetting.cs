@@ -13,7 +13,7 @@ namespace KidGame.Core
         private InputAction dashAction;
         private InputAction runAction;
         private InputAction useAction;
-        private InputAction throwAction;
+        //private InputAction throwAction;
         private InputAction bagAction;
         private InputAction pickAction;
         private InputAction mouseWheelAction;
@@ -24,12 +24,13 @@ namespace KidGame.Core
         public event Action OnRunPress;
         public event Action OnRunRelease;
         public event Action OnUsePress;
-        public event Action OnThrowPress;
+        //public event Action OnThrowPress;
         public event Action OnBagPress;
         public event Action OnPickPress;
         public event Action OnMouseWheelPress;
+        //鼠标滚轮值变化事件（传递变化值）
+        public event Action<float> OnMouseWheelValueChanged;
         public event Action OnGamePause;
-
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
@@ -40,7 +41,7 @@ namespace KidGame.Core
             dashAction = inputActionAsset.FindAction("Dash");
             runAction = inputActionAsset.FindAction("Run");
             useAction = inputActionAsset.FindAction("Use");
-            throwAction = inputActionAsset.FindAction("Throw");
+            //throwAction = inputActionAsset.FindAction("Throw");
             bagAction = inputActionAsset.FindAction("Bag");
             pickAction = inputActionAsset.FindAction("Pick");
             mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
@@ -51,11 +52,13 @@ namespace KidGame.Core
             runAction.performed += OnRunActionPerformed;
             runAction.canceled += OnRunActionCanceled;
             useAction.performed += OnUseActionPerformed;
-            throwAction.performed += OnThrowActionPerformed;
+            //throwAction.performed += OnThrowActionPerformed;
             bagAction.performed+= OnBagActionPerformed;
             pickAction.performed += OnPickActionPerformed;
             mouseWheelAction.performed += OnMouseWheelActionPerformed;
             gamePauseAction.performed += OnGamePauseActionPerformed;
+
+            this.OnUpdate(CheckMouseWheelValueChange);
         }
 
         private void OnDestroy()
@@ -65,13 +68,24 @@ namespace KidGame.Core
             runAction.performed -= OnRunActionPerformed;
             runAction.canceled -= OnRunActionCanceled;
             useAction.performed -= OnUseActionPerformed;
-            throwAction.performed -= OnThrowActionPerformed;
+            //throwAction.performed -= OnThrowActionPerformed;
             bagAction.performed -= OnBagActionPerformed;
             pickAction.performed -= OnPickActionPerformed;
             mouseWheelAction.performed -= OnMouseWheelActionPerformed;
             gamePauseAction.performed -= OnGamePauseActionPerformed;
+
+            this.RemoveUpdate(CheckMouseWheelValueChange);
+
         }
-        
+
+
+        //检测滚轮值变化的核心方法
+        private void CheckMouseWheelValueChange()
+        {
+            if (MouseWheelValue() == 0) return;
+            float currentValue = MouseWheelValue();
+            OnMouseWheelValueChanged?.Invoke(currentValue);
+        }
         public Vector2 MoveDir()
         {
             Vector2 inputDir = moveAction.ReadValue<Vector2>();
@@ -88,7 +102,7 @@ namespace KidGame.Core
         public virtual bool GetIfRun() => runAction.IsPressed();
         public virtual bool GetRunUp() => runAction.WasReleasedThisFrame();
         public virtual bool GetUseDown() => useAction.WasPerformedThisFrame();
-        public virtual bool GetThrowDown() => throwAction.WasPerformedThisFrame();
+        //public virtual bool GetThrowDown() => throwAction.WasPerformedThisFrame();
         public virtual bool GetBagDown() => bagAction.WasPerformedThisFrame();
         public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
         public virtual bool GetPickDown() => pickAction.WasPerformedThisFrame();
@@ -128,11 +142,11 @@ namespace KidGame.Core
             OnUsePress?.Invoke();
         }
 
-        private void OnThrowActionPerformed(InputAction.CallbackContext context)
-        {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnThrowPress?.Invoke();
-        }
+        //private void OnThrowActionPerformed(InputAction.CallbackContext context)
+        //{
+        //    if (GameManager.Instance.IsGamePaused) return;
+        //    OnThrowPress?.Invoke();
+        //}
 
         private void OnBagActionPerformed(InputAction.CallbackContext context)
         {

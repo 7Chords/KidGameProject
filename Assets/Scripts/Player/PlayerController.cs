@@ -3,6 +3,7 @@ using KidGame.Interface;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
+using System;
 
 namespace KidGame.Core
 {
@@ -40,10 +41,14 @@ namespace KidGame.Core
         public Rigidbody Rb => rb;
         
         public PlayerAnimator PlayerAnimator;
-        public PlayerBaseData PlayerBaseData;        
+        public PlayerBaseData PlayerBaseData;
 
+        private BuffHandler playerBuffHandler;
+
+        public Transform PlaceTrapPoint;
+        private GameObject curPreviewGO;
         #endregion
-        
+
         #region 状态机
 
         private StateMachine stateMachine;
@@ -65,8 +70,8 @@ namespace KidGame.Core
         public float CurrentHealth => currentHealth;
         public float MaxHealth => PlayerBaseData.Hp;
 
-        public event System.Action<float> OnHealthChanged;
-        public event System.Action OnPlayerDeath;
+        public event Action<float> OnHealthChanged;
+        public event Action OnPlayerDeath;
 
         #endregion
         
@@ -84,13 +89,16 @@ namespace KidGame.Core
         public event System.Action<float> OnStaminaChanged;
 
         #endregion
-        
-        private BuffHandler playerBuffHandler;
+
+        #region 玩家交互
 
         //key:可交互 value:和玩家距离
         private Dictionary<IInteractive, float> interactiveDict;
         //key:可回收 value:和玩家距离
         private Dictionary<IPickable, float> pickableDict;
+
+        public event Action<float> OnMouseWheelValueChanged;
+        #endregion
 
         #region 生命周期
 
@@ -128,8 +136,12 @@ namespace KidGame.Core
             stateMachine.ObjectPushPool();
             playerBuffHandler.Discard();
             UnregActions();
-        }        
+        }
 
+        #endregion
+
+        #region 使用道具相关
+        public UseItemType useItemType = UseItemType.nothing;
         #endregion
 
         #region 事件相关
@@ -144,7 +156,11 @@ namespace KidGame.Core
             inputSettings.OnUsePress += TryPlaceTrap;
             inputSettings.OnBagPress += ControlBag;
             inputSettings.OnGamePause += GamePause;
+            inputSettings.OnMouseWheelValueChanged += SwitchSelectItem;
+
+            PlayerBag.Instance.SelectTrapAction += SpawnSelectTrapPreview;
         }
+
 
         /// <summary>
         /// 反注册事件们
@@ -156,10 +172,14 @@ namespace KidGame.Core
             inputSettings.OnUsePress -= TryPlaceTrap;
             inputSettings.OnBagPress -= ControlBag;
             inputSettings.OnGamePause -= GamePause;
+            inputSettings.OnMouseWheelValueChanged -= SwitchSelectItem;
+
+            PlayerBag.Instance.SelectTrapAction -= SpawnSelectTrapPreview;
+
         }
 
         #endregion
-        
+
         #region 功能
 
         private void GamePause()
@@ -203,9 +223,6 @@ namespace KidGame.Core
                 case PlayerState.Use:
                     stateMachine.ChangeState<PlayerUseState>((int)playerState, reCurrstate);
                     break;
-                case PlayerState.Throw:
-                    stateMachine.ChangeState<PlayerThrowState>((int)playerState, reCurrstate);
-                    break;
                 case PlayerState.Dead:
                     stateMachine.ChangeState<PlayerDeadState>((int)playerState, reCurrstate);
                     break;
@@ -239,23 +256,16 @@ namespace KidGame.Core
             if (pickableDict == null || pickableDict.Count == 0) return;
             GetClosestPickable()?.Pick();
         }
-
         /// <summary>
         /// 尝试放陷阱
         /// </summary>
+        
+        // To Do: 更改一下判定
         public void TryPlaceTrap()
         {
             if (PlayerBag.Instance._trapBag.Count > 0)
             {
                 ChangeState(PlayerState.Use);
-            }
-        }
-
-        public void TryThrowTrap()
-        {
-            if (PlayerBag.Instance._trapBag.Count > 0)
-            {
-                ChangeState(PlayerState.Throw);
             }
         }
 
@@ -364,6 +374,25 @@ namespace KidGame.Core
         /// <param name="creator"></param>
         public void ReceiveSound(GameObject creator) { }
 
+
+        /// <summary>
+        /// 切换选择的物品
+        /// </summary>
+        /// <param name="scrollValue">鼠标滚轮值</param>
+        public void SwitchSelectItem(float scrollValue)
+        {
+            OnMouseWheelValueChanged?.Invoke(scrollValue);
+        }
+
+        /// <summary>
+        /// 生成预览的陷阱
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SpawnSelectTrapPreview(TrapData trapData)
+        {
+            if(curPreviewGO) Destroy(curPreviewGO);
+            curPreviewGO = TrapFactory.CreatePreview(trapData, PlaceTrapPoint.position, transform);
+        }
         #endregion
 
         #region 体力与生命
@@ -490,5 +519,11 @@ namespace KidGame.Core
         }
 
         #endregion
+
+        public bool GetCanPlaceTrap()
+        {
+            if (curPreviewGO == null) return false;
+            return curPreviewGO.GetComponentInParent<TrapBase>().CanPlaceTrap;
+        }
     }
 }

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace KidGame.Core
 {
     /// <summary>
@@ -6,8 +8,14 @@ namespace KidGame.Core
     /// </summary>
     public class PlayerManager : Singleton<PlayerManager>
     {
+
+        [SerializeField]
+        private GameObject playerPrefab;
         public void Init()
         {
+            //todo
+            Instantiate(playerPrefab);
+
             PlayerUtil.Instance.Init();
             PlayerController.Instance.Init();
             PlayerBag.Instance.Init();

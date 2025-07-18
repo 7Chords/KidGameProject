@@ -215,8 +215,20 @@ public class ExcelImporter : AssetPostprocessor
 
     static object CreateEntityFromRow(IRow row, List<string> columnNames, Type entityType, string sheetName)
     {
-        var entity = Activator.CreateInstance(entityType);
+        object entity;
+        // 判断实体类型是否是 ScriptableObject 的子类
+        if (typeof(ScriptableObject).IsAssignableFrom(entityType))
+        {
+            // 对于 ScriptableObject 子类，必须用 CreateInstance 实例化
+            entity = ScriptableObject.CreateInstance(entityType);
+        }
+        else
+        {
+            // 普通类仍用 Activator.CreateInstance
+            entity = Activator.CreateInstance(entityType);
+        }
 
+        // 后续字段赋值逻辑不变...
         for (int i = 0; i < columnNames.Count; i++)
         {
             FieldInfo entityField = entityType.GetField(
@@ -234,7 +246,6 @@ public class ExcelImporter : AssetPostprocessor
             {
                 object fieldValue;
 
-                // 检查是否是List类型
                 if (entityField.FieldType.IsGenericType &&
                     entityField.FieldType.GetGenericTypeDefinition() == typeof(List<>))
                 {
@@ -247,10 +258,9 @@ public class ExcelImporter : AssetPostprocessor
 
                 entityField.SetValue(entity, fieldValue);
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception(string.Format("Invalid excel cell type at row {0}, column {1}, {2} sheet.",
-                    row.RowNum, cell.ColumnIndex, sheetName));
+                throw new Exception($"处理行 {row.RowNum} 列 {i} 时出错：{ex.Message}", ex);
             }
         }
         return entity;

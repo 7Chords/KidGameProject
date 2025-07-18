@@ -1,30 +1,36 @@
-using KidGame.Core;
 using KidGame.Interface;
 using KidGame.UI;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 
 namespace KidGame.Core
 {
     /// <summary>
     /// 陷阱基类
     /// </summary>
-    public class TrapBase : MapItem, IInteractive, IStateMachineOwner,IMouseShowPreview
+    public class TrapBase : MapItem, IInteractive, IStateMachineOwner,IMouseShowDetail
     {
 
-        [SerializeField] private GameObject previewGO;
-        public GameObject PreviewGO 
+        [SerializeField] private GameObject detailGO;
+        public GameObject DetailGO 
         {
-            get => previewGO;
-            set { previewGO = value; }
+            get => detailGO;
+            set { detailGO = value; }
         }
 
+        [SerializeField] private GameObject previewGO;
+
+        [SerializeField] private GameObject model;
         public override string EntityName => trapData.trapName;
 
         [ColorUsage(true, true)] public Color NoReadyColor;
 
         [ColorUsage(true, true)] public Color ReadyColor;
+
+        [ColorUsage(true, true)] public Color CanPlaceColor;
+
+        [ColorUsage(true, true)] public Color NoCanPlaceColor;
+
 
         public Renderer ReadyIndicator;
 
@@ -34,6 +40,9 @@ namespace KidGame.Core
         private Collider coll;
         public Collider Coll => coll;
 
+        private NavMeshObstacle naveObstacle;
+
+        public NavMeshObstacle NaveObstacle => naveObstacle;
 
         protected TrapData trapData;
         public TrapData TrapData => trapData;
@@ -45,12 +54,17 @@ namespace KidGame.Core
         protected StateMachine stateMachine;
         private TrapState trapState;
 
+        private bool canPlaceTrap = true;
+        public bool CanPlaceTrap => canPlaceTrap;
+
+
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
             coll = GetComponent<Collider>();
             gameObject.AddComponent<MousePreviewDetector>();
+            naveObstacle = GetComponent<NavMeshObstacle>();
         }
 
         /// <summary>
@@ -65,12 +79,30 @@ namespace KidGame.Core
             stateMachine.Init(this);
             //初始化为Idle状态
             ChangeState(TrapState.NoReady);
+
+            model.SetActive(true);
+            coll.enabled = true;
+            naveObstacle.enabled = true;//todo:判断需不需要
         }
 
         public virtual void Discard()
         {
             //todo:fix
             //stateMachine.Destory();
+            if (!string.IsNullOrEmpty(trapData.deadSoundName))
+            {
+                AudioManager.Instance.PlaySfx(trapData.deadSoundName);
+            }
+
+            if (!string.IsNullOrEmpty(trapData.deadParticleName))
+            {
+                ParticleManager.Instance.PlayEffect(trapData.deadParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
+                    1f);
+            }
             Destroy(gameObject);
         }
 
@@ -84,18 +116,19 @@ namespace KidGame.Core
             if (trapData.triggerType == TrapTriggerType.Negative) return;
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
-            //todo:播放音效和特效
-            if (!string.IsNullOrEmpty(trapData.interactSoundPath))
+            //播放音效和特效
+            if (!string.IsNullOrEmpty(trapData.interactSoundName))
             {
-                AudioManager.Instance.PlaySfx(trapData.interactSoundPath);
+                AudioManager.Instance.PlaySfx(trapData.interactSoundName);
             }
 
-            if (!string.IsNullOrEmpty(trapData.interactParticalPath))
+            if (!string.IsNullOrEmpty(trapData.interactParticleName))
             {
-                //todo:partical mgr?
-                MonoManager.Instance.InstantiateGameObject(
-                    Resources.Load<GameObject>(trapData.interactParticalPath),
-                    transform.position, Quaternion.identity,
+                ParticleManager.Instance.PlayEffect(trapData.interactParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
                     1f);
             }
 
@@ -110,18 +143,19 @@ namespace KidGame.Core
             if (trapData == null || trapData.triggerType != TrapTriggerType.Negative) return;
             //判断陷阱是否有效
             if (trapState != TrapState.Ready) return;
-            //todo:播放音效和特效
-            if (!string.IsNullOrEmpty(trapData.interactSoundPath))
+            //播放音效和特效
+            if (!string.IsNullOrEmpty(trapData.interactSoundName))
             {
-                AudioManager.Instance.PlaySfx(trapData.interactSoundPath);
+                AudioManager.Instance.PlaySfx(trapData.interactSoundName);
             }
 
-            if (!string.IsNullOrEmpty(trapData.interactParticalPath))
+            if (!string.IsNullOrEmpty(trapData.interactParticleName))
             {
-                //todo:partical mgr?
-                MonoManager.Instance.InstantiateGameObject(
-                    Resources.Load<GameObject>(trapData.interactParticalPath),
-                    transform.position, Quaternion.identity,
+                ParticleManager.Instance.PlayEffect(trapData.interactParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
                     1f);
             }
 
@@ -135,17 +169,18 @@ namespace KidGame.Core
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(this);
             //todo:播放音效和特效
-            if (!string.IsNullOrEmpty(trapData.pickSoundPath))
+            if (!string.IsNullOrEmpty(trapData.pickSoundName))
             {
-                AudioManager.Instance.PlaySfx(trapData.pickSoundPath);
+                AudioManager.Instance.PlaySfx(trapData.pickSoundName);
             }
 
-            if (!string.IsNullOrEmpty(trapData.pickParticalPath))
+            if (!string.IsNullOrEmpty(trapData.pickParticleName))
             {
-                //todo:partical mgr?
-                MonoManager.Instance.InstantiateGameObject(
-                    Resources.Load<GameObject>(trapData.pickParticalPath),
-                    transform.position, Quaternion.identity,
+                ParticleManager.Instance.PlayEffect(trapData.pickParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
                     1f);
             }
 
@@ -162,7 +197,20 @@ namespace KidGame.Core
         /// </summary>
         public virtual void Trigger()
         {
-            Debug.Log(gameObject.name + "陷阱触发了");
+            if (!string.IsNullOrEmpty(trapData.workSoundName))
+            {
+                AudioManager.Instance.PlaySfx(trapData.workSoundName);
+            }
+
+            if (!string.IsNullOrEmpty(trapData.workParticleName))
+            {
+                ParticleManager.Instance.PlayEffect(trapData.workParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
+                    1f);
+            }
         }
 
         /// <summary>
@@ -204,7 +252,9 @@ namespace KidGame.Core
             }
         }
 
-
+        /// <summary>
+        /// 从玩家互动和回收列表中移除&&从气泡信息列表中移除
+        /// </summary>
         private void RemoveFormPlayerUsingList()
         {
             coll.enabled = false;
@@ -213,13 +263,41 @@ namespace KidGame.Core
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
         }
 
-        public void ShowPreview()
+        public void ShowDetail()
         {
-            PreviewGO.SetActive(true);
+            DetailGO.SetActive(true);
         }
-        public void HidePreview()
+        public void HideDetail()
         {
-            PreviewGO.SetActive(false);
+            DetailGO.SetActive(false);
+        }
+
+        /// <summary>
+        /// 展示陷阱放置预览
+        /// </summary>
+        public void ShowPlacePreview()
+        {
+            model.SetActive(false);
+            rb.isKinematic = true;
+            coll.enabled = false;
+            naveObstacle.enabled = false;
+            ReadyIndicator.gameObject.SetActive(false);
+            previewGO.SetActive(true);
+        }
+
+        public void SetCanPlaceState(bool canPlace)
+        {
+            canPlaceTrap = canPlace;
+            if(canPlaceTrap)
+            {
+                previewGO.GetComponent<Renderer>().material.SetColor("_MainColor", CanPlaceColor);
+                previewGO.GetComponent<Renderer>().material.SetColor("_OccludedColor", CanPlaceColor);
+            }
+            else
+            {
+                previewGO.GetComponent<Renderer>().material.SetColor("_MainColor", NoCanPlaceColor);
+                previewGO.GetComponent<Renderer>().material.SetColor("_OccludedColor", NoCanPlaceColor);
+            }
         }
     }
 }

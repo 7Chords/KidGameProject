@@ -16,16 +16,15 @@ namespace KidGame.Core
         private Vector3 dir;
         private bool hasCausedDamage;
         public int Score;
-        public ParticleSystem FireTailPartical;
         public override void Trigger()
         {
+            base.Trigger();
             trapData.deadDelayTime = Power / PowerCostPerSecond;
             Vector3 noFixDir = (transform.position - interactor.transform.position).normalized;
             dir = new Vector3(noFixDir.x, 0, noFixDir.z);
             transform.rotation = Quaternion.LookRotation(dir);
             //transform.LookAt(dir);
             this.OnFixedUpdate(PerformTick);
-            FireTailPartical.Play();
         }
 
         public override void Discard()

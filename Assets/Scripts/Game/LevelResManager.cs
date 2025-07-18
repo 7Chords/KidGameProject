@@ -174,7 +174,7 @@ namespace KidGame.Core
             }
 
             Vector3 placePosition = position + Vector3.up;
-            GameObject materialGO = MaterialFactory.Create(materialData, placePosition);
+            GameObject materialGO = MaterialFactory.CreateEntity(materialData, placePosition);
             materialGO.transform.SetParent(_materialRoot.transform);
             MaterialBase materialBase = materialGO.GetComponent<MaterialBase>();
             materialBase.Init(materialData);

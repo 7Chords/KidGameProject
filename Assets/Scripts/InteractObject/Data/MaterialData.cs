@@ -9,8 +9,8 @@ namespace KidGame.Core
         public string materialName;
         public string materialDesc;
         public string materialIconPath;
-        public string pickSoundPath;
-        public string pickParticalPath;
+        public string pickSoundName;
+        public string pickParticleName;
 
     }
 }

@@ -32,17 +32,18 @@ namespace KidGame.Core
             PlayerUtil.Instance.CallPlayerPickItem(this);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
             //todo:播放音效和特效
-            if (!string.IsNullOrEmpty(materialData.pickSoundPath))
+            if (!string.IsNullOrEmpty(materialData.pickSoundName))
             {
-                AudioManager.Instance.PlaySfx(materialData.pickSoundPath);
+                AudioManager.Instance.PlaySfx(materialData.pickSoundName);
             }
 
-            if (!string.IsNullOrEmpty(materialData.pickParticalPath))
+            if (!string.IsNullOrEmpty(materialData.pickParticleName))
             {
-                //todo:partical mgr?
-                MonoManager.Instance.InstantiateGameObject(
-                    Resources.Load<GameObject>(materialData.pickParticalPath),
-                    transform.position, Quaternion.identity,
+                ParticleManager.Instance.PlayEffect(materialData.pickParticleName,
+                    transform.position,
+                    Quaternion.identity,
+                    transform,
+                    true,
                     1f);
             }
             UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
