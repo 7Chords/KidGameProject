@@ -83,6 +83,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sofa
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a6cb30678460347198f21dcae24e1c42,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -139,9 +144,6 @@ MonoBehaviour:
     furnitureData: {fileID: 0}
     mapPosList: []
     roomType: 0
+    rotation: 0
   materialHoldList: []
-  randomPickSfxList: []
-  pickPartical: {fileID: 0}
-  randomInteractSfxList: []
-  interactPartical: {fileID: 0}
   TrapDependPos: {fileID: 0}

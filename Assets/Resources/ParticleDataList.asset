@@ -43,3 +43,5 @@ MonoBehaviour:
     effectPath: Particles/Water_splash
   - effectName: Dizzy_star
     effectPath: Particles/Dizzy_star
+  - effectName: Attention_spark
+    effectPath: Particles/Attention_spark

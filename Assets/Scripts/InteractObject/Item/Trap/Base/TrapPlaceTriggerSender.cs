@@ -4,42 +4,54 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-
     /// <summary>
-    /// 陷阱放置检测器
+    /// 陷阱放置检测器（球形检测版本）
     /// </summary>
     public class TrapPlaceTriggerSender : MonoBehaviour
     {
         private TrapBase _trap;
 
-        private List<Collider> colls;
+        [Header("检测配置")]
+        [SerializeField] private float detectionRadius = 0.5f;
+        [SerializeField] private LayerMask obstacleLayers;
+
+        private bool _canPlace = true;
+        private Collider[] hitColliders = new Collider[10];
+
         private void Start()
         {
             _trap = GetComponentInParent<TrapBase>();
-            colls = new List<Collider>();
+            obstacleLayers = LayerMask.GetMask("Front", "Interactive");
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void Update()
         {
             if (_trap == null) return;
-            if(other.gameObject.layer == LayerMask.NameToLayer("Front"))
+
+            // 检测球体范围内的所有碰撞体
+            int hitCount = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                detectionRadius,
+                hitColliders,
+                obstacleLayers);
+
+            // 更新放置状态
+            bool newCanPlace = hitCount == 0;
+            if (newCanPlace != _canPlace)
             {
-                _trap.SetCanPlaceState(false);
-                colls.Add(other);
+                _canPlace = newCanPlace;
+                _trap.SetCanPlaceState(_canPlace);
             }
+
+            // 可视化检测范围（仅在编辑器中显示）
+            Debug.DrawRay(transform.position, Vector3.up * detectionRadius, Color.blue * 0.5f);
         }
 
-        private void OnTriggerExit(Collider other)
+        // 可视化检测范围（在编辑器中显示）
+        private void OnDrawGizmosSelected()
         {
-            if (_trap == null) return;
-            if (other.gameObject.layer == LayerMask.NameToLayer("Front"))
-            {
-                colls.Remove(other);
-                if (colls.Count == 0)
-                {
-                    _trap.SetCanPlaceState(true);
-                }
-            }
+            Gizmos.color = _canPlace ? Color.green : Color.red;
+            Gizmos.DrawWireSphere(transform.position, detectionRadius);
         }
     }
 }

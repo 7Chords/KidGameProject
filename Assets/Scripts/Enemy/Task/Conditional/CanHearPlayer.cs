@@ -2,6 +2,7 @@
 
 using BehaviorDesigner.Runtime.Tasks;
 using KidGame.UI;
+using UnityEngine;
 
 namespace KidGame.Core
 {
@@ -11,7 +12,8 @@ namespace KidGame.Core
         {
             if (enemy.PlayerInHearing())
             {
-                UIHelper.Instance.ShowOneSign(new SignInfo(GlobalValue.SIGN_ICON_ATTENTION_PATH,enemy.gameObject));
+                ParticleManager.Instance.PlayEffect("Attention_spark", enemy.transform.position + Vector3.up,
+                    Quaternion.identity, enemy.transform, true, 0.5f);
                 return TaskStatus.Success;
             }
             return TaskStatus.Failure;

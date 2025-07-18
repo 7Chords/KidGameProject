@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4120522951913651982
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4369499029453917774}
-  m_Layer: 0
-  m_Name: TraoDependPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4369499029453917774
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4120522951913651982}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.3}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 4551248654133534282}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5098519461395343149
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,7 +11,7 @@ GameObject:
   - component: {fileID: 9088938067704162499}
   - component: {fileID: 5193924813902974569}
   - component: {fileID: 795095910368709476}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,15 +204,11 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0d01fe64b4d494a1daec34cdf644c523,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0d01fe64b4d494a1daec34cdf644c523,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4369499029453917774}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0d01fe64b4d494a1daec34cdf644c523,
         type: 3}
       insertIndex: -1
@@ -283,7 +248,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.49999997, y: 1.1000001, z: 0.15000002}
+  m_Size: {x: 0.49999994, y: 1.1000001, z: 0.19639008}
   m_Center: {x: -0.000048831105, y: 0.54999995, z: 0.074999966}
 --- !u!114 &2275784741576992694
 MonoBehaviour:
@@ -297,16 +262,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5612a85616909ef4cbd30391cfdd8ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomPickSfxList: []
-  pickPartical: {fileID: 0}
   mapFurnitureData:
     furnitureData: {fileID: 0}
     mapPosList: []
     roomType: 0
+    rotation: 0
   materialHoldList: []
-  randomInteractSfxList: []
-  interactPartical: {fileID: 0}
-  TrapDependPos: {fileID: 4120522951913651982}
   Light: {fileID: 5193924813902974569}
 --- !u!4 &4551248654133534282 stripped
 Transform:

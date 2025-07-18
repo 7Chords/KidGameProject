@@ -14,7 +14,9 @@ namespace KidGame.Core
         {
             if (enemy.CheckDizzyState())
             {
-                UIHelper.Instance.ShowOneSign(new SignInfo(GlobalValue.SIGN_ICON_DIZZY_PATH, enemy.gameObject, DizzyTime));
+
+                ParticleManager.Instance.PlayEffect("Dizzy_star", enemy.transform.position + Vector3.up,
+                    Quaternion.identity, enemy.transform, true, DizzyTime);
                 return TaskStatus.Success;
             }
             return TaskStatus.Failure;

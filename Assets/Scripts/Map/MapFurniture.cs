@@ -29,9 +29,6 @@ namespace KidGame.Core
 
         public override string EntityName { get => mapFurnitureData.furnitureData.furnitureName; set { } }
 
-
-        public GameObject TrapDependPos;//陷阱放在家具上的放置位置
-
         protected TrapBase takeTrap;//家具上有的陷阱
 
         public void SetData(MapFurnitureData data)
@@ -39,12 +36,12 @@ namespace KidGame.Core
             mapFurnitureData = data;
         }
 
-        public virtual void SetTrap(GameObject trap)
-        {
-            trap.transform.position = TrapDependPos.transform.position;
-            trap.transform.localScale *= 0.5f;
-            takeTrap = trap.GetComponent<TrapBase>();
-        }
+        //public virtual void SetTrap(GameObject trap)
+        //{
+        //    trap.transform.position = TrapDependPos.transform.position;
+        //    trap.transform.localScale *= 0.5f;
+        //    takeTrap = trap.GetComponent<TrapBase>();
+        //}
 
         public virtual void Init(List<MaterialItem> materialList = null)
         {

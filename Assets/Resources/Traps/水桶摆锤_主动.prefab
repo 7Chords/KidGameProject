@@ -140,6 +140,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74dae9b1b7564e4faa83112b5f94d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 0.5
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3281751691507936906
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,6 +367,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74dae9b1b7564e4faa83112b5f94d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 0.5
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3886518598468774419
 GameObject:
   m_ObjectHideFlags: 0

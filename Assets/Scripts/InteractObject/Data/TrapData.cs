@@ -42,6 +42,7 @@ namespace KidGame.Core
         public List<TrapDeadType> deadTypeList;
         public float deadDelayTime;//死亡延迟时间 deadTypeList包含TimeDelay才有效
         public float placeTime;//放置所需要的时间
+        public bool hasCollider;
         public string interactSoundName;
         public string pickSoundName;
         public string workSoundName;
@@ -50,6 +51,5 @@ namespace KidGame.Core
         public string pickParticleName;
         public string workParticleName;
         public string deadParticleName;
-
     }
 }
