@@ -188,6 +188,77 @@ MonoBehaviour:
     pickParticleName: 
     workSoundName: 
     workParticleName: 
+  WeaponDataList:
+  - id: h001
+    name: GlowBall
+    useType: 0
+    maxDistance: 15
+    weaponType: 1
+    damage: 0
+    impactForce: 10
+  - id: h002
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h003
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h004
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h005
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h006
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h007
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h008
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h009
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
+  - id: h010
+    name: 
+    useType: 0
+    maxDistance: 0
+    weaponType: 0
+    damage: 0
+    impactForce: 0
   RoomDataList:
   - id: R001
     roomTyppe: 0

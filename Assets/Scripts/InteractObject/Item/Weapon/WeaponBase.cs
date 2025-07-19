@@ -62,8 +62,7 @@ namespace KidGame.Core
         {
             //To Do:武器可能会被用来附魔
         }
-
-        //To Do:武器应该不需要被动互动 ？？  
+ 
         public virtual void InteractNegative(GameObject interactor)
         {
 
