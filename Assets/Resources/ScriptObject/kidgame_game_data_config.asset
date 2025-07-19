@@ -188,3 +188,117 @@ MonoBehaviour:
     pickParticleName: 
     workSoundName: 
     workParticleName: 
+  RoomDataList:
+  - id: R001
+    roomTyppe: 0
+    materialIdList: []
+  - id: R002
+    roomTyppe: 0
+    materialIdList: []
+  - id: R003
+    roomTyppe: 0
+    materialIdList: []
+  - id: R004
+    roomTyppe: 0
+    materialIdList: []
+  - id: R005
+    roomTyppe: 0
+    materialIdList: []
+  - id: R006
+    roomTyppe: 0
+    materialIdList: []
+  - id: R007
+    roomTyppe: 0
+    materialIdList: []
+  BuffDataList:
+  - id: B001
+    buffName: blind
+    description: "\u89C6\u89C9\u6548\u679C\u65E0\u6CD5\u751F\u6548\uFF0C\u64AD\u653E\u81F4\u76F2\u52A8\u753B"
+    iconPath: icon/buff/blind
+    priority: 0
+    maxStack: 0
+    tags:
+    - move
+    isForever: 0
+    duration: 0
+    tickTime: 0
+    buffAddStackUpdateTime: 0
+    buffRemoveStackUpdate: 0
+    onCreateModulePath: 
+    onRemoveModulePath: 
+    onTickModulePath: 
+    onHitModulePath: 
+    onBeHurtModulePath: 
+  - id: B002
+    buffName: '   fallingdown'
+    description: "\u5728\u666E\u901A\u7684\u5730\u677F\u4E0A\u4F1A\u76F4\u63A5\u6454\u5012\uFF0C\n\u5728\u629B\u5149\u7684\u5730\u677F\u80FD\u591F\u5411\u524D\u6ED1\u52A8\u4E00\u6BB5\u8DDD\u79BB\uFF0C\n\u6700\u540E\u82B12s\u65F6\u95F4\u91CD\u65B0\u7AD9\u8D77"
+    iconPath: icon/buff/fallingdown
+    priority: 0
+    maxStack: 0
+    tags:
+    - move
+    isForever: 0
+    duration: 0
+    tickTime: 0
+    buffAddStackUpdateTime: 0
+    buffRemoveStackUpdate: 0
+    onCreateModulePath: 
+    onRemoveModulePath: 
+    onTickModulePath: 
+    onHitModulePath: 
+    onBeHurtModulePath: 
+  - id: B003
+    buffName: '   bleed'
+    description: "\u4F1A\u5728\u5730\u4E0A\u6301\u7EED\u6D41\u4E0B\u8840\u8FF9\uFF0C
+      \u6301\u7EED\u5237\u65B0\u5F97\u5206\u677F "
+    iconPath: icon/buff/bleed
+    priority: 0
+    maxStack: 0
+    tags:
+    - sign|count
+    isForever: 0
+    duration: 0
+    tickTime: 0
+    buffAddStackUpdateTime: 0
+    buffRemoveStackUpdate: 0
+    onCreateModulePath: 
+    onRemoveModulePath: 
+    onTickModulePath: 
+    onHitModulePath: 
+    onBeHurtModulePath: 
+  - id: B004
+    buffName: '    dizzy'
+    description: "      \u4E00\u6BB5\u65F6\u95F4\u5185\u5F80\u968F\u673A\u7684\u65B9\u5411\u7F13\u6162\u79FB\u52A8"
+    iconPath: icon/buff/dizzy
+    priority: 0
+    maxStack: 0
+    tags:
+    - move
+    isForever: 0
+    duration: 0
+    tickTime: 0
+    buffAddStackUpdateTime: 0
+    buffRemoveStackUpdate: 0
+    onCreateModulePath: 
+    onRemoveModulePath: 
+    onTickModulePath: 
+    onHitModulePath: 
+    onBeHurtModulePath: 
+  - id: B005
+    buffName: '   coma'
+    description: "      \u5728\u4E00\u6BB5\u65F6\u95F4\u5185\u4E0D\u80FD\u884C\u52A8"
+    iconPath: icon/buff/coma
+    priority: 0
+    maxStack: 0
+    tags:
+    - move
+    isForever: 0
+    duration: 0
+    tickTime: 0
+    buffAddStackUpdateTime: 0
+    buffRemoveStackUpdate: 0
+    onCreateModulePath: 
+    onRemoveModulePath: 
+    onTickModulePath: 
+    onHitModulePath: 
+    onBeHurtModulePath: 

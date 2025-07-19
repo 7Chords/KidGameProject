@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 //buff添加新的层数时的时间更新方式
@@ -26,13 +27,13 @@ public class BuffData
 
     public string description;
 
-    public Sprite icon;
+    public string iconPath;
 
     public int priority;//优先级 例如中毒和烧伤先执行哪一个
 
     public int maxStack;//最大可叠层数量
 
-    public string[] tags;//buff的一些特征标记 伤害型等 
+    public List<string> tags;//buff的一些特征标记 伤害型等 
 
     //时间信息
 
@@ -44,26 +45,22 @@ public class BuffData
 
     //更新方式
 
-    public BuffAddStackUpdateType buffUpdateTime;
+    public BuffAddStackUpdateType buffAddStackUpdateTime;
 
     public BuffRemoveStackUpdateType buffRemoveStackUpdate;
 
     //基础回调点
-    public string OnCreateModuleId;
+    public string onCreateModulePath;
 
-    public string OnRemoveModuleId;
+    public string onRemoveModulePath;
 
-    public string OnTickModuleId;
+    public string onTickModulePath;
 
     //伤害回调点
 
-    public string OnHitModuleId;
+    public string onHitModulePath;
 
-    public string OnBeHurtModuleId;
-
-    public string OnKillModuleId;
-
-    public string OnBeKillModuleId;
+    public string onBeHurtModulePath;
 
     //etc...
 }

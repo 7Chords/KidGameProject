@@ -3,10 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum RoomType
+{
+    Corridor, //走廊
+    Bedroom, //卧室
+    LivingRoom, //客厅
+    DinningRoom, //餐厅
+    Study, //书房
+    NurseryRoom, //育婴室
+    Bathroom, //洗手间
+              //ect...
+}
 [Serializable]
 public class RoomData
 {
-    public String id;
-    public string name;
+    public string id;
+    public RoomType roomTyppe;
+    public List<string> materialIdList;
 }
 
