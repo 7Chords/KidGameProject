@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public static class SoConst
 {
-    //public const string TEST = "111";
+    //小鬼当家 基本数据So表
+    public const string KID_GAME_DATA_CONFIG = "kidgame_game_data_config";
 
 }

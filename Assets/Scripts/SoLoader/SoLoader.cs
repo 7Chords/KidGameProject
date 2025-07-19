@@ -51,7 +51,7 @@ namespace KidGame.Core
         /// 以及这个Data Type的名字
         /// 和 装载这个Entity的 So名字
         /// </summary>
-        public object GetDataById(string id, string dataName, string soName)
+        private object GetDataById(string id, string dataName, string soName)
         {
             // 直接从缓存中查找
             string compositeKey = $"{dataName}_{id}";
@@ -163,5 +163,41 @@ namespace KidGame.Core
             }
             return null;
         }
+
+        #region 针对每一种Data 做类似的但是不同的处理
+        //So kidgame_game_data_config
+
+        public TrapData GetTrapDataById(string id)
+        {
+            return GetDataById(id, "TrapData", SoConst.KID_GAME_DATA_CONFIG) as TrapData;
+        }
+
+        public MaterialData GetMaterialDataDataById(string id)
+        {
+            return GetDataById(id, "MaterialData", SoConst.KID_GAME_DATA_CONFIG) as MaterialData;
+        }
+
+        public RoomData GetRoomDataById(string id)
+        {
+            return GetDataById(id, "RoomData", SoConst.KID_GAME_DATA_CONFIG) as RoomData;
+        }
+
+        public BuffData GetBuffDataDataById(string id)
+        {
+            return GetDataById(id, "BuffData", SoConst.KID_GAME_DATA_CONFIG) as BuffData;
+        }
+
+        public WeaponData GetWeaponDataById(string id)
+        {
+            return GetDataById(id, "WeaponData", SoConst.KID_GAME_DATA_CONFIG) as WeaponData;
+        }
+
+        public FoodData GetFoodDataById(string id)
+        {
+            return GetDataById(id, "FoodData", SoConst.KID_GAME_DATA_CONFIG) as FoodData;
+        }
+        #endregion
     }
+
+
 }

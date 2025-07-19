@@ -36,7 +36,7 @@ namespace KidGame.Core
         }
         protected virtual void InitWeaponData(string id, string dataName, string soName)
         {
-            _weaponData = SoLoader.Instance.GetDataById(id, dataName, soName) as WeaponData;
+            _weaponData = SoLoader.Instance.GetWeaponDataById(id);
         }
         /// <summary>
         /// 捡起物体的时候调用
