@@ -26,7 +26,7 @@ namespace KidGame.Core
             TrapBase trap = trapObj.GetComponent<TrapBase>();
             if (trap == null)
             {
-                Debug.LogWarning($"预制体 {trapData.trapID} 没有TrapBase组件");
+                Debug.LogWarning($"预制体 {trapData.id} 没有TrapBase组件");
                 Object.Destroy(trapObj);
                 return null;
             }
@@ -48,7 +48,7 @@ namespace KidGame.Core
             TrapBase trap = trapObj.GetComponent<TrapBase>();
             if (trap == null)
             {
-                Debug.LogWarning($"预制体 {trapData.trapID} 没有TrapBase组件");
+                Debug.LogWarning($"预制体 {trapData.id} 没有TrapBase组件");
                 Object.Destroy(trapObj);
                 return null;
             }

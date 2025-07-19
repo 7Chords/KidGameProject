@@ -86,7 +86,7 @@ namespace KidGame.UI
         private void ShowRecipe(RecipeData recipe)
         {
             currentRecipe = recipe;
-            recipeNameText.text = recipe.trapData.name;
+            recipeNameText.text = recipe.trapData.trapName;
             if (recipe.recipeType == RecipeType.Trap)
                 recipeImage.sprite = Resources.Load<Sprite>(recipe.trapData.trapIconPath);
             else if (recipe.recipeType == RecipeType.Equip)

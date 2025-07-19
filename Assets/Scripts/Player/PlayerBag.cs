@@ -100,7 +100,7 @@ namespace KidGame.Core
                 _selectedTrapIndex = newIndex;
                 if (_tempTrapBag.Count > _selectedTrapIndex)
                 {
-                    string trapName = _tempTrapBag[_selectedTrapIndex].trapData.name;
+                    string trapName = _tempTrapBag[_selectedTrapIndex].trapData.trapName;
                     UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {trapName}", PlayerController.Instance.gameObject));
                 }
                 OnTrapBagUpdated?.Invoke();
@@ -163,7 +163,7 @@ namespace KidGame.Core
             {
                 foreach (var trapSlot in requireTrapSlots)
                 {
-                    var existingSlot = _trapBag.Find(x => x.trapData.trapID == trapSlot.trapData.trapID);
+                    var existingSlot = _trapBag.Find(x => x.trapData.id == trapSlot.trapData.id);
                     if (existingSlot != null&&existingSlot.amount >= trapSlot.amount)
                     {
                         existingSlot.amount-= trapSlot.amount;
@@ -177,7 +177,7 @@ namespace KidGame.Core
             {
                 foreach (var materialSlot in requireMaterialSlots)
                 {
-                    var existingSlot = _materialBag.Find(x => x.materialData.materialID == materialSlot.materialData.materialID);
+                    var existingSlot = _materialBag.Find(x => x.materialData.id == materialSlot.materialData.id);
                     if (existingSlot != null&&existingSlot.amount >= materialSlot.amount)
                     {
                         existingSlot.amount-= materialSlot.amount;
@@ -216,7 +216,7 @@ namespace KidGame.Core
                 if (!TryAddToTempTrapBag(trapData))
                 {
                     // 道具栏已满，放入背包
-                    TrapSlotInfo trapSlotInfo = _trapBag.Find(x => x.trapData.trapID == trapData.trapID);
+                    TrapSlotInfo trapSlotInfo = _trapBag.Find(x => x.trapData.id == trapData.id);
                     if (trapSlotInfo == null)
                     {
                         _trapBag.Add(new TrapSlotInfo(trapData, 1));
@@ -234,7 +234,7 @@ namespace KidGame.Core
                 MaterialData materialData = (iPickable as MaterialBase).materialData;
                 if (materialData == null) return;
                 MaterialSlotInfo materialSlotInfo =
-                    _materialBag.Find(x => x.materialData.materialID == materialData.materialID);
+                    _materialBag.Find(x => x.materialData.id == materialData.id);
                 if (materialSlotInfo == null)
                 {
                     _materialBag.Add(new MaterialSlotInfo(materialData, 1));
@@ -282,7 +282,7 @@ namespace KidGame.Core
         
         public bool TryAddToTempTrapBag(TrapData trapData)
         {
-            var existingSlot = _tempTrapBag.Find(x => x.trapData.trapID == trapData.trapID);
+            var existingSlot = _tempTrapBag.Find(x => x.trapData.id == trapData.id);
 
             if (existingSlot != null)
             {
