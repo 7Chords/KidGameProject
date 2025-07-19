@@ -1,0 +1,190 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d505790c5de8f9b4ba6c743ca7086f20, type: 3}
+  m_Name: kidgame_game_data_config
+  m_EditorClassIdentifier: 
+  TrapDataList:
+  - id: T001
+    trapName: "\u6C34\u6876\u6446\u9524_\u4E3B\u52A8_\u57FA\u7840"
+    trapDesc: "\u5411\u73A9\u5BB6\u9762\u671D\u7684\u65B9\u5411\u98DE\u53BB\uFF0C\u6263\u9664\u654C\u4EBAx\u70B9\u7CBE\u795E\u503C\uFF0C\u4F7F\u654C\u4EBA\u5F80\u540E\u9000\u4E00\u6BB5\u8DDD\u79BB\u3002"
+    trapIconPath: 
+    trapLevel: 1
+    trapDamage: 30
+    trapScore: 50
+    triggerType: 0
+    validType: 0
+    validTime: -1
+    deadTypeList: 00000000
+    deadDelayTime: 1
+    placeTime: 3
+    hasCollider: 1
+    interactSoundName: 
+    pickSoundName: 
+    workSoundName: 
+    deadSoundName: 
+    interactParticleName: 
+    pickParticleName: 
+    workParticleName: 
+    deadParticleName: 
+  - id: T002
+    trapName: "\u6C34\u6876\u6446\u9524_\u88AB\u52A8_\u7ECA\u7EBF"
+    trapDesc: "\u5411\u56FA\u5B9A\u7684\u65B9\u5411\u98DE\u53BB\uFF0C\u6263\u9664\u654C\u4EBAx\u70B9\u7CBE\u795E\u503C\uFF0C\u4F7F\u654C\u4EBA\u5F80\u540E\u9000\u4E00\u6BB5\u8DDD\u79BB\u3002"
+    trapIconPath: 
+    trapLevel: 1
+    trapDamage: 40
+    trapScore: 50
+    triggerType: 1
+    validType: 0
+    validTime: -1
+    deadTypeList: 00000000
+    deadDelayTime: 1
+    placeTime: 4
+    hasCollider: 1
+    interactSoundName: 
+    pickSoundName: 
+    workSoundName: 
+    deadSoundName: 
+    interactParticleName: 
+    pickParticleName: 
+    workParticleName: 
+    deadParticleName: 
+  - id: T003
+    trapName: "\u7535\u52A8\u5C0F\u8F66"
+    trapDesc: "\u5411\u7740\u8F66\u5934\u7684\u65B9\u5411\u524D\u8FDB\uFF0C\u649E\u5230\u654C\u4EBA\u4E4B\u540E\u4F1A\u4F7F\u5176\u8DCC\u5012\u5E76\u6263\u9664x\u70B9\u7CBE\u795E\u503C\uFF0C\u649E\u5230\u5899\u4E86\u9677\u9631\u4E5F\u4F1A\u505C\u4E0B\uFF0C\u540C\u65F6\u53D1\u51FA\u8F83\u5927\u7684\u58F0\u97F3"
+    trapIconPath: 
+    trapLevel: 1
+    trapDamage: 20
+    trapScore: 50
+    triggerType: 0
+    validType: 0
+    validTime: -1
+    deadTypeList: 0100000002000000
+    deadDelayTime: 3
+    placeTime: 1
+    hasCollider: 1
+    interactSoundName: 
+    pickSoundName: 
+    workSoundName: 
+    deadSoundName: 
+    interactParticleName: 
+    pickParticleName: 
+    workParticleName: 
+    deadParticleName: 
+  MaterialDataList:
+  - id: M001
+    materialName: "\u7EF3\u5B50"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M002
+    materialName: "\u6876"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M003
+    materialName: "\u88C5\u6EE1\u6C34\u7684\u6876"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M004
+    materialName: "\u5730\u9489"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M005
+    materialName: "\u7535\u6C60"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M006
+    materialName: "\u94C1\u4E1D"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M007
+    materialName: "\u6D17\u8863\u6DB2"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M008
+    materialName: "\u6CE1\u6CE1\u6C34"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M009
+    materialName: "\u80A5\u7682"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M010
+    materialName: "\u5C0F\u8F66"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M011
+    materialName: "\u6C99\u53D1\u5750\u57AB"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 
+  - id: M012
+    materialName: "\u4E00\u7BA1\u767D\u80F6"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: 
+    pickParticleName: 
+    workSoundName: 
+    workParticleName: 

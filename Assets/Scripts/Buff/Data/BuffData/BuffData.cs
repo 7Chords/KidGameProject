@@ -32,9 +32,9 @@ namespace KidGame.Core
 
         //更新方式
 
-        public BuffUpdateTimeEnum buffUpdateTime;
+        public BuffAddStackUpdateType buffUpdateTime;
 
-        public BuffRemoveStackUpdateEnum buffRemoveStackUpdate;
+        public BuffRemoveStackUpdateType buffRemoveStackUpdate;
 
         //基础回调点
         public BaseBuffModule OnCreate;

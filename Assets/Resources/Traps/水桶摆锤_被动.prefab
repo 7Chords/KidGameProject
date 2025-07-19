@@ -180,6 +180,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74dae9b1b7564e4faa83112b5f94d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 0.5
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!65 &7435124624697330955
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -219,7 +223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6379331313528087264
 Transform:
   m_ObjectHideFlags: 0

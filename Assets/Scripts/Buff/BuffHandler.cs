@@ -75,10 +75,10 @@ namespace KidGame.Core
                     //根据不同的buff时间更新类型做出操作
                     switch (findBuffInfo.buffData.buffUpdateTime)
                     {
-                        case BuffUpdateTimeEnum.Add:
+                        case BuffAddStackUpdateType.Add:
                             findBuffInfo.durationTimer += findBuffInfo.buffData.duration;
                             break;
-                        case BuffUpdateTimeEnum.Replace:
+                        case BuffAddStackUpdateType.Replace:
                             findBuffInfo.durationTimer = findBuffInfo.buffData.duration;
                             break;
                         default:
@@ -108,10 +108,10 @@ namespace KidGame.Core
         {
             switch (buffInfo.buffData.buffRemoveStackUpdate)
             {
-                case BuffRemoveStackUpdateEnum.Clear:
+                case BuffRemoveStackUpdateType.Clear:
                     buffList.Remove(buffInfo);
                     break;
-                case BuffRemoveStackUpdateEnum.Reduce:
+                case BuffRemoveStackUpdateType.Reduce:
                     buffInfo.curStack--;
                     if (buffInfo.curStack == 0)
                     {

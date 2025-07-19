@@ -34,7 +34,7 @@ namespace KidGame.Core
         public string trapName;
         public string trapDesc;
         public string trapIconPath;
-        public float trapLevel;
+        public int trapLevel;
         public float trapDamage; //这里的陷阱伤害是基础伤害 部分陷阱伤害还受其他因素影响 在trap的mono脚本中处理计算
         public TrapTriggerType triggerType;
         public TrapValidType validType;

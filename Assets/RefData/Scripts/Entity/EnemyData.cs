@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class EnemyEntity
+public class EnemyData
 {
     public string id;
     public String EnemyName;

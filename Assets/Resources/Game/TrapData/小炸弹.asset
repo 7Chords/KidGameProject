@@ -15,13 +15,21 @@ MonoBehaviour:
   trapID: T_001
   trapName: "\u5C0F\u70B8\u5F39"
   trapDesc: "\u6D4B\u8BD5\u9677\u96311"
-  trapIcon: {fileID: 21300000, guid: ff8b2c345452818449c57d99b7cebaff, type: 3}
+  trapIconPath: 
   trapLevel: 0.5
   trapDamage: 1
-  triggerType: 0
+  triggerType: 1
   validType: 0
   validTime: 2
-  placedType: 0
   deadTypeList: 00000000
   deadDelayTime: 0
-  isCatalyst: 0
+  placeTime: 0
+  hasCollider: 0
+  interactSoundName: 
+  pickSoundName: 
+  workSoundName: 
+  deadSoundName: 
+  interactParticleName: 
+  pickParticleName: 
+  workParticleName: 
+  deadParticleName: 

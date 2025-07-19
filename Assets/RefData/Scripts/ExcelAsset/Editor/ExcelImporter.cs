@@ -89,7 +89,7 @@ public class ExcelImporter : AssetPostprocessor
         {
             asset = ScriptableObject.CreateInstance(assetType.Name);
             AssetDatabase.CreateAsset((ScriptableObject)asset, assetPath);
-            asset.hideFlags = HideFlags.NotEditable;
+            asset.hideFlags = HideFlags.None;
         }
 
         return asset;
@@ -163,20 +163,29 @@ public class ExcelImporter : AssetPostprocessor
         string[] values = cell.StringCellValue.Split(';');
         foreach (string value in values)
         {
-            //去除首位的空白部分
+            // 去除首位的空白部分
             string trimmedValue = value.Trim();
             if (!string.IsNullOrEmpty(trimmedValue))
             {
-                //Debug.Log(trimmedValue);
-                //Debug.Log(elementType);
+                object elementValue;
                 try
                 {
-                    object elementValue = Convert.ChangeType(trimmedValue, elementType);
+                    // 特殊处理枚举类型
+                    if (elementType.IsEnum)
+                    {
+                        // 尝试通过名称转换枚举
+                        elementValue = Enum.Parse(elementType, trimmedValue);
+                    }
+                    else
+                    {
+                        // 普通类型使用Convert.ChangeType
+                        elementValue = Convert.ChangeType(trimmedValue, elementType);
+                    }
                     addMethod.Invoke(list, new object[] { elementValue });
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Debug.LogWarning($"Failed to convert value '{trimmedValue}' to type {elementType.Name}");
+                    Debug.LogWarning($"Failed to convert value '{trimmedValue}' to type {elementType.Name}: {ex.Message}");
                 }
             }
         }

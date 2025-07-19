@@ -4,20 +4,6 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public enum BuffUpdateTimeEnum
-    {
-        Add,//在原有时间上增加
-        Replace,//替换为新的时间（刷新）
-        Keep,//时间保持不变
-    }
-
-    //buff移除时的更新方式
-    public enum BuffRemoveStackUpdateEnum
-    {
-        Clear,//消除所哟buff层数 
-        Reduce,//减少buff层数
-    }
-
     public class BuffInfo
     {
         public BuffData buffData;
