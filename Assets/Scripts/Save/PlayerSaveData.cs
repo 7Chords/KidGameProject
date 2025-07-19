@@ -90,7 +90,7 @@ namespace KidGame.Core
                 ForLoad(saveData);
                 
                 // 加载后更新数据
-                PlayerBag.Instance.LoadBagData(trapBag, materialBag);
+                // PlayerBag.Instance.LoadBagData(trapBag, materialBag);
                 GameLevelManager.Instance.SetCurrentDay(currentDay);
                 
                 // 设置当前存档编号

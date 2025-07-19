@@ -4,7 +4,6 @@ using KidGame.Core;
 using KidGame.Interface;
 using KidGame.UI;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 
 namespace KidGame.Core
@@ -150,8 +149,8 @@ namespace KidGame.Core
         // 加载背包数据
         public void LoadBagData(List<TrapSlotInfo> trapSlots, List<MaterialSlotInfo> materialSlots)
         {
-            _trapBag = trapSlots ?? new List<TrapSlotInfo>();
-            _materialBag = materialSlots ?? new List<MaterialSlotInfo>();
+            // _trapBag = trapSlots ?? new List<TrapSlotInfo>();
+            // _materialBag = materialSlots ?? new List<MaterialSlotInfo>();
 
             OnTrapBagUpdated?.Invoke();
         }
@@ -186,9 +185,7 @@ namespace KidGame.Core
                         return false;
                 }
             }
-
             
-
             return true;
         }
         
@@ -305,7 +302,7 @@ namespace KidGame.Core
         
         public bool TryUseTrapFromTempBag(int index, PlayerController player, Vector3 position, Quaternion rotation)
         {
-            //To Do: 在选择武器的时候更改玩家现在的手持物品类型
+            //Todo: 在选择武器的时候更改玩家现在的手持物品类型
             if (index < 0 || index >= _tempTrapBag.Count)
             {
                 UIHelper.Instance.ShowOneTip(new TipInfo("无效的陷阱选择", player.gameObject));
