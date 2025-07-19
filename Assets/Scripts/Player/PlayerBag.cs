@@ -75,7 +75,6 @@ namespace KidGame.Core
         public List<TrapSlotInfo> _trapBag = new List<TrapSlotInfo>();
         // 材料背包
         public List<MaterialSlotInfo> _materialBag = new List<MaterialSlotInfo>();
-
         // 手持背包
         public List<WeaponSlotInfo>  _weaponBag = new List<WeaponSlotInfo>();
 

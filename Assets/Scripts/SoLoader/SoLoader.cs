@@ -8,26 +8,23 @@ using UnityEditor;
 
 namespace KidGame.Core
 {
-    public class SoLoader : MonoBehaviour
+    public class SoLoader : SingletonPersistent<SoLoader>
     {
         public static SoLoader Instance;
+
         public Dictionary<string, ScriptableObject> soDic;
+
         //装Entity的 id -> Entity的匹配
         private Dictionary<string, object> entityDic;
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(this.gameObject);
-            }
-            else Destroy(this.gameObject);
 
+        protected override void Awake()
+        {
+            base.Awake();
+            
             soDic = new Dictionary<string, ScriptableObject>();
             entityDic = new Dictionary<string, object>();
             InitialSoResource();
         }
-
 
         private void InitialSoResource()
         {
@@ -92,15 +89,15 @@ namespace KidGame.Core
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
                 {
                     var entityList = field.GetValue(so);
-                    *//*直接使用 entityList.Count 不香吗？为什么要绕这么一大圈？
+                    */ /*直接使用 entityList.Count 不香吗？为什么要绕这么一大圈？
 原因：               entityList 的类型在编译时是 object（因为通过反射获取的字段值默认是 object 类型），
-                    编译器不知道它是一个列表，因此无法直接访问 Count 属性。*//*
+                    编译器不知道它是一个列表，因此无法直接访问 Count 属性。*/ /*
                     //GetType->List    GetProperty->Count   GetValue  -> num
                     var count = (int)entityList.GetType().GetProperty("Count").GetValue(entityList);
                     for (int i = 0; i < count; i++)
                     {
-                        *//*第一个参数 entityList：表示要获取属性值的对象（即列表实例）。
-                        第二个参数 new object[] { i }：索引器的参数（这里传入索引值 i，表示要获取第 i 个元素）。*//*
+                        */ /*第一个参数 entityList：表示要获取属性值的对象（即列表实例）。
+                        第二个参数 new object[] { i }：索引器的参数（这里传入索引值 i，表示要获取第 i 个元素）。*/ /*
                         var entity = entityList.GetType().GetProperty("Item").GetValue(entityList, new object[] { i });
 
                         // 检查实体是否有"id"属性
@@ -137,7 +134,7 @@ namespace KidGame.Core
                 {
                     //从so这个fields获取一个field
                     var entityList = field.GetValue(so);
-                    if (entityList == null) continue; 
+                    if (entityList == null) continue;
 
                     // 更高效的方式 直接转换为 IList 避免反射 Count
                     var list = entityList as System.Collections.IList;
@@ -149,7 +146,7 @@ namespace KidGame.Core
                         if (entity == null) continue;
 
                         // 检查实体是否有 "id" 字段
-                        var idField = entity.GetType().GetField("id"); 
+                        var idField = entity.GetType().GetField("id");
                         if (idField != null)
                         {
                             string entityId = idField.GetValue(entity)?.ToString();
@@ -161,10 +158,12 @@ namespace KidGame.Core
                     }
                 }
             }
+
             return null;
         }
 
         #region 针对每一种Data 做类似的但是不同的处理
+
         //So kidgame_game_data_config
 
         public TrapData GetTrapDataById(string id)
@@ -196,8 +195,7 @@ namespace KidGame.Core
         {
             return GetDataById(id, "FoodData", SoConst.KID_GAME_DATA_CONFIG) as FoodData;
         }
+
         #endregion
     }
-
-
 }

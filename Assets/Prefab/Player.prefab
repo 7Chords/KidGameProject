@@ -165,6 +165,7 @@ MonoBehaviour:
   PlayerAnimator: {fileID: 37883745790868019}
   PlayerBaseData: {fileID: 11400000, guid: b484f4bb0295fec4b9010f370afb8004, type: 2}
   PlaceTrapPoint: {fileID: 6777106665059511622}
+  useItemType: 4
 --- !u!114 &7357641431455486004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,24 +179,164 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tempTrapBag:
-  - trapData: {fileID: 11400000, guid: 575bb4f0d9d6cf140964fe0a0a44b45c, type: 2}
+  - trapData:
+      id: 
+      trapName: 
+      trapDesc: 
+      trapIconPath: 
+      trapLevel: 0
+      trapDamage: 0
+      trapScore: 0
+      triggerType: 0
+      validType: 0
+      validTime: -1
+      deadTypeList: 
+      deadDelayTime: 0
+      placeTime: 0
+      hasCollider: 0
+      interactSoundName: 
+      pickSoundName: 
+      workSoundName: 
+      deadSoundName: 
+      interactParticleName: 
+      pickParticleName: 
+      workParticleName: 
+      deadParticleName: 
     amount: 2
-  - trapData: {fileID: 11400000, guid: 83800e49de4b65c4cb15a70dc80e950a, type: 2}
+  - trapData:
+      id: 
+      trapName: 
+      trapDesc: 
+      trapIconPath: 
+      trapLevel: 0
+      trapDamage: 0
+      trapScore: 0
+      triggerType: 0
+      validType: 0
+      validTime: -1
+      deadTypeList: 
+      deadDelayTime: 0
+      placeTime: 0
+      hasCollider: 0
+      interactSoundName: 
+      pickSoundName: 
+      workSoundName: 
+      deadSoundName: 
+      interactParticleName: 
+      pickParticleName: 
+      workParticleName: 
+      deadParticleName: 
     amount: 2
-  - trapData: {fileID: 11400000, guid: 0e8f5f8b75945ca46a57da40dd2405bb, type: 2}
+  - trapData:
+      id: 
+      trapName: 
+      trapDesc: 
+      trapIconPath: 
+      trapLevel: 0
+      trapDamage: 0
+      trapScore: 0
+      triggerType: 0
+      validType: 0
+      validTime: -1
+      deadTypeList: 
+      deadDelayTime: 0
+      placeTime: 0
+      hasCollider: 0
+      interactSoundName: 
+      pickSoundName: 
+      workSoundName: 
+      deadSoundName: 
+      interactParticleName: 
+      pickParticleName: 
+      workParticleName: 
+      deadParticleName: 
     amount: 2
-  - trapData: {fileID: 11400000, guid: 855e4e1101a6ff84aa7678347b1cf3b4, type: 2}
-    amount: 2
-  - trapData: {fileID: 11400000, guid: 72ba6664efe6a5f4095bc497d472b79a, type: 2}
+  - trapData:
+      id: 
+      trapName: 
+      trapDesc: 
+      trapIconPath: 
+      trapLevel: 0
+      trapDamage: 0
+      trapScore: 0
+      triggerType: 0
+      validType: 0
+      validTime: -1
+      deadTypeList: 
+      deadDelayTime: 0
+      placeTime: 0
+      hasCollider: 0
+      interactSoundName: 
+      pickSoundName: 
+      workSoundName: 
+      deadSoundName: 
+      interactParticleName: 
+      pickParticleName: 
+      workParticleName: 
+      deadParticleName: 
     amount: 2
   _trapBag:
-  - trapData: {fileID: 11400000, guid: 855e4e1101a6ff84aa7678347b1cf3b4, type: 2}
+  - trapData:
+      id: 
+      trapName: 
+      trapDesc: 
+      trapIconPath: 
+      trapLevel: 0
+      trapDamage: 0
+      trapScore: 0
+      triggerType: 0
+      validType: 0
+      validTime: -1
+      deadTypeList: 
+      deadDelayTime: 0
+      placeTime: 0
+      hasCollider: 0
+      interactSoundName: 
+      pickSoundName: 
+      workSoundName: 
+      deadSoundName: 
+      interactParticleName: 
+      pickParticleName: 
+      workParticleName: 
+      deadParticleName: 
     amount: 2
-  - trapData: {fileID: 11400000, guid: 72ba6664efe6a5f4095bc497d472b79a, type: 2}
+  - trapData:
+      id: 
+      trapName: 
+      trapDesc: 
+      trapIconPath: 
+      trapLevel: 0
+      trapDamage: 0
+      trapScore: 0
+      triggerType: 0
+      validType: 0
+      validTime: -1
+      deadTypeList: 
+      deadDelayTime: 0
+      placeTime: 0
+      hasCollider: 0
+      interactSoundName: 
+      pickSoundName: 
+      workSoundName: 
+      deadSoundName: 
+      interactParticleName: 
+      pickParticleName: 
+      workParticleName: 
+      deadParticleName: 
     amount: 2
   _materialBag:
-  - materialData: {fileID: 11400000, guid: 9ede57e7dd4503847b98a430ad0da8f9, type: 2}
+  - materialData:
+      id: 
+      materialName: 
+      materialDesc: 
+      materialIconPath: 
+      rare: 0
+      pickSoundName: 
+      pickParticleName: 
+      workSoundName: 
+      workParticleName: 
     amount: 3
+  _weaponBag: []
 --- !u!1 &6623281394488089813
 GameObject:
   m_ObjectHideFlags: 0
