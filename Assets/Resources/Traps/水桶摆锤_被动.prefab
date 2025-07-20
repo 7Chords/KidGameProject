@@ -216,7 +216,6 @@ GameObject:
   - component: {fileID: 6379331313528087264}
   - component: {fileID: 2104674793486769672}
   - component: {fileID: 4512478080700835577}
-  - component: {fileID: 7228116336593780425}
   m_Layer: 8
   m_Name: model
   m_TagString: Untagged
@@ -289,27 +288,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7228116336593780425
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3251569061479810353}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.2, y: 2.2, z: 1.2}
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &4341430890112716780
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +404,6 @@ GameObject:
   - component: {fileID: 2343007501665330555}
   - component: {fileID: 3589995936496060400}
   - component: {fileID: 552689375162999720}
-  - component: {fileID: 6590951284150574801}
   - component: {fileID: 8314940080791801091}
   m_Layer: 6
   m_Name: "\u6C34\u6876\u6446\u9524_\u88AB\u52A8"
@@ -477,7 +454,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -505,22 +482,6 @@ MonoBehaviour:
   HalfDamageArea: {x: 0.9, y: 0.9, z: 0.9}
   Buff: {fileID: 0}
   Score: 100
---- !u!208 &6590951284150574801
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6370431587108260529}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.3, y: 0.5, z: 0.3}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.1
 --- !u!65 &8314940080791801091
 BoxCollider:
   m_ObjectHideFlags: 0

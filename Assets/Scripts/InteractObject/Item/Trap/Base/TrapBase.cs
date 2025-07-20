@@ -40,9 +40,9 @@ namespace KidGame.Core
         private Collider coll;
         public Collider Coll => coll;
 
-        private NavMeshObstacle naveObstacle;
+        //private NavMeshObstacle naveObstacle;
 
-        public NavMeshObstacle NaveObstacle => naveObstacle;
+        //public NavMeshObstacle NaveObstacle => naveObstacle;
 
         protected TrapData trapData;
         public TrapData TrapData => trapData;
@@ -64,7 +64,7 @@ namespace KidGame.Core
             rb = GetComponent<Rigidbody>();
             coll = GetComponent<Collider>();
             gameObject.AddComponent<MousePreviewDetector>();
-            naveObstacle = GetComponent<NavMeshObstacle>();
+            //naveObstacle = GetComponent<NavMeshObstacle>();
         }
 
         /// <summary>
@@ -80,9 +80,8 @@ namespace KidGame.Core
             //初始化为Idle状态
             ChangeState(TrapState.NoReady);
 
-            model.SetActive(true);
+            //开启交互触发器
             coll.enabled = true;
-            naveObstacle.enabled = true;//todo:判断需不需要
         }
 
         public virtual void Discard()
@@ -107,7 +106,7 @@ namespace KidGame.Core
         }
 
 
-        #region 交互接口方法实现
+        #region 交互and回收接口方法实现
 
         public virtual void InteractPositive(GameObject interactor)
         {
@@ -257,12 +256,16 @@ namespace KidGame.Core
         /// </summary>
         private void RemoveFormPlayerUsingList()
         {
-            coll.enabled = false;
+            coll.enabled = false;//立刻关闭触发碰撞 防止玩家手速太快
             PlayerController.Instance.RemoveInteractiveFromList(this);
             PlayerController.Instance.RemovePickableFromList(this);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
         }
 
+
+        /// <summary>
+        /// 鼠标移入展示陷阱详情（范围）
+        /// </summary>
         public void ShowDetail()
         {
             DetailGO.SetActive(true);
@@ -278,13 +281,17 @@ namespace KidGame.Core
         public void ShowPlacePreview()
         {
             model.SetActive(false);
-            rb.isKinematic = true;
+            //rb.isKinematic = true;
             coll.enabled = false;
-            naveObstacle.enabled = false;
+            //naveObstacle.enabled = false;
             ReadyIndicator.gameObject.SetActive(false);
             previewGO.SetActive(true);
         }
 
+        /// <summary>
+        /// 设置是否可以放置的状态
+        /// </summary>
+        /// <param name="canPlace"></param>
         public void SetCanPlaceState(bool canPlace)
         {
             canPlaceTrap = canPlace;
