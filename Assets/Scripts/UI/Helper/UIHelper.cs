@@ -101,8 +101,13 @@ namespace KidGame.UI
         //固定UI位置相关字段
         public GameObject SideTextPrefab;
         public Transform SideShowPos;
+
+        //圆形进度条相关字段
+        public GameObject CircleProgressPrefab;
+
         private void Start()
         {
+            //todo
             Init();
         }
         public void Init()
@@ -304,6 +309,16 @@ namespace KidGame.UI
 
         #region Detail
 
+        #endregion
+
+        #region Progress
+        public void ShowCircleProgress(GameObject creator,float duration)
+        {
+            GameObject circleProgressGO = Instantiate(CircleProgressPrefab);
+            circleProgressGO.transform.SetParent(transform);
+            circleProgressGO.GetComponent<UICommonProgressItem>().Init(creator,duration);
+            Destroy(circleProgressGO, duration);
+        }
         #endregion
 
         #region Util

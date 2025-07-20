@@ -48,7 +48,7 @@ namespace KidGame.Core
                         hasCausedDamage = true;
                         coll.GetComponent<EnemyController>().TakeDamage(
                             new DamageInfo(gameObject, Damage, Buff ? new BuffInfo(Buff, coll.gameObject) : null));
-                        GameManager.Instance.AddScore(Score);
+                        GameManager.Instance.AddScore(trapData.trapScore);
                     }
                 }
             }

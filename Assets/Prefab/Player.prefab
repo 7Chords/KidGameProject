@@ -181,7 +181,7 @@ MonoBehaviour:
   _tempTrapBag:
   - trapData:
       id: 
-      trapName: 
+      trapName: "\u5C0F\u70B8\u5F39"
       trapDesc: 
       trapIconPath: 
       trapLevel: 0

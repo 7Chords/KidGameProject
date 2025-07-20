@@ -42,6 +42,12 @@ namespace KidGame.Core
                 UIHelper.Instance.ShowOneTip(new TipInfo("无法放置陷阱", player.gameObject));
                 player.ChangeState(PlayerState.Idle);
             }
+            else
+            {
+                //展示放置进度ui
+                //todo:fix 放置时间
+                UIHelper.Instance.ShowCircleProgress(player.gameObject, 2f);
+            }
         }
 
         public override void Update()
@@ -49,7 +55,7 @@ namespace KidGame.Core
             base.Update();
             
             useTimer += Time.deltaTime;
-            if (useTimer > 0.5f && hasPlaced)
+            if (useTimer > 2f && hasPlaced)
             {
                 player.ChangeState(PlayerState.Idle);
             }
