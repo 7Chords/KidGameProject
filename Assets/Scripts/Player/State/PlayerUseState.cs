@@ -20,13 +20,14 @@ namespace KidGame.Core
     {
         private float useTimer;
         private bool hasPlaced;
+        private ISlotInfo selectedItem;
 
         public override void Enter()
         {
             useTimer = 0f;
             hasPlaced = false;
 
-            ISlotInfo selectedItem = PlayerBag.Instance.GetSelectedTempItem();
+            selectedItem = PlayerBag.Instance.GetSelectedTempItem();
             if (selectedItem == null)
             {
                 UIHelper.Instance.ShowOneTip(new TipInfo("未选中道具", player.gameObject));
@@ -61,6 +62,10 @@ namespace KidGame.Core
                 UIHelper.Instance.ShowOneTip(new TipInfo("使用失败", player.gameObject));
                 player.ChangeState(PlayerState.Idle);
             }
+            else if( hasPlaced && selectedItem.ItemData.UseItemType == UseItemType.trap)
+            {
+                UIHelper.Instance.ShowCircleProgress(player.gameObject, (selectedItem.ItemData as TrapData).placeTime);
+            }
         }
 
 
@@ -69,7 +74,7 @@ namespace KidGame.Core
             base.Update();
             
             useTimer += Time.deltaTime;
-            if (useTimer > 2f && hasPlaced)
+            if (useTimer > (selectedItem.ItemData as TrapData).placeTime && hasPlaced)
             {
                 player.ChangeState(PlayerState.Idle);
             }

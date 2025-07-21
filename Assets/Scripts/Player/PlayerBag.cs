@@ -95,19 +95,19 @@ namespace KidGame.Core
 
         public event Action<TrapData> SelectTrapAction;
 
-        private int _selectedTrapIndex = 0;
+        private int _selectedIndex = 0;
 
         public int SelectedIndex
         {
-            get => _selectedTrapIndex;
+            get => _selectedIndex;
             set
             {
                 int newIndex = _tempBag.Count > 0 ? Mathf.Clamp(value, 0, _tempBag.Count - 1) : 0;
-                if (_selectedTrapIndex == newIndex) return;
+                if (_selectedIndex == newIndex) return;
 
-                _selectedTrapIndex = newIndex;
+                _selectedIndex = newIndex;
 
-                var selectedSlot = _tempBag[_selectedTrapIndex];
+                var selectedSlot = _tempBag[_selectedIndex];
                 string itemName = selectedSlot.ItemData switch
                 {
                     TrapData trap => trap.trapName,
@@ -124,7 +124,7 @@ namespace KidGame.Core
 
         public ISlotInfo GetSelectedTempItem()
         {
-            return _tempBag.Count > 0 ? _tempBag[_selectedTrapIndex] : null;
+            return _tempBag.Count > 0 ? _tempBag[_selectedIndex] : null;
         }
 
         #endregion
@@ -140,6 +140,8 @@ namespace KidGame.Core
         public void Init()
         {
             PlayerUtil.Instance.RegPlayerPickItem(PlayerGetItem);
+
+            SelectedIndex = 0;
         }
 
         public void Discard()
@@ -336,7 +338,7 @@ namespace KidGame.Core
             if (slot.Amount <= 0)
             {
                 _tempBag.Remove(slot);
-                _selectedTrapIndex = Mathf.Clamp(_selectedTrapIndex, 0, _tempBag.Count - 1);
+                _selectedIndex = Mathf.Clamp(_selectedIndex, 0, _tempBag.Count - 1);
             }
 
             OnTrapBagUpdated?.Invoke();
