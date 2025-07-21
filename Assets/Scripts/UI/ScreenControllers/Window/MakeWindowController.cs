@@ -107,8 +107,8 @@ namespace KidGame.UI
         {
             if (PlayerBag.Instance.TryDelItemInBag(null, currentRecipe.materialDatas))
             {
-
-                PlayerBag.Instance.TryAddToTempTrapBag(currentRecipe.trapData);
+                // todo.填写具体陷阱数量
+                PlayerBag.Instance.AddToBag(new TrapSlotInfo(currentRecipe.trapData, 1));
                 UIHelper.Instance.ShowOneTipWithParent(new TipInfo("打造了"+currentRecipe.trapData.trapName,gameObject),transform);
             }
             else

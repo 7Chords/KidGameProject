@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using KidGame.Core;
 
 [Serializable]
-public class MaterialData
+public class MaterialData: BagItemInfoBase
 {
     public string id;
     public string materialName;
@@ -15,5 +16,6 @@ public class MaterialData
     public string pickParticleName;
     public string workSoundName;
     public string workParticleName;
+    public UseItemType UseItemType => UseItemType.Material;
 }
 

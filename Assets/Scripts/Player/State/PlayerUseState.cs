@@ -21,34 +21,48 @@ namespace KidGame.Core
         private float useTimer;
         private bool hasPlaced;
 
-        //To do: 根据现在玩家的手持物品类型 来做不一样的Use处理
         public override void Enter()
         {
             useTimer = 0f;
             hasPlaced = false;
 
-            Vector3 placePosition = player.transform.position + player.transform.forward + Vector3.up;
+            ISlotInfo selectedItem = PlayerBag.Instance.GetSelectedTempItem();
+            if (selectedItem == null)
+            {
+                UIHelper.Instance.ShowOneTip(new TipInfo("未选中道具", player.gameObject));
+                player.ChangeState(PlayerState.Idle);
+                return;
+            }
+
+            Vector3 position = player.transform.position + player.transform.forward + Vector3.up;
             Quaternion rotation = player.transform.rotation;
 
-            hasPlaced = PlayerBag.Instance.TryUseTrapFromTempBag(
-                PlayerBag.Instance.SelectedTrapIndex,
-                player,
-                placePosition,
-                rotation
-            );
+            switch (selectedItem.ItemData.UseItemType)
+            {
+                case UseItemType.trap:
+                    hasPlaced = PlayerBag.Instance.UseTrap(selectedItem, position, rotation);
+                    break;
+                case UseItemType.weapon:
+                    hasPlaced = PlayerBag.Instance.UseWeapon(selectedItem, player, position);
+                    break;
+                case UseItemType.food:
+                    hasPlaced = PlayerBag.Instance.UseFood(selectedItem, player);
+                    break;
+                case UseItemType.Material:
+                    hasPlaced = PlayerBag.Instance.UseMaterial(selectedItem, player);
+                    break;
+                default:
+                    UIHelper.Instance.ShowOneTip(new TipInfo("未知道具类型", player.gameObject));
+                    break;
+            }
 
             if (!hasPlaced)
             {
-                UIHelper.Instance.ShowOneTip(new TipInfo("无法放置陷阱", player.gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("使用失败", player.gameObject));
                 player.ChangeState(PlayerState.Idle);
             }
-            else
-            {
-                //展示放置进度ui
-                //todo:fix 放置时间
-                UIHelper.Instance.ShowCircleProgress(player.gameObject, 2f);
-            }
         }
+
 
         public override void Update()
         {

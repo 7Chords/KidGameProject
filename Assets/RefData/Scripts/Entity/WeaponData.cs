@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using KidGame.Core;
 using UnityEngine;
 [Serializable]
-public class WeaponData
+public class WeaponData : BagItemInfoBase
 {
     public string id;
     public string name;
@@ -12,4 +13,5 @@ public class WeaponData
     public int weaponType;// 近战 0 | 远程 1
     public float damage;
     public float impactForce;// 冲击力，击退力
+    public UseItemType UseItemType => UseItemType.weapon;
 }

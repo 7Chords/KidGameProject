@@ -33,24 +33,10 @@ public class CellUI : MonoBehaviour
     private void Awake()
     {
         eventTrigger = GetComponent<EventTrigger>();
-        
+
         AddEventTrigger();
     }
-
-    public void SetUIWithMaterial(MaterialSlotInfo material)
-    {
-        icon.sprite = Resources.Load<Sprite>(material.materialData.materialIconPath);
-        count.text = material.amount.ToString();
-        detailText = material.materialData.materialDesc;
-    }
-
-    public void SetUIWithTrap(TrapSlotInfo trap)
-    {
-        icon.sprite = Resources.Load<Sprite>(trap.trapData.trapIconPath);
-        count.text = trap.amount.ToString();
-        detailText = trap.trapData.trapDesc;
-    }
-
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
         timer = 0f; // ÷ÿ÷√º∆ ±∆˜
@@ -82,21 +68,54 @@ public class CellUI : MonoBehaviour
     private void AddEventTrigger()
     {
         EventTrigger trigger = gameObject.GetComponent<EventTrigger>() ?? gameObject.AddComponent<EventTrigger>();
-        
+
         EventTrigger.Entry entryEnter = new EventTrigger.Entry
         {
             eventID = EventTriggerType.PointerEnter
         };
         entryEnter.callback.AddListener((data) => { OnPointerEnter((PointerEventData)data); });
         trigger.triggers.Add(entryEnter);
-        
+
         EventTrigger.Entry entryExit = new EventTrigger.Entry
         {
             eventID = EventTriggerType.PointerExit
         };
         entryExit.callback.AddListener((data) => { OnPointerExit((PointerEventData)data); });
         trigger.triggers.Add(entryExit);
-        
-        
+    }
+
+    public void SetUIWithGenericSlot(ISlotInfo slot)
+    {
+        switch (slot.ItemData.UseItemType)
+        {
+            case UseItemType.trap:
+                SetUIWithTrap(slot as TrapSlotInfo);
+                break;
+            case UseItemType.weapon:
+                
+                break;
+            case UseItemType.food:
+                
+                break;
+            case UseItemType.Material:
+                SetUIWithMaterial(slot as MaterialSlotInfo);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetUIWithMaterial(MaterialSlotInfo material)
+    {
+        icon.sprite = Resources.Load<Sprite>(material.materialData.materialIconPath);
+        count.text = material.amount.ToString();
+        detailText = material.materialData.materialDesc;
+    }
+
+    public void SetUIWithTrap(TrapSlotInfo trap)
+    {
+        icon.sprite = Resources.Load<Sprite>(trap.trapData.trapIconPath);
+        count.text = trap.amount.ToString();
+        detailText = trap.trapData.trapDesc;
     }
 }

@@ -30,7 +30,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
     [SerializeField] private int maxTrapSlots = 4;
 
     private List<TrapHudIcon> currentTrapIcons = new List<TrapHudIcon>();
-    private int selectedTrapIndex = 0;
+    private int selectedItemIndex = 0;
 
     #endregion
 
@@ -44,22 +44,6 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         InitializeHealthHud();
         UpdateTrapHud();
     }
-    
-    //private void Update()
-    //{
-    //    float scroll = Input.GetAxis("Mouse ScrollWheel");
-    //    if (scroll != 0)
-    //    {
-    //        int direction = scroll > 0 ? -1 : 1;
-    //        int newIndex = selectedTrapIndex + direction;
-    //        int trapCount = PlayerBag.Instance.GetTempTrapSlots().Count;
-    //        if (trapCount > 0)
-    //        {
-    //            newIndex = (newIndex + trapCount) % trapCount;
-    //            SelectTrap(newIndex);
-    //        }
-    //    }
-    //}
     
     public void Discard()
     {
@@ -196,8 +180,8 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         if (scrollValue != 0)
         {
             int direction = scrollValue > 0 ? 1 : -1;
-            int newIndex = selectedTrapIndex + direction;
-            int itemCount = PlayerBag.Instance.GetTempTrapSlots().Count;
+            int newIndex = selectedItemIndex + direction;
+            int itemCount = PlayerBag.Instance.GetTempSlots().Count;
             if (itemCount > 0)
             {
                 newIndex = (newIndex + itemCount) % itemCount;
@@ -214,13 +198,13 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
         currentTrapIcons.Clear();
 
-        var traps = PlayerBag.Instance.GetTempTrapSlots();
+        var traps = PlayerBag.Instance.GetTempSlots();
 
         for (int i = 0; i < Mathf.Min(traps.Count, maxTrapSlots); i++)
         {
             var iconObj = Instantiate(trapIconPrefab, trapHudContainer);
             var icon = iconObj.GetComponent<TrapHudIcon>();
-            icon.Setup(traps[i], i == selectedTrapIndex);
+            // icon.Setup(traps[i], i == selectedItemIndex);
             currentTrapIcons.Add(icon);
 
             int index = i;
@@ -237,8 +221,8 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
             currentTrapIcons[i].SetSelected(i == index);
         }
 
-        selectedTrapIndex = index;
-        PlayerBag.Instance.SelectedTrapIndex = index;
+        selectedItemIndex = index;
+        PlayerBag.Instance.SelectedIndex = index;
     }
 
     #endregion
@@ -249,8 +233,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         ScoreText.text = score.ToString();
     }
     #endregion
-
-
+    
     private void UpdateTimeClock(GameLevelManager.LevelPhase phase, float timePercentage)
     {
         if (clockBar != null)
