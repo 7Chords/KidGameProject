@@ -28,7 +28,7 @@ namespace KidGame.Core
             _m_vMousePosition = GetMousePosi();
         }
 
-        private Vector3 GetMousePosi()
+        public Vector3 GetMousePosi()
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 

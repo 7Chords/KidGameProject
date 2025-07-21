@@ -2,15 +2,27 @@ using KidGame.Interface;
 using KidGame.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace KidGame.Core
 {
 
-    public class WeaponBase : MapItem, IInteractive
+    public abstract class WeaponBase : MapItem, IInteractive
     {
-        //数据都去配表拿吧
+        // 速度
+        [SerializeField] protected float speed = 0f;
+        // 数据都去配表拿吧
         private WeaponData _weaponData;
+        // 自己的引用
+        protected GameObject self;
+        
+        // 曲线引用
+        protected LineRenderer lineRenderer;
+
+        // 脚本 用于赋值
+        protected LineRenderScript lineRenderScript;
+
         public override string EntityName { get => _weaponData.name;}
         public WeaponData weaponData
         {
@@ -27,17 +39,30 @@ namespace KidGame.Core
 
         protected virtual void Start()
         {
-            //To do:生成的时候都要粘在角色手上
+            // 生成不在这里做 这里只做逻辑
+            self = this.gameObject;
+            InitLineRender();
         }
 
         protected virtual void Update()
         {
-            
+            WeaponUseLogic();
         }
-        protected virtual void InitWeaponData(string id, string dataName, string soName)
+        protected virtual void InitWeaponData(string id)
         {
             _weaponData = SoLoader.Instance.GetWeaponDataById(id);
         }
+        protected virtual void InitLineRender()
+        {
+            // 把曲线脚本挂上
+            lineRenderer = this.AddComponent<LineRenderer>();
+            // 把控制曲线的脚本挂上
+            lineRenderScript = this.AddComponent<LineRenderScript>();
+            lineRenderScript.lineRenderer = lineRenderer;
+            lineRenderScript.startPoint = this.transform.position;
+            lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
+        }
+
         /// <summary>
         /// 捡起物体的时候调用
         /// </summary>
@@ -67,6 +92,8 @@ namespace KidGame.Core
         {
 
         }
+
+        public abstract void WeaponUseLogic();
     }
 
 }
