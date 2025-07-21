@@ -19,7 +19,7 @@ MonoBehaviour:
     trapIconPath: 
     trapLevel: 1
     trapDamage: 30
-    trapScore: 50
+    trapScore: 30
     triggerType: 0
     validType: 0
     validTime: -1
@@ -41,7 +41,7 @@ MonoBehaviour:
     trapIconPath: 
     trapLevel: 1
     trapDamage: 40
-    trapScore: 50
+    trapScore: 40
     triggerType: 1
     validType: 0
     validTime: -1
@@ -63,12 +63,12 @@ MonoBehaviour:
     trapIconPath: 
     trapLevel: 1
     trapDamage: 20
-    trapScore: 50
+    trapScore: 20
     triggerType: 0
     validType: 0
     validTime: -1
-    deadTypeList: 0100000002000000
-    deadDelayTime: 3
+    deadTypeList: 0000000002000000
+    deadDelayTime: 1
     placeTime: 1
     hasCollider: 1
     interactSoundName: 
@@ -259,117 +259,94 @@ MonoBehaviour:
     weaponType: 0
     damage: 0
     impactForce: 0
-  RoomDataList:
+  FoodDataList:
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  - id: 
+    foodName: 
+  FurnitureInfoDataList:
+  - id: F001
+    furnitureName: "\u6D17\u8863\u673A"
+    furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53\uFF0C\u6216\u8005\u6D17\u6389\u8863\u670D\u4E0A\u7684\u75D5\u8FF9"
+    materialIdList: []
+  - id: F002
+    furnitureName: "\u6447\u6447\u6728\u9A6C"
+    furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53"
+    materialIdList: []
+  - id: F003
+    furnitureName: "\u79CB\u5343"
+    furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53"
+    materialIdList: []
+  - id: F004
+    furnitureName: "\u8DF7\u8DF7\u677F"
+    furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53"
+    materialIdList: []
+  - id: F005
+    furnitureName: "\u706F\u7684\u5F00\u5173"
+    furnitureDesc: "\u4E0E\u5F00\u5173\u4E92\u52A8\u63A7\u5236\u623F\u95F4\u7684\u660E\u6697"
+    materialIdList: []
+  - id: F006
+    furnitureName: 
+    furnitureDesc: 
+    materialIdList: []
+  - id: F007
+    furnitureName: 
+    furnitureDesc: 
+    materialIdList: []
+  - id: F008
+    furnitureName: 
+    furnitureDesc: 
+    materialIdList: []
+  - id: F009
+    furnitureName: 
+    furnitureDesc: 
+    materialIdList: []
+  - id: F010
+    furnitureName: 
+    furnitureDesc: 
+    materialIdList: []
+  RoomInfoDataList:
   - id: R001
     roomTyppe: 0
+    furnitureIdList: []
     materialIdList: []
   - id: R002
     roomTyppe: 0
+    furnitureIdList: []
     materialIdList: []
   - id: R003
     roomTyppe: 0
+    furnitureIdList: []
     materialIdList: []
   - id: R004
     roomTyppe: 0
+    furnitureIdList: []
     materialIdList: []
   - id: R005
     roomTyppe: 0
+    furnitureIdList: []
     materialIdList: []
   - id: R006
     roomTyppe: 0
+    furnitureIdList: []
     materialIdList: []
   - id: R007
     roomTyppe: 0
+    furnitureIdList: []
     materialIdList: []
-  BuffDataList:
-  - id: B001
-    buffName: blind
-    description: "\u89C6\u89C9\u6548\u679C\u65E0\u6CD5\u751F\u6548\uFF0C\u64AD\u653E\u81F4\u76F2\u52A8\u753B"
-    iconPath: icon/buff/blind
-    priority: 0
-    maxStack: 0
-    tags:
-    - move
-    isForever: 0
-    duration: 0
-    tickTime: 0
-    buffAddStackUpdateTime: 0
-    buffRemoveStackUpdate: 0
-    onCreateModulePath: 
-    onRemoveModulePath: 
-    onTickModulePath: 
-    onHitModulePath: 
-    onBeHurtModulePath: 
-  - id: B002
-    buffName: '   fallingdown'
-    description: "\u5728\u666E\u901A\u7684\u5730\u677F\u4E0A\u4F1A\u76F4\u63A5\u6454\u5012\uFF0C\n\u5728\u629B\u5149\u7684\u5730\u677F\u80FD\u591F\u5411\u524D\u6ED1\u52A8\u4E00\u6BB5\u8DDD\u79BB\uFF0C\n\u6700\u540E\u82B12s\u65F6\u95F4\u91CD\u65B0\u7AD9\u8D77"
-    iconPath: icon/buff/fallingdown
-    priority: 0
-    maxStack: 0
-    tags:
-    - move
-    isForever: 0
-    duration: 0
-    tickTime: 0
-    buffAddStackUpdateTime: 0
-    buffRemoveStackUpdate: 0
-    onCreateModulePath: 
-    onRemoveModulePath: 
-    onTickModulePath: 
-    onHitModulePath: 
-    onBeHurtModulePath: 
-  - id: B003
-    buffName: '   bleed'
-    description: "\u4F1A\u5728\u5730\u4E0A\u6301\u7EED\u6D41\u4E0B\u8840\u8FF9\uFF0C
-      \u6301\u7EED\u5237\u65B0\u5F97\u5206\u677F "
-    iconPath: icon/buff/bleed
-    priority: 0
-    maxStack: 0
-    tags:
-    - sign|count
-    isForever: 0
-    duration: 0
-    tickTime: 0
-    buffAddStackUpdateTime: 0
-    buffRemoveStackUpdate: 0
-    onCreateModulePath: 
-    onRemoveModulePath: 
-    onTickModulePath: 
-    onHitModulePath: 
-    onBeHurtModulePath: 
-  - id: B004
-    buffName: '    dizzy'
-    description: "      \u4E00\u6BB5\u65F6\u95F4\u5185\u5F80\u968F\u673A\u7684\u65B9\u5411\u7F13\u6162\u79FB\u52A8"
-    iconPath: icon/buff/dizzy
-    priority: 0
-    maxStack: 0
-    tags:
-    - move
-    isForever: 0
-    duration: 0
-    tickTime: 0
-    buffAddStackUpdateTime: 0
-    buffRemoveStackUpdate: 0
-    onCreateModulePath: 
-    onRemoveModulePath: 
-    onTickModulePath: 
-    onHitModulePath: 
-    onBeHurtModulePath: 
-  - id: B005
-    buffName: '   coma'
-    description: "      \u5728\u4E00\u6BB5\u65F6\u95F4\u5185\u4E0D\u80FD\u884C\u52A8"
-    iconPath: icon/buff/coma
-    priority: 0
-    maxStack: 0
-    tags:
-    - move
-    isForever: 0
-    duration: 0
-    tickTime: 0
-    buffAddStackUpdateTime: 0
-    buffRemoveStackUpdate: 0
-    onCreateModulePath: 
-    onRemoveModulePath: 
-    onTickModulePath: 
-    onHitModulePath: 
-    onBeHurtModulePath: 

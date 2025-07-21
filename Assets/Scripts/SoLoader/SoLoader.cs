@@ -10,7 +10,6 @@ namespace KidGame.Core
 {
     public class SoLoader : SingletonPersistent<SoLoader>
     {
-        public static SoLoader Instance;
 
         public Dictionary<string, ScriptableObject> soDic;
 
@@ -176,9 +175,14 @@ namespace KidGame.Core
             return GetDataById(id, "MaterialData", SoConst.KID_GAME_DATA_CONFIG) as MaterialData;
         }
 
-        public RoomData GetRoomDataById(string id)
+        public RoomInfoData GetRoomInfoDataById(string id)
         {
-            return GetDataById(id, "RoomData", SoConst.KID_GAME_DATA_CONFIG) as RoomData;
+            return GetDataById(id, "RoomInfoData", SoConst.KID_GAME_DATA_CONFIG) as RoomInfoData;
+        }
+
+        public FurnitureInfoData GetFurnitureInfoDataById(string id)
+        {
+            return GetDataById(id, "FurnitureInfoData", SoConst.KID_GAME_DATA_CONFIG) as FurnitureInfoData;
         }
 
         public BuffData GetBuffDataDataById(string id)

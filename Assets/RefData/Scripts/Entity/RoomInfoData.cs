@@ -15,10 +15,11 @@ public enum RoomType
               //ect...
 }
 [Serializable]
-public class RoomData
+public class RoomInfoData
 {
     public string id;
     public RoomType roomTyppe;
+    public List<string> furnitureIdList;
     public List<string> materialIdList;
 }
 
