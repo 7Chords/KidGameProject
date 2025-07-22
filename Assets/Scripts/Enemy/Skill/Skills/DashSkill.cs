@@ -76,7 +76,9 @@ namespace KidGame.Core
                 distanceTraveled += moveStep;
                 yield return null;
             }
-
+            
+            
+            
             // »Ö¸´µ¼º½
             if (navAgent != null) navAgent.enabled = true;
         }

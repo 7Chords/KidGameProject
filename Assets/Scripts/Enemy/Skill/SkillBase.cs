@@ -8,28 +8,29 @@ using UnityEngine.AI;
 namespace KidGame.Core
 {
     /// <summary>
-    /// ¼¼ÄÜ»ùÀà
+    /// ï¿½ï¿½ï¿½Ü»ï¿½ï¿½ï¿½
     /// </summary>
     public abstract class SkillBase : ScriptableObject
     {
-        [Header("»ù´¡ÊôĞÔ")] public string skillName;
-        public float cooldownTime = 2f; // ÀäÈ´Ê±¼ä
-        public bool isPassive; // ÊÇ·ñ±»¶¯¼¼ÄÜ
+        [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")] public string skillName;
+        public float cooldownTime = 2f; // ï¿½ï¿½È´Ê±ï¿½ï¿½
+        public bool isPassive; // ï¿½Ç·ñ±»¶ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        [NonSerialized] public float lastCastTime; // ÉÏ´ÎÊÍ·ÅÊ±¼ä
+        [NonSerialized] public float lastCastTime; // ï¿½Ï´ï¿½ï¿½Í·ï¿½Ê±ï¿½ï¿½
         
         public abstract void Init(EnemyController enemyController);
         
         /// <summary>
-        /// ¼ì²é¼¼ÄÜÊÇ·ñ¿É´¥·¢
+        /// ï¿½ï¿½é¼¼ï¿½ï¿½ï¿½Ç·ï¿½É´ï¿½ï¿½ï¿½
         /// </summary>
         public abstract bool CanTrigger();
         
-        //¾ßÌå¼¼ÄÜÊ¹ÓÃÂß¼­·µ»ØÖµ¿ÉÄÜ¸÷Òì£¬²¢ÇÒÒ²»áÔÚNodeÖĞÓĞ¾ßÌåÊ¹ÓÃµÄÂß¼­£¬ËùÒÔ²»Ğ´³éÏó·½·¨
+        //ï¿½ï¿½ï¿½å¼¼ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ü¸ï¿½ï¿½ì£¬ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Nodeï¿½ï¿½ï¿½Ğ¾ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½Ğ´ï¿½ï¿½ï¿½ó·½·ï¿½
+        public virtual void Trigger(){}
         
         
         /// <summary>
-        /// ¼ì²éÊÇ·ñ´¦ÓÚÀäÈ´ÖĞ
+        /// ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½
         /// </summary>
         public bool IsInCooldown()
         {

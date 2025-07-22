@@ -183,12 +183,12 @@ namespace KidGame.Core
         {
             if (player == null) return false;
 
-            //if ((player.position - transform.position).magnitude <= enemyBaseData.HearingRange)
-            //{
-            //    targetPos = player.position;
-            //    return true;
-            //}
-            //return false;
+            if ((player.position - transform.position).magnitude <= enemyBaseData.HearingRange)
+            {
+                targetPos = player.position;
+                return true;
+            }
+            return false;
             if (hearingGO != null) return true;
             return false;
         }
@@ -253,6 +253,16 @@ namespace KidGame.Core
             targetPos = player.transform.position;
             Agent.SetDestination(targetPos);
         }
+        /// <summary>
+        /// 设置目标到某个点
+        /// </summary>
+        public void SetMoveTarget(Vector3 position)
+        {
+            Agent.speed = enemyBaseData.MoveSpeed;
+            targetPos = position;
+            Agent.SetDestination(targetPos);
+        }
+        
         #endregion
 
         /// <summary>
@@ -324,7 +334,6 @@ namespace KidGame.Core
         public void GoCheckHearPoint()
         {
             Agent.speed = enemyBaseData.MoveSpeed;
-            targetPos = hearingGO.transform.position;
             Agent.SetDestination(targetPos);
         }
 

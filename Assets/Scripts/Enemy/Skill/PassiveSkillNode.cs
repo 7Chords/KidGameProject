@@ -29,7 +29,7 @@ namespace KidGame.Core
             {
                 if (!skill.IsInCooldown() && skill.CanTrigger())
                 {
-                    
+                    skill.Trigger();
                     skill.lastCastTime = Time.time;
                 }
             }
