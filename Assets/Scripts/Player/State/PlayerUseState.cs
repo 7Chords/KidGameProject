@@ -34,7 +34,7 @@ namespace KidGame.Core
                     hasPlaced = PlayerBag.Instance.UseTrap(selectedItem, position, rotation);
                     break;
                 case UseItemType.weapon:
-                    hasPlaced = PlayerBag.Instance.UseWeapon(selectedItem, player, position);
+                    hasPlaced = PlayerBag.Instance.UseWeapon(selectedItem, position, rotation);
                     break;
                 case UseItemType.food:
                     hasPlaced = PlayerBag.Instance.UseFood(selectedItem, player);

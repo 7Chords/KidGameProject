@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 using System;
+using Unity.VisualScripting;
 
 namespace KidGame.Core
 {
@@ -140,8 +141,9 @@ namespace KidGame.Core
 
         #endregion
 
-        #region 使用道具相关
-        public UseItemType useItemType = UseItemType.nothing;
+        #region 手持武器相关
+        private WeaponData currentWeaponData = null;
+        private GameObject currentWeapon = null;
         #endregion
 
         #region 事件相关
@@ -158,7 +160,8 @@ namespace KidGame.Core
             inputSettings.OnGamePause += GamePause;
             inputSettings.OnMouseWheelValueChanged += SwitchSelectItem;
 
-            PlayerBag.Instance.SelectTrapAction += SpawnSelectTrapPreview;
+            PlayerBag.Instance.OnSelectItemAction += OnItemSelected;
+            //PlayerBag.Instance.OnSelectItemAction += Instance_OnSelectItemAction;
         }
 
 
@@ -174,7 +177,7 @@ namespace KidGame.Core
             inputSettings.OnGamePause -= GamePause;
             inputSettings.OnMouseWheelValueChanged -= SwitchSelectItem;
 
-            PlayerBag.Instance.SelectTrapAction -= SpawnSelectTrapPreview;
+            PlayerBag.Instance.OnSelectItemAction -= OnItemSelected;
 
         }
 
@@ -382,6 +385,34 @@ namespace KidGame.Core
             OnMouseWheelValueChanged?.Invoke(scrollValue);
         }
 
+        private void OnItemSelected(ISlotInfo slotInfo)
+        {
+            if(slotInfo.ItemData is TrapData trapData)
+            {
+                SpawnSelectTrapPreview(trapData);
+            }
+            else if(slotInfo.ItemData is WeaponData weaponData)
+            {
+                // to do: 不要每次都生成一个武器
+                if (weaponData.id == currentWeaponData.id) return;
+                // 如果不是重复的 销毁现在的 取得新的
+                Destroy(currentWeapon);
+                currentWeapon = null;
+                currentWeapon = SpawnWeaponOnHand(
+                    weaponData,
+                    this.transform.position,
+                    this.transform.rotation
+                    );
+                
+            }
+        }
+
+        public void DiscardWeapon()
+        {
+            Destroy(currentWeapon);
+            currentWeapon = null;
+        }
+
         /// <summary>
         /// 生成预览的陷阱
         /// </summary>
@@ -391,6 +422,19 @@ namespace KidGame.Core
             if(curPreviewGO) Destroy(curPreviewGO);
             curPreviewGO = TrapFactory.CreatePreview(trapData, PlaceTrapPoint.position, transform);
         }
+
+        //生成在手上的武器 但是不执行逻辑
+        public GameObject SpawnWeaponOnHand(WeaponData weaponData, Vector3 position, Quaternion rotation)
+        {
+
+            GameObject newWeapon = WeaponFactory.CreateEntity(weaponData, position, this.gameObject.transform);
+            if (newWeapon != null)
+            {
+                newWeapon.transform.rotation = rotation;
+            }
+            return newWeapon;
+        }
+
         #endregion
 
         #region 体力与生命

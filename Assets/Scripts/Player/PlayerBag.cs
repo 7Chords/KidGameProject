@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+
     /// <summary>
     /// 背包物品基类接口，用于统一不同类型的物品数据
     /// </summary>
@@ -96,8 +97,7 @@ namespace KidGame.Core
         #region 事件定义
 
         public event Action OnQuickAccessBagUpdated;//更新道具栏事件
-
-        public event Action<TrapData> SelectTrapAction;//道具栏选中了陷阱的事件
+        public event Action<ISlotInfo> OnSelectItemAction;//道具栏选中了物品的事件
 
         #endregion
 
@@ -119,6 +119,9 @@ namespace KidGame.Core
                 _selectedIndex = newIndex;
 
                 var selectedSlot = QuickAccessBag[_selectedIndex];
+
+                if (selectedSlot != null) OnSelectItemAction.Invoke(selectedSlot);
+
                 string itemName = selectedSlot.ItemData switch
                 {
                     TrapData trap => trap.trapName,
@@ -326,7 +329,27 @@ namespace KidGame.Core
             return false;
         }
 
-        public bool UseWeapon(ISlotInfo slot, PlayerController player, Vector3 position) => false;
+        public bool UseWeapon(ISlotInfo slot, Vector3 position, Quaternion rotation)
+        {
+
+            if (slot is WeaponSlotInfo weaponSlot)
+            {
+                //销毁现在的手持武器 并且把player里的那个引用指向空
+                PlayerController.Instance.DiscardWeapon();
+
+                GameObject newWeapon = WeaponFactory.CreateEntity(weaponSlot.weaponData, position, this.gameObject.transform);
+                
+                if (newWeapon != null)
+                {
+                    //不在手上 区别于选择物品的时候 把这个生成的武器直接开始主要逻辑
+                    newWeapon.GetComponent<WeaponBase>().SetOnHandOrNot(false);
+                    newWeapon.transform.rotation = rotation;
+                    DeleteItemInCombineBag(slot.ItemData.Id, 1);
+                    return true;
+                }
+            }
+            return false;
+        }
         public bool UseFood(ISlotInfo slot, PlayerController player) => false;
         public bool UseMaterial(ISlotInfo slot, PlayerController player) => false;
 

@@ -10,6 +10,7 @@ namespace KidGame.Core
 
     public abstract class WeaponBase : MapItem, IInteractive
     {
+        private bool isOnHand = true;
         // 速度
         [SerializeField] protected float speed = 0f;
         // 数据都去配表拿吧
@@ -46,11 +47,11 @@ namespace KidGame.Core
 
         protected virtual void Update()
         {
-            WeaponUseLogic();
+            if(!isOnHand) WeaponUseLogic();
         }
-        protected virtual void InitWeaponData(string id)
+        public virtual void InitWeaponData(WeaponData weaponData)
         {
-            _weaponData = SoLoader.Instance.GetWeaponDataById(id);
+            _weaponData = weaponData;
         }
         protected virtual void InitLineRender()
         {
@@ -83,6 +84,14 @@ namespace KidGame.Core
             Destroy(gameObject);
         }
 
+        public void SetOnHandOrNot(bool onHand)
+        {
+            isOnHand = onHand;
+        }
+        public bool GetOnHandOrNot()
+        {
+            return isOnHand;
+        }
         public virtual void InteractPositive(GameObject interactor)
         {
             //To Do:武器可能会被用来附魔
