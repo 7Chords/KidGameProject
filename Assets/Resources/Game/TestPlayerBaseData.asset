@@ -16,3 +16,5 @@ MonoBehaviour:
   RunSpeed: 5
   Hp: 3
   Sp: 50
+  DashStaminaOneTime: 10
+  RunStaminaPerSecond: 5

@@ -86,7 +86,7 @@ namespace KidGame.Core
         private float staminaRecoverRate = 2f;
         private float recoverThreshold = 0.25f;
         
-        public event System.Action<float> OnStaminaChanged;
+        public event Action<float> OnStaminaChanged;
 
         #endregion
 
@@ -494,15 +494,13 @@ namespace KidGame.Core
             if (isExhausted) return false;
             
             currentStamina -= amount;
-            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-            OnStaminaChanged?.Invoke(currentStamina / maxStamina);
             
             if (currentStamina <= 0)
             {
                 currentStamina = 0;
                 return false;
             }
-
+            OnStaminaChanged?.Invoke(currentStamina / maxStamina);
             if (currentStamina <= maxStamina * recoverThreshold)
             {
                 isExhausted = true;
