@@ -11,6 +11,10 @@ namespace KidGame.Core
         public float dashSpeed = 15f;
         public float triggerRange = 8f;
         public LayerMask obstacleLayer;
+
+        [Header("冲刺准备参数")] // 新增参数
+        public float prepareTime = 0.5f; // 准备时间（秒）
+        public float rotateSpeed = 15f; // 转向速度
         
         [System.NonSerialized] public EnemyController enemy;
         private Vector3 dashDirection;
@@ -22,6 +26,11 @@ namespace KidGame.Core
             navAgent = enemy.GetComponent<UnityEngine.AI.NavMeshAgent>();
         }
 
+        public void StopNavAgent()
+        {
+            if (navAgent != null) navAgent.enabled = false;
+        }
+
         public override bool CanTrigger()
         {
             if (IsInCooldown() || enemy == null || enemy.Player == null)
@@ -31,42 +40,44 @@ namespace KidGame.Core
             return distance <= triggerRange && distance > 1f;
         }
 
-        // 原Trigger方法改造为返回协程
-        public IEnumerator TriggerCoroutine()
+        // 修改：接受目标位置参数（不再实时获取玩家位置）
+        public IEnumerator TriggerCoroutine(Vector3 targetPosition)
         {
-            Debug.Log("dashing!!");
-            // 记录开始时间（用于冷却计算）
+            Debug.Log("Enemy dashing!");
             lastCastTime = Time.time;
-            
-            // 计算目标位置
-            dashDirection = (enemy.Player.position - enemy.transform.position).normalized;
-            dashDirection.y = 0;
+
             Vector3 startPosition = enemy.transform.position;
-            Vector3 targetPosition = startPosition + dashDirection * dashDistance;
+            dashDirection = (targetPosition - startPosition).normalized;
+            dashDirection.y = 0;
 
             // 障碍物检测
-            if (Physics.Raycast(startPosition, dashDirection, out RaycastHit hit, dashDistance, obstacleLayer))
+            Vector3 desiredTarget = startPosition + dashDirection * dashDistance;
+            if (Physics.Raycast(
+                    startPosition + Vector3.up, 
+                    dashDirection, 
+                    out RaycastHit hit, 
+                    dashDistance, 
+                    obstacleLayer))
             {
-                targetPosition = hit.point - dashDirection * 0.5f;
+                desiredTarget = hit.point - dashDirection * 0.5f; // 停在障碍物前
             }
 
             // 执行冲刺
             if (navAgent != null) navAgent.enabled = false;
-            //enemy.Animator.SetTrigger("Dash"); // 假设EnemyController有Animator属性
+            // enemy.Animator.SetTrigger("Dash"); // 取消注释以播放动画
 
             float distanceTraveled = 0;
-            float totalDistance = Vector3.Distance(startPosition, targetPosition);
-            
+            float totalDistance = Vector3.Distance(startPosition, desiredTarget);
             while (distanceTraveled < totalDistance)
             {
                 float moveStep = dashSpeed * Time.deltaTime;
                 enemy.transform.position = Vector3.MoveTowards(
-                    enemy.transform.position, targetPosition, moveStep);
+                    enemy.transform.position, desiredTarget, moveStep);
                 distanceTraveled += moveStep;
-                yield return null; // 每帧更新位置
+                yield return null;
             }
 
-            // 冲刺结束恢复状态
+            // 恢复导航
             if (navAgent != null) navAgent.enabled = true;
         }
 

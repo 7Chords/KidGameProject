@@ -31,18 +31,57 @@ namespace KidGame.Core
                 return TaskStatus.Failure;
             }
 
-            // 3. 启动冲刺协程并跟踪状态
-            dashCoroutine = enemy.StartCoroutine(DashCoroutineWrapper());
+            // 启动准备与冲刺的完整协程（核心修改）
+            dashCoroutine = enemy.StartCoroutine(PrepareAndDashCoroutine());
             return TaskStatus.Running;
         }
-        // 协程包装器（用于状态管理）
-        private IEnumerator DashCoroutineWrapper()
+        
+        // 新增：准备冲刺的完整流程协程
+        private IEnumerator PrepareAndDashCoroutine()
         {
             isDashing = true;
-            yield return dashSkill.TriggerCoroutine(); // 执行实际冲刺逻辑
-            isDashing = false; // 协程结束，重置状态
+
+            // 1. 记录玩家当前位置（锁定冲刺目标）
+            Vector3 recordedPlayerPos = enemy.Player.position;
+            enemy.Rb.velocity = Vector3.zero;
+            dashSkill.StopNavAgent();
+            // 2. 平滑转向记录的玩家位置
+            yield return StartCoroutine(TurnToTarget(recordedPlayerPos));
+
+            // 3. 等待冲刺准备时间（可配置）
+            yield return new WaitForSeconds(dashSkill.prepareTime);
+
+            // 4. 执行冲刺（使用锁定的位置）
+            yield return enemy.StartCoroutine(dashSkill.TriggerCoroutine(recordedPlayerPos));
+
+            // 5. 重置状态
+            isDashing = false;
             dashCoroutine = null;
         }
+        // 新增：平滑转向协程
+        private IEnumerator TurnToTarget(Vector3 targetPosition)
+        {
+            Vector3 lookDirection = (targetPosition - enemy.transform.position).normalized;
+            lookDirection.y = 0; // 忽略Y轴，保持平面旋转
+
+            if (lookDirection.sqrMagnitude < 0.01f) yield break; // 目标过近无需转向
+
+            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            float rotateSpeed = dashSkill.rotateSpeed;
+
+            // 平滑插值旋转
+            while (Quaternion.Angle(enemy.transform.rotation, targetRotation) > 10f)
+            {
+                enemy.transform.rotation = Quaternion.Lerp(
+                    enemy.transform.rotation,
+                    targetRotation,
+                    rotateSpeed * Time.deltaTime
+                );
+                yield return null;
+            }
+            enemy.transform.rotation = targetRotation; // 确保最终旋转到位
+        }
+        
 
         // 节点被中断时终止协程（如被更高优先级行为打断）
         public override void OnEnd()
