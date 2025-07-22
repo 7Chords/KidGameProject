@@ -37,7 +37,10 @@ namespace KidGame.Core
                 isRunning = runningInput;
                 UpdateSpeed();
             }
-
+            if(isRunning)
+            {
+                player.ConsumeStamina(player.PlayerBaseData.RunStaminaPerSecond * Time.deltaTime);
+            }
             Vector2 inputVal = player.InputSettings.MoveDir();
             if (inputVal == Vector2.zero)
             {

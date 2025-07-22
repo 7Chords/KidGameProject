@@ -6,6 +6,7 @@ using Utils;
 using KidGame.Core;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using KidGame;
 
 public class GamePlayPanelController : Singleton<GamePlayPanelController>
 {
@@ -27,7 +28,6 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     [SerializeField] private Transform trapHudContainer;
     [SerializeField] private GameObject trapIconPrefab;
-    [SerializeField] private int maxTrapSlots = 4;
 
     private List<TrapHudIcon> currentTrapIcons = new List<TrapHudIcon>();
     private int selectedItemIndex = 0;
@@ -42,7 +42,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
     {
         RegisterEvents();
         InitializeHealthHud();
-        UpdateTrapHud();
+        InitializeQuickAccessHud();
     }
     
     public void Discard()
@@ -66,7 +66,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
             GameLevelManager.Instance.OnPhaseTimeUpdated += UpdateTimeClock;
         }
         
-        PlayerBag.Instance.OnQuickAccessBagUpdated += UpdateTrapHud;
+        PlayerBag.Instance.OnQuickAccessBagUpdated += UpdateQuickAccessHud;
         GameManager.Instance.OnCurrentLoopScoreChanged += CurrentLoopScoreChanged;
         
     }
@@ -89,7 +89,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         
         if (PlayerBag.Instance != null)
         {
-            PlayerBag.Instance.OnQuickAccessBagUpdated -= UpdateTrapHud;
+            PlayerBag.Instance.OnQuickAccessBagUpdated -= UpdateQuickAccessHud;
         }
     }
 
@@ -189,26 +189,38 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
             }
         }
     }
-    private void UpdateTrapHud()
+
+    private void InitializeQuickAccessHud()
     {
-        foreach (var icon in currentTrapIcons)
-        {
-            Destroy(icon.gameObject);
-        }
-
-        currentTrapIcons.Clear();
-
-        var traps = PlayerBag.Instance.GetQuickAccessBag();
-
-        for (int i = 0; i < Mathf.Min(traps.Count, maxTrapSlots); i++)
+        for (int i = 0; i < GlobalValue.QUICK_ACCESS_BAG_CAPACITY; i++)
         {
             var iconObj = Instantiate(trapIconPrefab, trapHudContainer);
             var icon = iconObj.GetComponent<TrapHudIcon>();
-            // icon.Setup(traps[i], i == selectedItemIndex);
+            icon.SetEmpty();
             currentTrapIcons.Add(icon);
 
             int index = i;
+            //注册事件
             iconObj.GetComponent<Button>().onClick.AddListener(() => SelectTrap(index));
+        }
+        UpdateQuickAccessHud();
+    }
+    private void UpdateQuickAccessHud()
+    {
+        var traps = PlayerBag.Instance.GetQuickAccessBag();
+
+        for (int i = 0; i < GlobalValue.QUICK_ACCESS_BAG_CAPACITY; i++)
+        {
+            var icon = currentTrapIcons[i];
+            if (i< traps.Count)
+            {
+                icon.Setup(traps[i], i == selectedItemIndex);
+            }
+            else
+            {
+                //不要销毁啦 道具栏应该是常驻的 没东西也不要删掉
+                icon.SetEmpty();
+            }
         }
     }
 

@@ -2,6 +2,7 @@ using KidGame.Core;
 using System;
 using UnityEditor;
 using UnityEngine;
+using KidGame;
 
 /// <summary>
 /// 开发者作弊面板
@@ -11,7 +12,7 @@ public class DeveloperCheatEditor : EditorWindow
     [MenuItem("自定义编辑器/开发者作弊面板")]
     public static void ShowWindow()
     {
-        GetWindow<DeveloperCheatEditor>("Cheat Panel");
+        GetWindow<DeveloperCheatEditor>("开发者作弊面板");
     }
 
 
@@ -30,7 +31,7 @@ public class DeveloperCheatEditor : EditorWindow
     #endregion
     private void OnGUI()
     {
-        GUILayout.Label("开发者作弊面板", EditorStyles.boldLabel);
+        GUILayout.Label("开发者作弊面板(KidGameCheatPanel) :-)", EditorStyles.boldLabel);
 
         EditorGUILayout.Space();
 
@@ -53,8 +54,7 @@ public class DeveloperCheatEditor : EditorWindow
                     if (string.IsNullOrEmpty(trapIDStr) || string.IsNullOrEmpty(trapAmountStr)) return;
                     try
                     {
-
-                        //todo
+                        PlayerBag.Instance.AddItemToCombineBag(trapIDStr, UseItemType.trap, int.Parse(trapAmountStr));
                     }
                     catch(Exception ex)
                     {
@@ -81,21 +81,6 @@ public class DeveloperCheatEditor : EditorWindow
             if (showMaterialCheats)
             {
                 EditorGUI.indentLevel++;
-
-                if (GUILayout.Button("获得所有材料"))
-                {
-
-                }
-
-                if (GUILayout.Button("重置材料数量"))
-                {
-
-                }
-
-                if (GUILayout.Button("无限材料模式"))
-                {
-
-                }
 
                 EditorGUI.indentLevel--;
             }

@@ -13,7 +13,7 @@ namespace KidGame.Core
             //todo
             player.Rb.AddForce(player.transform.forward * 50f, ForceMode.Impulse);
             // todo.ÏûºÄÌåÁ¦
-            player.ConsumeStamina(10f);
+            player.ConsumeStamina(player.PlayerBaseData.DashStaminaOneTime);
         }
     }
 }

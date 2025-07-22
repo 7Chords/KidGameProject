@@ -9,4 +9,7 @@ public class PlayerBaseData : ScriptableObject
     public float RunSpeed;
     public float Hp;
     public float Sp;
+
+    public float DashStaminaOneTime;
+    public float RunStaminaPerSecond;
 }
