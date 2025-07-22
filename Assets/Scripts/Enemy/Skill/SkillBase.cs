@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using KidGame.Core;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace KidGame.Core
 {
@@ -16,22 +17,21 @@ namespace KidGame.Core
         public bool isPassive; // 是否被动技能
 
         [NonSerialized] public float lastCastTime; // 上次释放时间
-        [NonSerialized] public EnemyController enemy; // 行为树黑板引用
-
+        
+        public abstract void Init(EnemyController enemyController);
+        
         /// <summary>
         /// 检查技能是否可触发
         /// </summary>
-        public abstract bool CanTrigger(GameObject caster);
-
-        /// <summary>
-        /// 执行技能效果
-        /// </summary>
-        public abstract void Trigger(GameObject caster, GameObject target = null);
-
+        public abstract bool CanTrigger();
+        
+        //具体技能使用逻辑返回值可能各异，并且也会在Node中有具体使用的逻辑，所以不写抽象方法
+        
+        
         /// <summary>
         /// 检查是否处于冷却中
         /// </summary>
-        protected bool IsInCooldown()
+        public bool IsInCooldown()
         {
             return Time.time - lastCastTime < cooldownTime;
         }

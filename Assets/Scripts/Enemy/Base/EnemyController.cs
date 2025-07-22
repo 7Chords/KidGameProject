@@ -43,6 +43,7 @@ namespace KidGame.Core
         public EnemyBaseData EnemyBaseData => enemyBaseData;
 
         private Transform player;
+        public Transform Player { get { return player; } }
 
         private Dictionary<RoomType, bool> roomSearchStateDic;//房间搜索情况字典
 
@@ -78,7 +79,6 @@ namespace KidGame.Core
 
 
         #endregion
-        
         
         #region 生命周期
 

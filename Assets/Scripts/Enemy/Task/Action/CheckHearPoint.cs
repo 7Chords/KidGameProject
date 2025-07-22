@@ -21,7 +21,7 @@ namespace KidGame.Core
             {
                 return TaskStatus.Success;
             }
-            return TaskStatus.Running;
+            return TaskStatus.Failure;
         }
     }
 }
