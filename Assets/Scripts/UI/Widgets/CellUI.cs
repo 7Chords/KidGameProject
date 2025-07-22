@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using KidGame;
 using KidGame.Core;
-using KidGame.UI.Game;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;

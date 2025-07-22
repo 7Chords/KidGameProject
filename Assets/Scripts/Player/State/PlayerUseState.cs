@@ -6,16 +6,6 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public enum UseItemType
-    {
-        trap,
-        weapon,
-        food,
-        Material,
-        nothing
-    }
-
-
     public class PlayerUseState : PlayerStateBase
     {
         private float useTimer;
@@ -27,7 +17,7 @@ namespace KidGame.Core
             useTimer = 0f;
             hasPlaced = false;
 
-            selectedItem = PlayerBag.Instance.GetSelectedTempItem();
+            selectedItem = PlayerBag.Instance.GetSelectedQuickAccessItem();
             if (selectedItem == null)
             {
                 UIHelper.Instance.ShowOneTip(new TipInfo("未选中道具", player.gameObject));

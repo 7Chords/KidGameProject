@@ -27,7 +27,7 @@ namespace KidGame.Core
                     for (int i = 0; i < item.amount; i++)
                     {
                         tmpMat.Init(item.data);
-                        PlayerUtil.Instance.CallPlayerPickItem(tmpMat);
+                        PlayerUtil.Instance.CallPlayerPickItem(tmpMat.materialData.id,UseItemType.Material);
                         UIHelper.Instance.ShowTipByQueue(new TipInfo("»ñµÃÁË" + item.data.materialName + "¡Á1", gameObject, 0.5f));
                     }
                 }

@@ -12,15 +12,19 @@ public class BackpackWindowController : WindowController
 {
     private UICircularScrollView scrollView;
     private UICircularScrollView pocketScrollView;
+
+
     private List<MaterialSlotInfo> _materialSlotInfos;
+    private List<TrapSlotInfo> _trapSlotInfos;
+
     private List<ISlotInfo> _tempSlotInfos;
-    private List<ISlotInfo> _trapSlotInfos;
+    //private List<ISlotInfo> _trapSlotInfos;
     private GameObject detailPanel;
     private TextMeshProUGUI detailText;
 
-    // 陷阱列表最大容量
-    private const int MAX_BACKPACK_TRAP = 10; // 背包陷阱最大数量
-    private const int MAX_POCKET_TRAP = 5; // 口袋最大数量
+    // 陷阱列表最大容量 tips：移动到GlobalValue脚本里了，别的地方也要用
+    //private const int MAX_BACKPACK_TRAP = 10; // 背包陷阱最大数量
+    //private const int MAX_POCKET_TRAP = 5; // 口袋最大数量
 
     protected override void Awake()
     {
@@ -36,10 +40,12 @@ public class BackpackWindowController : WindowController
     {
         scrollView = transform.Find("BackPag/ScrollView").GetComponent<UICircularScrollView>();
         pocketScrollView = transform.Find("PlayerPocket/ScrollView").GetComponent<UICircularScrollView>();
-        _materialSlotInfos = PlayerBag.Instance.GetMaterialSlots();
 
-        _tempSlotInfos = PlayerBag.Instance.GetTempSlots();
-        _trapSlotInfos = PlayerBag.Instance.GetTrapSlots().Cast<ISlotInfo>().ToList();
+        _tempSlotInfos = PlayerBag.Instance.GetQuickAccessBag();
+        _materialSlotInfos = PlayerBag.Instance.BackBag.Where(x => x.ItemData.UseItemType == KidGame.UseItemType.Material)
+            .Cast<MaterialSlotInfo>().ToList();
+        _trapSlotInfos = PlayerBag.Instance.BackBag.Where(x => x.ItemData.UseItemType == KidGame.UseItemType.trap)
+            .Cast<TrapSlotInfo>().ToList();
 
         scrollView.Init(_materialSlotInfos.Count + _trapSlotInfos.Count, OnBagCellUpdate, OnBagCellClick, null);
         pocketScrollView.Init(_tempSlotInfos.Count, OnPocketCellUpdate, OnPocketCellClick, null);
@@ -66,7 +72,7 @@ public class BackpackWindowController : WindowController
         {
             int trapIndex = cellIndex - materialCount;
             // 原本的道具栏与背包互换代码移动到了playerBag.cs
-            PlayerBag.Instance.MoveTrapToPocket(trapIndex);
+            PlayerBag.Instance.MoveItemToQuickAccessBag(trapIndex);
             RefreshLists();
         }
     }
@@ -75,15 +81,17 @@ public class BackpackWindowController : WindowController
     {
         int cellIndex = index - 1;
         // 原本的道具栏与背包互换代码移动到了playerBag.cs
-        PlayerBag.Instance.MoveTrapToBackpack(cellIndex);
+        PlayerBag.Instance.MoveItemToBackBag(cellIndex);
         RefreshLists();
     }
     
     private void RefreshLists()
     {
-        _materialSlotInfos = PlayerBag.Instance.GetMaterialSlots();
-        _tempSlotInfos = PlayerBag.Instance.GetTempSlots();
-        _trapSlotInfos = PlayerBag.Instance.GetTrapSlots().Cast<ISlotInfo>().ToList();
+        _tempSlotInfos = PlayerBag.Instance.GetQuickAccessBag();
+        _materialSlotInfos = PlayerBag.Instance.BackBag.Where(x => x.ItemData.UseItemType == KidGame.UseItemType.Material)
+            .Cast<MaterialSlotInfo>().ToList();
+        _trapSlotInfos = PlayerBag.Instance.BackBag.Where(x => x.ItemData.UseItemType == KidGame.UseItemType.trap)
+            .Cast<TrapSlotInfo>().ToList();
 
         scrollView.ShowList(_materialSlotInfos.Count + _trapSlotInfos.Count);
         pocketScrollView.ShowList(_tempSlotInfos.Count);

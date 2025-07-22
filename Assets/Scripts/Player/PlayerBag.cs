@@ -1,8 +1,6 @@
+using KidGame.UI;
 using System;
 using System.Collections.Generic;
-using KidGame.Core;
-using KidGame.Interface;
-using KidGame.UI;
 using UnityEngine;
 
 
@@ -13,6 +11,7 @@ namespace KidGame.Core
     /// </summary>
     public interface BagItemInfoBase
     {
+        string Id { get; }
         UseItemType UseItemType { get; }
     }
 
@@ -84,16 +83,28 @@ namespace KidGame.Core
     {
         #region 背包结构
 
-        public List<ISlotInfo> _tempBag = new();                  // 道具栏，最多4个
-        public List<TrapSlotInfo> _trapBag = new();               // 陷阱背包
-        public List<MaterialSlotInfo> _materialBag = new();       // 材料背包
-        public List<WeaponSlotInfo> _weaponBag = new();           // 武器背包
+        public List<ISlotInfo> QuickAccessBag;//道具栏，最多4个
+        public List<ISlotInfo> BackBag;//库存背包
+
+        //TIPS:如果在方法名中看到combineBag的名称 就是上面两个列表都会去查找
+        //比如要删除某个id的道具就是要两个都去找 加入先加道具栏再加背包
 
         #endregion
 
+
+
+        #region 事件定义
+
+        public event Action OnQuickAccessBagUpdated;//更新道具栏事件
+
+        public event Action<TrapData> SelectTrapAction;//道具栏选中了陷阱的事件
+
+        #endregion
+
+
+
         #region 当前选中道具索引逻辑
 
-        public event Action<TrapData> SelectTrapAction;
 
         private int _selectedIndex = 0;
 
@@ -102,12 +113,12 @@ namespace KidGame.Core
             get => _selectedIndex;
             set
             {
-                int newIndex = _tempBag.Count > 0 ? Mathf.Clamp(value, 0, _tempBag.Count - 1) : 0;
+                int newIndex = QuickAccessBag.Count > 0 ? Mathf.Clamp(value, 0, QuickAccessBag.Count - 1) : 0;
                 if (_selectedIndex == newIndex) return;
 
                 _selectedIndex = newIndex;
 
-                var selectedSlot = _tempBag[_selectedIndex];
+                var selectedSlot = QuickAccessBag[_selectedIndex];
                 string itemName = selectedSlot.ItemData switch
                 {
                     TrapData trap => trap.trapName,
@@ -118,189 +129,176 @@ namespace KidGame.Core
                 };
 
                 UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {itemName}", PlayerController.Instance.gameObject));
-                OnTrapBagUpdated?.Invoke();
+                OnQuickAccessBagUpdated?.Invoke();
             }
         }
 
-        public ISlotInfo GetSelectedTempItem()
+        public ISlotInfo GetSelectedQuickAccessItem()
         {
-            return _tempBag.Count > 0 ? _tempBag[_selectedIndex] : null;
+            return QuickAccessBag.Count > 0 ? QuickAccessBag[_selectedIndex] : null;
         }
 
         #endregion
 
-        #region 事件定义
-
-        public event Action OnTrapBagUpdated;
-
-        #endregion
 
         #region 注册与反注册
 
         public void Init()
         {
-            PlayerUtil.Instance.RegPlayerPickItem(PlayerGetItem);
+            PlayerUtil.Instance.RegPlayerPickItem(PlayerGetOneItem);
+
+            QuickAccessBag = new List<ISlotInfo>(GlobalValue.QUICK_ACCESS_BAG_CAPACITY);
+            BackBag = new List<ISlotInfo>();
 
             SelectedIndex = 0;
         }
 
         public void Discard()
         {
-            PlayerUtil.Instance.UnregPlayerPickItem(PlayerGetItem);
+            PlayerUtil.Instance.UnregPlayerPickItem(PlayerGetOneItem);
         }
 
         #endregion
 
         #region 公共方法接口
-
-        public List<TrapSlotInfo> GetTrapSlots() => _trapBag;
-        public List<MaterialSlotInfo> GetMaterialSlots() => _materialBag;
-        public List<ISlotInfo> GetTempSlots() => _tempBag;
-
-        public void TrapBagUpdated() => OnTrapBagUpdated?.Invoke();
+        public List<ISlotInfo> GetQuickAccessBag() => QuickAccessBag;
 
         /// <summary>
-        /// 加载存档中的背包数据
+        /// 加载存档中的背包数据 todo:guihuala
         /// </summary>
         public void LoadBagData(List<TrapSlotInfo> trapSlots, List<MaterialSlotInfo> materialSlots)
         {
             // _trapBag = trapSlots ?? new List<TrapSlotInfo>();
             // _materialBag = materialSlots ?? new List<MaterialSlotInfo>();
-            OnTrapBagUpdated?.Invoke();
+            OnQuickAccessBagUpdated?.Invoke();
+        }
+
+
+
+
+        /// <summary>
+        /// 尝试从背包(包括库存和道具栏)中删除指定个数的道具
+        /// </summary>
+        /// <param name="itemId">道具id</param>
+        /// <param name="delAmount">要删除的数量</param>
+        /// <returns>是否移除成功</returns>
+        public bool DeleteItemInCombineBag(string itemId, int delAmount)
+        {
+            if (string.IsNullOrEmpty(itemId) || delAmount <= 0) return false;
+            bool slotInBackBag = true;
+            ISlotInfo slotInfo = BackBag.Find(X => X.ItemData.Id == itemId);
+            if (slotInfo == null)
+            {
+                slotInBackBag = false;
+                slotInfo = QuickAccessBag.Find(X => X.ItemData.Id == itemId);
+            }
+            if (slotInfo == null) return false;
+            slotInfo.Amount = Mathf.Max(0, slotInfo.Amount - delAmount);
+            if(slotInfo.Amount == 0)
+            {
+                if (slotInBackBag) BackBag.Remove(slotInfo);
+                else QuickAccessBag.Remove(slotInfo);
+            }
+            return true;
         }
 
         /// <summary>
-        /// 尝试从背包中删除指定的陷阱和材料
+        /// 检查背包是否有一定数量的某个物品
         /// </summary>
-        public bool TryDelItemInBag(List<TrapSlotInfo> requireTrapSlots = null, List<MaterialSlotInfo> requireMaterialSlots = null)
+        /// <param name="itemId"></param>
+        /// <param name="delAmount"></param>
+        /// <returns></returns>
+        public bool CheckItemEnoughInCombineBag(string itemId, int delAmount)
         {
-            if (requireTrapSlots == null && requireMaterialSlots == null) return true;
-
-            if (requireTrapSlots != null)
+            if (string.IsNullOrEmpty(itemId) || delAmount <= 0) return false;
+            ISlotInfo slotInfo = BackBag.Find(X => X.ItemData.Id == itemId);
+            if (slotInfo == null)
             {
-                foreach (var trapSlot in requireTrapSlots)
-                {
-                    var existingSlot = _trapBag.Find(x => x.trapData.id == trapSlot.trapData.id);
-                    if (existingSlot != null && existingSlot.amount >= trapSlot.amount)
-                    {
-                        existingSlot.amount -= trapSlot.amount;
-                    }
-                    else return false;
-                }
+                slotInfo = QuickAccessBag.Find(X => X.ItemData.Id == itemId);
             }
-
-            if (requireMaterialSlots != null)
-            {
-                foreach (var materialSlot in requireMaterialSlots)
-                {
-                    var existingSlot = _materialBag.Find(x => x.materialData.id == materialSlot.materialData.id);
-                    if (existingSlot != null && existingSlot.amount >= materialSlot.amount)
-                    {
-                        existingSlot.amount -= materialSlot.amount;
-                    }
-                    else return false;
-                }
-            }
-
-            OnTrapBagUpdated?.Invoke();
+            if (slotInfo == null) return false;
+            if (slotInfo.Amount < delAmount) return false;
             return true;
+        }
+
+        /// <summary>
+        /// 添加物品到背包（先加到道具栏 满了才到背包）
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="itemType"></param>
+        /// <param name="addAmount"></param>
+        public void AddItemToCombineBag(string itemId, UseItemType itemType, int addAmount)
+        {
+            var existing = QuickAccessBag.Find(x => x.ItemData.Id == itemId);
+            if (existing != null)
+            {
+                existing.Amount += addAmount;
+            }
+            else if (QuickAccessBag.Count < 4)
+            {
+                switch (itemType)
+                {
+                    case UseItemType.trap:
+                        QuickAccessBag.Add(new TrapSlotInfo(SoLoader.Instance.GetTrapDataById(itemId), addAmount));
+                        break;
+                    case UseItemType.Material:
+                        QuickAccessBag.Add(new MaterialSlotInfo(SoLoader.Instance.GetMaterialDataDataById(itemId), addAmount));
+                        break;
+                    case UseItemType.weapon:
+                        QuickAccessBag.Add(new WeaponSlotInfo(SoLoader.Instance.GetWeaponDataById(itemId), addAmount));
+                        break;
+                    //todo:food
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                // 道具栏已满，转移至背包
+                switch (itemType)
+                {
+                    case UseItemType.trap:
+                        BackBag.Add(new TrapSlotInfo(SoLoader.Instance.GetTrapDataById(itemId), 1));
+                        break;
+                    case UseItemType.Material:
+                        BackBag.Add(new MaterialSlotInfo(SoLoader.Instance.GetMaterialDataDataById(itemId), 1));
+                        break;
+                    case UseItemType.weapon:
+                        BackBag.Add(new WeaponSlotInfo(SoLoader.Instance.GetWeaponDataById(itemId), 1));
+                        break;
+                    //todo:food
+                    default:
+                        break;
+                }
+
+                UIHelper.Instance.ShowOneTip(new TipInfo("道具栏已满，物品已放入背包", PlayerController.Instance.gameObject));
+            }
+
+            OnQuickAccessBagUpdated?.Invoke();
         }
 
         #endregion
 
         #region 拾取与使用物品逻辑
 
-        private void PlayerGetItem(IPickable iPickable)
+        private void PlayerGetOneItem(string itemId,UseItemType itemType)
         {
-            if (iPickable == null) return;
+            if (string.IsNullOrEmpty(itemId)) return;
 
-            switch (iPickable)
+            switch (itemType)
             {
-                case TrapBase trapBase:
-                    AddToBag(new TrapSlotInfo(trapBase.TrapData, 1));
+                case UseItemType.trap:
+                    AddItemToCombineBag(itemId, itemType,1);
                     break;
-                case MaterialBase materialBase:
-                    AddToBag(new MaterialSlotInfo(materialBase.materialData, 1));
+                case UseItemType.Material:
+                    AddItemToCombineBag(itemId, itemType,1);
                     break;
-                case WeaponBase weaponBase:
-                    AddToBag(new WeaponSlotInfo(weaponBase.weaponData, 1));
+                case UseItemType.weapon:
+                    AddItemToCombineBag(itemId, itemType,1);
                     break;
-            }
-        }
-
-        public void AddToBag(ISlotInfo newItem)
-        {
-            var existing = _tempBag.Find(x => x.ItemData == newItem.ItemData);
-            if (existing != null)
-            {
-                existing.Amount += newItem.Amount;
-            }
-            else if (_tempBag.Count < 4)
-            {
-                _tempBag.Add(newItem);
-            }
-            else
-            {
-                // 道具栏已满，转移至背包
-                switch (newItem)
-                {
-                    case TrapSlotInfo trapSlot:
-                        AddToTrapBag(trapSlot);
-                        break;
-                    case MaterialSlotInfo materialSlot:
-                        AddToMaterialBag(materialSlot);
-                        break;
-                    case WeaponSlotInfo weaponSlot:
-                        AddToWeaponBag(weaponSlot);
-                        break;
-                    default:
-                        UIHelper.Instance.ShowOneTip(new TipInfo("无法识别的物品类型", PlayerController.Instance.gameObject));
-                        return;
-                }
-
-                UIHelper.Instance.ShowOneTip(new TipInfo("道具栏已满，物品已放入背包", PlayerController.Instance.gameObject));
-            }
-
-            OnTrapBagUpdated?.Invoke();
-        }
-        
-        // 具体的添加方法，但是真的要这么麻烦吗
-        private void AddToTrapBag(TrapSlotInfo newSlot)
-        {
-            var existing = _trapBag.Find(x => x.trapData.id == newSlot.trapData.id);
-            if (existing != null)
-            {
-                existing.amount += newSlot.amount;
-            }
-            else
-            {
-                _trapBag.Add(newSlot);
-            }
-        }
-
-        private void AddToMaterialBag(MaterialSlotInfo newSlot)
-        {
-            var existing = _materialBag.Find(x => x.materialData.id == newSlot.materialData.id);
-            if (existing != null)
-            {
-                existing.amount += newSlot.amount;
-            }
-            else
-            {
-                _materialBag.Add(newSlot);
-            }
-        }
-
-        private void AddToWeaponBag(WeaponSlotInfo newSlot)
-        {
-            var existing = _weaponBag.Find(x => x.weaponData.id == newSlot.weaponData.id);
-            if (existing != null)
-            {
-                existing.amount += newSlot.amount;
-            }
-            else
-            {
-                _weaponBag.Add(newSlot);
+                //todo:food
+                default:
+                    break;
             }
         }
 
@@ -321,7 +319,7 @@ namespace KidGame.Core
                 if (newTrap != null)
                 {
                     newTrap.transform.rotation = rotation;
-                    DecreaseSlot(slot);
+                    DeleteItemInCombineBag(slot.ItemData.Id,1);
                     return true;
                 }
             }
@@ -332,45 +330,35 @@ namespace KidGame.Core
         public bool UseFood(ISlotInfo slot, PlayerController player) => false;
         public bool UseMaterial(ISlotInfo slot, PlayerController player) => false;
 
-        private void DecreaseSlot(ISlotInfo slot)
-        {
-            slot.Amount--;
-            if (slot.Amount <= 0)
-            {
-                _tempBag.Remove(slot);
-                _selectedIndex = Mathf.Clamp(_selectedIndex, 0, _tempBag.Count - 1);
-            }
-
-            OnTrapBagUpdated?.Invoke();
-        }
-
         #endregion
+       
+
+
 
         #region 道具栏与背包互换位置
 
-        public void MoveTrapToPocket(int trapIndex)
+        public void MoveItemToQuickAccessBag(int selectIndex)
         {
-            if (trapIndex < 0 || trapIndex >= _trapBag.Count || _tempBag.Count >= 4)
+            if (selectIndex < 0 || selectIndex >= BackBag.Count || QuickAccessBag.Count >= GlobalValue.QUICK_ACCESS_BAG_CAPACITY)
                 return;
 
-            var item = _trapBag[trapIndex];
-            _trapBag.RemoveAt(trapIndex);
-            _tempBag.Add(item);
+            var item = BackBag[selectIndex];
+            BackBag.RemoveAt(selectIndex);
+            QuickAccessBag.Add(item);
 
-            OnTrapBagUpdated?.Invoke();
+            OnQuickAccessBagUpdated?.Invoke();
         }
 
-        public void MoveTrapToBackpack(int pocketIndex)
+        public void MoveItemToBackBag(int selectIndex)
         {
-            if (pocketIndex < 0 || pocketIndex >= _tempBag.Count || _trapBag.Count >= 10)
+            if (selectIndex < 0 || selectIndex >= QuickAccessBag.Count || BackBag.Count >= GlobalValue.BACKPACK_CAPACITY)
                 return;
             
-            var item = _tempBag[pocketIndex];
-            _tempBag.RemoveAt(pocketIndex);
-            // todo.否则需判断类型
-            _trapBag.Add((TrapSlotInfo)item);
+            var item = QuickAccessBag[selectIndex];
+            QuickAccessBag.RemoveAt(selectIndex);
+            BackBag.Add(item);
 
-            OnTrapBagUpdated?.Invoke();
+            OnQuickAccessBagUpdated?.Invoke();
         }
         
         #endregion

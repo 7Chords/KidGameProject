@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using KidGame;
 using KidGame.Core;
-using UnityEngine;
+using System;
 [Serializable]
 public class WeaponData : BagItemInfoBase
 {
@@ -14,4 +12,5 @@ public class WeaponData : BagItemInfoBase
     public float damage;
     public float impactForce;// ³å»÷Á¦£¬»÷ÍËÁ¦
     public UseItemType UseItemType => UseItemType.weapon;
+    public string Id => id;
 }

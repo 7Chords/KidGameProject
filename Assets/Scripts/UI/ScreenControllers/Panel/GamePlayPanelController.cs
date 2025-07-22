@@ -66,7 +66,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
             GameLevelManager.Instance.OnPhaseTimeUpdated += UpdateTimeClock;
         }
         
-        PlayerBag.Instance.OnTrapBagUpdated += UpdateTrapHud;
+        PlayerBag.Instance.OnQuickAccessBagUpdated += UpdateTrapHud;
         GameManager.Instance.OnCurrentLoopScoreChanged += CurrentLoopScoreChanged;
         
     }
@@ -89,7 +89,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         
         if (PlayerBag.Instance != null)
         {
-            PlayerBag.Instance.OnTrapBagUpdated -= UpdateTrapHud;
+            PlayerBag.Instance.OnQuickAccessBagUpdated -= UpdateTrapHud;
         }
     }
 
@@ -181,7 +181,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         {
             int direction = scrollValue > 0 ? 1 : -1;
             int newIndex = selectedItemIndex + direction;
-            int itemCount = PlayerBag.Instance.GetTempSlots().Count;
+            int itemCount = PlayerBag.Instance.GetQuickAccessBag().Count;
             if (itemCount > 0)
             {
                 newIndex = (newIndex + itemCount) % itemCount;
@@ -198,7 +198,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
         currentTrapIcons.Clear();
 
-        var traps = PlayerBag.Instance.GetTempSlots();
+        var traps = PlayerBag.Instance.GetQuickAccessBag();
 
         for (int i = 0; i < Mathf.Min(traps.Count, maxTrapSlots); i++)
         {

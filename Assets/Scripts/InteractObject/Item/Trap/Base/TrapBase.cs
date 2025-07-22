@@ -166,7 +166,7 @@ namespace KidGame.Core
         public override void Pick()
         {
             RemoveFormPlayerUsingList();
-            PlayerUtil.Instance.CallPlayerPickItem(this);
+            PlayerUtil.Instance.CallPlayerPickItem(trapData.id,UseItemType.trap);
             //todo:播放音效和特效
             if (!string.IsNullOrEmpty(trapData.pickSoundName))
             {

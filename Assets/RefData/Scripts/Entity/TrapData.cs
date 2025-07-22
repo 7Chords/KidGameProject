@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+using KidGame;
 using KidGame.Core;
+using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class TrapData : BagItemInfoBase
@@ -30,6 +29,7 @@ public class TrapData : BagItemInfoBase
     public string workParticleName;
     public string deadParticleName;
     public UseItemType UseItemType => UseItemType.trap;
+    public string Id => id;
 }
 
 //ÏİÚå´¥·¢Ã¶¾Ù

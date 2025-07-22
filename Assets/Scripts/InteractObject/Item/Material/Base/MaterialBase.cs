@@ -29,7 +29,7 @@ namespace KidGame.Core
         public override void Pick()
         {
             PlayerController.Instance.RemovePickableFromList(this);
-            PlayerUtil.Instance.CallPlayerPickItem(this);
+            PlayerUtil.Instance.CallPlayerPickItem(_materialData.id,UseItemType.Material);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
             //todo:播放音效和特效
             if (!string.IsNullOrEmpty(materialData.pickSoundName))

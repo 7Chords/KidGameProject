@@ -260,13 +260,11 @@ namespace KidGame.Core
         /// 尝试放陷阱
         /// </summary>
         
-        // To Do: 更改一下判定
+
         public void TryPlaceTrap()
         {
-            if (PlayerBag.Instance._trapBag.Count > 0)
-            {
-                ChangeState(PlayerState.Use);
-            }
+            //todo:7Chords fix
+            ChangeState(PlayerState.Use);
         }
 
         /// <summary>

@@ -42,8 +42,9 @@ namespace KidGame.Core
             // ±£´æÊý¾Ý
             if (PlayerBag.Instance != null)
             {
-                savedata.trapBag = PlayerBag.Instance._trapBag;
-                savedata.materialBag = PlayerBag.Instance._materialBag;
+                //todo :guihuala
+                //savedata.trapBag = PlayerBag.Instance._trapBag;
+                //savedata.materialBag = PlayerBag.Instance._materialBag;
             }
             if (GameLevelManager.Instance != null)
                 savedata.currentDay = GameLevelManager.Instance.GetCurrentDay();

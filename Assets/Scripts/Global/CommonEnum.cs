@@ -18,4 +18,12 @@
         MouseWheel = 7,
         GamePause = 8,
     }
+    public enum UseItemType
+    {
+        trap,
+        weapon,
+        food,
+        Material,
+        nothing
+    }
 }

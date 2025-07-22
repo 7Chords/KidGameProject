@@ -9,7 +9,9 @@ namespace KidGame.Core
     public class PlayerUtil : Singleton<PlayerUtil>
     {
         private InputSettings inputSettings;
-        private Action<IPickable> onPlayerPickItem;
+        
+        //参数：物品id 物品类型
+        private Action<string,UseItemType> onPlayerPickItem;
 
         protected override void Awake()
         {
@@ -27,9 +29,9 @@ namespace KidGame.Core
 
         #region 呼叫事件
 
-        public void CallPlayerPickItem(IPickable iPickable)
+        public void CallPlayerPickItem(string id, UseItemType itemType)
         {
-            onPlayerPickItem?.Invoke(iPickable);
+            onPlayerPickItem?.Invoke(id, itemType);
         }
 
         #endregion
@@ -37,12 +39,12 @@ namespace KidGame.Core
         #region 订阅和反订阅事件
 
 
-        public void RegPlayerPickItem(Action<IPickable> onPlayerPickItem)
+        public void RegPlayerPickItem(Action<string, UseItemType> onPlayerPickItem)
         {
             this.onPlayerPickItem += onPlayerPickItem;
         }
 
-        public void UnregPlayerPickItem(Action<IPickable> onPlayerPickItem)
+        public void UnregPlayerPickItem(Action<string, UseItemType> onPlayerPickItem)
         {
             this.onPlayerPickItem -= onPlayerPickItem;
         }

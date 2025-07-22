@@ -57,7 +57,7 @@ namespace KidGame.Core
             MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
 
-            //todo
+            //todo:整合
             GamePlayPanelController.Instance.Init();
             CameraController.Instance.Init();
         }
@@ -70,7 +70,7 @@ namespace KidGame.Core
             GameLevelManager.Instance.Discard();
 
 
-            //todo
+            //todo：整合
             GamePlayPanelController.Instance.Discard();
             CameraController.Instance.Discard();
 

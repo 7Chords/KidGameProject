@@ -72,7 +72,7 @@ namespace KidGame.Core
             //如果捡起来的时候就移除
             PlayerController.Instance.RemovePickableFromList(this);
             //目前这个回调只注册了一个添加物品到背包的函数
-            PlayerUtil.Instance.CallPlayerPickItem(this);
+            PlayerUtil.Instance.CallPlayerPickItem(weaponData.id,UseItemType.weapon);
             //这个气泡也在上面这个回调加到列表里了   在这个地方移除
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
 
