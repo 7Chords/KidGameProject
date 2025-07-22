@@ -43,7 +43,7 @@ namespace KidGame.Core
                     hasPlaced = PlayerBag.Instance.UseMaterial(selectedItem, player);
                     break;
                 default:
-                    UIHelper.Instance.ShowOneTip(new TipInfo("未知道具类型", player.gameObject));
+                    Debug.LogError("未知道具类型，使用失败");
                     break;
             }
 
