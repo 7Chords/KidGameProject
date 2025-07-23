@@ -108,37 +108,45 @@ namespace KidGame.Core
 
         private int _selectedIndex = 0;
 
+        //SelectedIndex永远只会被鼠标滚轮进行设置 在GamePlayPanelController中进行设置
         public int SelectedIndex
         {
             get => _selectedIndex;
             set
             {
-                int newIndex = QuickAccessBag.Count > 0 ? Mathf.Clamp(value, 0, QuickAccessBag.Count - 1) : 0;
-                if (_selectedIndex == newIndex) return;
+
+                int newIndex = Mathf.Clamp(value, 0, GlobalValue.QUICK_ACCESS_BAG_CAPACITY);
 
                 _selectedIndex = newIndex;
 
-                var selectedSlot = QuickAccessBag[_selectedIndex];
-
-                if (selectedSlot != null) OnSelectItemAction.Invoke(selectedSlot);
-
-                string itemName = selectedSlot.ItemData switch
+                if(_selectedIndex < QuickAccessBag.Count)
                 {
-                    TrapData trap => trap.trapName,
-                    WeaponData weapon => weapon.name,
-                    FoodData food => food.foodName,
-                    MaterialData mat => mat.materialName,
-                    _ => "未知物品"
-                };
+                    var selectedSlot = QuickAccessBag[_selectedIndex];
 
-                UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {itemName}", PlayerController.Instance.gameObject));
+                    if (selectedSlot != null) OnSelectItemAction?.Invoke(selectedSlot);
+
+                    string itemName = selectedSlot.ItemData switch
+                    {
+                        TrapData trap => trap.trapName,
+                        WeaponData weapon => weapon.name,
+                        FoodData food => food.foodName,
+                        MaterialData mat => mat.materialName,
+                        _ => "未知物品"
+                    };
+
+                    UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {itemName}", PlayerController.Instance.gameObject));
+                }
+                else
+                {
+                    OnSelectItemAction?.Invoke(null);
+                }
                 OnQuickAccessBagUpdated?.Invoke();
             }
         }
 
         public ISlotInfo GetSelectedQuickAccessItem()
         {
-            return QuickAccessBag.Count > 0 ? QuickAccessBag[_selectedIndex] : null;
+            return _selectedIndex < QuickAccessBag.Count ? QuickAccessBag[_selectedIndex] : null;
         }
 
         #endregion
@@ -152,8 +160,6 @@ namespace KidGame.Core
 
             QuickAccessBag = new List<ISlotInfo>(GlobalValue.QUICK_ACCESS_BAG_CAPACITY);
             BackBag = new List<ISlotInfo>();
-
-            SelectedIndex = 0;
         }
 
         public void Discard()
@@ -193,15 +199,24 @@ namespace KidGame.Core
             if (slotInfo == null)
             {
                 slotInBackBag = false;
-                slotInfo = QuickAccessBag.Find(X => X.ItemData.Id == itemId);
+                slotInfo = QuickAccessBag.Find(x => x.ItemData.Id == itemId);
             }
             if (slotInfo == null) return false;
             slotInfo.Amount = Mathf.Max(0, slotInfo.Amount - delAmount);
             if(slotInfo.Amount == 0)
             {
                 if (slotInBackBag) BackBag.Remove(slotInfo);
-                else QuickAccessBag.Remove(slotInfo);
+                else 
+                {
+                    QuickAccessBag.Remove(slotInfo);
+                    OnQuickAccessBagUpdated?.Invoke();
+                    if(SelectedIndex >= QuickAccessBag.Count)
+                    {
+                        OnSelectItemAction?.Invoke(null);
+                    }
+                }
             }
+
             return true;
         }
 
@@ -233,6 +248,10 @@ namespace KidGame.Core
         public void AddItemToCombineBag(string itemId, UseItemType itemType, int addAmount)
         {
             var existing = QuickAccessBag.Find(x => x.ItemData.Id == itemId);
+            if(existing == null)
+            {
+                existing = BackBag.Find(x => x.ItemData.Id == itemId);
+            }
             if (existing != null)
             {
                 existing.Amount += addAmount;
@@ -253,6 +272,11 @@ namespace KidGame.Core
                     //todo:food
                     default:
                         break;
+                }
+                //物品栏获得第一个东西时 马上触发一下
+                if(QuickAccessBag.Count == 1 && SelectedIndex == 0)
+                {
+                    OnSelectItemAction(QuickAccessBag[0]);
                 }
             }
             else
@@ -308,26 +332,15 @@ namespace KidGame.Core
         /// <summary>
         /// 使用陷阱
         /// </summary>
-        public bool UseTrap(ISlotInfo slot, Vector3 position, Quaternion rotation)
-        {
-            if (slot is TrapSlotInfo trapSlot)
-            {
-                if (!PlayerController.Instance.GetCanPlaceTrap())
-                {
-                    UIHelper.Instance.ShowOneTip(new TipInfo("这里无法放置陷阱", PlayerController.Instance.gameObject));
-                    return false;
-                }
-
-                GameObject newTrap = TrapFactory.CreateEntity(trapSlot.trapData, position);
-                if (newTrap != null)
-                {
-                    newTrap.transform.rotation = rotation;
-                    DeleteItemInCombineBag(slot.ItemData.Id,1);
-                    return true;
-                }
-            }
-            return false;
-        }
+        //public bool UseTrap(ISlotInfo slot, Vector3 position, Quaternion rotation)
+        //{
+        //    if (!PlayerController.Instance.GetCanPlaceTrap())
+        //    {
+        //        UIHelper.Instance.ShowOneTip(new TipInfo("这里无法放置陷阱", PlayerController.Instance.gameObject));
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         public bool UseWeapon(ISlotInfo slot, Vector3 position, Quaternion rotation)
         {

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using KidGame;
 
-public class TrapHudIcon : MonoBehaviour
+public class ItemHudIcon : MonoBehaviour
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private Image selectedFrame;
@@ -14,7 +14,7 @@ public class TrapHudIcon : MonoBehaviour
     /// </summary>
     /// <param name="info"></param>
     /// <param name="isSelected"></param>
-    public void Setup(ISlotInfo info, bool isSelected)
+    public void Setup(ISlotInfo info)
     {
         iconImage.color = Color.white;
         switch (info.ItemData.UseItemType)
@@ -37,7 +37,6 @@ public class TrapHudIcon : MonoBehaviour
 
         }
         amountText.text = info.Amount.ToString();
-        selectedFrame.gameObject.SetActive(isSelected);
     }
 
     /// <summary>

@@ -29,7 +29,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
     [SerializeField] private Transform trapHudContainer;
     [SerializeField] private GameObject trapIconPrefab;
 
-    private List<TrapHudIcon> currentTrapIcons = new List<TrapHudIcon>();
+    private List<ItemHudIcon> currentItemIcons = new List<ItemHudIcon>();
     private int selectedItemIndex = 0;
 
     #endregion
@@ -181,12 +181,8 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         {
             int direction = scrollValue > 0 ? 1 : -1;
             int newIndex = selectedItemIndex + direction;
-            int itemCount = PlayerBag.Instance.GetQuickAccessBag().Count;
-            if (itemCount > 0)
-            {
-                newIndex = (newIndex + itemCount) % itemCount;
-                SelectTrap(newIndex);
-            }
+            newIndex = (newIndex + GlobalValue.QUICK_ACCESS_BAG_CAPACITY) % GlobalValue.QUICK_ACCESS_BAG_CAPACITY;
+            SelectTrap(newIndex);
         }
     }
 
@@ -195,9 +191,11 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         for (int i = 0; i < GlobalValue.QUICK_ACCESS_BAG_CAPACITY; i++)
         {
             var iconObj = Instantiate(trapIconPrefab, trapHudContainer);
-            var icon = iconObj.GetComponent<TrapHudIcon>();
+            var icon = iconObj.GetComponent<ItemHudIcon>();
             icon.SetEmpty();
-            currentTrapIcons.Add(icon);
+            currentItemIcons.Add(icon);
+
+            icon.SetSelected(i == selectedItemIndex);
 
             int index = i;
             //注册事件
@@ -207,30 +205,32 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
     }
     private void UpdateQuickAccessHud()
     {
+        
         var traps = PlayerBag.Instance.GetQuickAccessBag();
 
         for (int i = 0; i < GlobalValue.QUICK_ACCESS_BAG_CAPACITY; i++)
         {
-            var icon = currentTrapIcons[i];
+            var icon = currentItemIcons[i];
             if (i< traps.Count)
             {
-                icon.Setup(traps[i], i == selectedItemIndex);
+                icon.Setup(traps[i]);
             }
             else
             {
                 //不要销毁啦 道具栏应该是常驻的 没东西也不要删掉
                 icon.SetEmpty();
             }
+            icon.SetSelected(i == selectedItemIndex);
         }
     }
 
     private void SelectTrap(int index)
     {
-        if (index < 0 || index >= currentTrapIcons.Count) return;
+        if (index < 0 || index >= currentItemIcons.Count) return;
 
-        for (int i = 0; i < currentTrapIcons.Count; i++)
+        for (int i = 0; i < currentItemIcons.Count; i++)
         {
-            currentTrapIcons[i].SetSelected(i == index);
+            currentItemIcons[i].SetSelected(i == index);
         }
 
         selectedItemIndex = index;

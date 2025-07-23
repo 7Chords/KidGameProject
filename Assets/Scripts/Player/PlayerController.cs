@@ -387,6 +387,12 @@ namespace KidGame.Core
 
         private void OnItemSelected(ISlotInfo slotInfo)
         {
+            if(slotInfo == null)
+            {
+                DestoryCurrentTrapPreview();
+                DiscardWeapon();
+                return;
+            }
             if(slotInfo.ItemData is TrapData trapData)
             {
                 SpawnSelectTrapPreview(trapData);
@@ -396,8 +402,7 @@ namespace KidGame.Core
                 // to do: 不要每次都生成一个武器
                 if (weaponData.id == currentWeaponData.id) return;
                 // 如果不是重复的 销毁现在的 取得新的
-                Destroy(currentWeapon);
-                currentWeapon = null;
+                DiscardWeapon();
                 currentWeapon = SpawnWeaponOnHand(
                     weaponData,
                     this.transform.position,
@@ -409,8 +414,11 @@ namespace KidGame.Core
 
         public void DiscardWeapon()
         {
-            Destroy(currentWeapon);
-            currentWeapon = null;
+            if(currentWeapon!=null)
+            {
+                Destroy(currentWeapon);
+                currentWeapon = null;
+            }
         }
 
         /// <summary>
@@ -419,8 +427,13 @@ namespace KidGame.Core
         /// <param name="obj"></param>
         private void SpawnSelectTrapPreview(TrapData trapData)
         {
-            if(curPreviewGO) Destroy(curPreviewGO);
+            DestoryCurrentTrapPreview();
             curPreviewGO = TrapFactory.CreatePreview(trapData, PlaceTrapPoint.position, transform);
+        }
+
+        private void DestoryCurrentTrapPreview()
+        {
+            if (curPreviewGO) Destroy(curPreviewGO);
         }
 
         //生成在手上的武器 但是不执行逻辑
