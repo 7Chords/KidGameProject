@@ -274,9 +274,9 @@ namespace KidGame.Core
                         break;
                 }
                 //物品栏获得第一个东西时 马上触发一下
-                if(QuickAccessBag.Count == 1 && SelectedIndex == 0)
+                if(QuickAccessBag.Count == SelectedIndex + 1)
                 {
-                    OnSelectItemAction(QuickAccessBag[0]);
+                    OnSelectItemAction(QuickAccessBag[SelectedIndex]);
                 }
             }
             else

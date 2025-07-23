@@ -25,13 +25,15 @@ public class DeveloperCheatEditor : EditorWindow
 
 
     #region 道具相关
-    private string trapIDStr;
-    private string trapAmountStr;
+    private string getTrapIDStr;
+    private string getTrapAmountStr;
 
+    private string deleteTrapIDStr;
+    private string deleteTrapAmountStr;
     #endregion
     private void OnGUI()
     {
-        GUILayout.Label("开发者作弊面板(KidGameCheatPanel) :-)", EditorStyles.boldLabel);
+        GUILayout.Label("################开发者作弊面板################", EditorStyles.boldLabel);
 
         EditorGUILayout.Space();
 
@@ -47,14 +49,14 @@ public class DeveloperCheatEditor : EditorWindow
             if (showTrapCheats)
             {
                 EditorGUI.indentLevel++;
-                // 单条指令水平排列
+                #region 获得陷阱
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("获得陷阱"))
                 {
-                    if (string.IsNullOrEmpty(trapIDStr) || string.IsNullOrEmpty(trapAmountStr)) return;
+                    if (string.IsNullOrEmpty(getTrapIDStr) || string.IsNullOrEmpty(getTrapAmountStr)) return;
                     try
                     {
-                        PlayerBag.Instance.AddItemToCombineBag(trapIDStr, UseItemType.trap, int.Parse(trapAmountStr));
+                        PlayerBag.Instance.AddItemToCombineBag(getTrapIDStr, UseItemType.trap, int.Parse(getTrapAmountStr));
                     }
                     catch(Exception ex)
                     {
@@ -63,11 +65,32 @@ public class DeveloperCheatEditor : EditorWindow
                 }
 
                 // 简单文本输入框
-                trapIDStr = EditorGUILayout.TextField("陷阱ID", trapIDStr);
-                trapAmountStr = EditorGUILayout.TextField("陷阱数量", trapAmountStr);
+                getTrapIDStr = EditorGUILayout.TextField("陷阱ID", getTrapIDStr);
+                getTrapAmountStr = EditorGUILayout.TextField("获得陷阱数量", getTrapAmountStr);
                 EditorGUILayout.EndHorizontal();
+                #endregion
 
 
+                #region 删除陷阱
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("删除陷阱"))
+                {
+                    if (string.IsNullOrEmpty(deleteTrapIDStr) || string.IsNullOrEmpty(deleteTrapAmountStr)) return;
+                    try
+                    {
+                        PlayerBag.Instance.DeleteItemInCombineBag(deleteTrapIDStr, int.Parse(deleteTrapAmountStr));
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+                }
+
+                // 简单文本输入框
+                getTrapIDStr = EditorGUILayout.TextField("陷阱ID", deleteTrapIDStr);
+                getTrapAmountStr = EditorGUILayout.TextField("删除陷阱数量", deleteTrapAmountStr);
+                EditorGUILayout.EndHorizontal();
+                #endregion
 
 
 
