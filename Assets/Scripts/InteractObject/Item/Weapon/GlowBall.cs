@@ -17,6 +17,7 @@ namespace KidGame.Core
         private int currentPointIndex = 0;
         private bool isFollowingBezier = false;
         private float bezierSpeed = 5f; // 贝塞尔曲线移动速度
+        private bool isSimulateEnd = false;
         #endregion
         protected override void Awake()
         {
@@ -36,20 +37,29 @@ namespace KidGame.Core
         {
             base.Start();
         }
-
         protected override void Update()
         {
             base.Update();
-            if (isFollowingBezier && bezierPoints != null && currentPointIndex < bezierPoints.Length)
+            // 如果在手上就持续更新贝塞尔曲线的点集
+            // 否则开始移动
+            if(isOnHand) SetbezierPoints(bezierPoints);
+            else
             {
-                FollowBezierPath();
-            }
+                if (isFollowingBezier && bezierPoints != null && currentPointIndex < bezierPoints.Length)
+                {
+                    FollowBezierPath();
+                }
+            } 
         }
 
+        private void SetbezierPoints(Vector3[] bezierPoints)
+        {
+            this.bezierPoints = bezierPoints;
+        }
         public override void WeaponUseLogic()
         {
             // 如果还没到达终点 不要执行这段代码
-            if (isFollowingBezier) return;
+            if (isSimulateEnd) return;
 
             // 如果到达目的地了 
             if(Vector3.Distance(transform.position, lineRenderScript.endPoint) <= 0.05f)
@@ -103,6 +113,7 @@ namespace KidGame.Core
                 if (currentPointIndex >= bezierPoints.Length)
                 {
                     isFollowingBezier = false;
+                    isSimulateEnd = true;
                 }
             }
             else

@@ -1,7 +1,10 @@
 using KidGame.Core;
 using KidGame.UI;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace KidGame.Core
 {
@@ -44,6 +47,8 @@ namespace KidGame.Core
             if (startPoint == null || endPoint == null) return;
             // 设置线的轨迹点数
             lineRenderer.positionCount = resolution;
+            if (points.Length > 0)
+                Array.Clear(points, 0, points.Length);
             points = new Vector3[resolution];
 
             // 基础高度位置 取连线中点

@@ -10,9 +10,7 @@ namespace KidGame.Core
 
     public abstract class WeaponBase : MapItem, IInteractive
     {
-        private bool isOnHand = true;
-        // 速度
-        [SerializeField] protected float speed = 0f;
+        protected bool isOnHand = true;
         // 数据都去配表拿吧
         private WeaponData _weaponData;
         // 自己的引用
@@ -47,7 +45,12 @@ namespace KidGame.Core
 
         protected virtual void Update()
         {
-            if(!isOnHand) WeaponUseLogic();
+            if (!isOnHand) WeaponUseLogic();
+            else SetEndPoint();
+        }
+        private void SetEndPoint()
+        {
+            lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
         }
         public virtual void InitWeaponData(WeaponData weaponData)
         {
