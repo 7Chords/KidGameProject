@@ -209,14 +209,13 @@ namespace KidGame.Core
                 else 
                 {
                     QuickAccessBag.Remove(slotInfo);
-                    OnQuickAccessBagUpdated?.Invoke();
                     if(SelectedIndex >= QuickAccessBag.Count)
                     {
                         OnSelectItemAction?.Invoke(null);
                     }
                 }
             }
-
+            OnQuickAccessBagUpdated?.Invoke();
             return true;
         }
 

@@ -17,7 +17,7 @@ namespace KidGame.Core
 
         public override void Enter()
         {
-            useTimer = 0f;
+            useTimer = -0.1f;
             canUseItem = false;
 
             selectedItem = PlayerBag.Instance.GetSelectedQuickAccessItem();
@@ -64,6 +64,7 @@ namespace KidGame.Core
 
         public override void Update()
         {
+            base.Update();
             switch (selectedItem.ItemData.UseItemType)
             {
                 case UseItemType.trap:

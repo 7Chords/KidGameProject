@@ -20,18 +20,25 @@ public class DeveloperCheatEditor : EditorWindow
     private bool showItemCheats = false;
     private bool showTrapCheats = false;
     private bool showMaterialCheats = false;
-    private bool showPlayerCheats = true;
-    private bool showLevelCheats = true;
+    private bool showWeaponCheats = true;
+    private bool showFoodCheats = true;
+
+    private bool showLevelCheats = false;
 
 
     #region 道具相关
 
     private string getTrapIDStr;
     private string getTrapAmountStr;
-
     private string deleteTrapIDStr;
     private string deleteTrapAmountStr;
+    private string getAllTrapAmountStr;
 
+    private string getMatIDStr;
+    private string getMatAmountStr;
+    private string deleteMatIDStr;
+    private string deleteMatAmountStr;
+    private string getAllMatAmountStr;
     #endregion
 
     private void OnGUI()
@@ -42,7 +49,7 @@ public class DeveloperCheatEditor : EditorWindow
 
 
         // 道具相关作弊
-        showItemCheats = EditorGUILayout.Foldout(showItemCheats, "道具相关作弊", true);
+        showItemCheats = EditorGUILayout.Foldout(showItemCheats, "————————道具相关作弊", true);
         if (showItemCheats)
         {
             EditorGUI.indentLevel++;
@@ -77,7 +84,6 @@ public class DeveloperCheatEditor : EditorWindow
 
                 #endregion
 
-
                 #region 删除陷阱
 
                 EditorGUILayout.BeginHorizontal();
@@ -100,6 +106,30 @@ public class DeveloperCheatEditor : EditorWindow
 
                 #endregion
 
+                #region 获得所有陷阱
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("获得所有陷阱"))
+                {
+                    if (string.IsNullOrEmpty(getAllTrapAmountStr)) return;
+                    try
+                    {
+                        foreach (var data in SoLoader.Instance.GetGameDataConfig().TrapDataList)
+                        {
+                            PlayerBag.Instance.AddItemToCombineBag(data.Id, UseItemType.trap,
+                                int.Parse(getAllTrapAmountStr));
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+                }
+                getAllTrapAmountStr = EditorGUILayout.TextField("获得陷阱数量", getAllTrapAmountStr);
+                EditorGUILayout.EndHorizontal();
+
+                #endregion
+
 
                 EditorGUI.indentLevel--;
                 EditorGUILayout.Space();
@@ -111,79 +141,110 @@ public class DeveloperCheatEditor : EditorWindow
             {
                 EditorGUI.indentLevel++;
 
+                #region 获得材料
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("获得材料"))
+                {
+                    if (string.IsNullOrEmpty(getMatIDStr) || string.IsNullOrEmpty(getMatAmountStr)) return;
+                    try
+                    {
+                        PlayerBag.Instance.AddItemToCombineBag(getMatIDStr, UseItemType.Material,
+                            int.Parse(getMatAmountStr));
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+                }
+
+                // 简单文本输入框
+                getMatIDStr = EditorGUILayout.TextField("材料ID", getMatIDStr);
+                getMatAmountStr = EditorGUILayout.TextField("获得材料数量", getMatAmountStr);
+                EditorGUILayout.EndHorizontal();
+
+                #endregion
+
+                #region 删除材料
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("删除材料"))
+                {
+                    if (string.IsNullOrEmpty(deleteMatIDStr) || string.IsNullOrEmpty(deleteMatAmountStr)) return;
+                    try
+                    {
+                        PlayerBag.Instance.DeleteItemInCombineBag(deleteMatIDStr, int.Parse(deleteMatAmountStr));
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+                }
+
+                deleteMatIDStr = EditorGUILayout.TextField("材料ID", deleteMatIDStr);
+                deleteMatAmountStr = EditorGUILayout.TextField("删除材料数量", deleteMatAmountStr);
+                EditorGUILayout.EndHorizontal();
+
+                #endregion
+
+                #region 获得所有材料
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("获得所有材料"))
+                {
+                    if (string.IsNullOrEmpty(getAllMatAmountStr)) return;
+                    try
+                    {
+                        foreach (var data in SoLoader.Instance.GetGameDataConfig().MaterialDataList)
+                        {
+                            PlayerBag.Instance.AddItemToCombineBag(data.Id, UseItemType.Material,
+                                int.Parse(getAllMatAmountStr));
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+                }
+                getAllMatAmountStr = EditorGUILayout.TextField("获得材料数量", getAllMatAmountStr);
+                EditorGUILayout.EndHorizontal();
+
+                #endregion
+
+
                 EditorGUI.indentLevel--;
             }
+
+            // 武器作弊 (子分类)
+            showWeaponCheats = EditorGUILayout.Foldout(showWeaponCheats, "武器作弊", true);
+            if (showWeaponCheats)
+            {
+                EditorGUI.indentLevel++;
+
+
+                EditorGUI.indentLevel--;
+            }
+
+            // 食物作弊 (子分类)
+            showFoodCheats = EditorGUILayout.Foldout(showFoodCheats, "食物作弊", true);
+            if (showFoodCheats)
+            {
+                EditorGUI.indentLevel++;
+
+
+                EditorGUI.indentLevel--;
+            }
+
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Space();
         }
 
-        //// 玩家相关作弊
-        //showPlayerCheats = EditorGUILayout.Foldout(showPlayerCheats, "玩家作弊", true);
-        //if (showPlayerCheats)
-        //{
-        //    EditorGUI.indentLevel++;
 
-        //    if (GUILayout.Button("Give 1000 Gold"))
-        //    {
-
-        //    }
-
-        //    if (GUILayout.Button("God Mode"))
-        //    {
-
-        //    }
-
-        //    if (GUILayout.Button("Reset Player"))
-        //    {
-
-        //    }
-
-        //    EditorGUI.indentLevel--;
-        //    EditorGUILayout.Space();
-        //}
-
-        //// 关卡相关作弊
-        //showLevelCheats = EditorGUILayout.Foldout(showLevelCheats, "关卡作弊", true);
-        //if (showLevelCheats)
-        //{
-        //    EditorGUI.indentLevel++;
-
-        //    if (GUILayout.Button("Unlock All Levels"))
-        //    {
-        //        ExecuteInPlayMode(UnlockAllLevels);
-        //    }
-
-        //    if (GUILayout.Button("Skip Level"))
-        //    {
-        //        ExecuteInPlayMode(SkipCurrentLevel);
-        //    }
-
-        //    EditorGUI.indentLevel--;
-        //    EditorGUILayout.Space();
-        //}
-
+        // 关卡内相关作弊
+        showLevelCheats = EditorGUILayout.Foldout(showLevelCheats, "————————关卡相关作弊", true);
 
         EditorGUILayout.HelpBox("这些作弊功能只在游戏运行时有效", MessageType.Info);
     }
 
-    /// <summary>
-    /// 辅助方法：确保只在游戏运行时执行
-    /// </summary>
-    /// <param name="action"></param>
-    private void ExecuteInPlayMode(System.Action action)
-    {
-        if (Application.isPlaying)
-        {
-            action?.Invoke();
-        }
-        else
-        {
-            Debug.LogWarning("作弊功能只在游戏运行时有效！");
-        }
-    }
-
-    #region Callback
-
-    #endregion
 }

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2047096646256527146}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.1370955, y: -3.825661, z: -1.56}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -61,7 +61,6 @@ MonoBehaviour:
   Damage: 10
   HalfDamageArea: {x: 0.9, y: 0.9, z: 0.9}
   Buff: {fileID: 0}
-  Score: 75
 --- !u!54 &7970254089266403970
 Rigidbody:
   m_ObjectHideFlags: 0
