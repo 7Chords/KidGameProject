@@ -3,6 +3,7 @@ using KidGame.Core.Data;
 using KidGame.UI;
 using Utils;
 using System;
+using System.Collections.Generic;
 
 namespace KidGame.Core
 {
@@ -12,7 +13,7 @@ namespace KidGame.Core
         
         private bool gameStarted; // 总的游戏开始
         private bool gameFinished; // 总的游戏结束
-        
+
         private int levelIndex;
 
         // 游戏暂停
@@ -20,11 +21,50 @@ namespace KidGame.Core
         public bool IsGamePaused => isGamePuased;
 
         #region 分数变量
+
         private int currentLoopScore;
         public int CurrentLoopScore => currentLoopScore;
         public Action<int> OnCurrentLoopScoreChanged;
+
+        // 得分评级
+        public enum ScoreRating
+        {
+            D,
+            C,
+            B,
+            A,
+            S
+        }
+
+        private ScoreRating currentRating = ScoreRating.D;
+        private float ratingProgress = 0f;
+        private float lastScoreTime = 0f;
+
+        private readonly Dictionary<ScoreRating, float> ratingMultipliers = new Dictionary<ScoreRating, float>
+        {
+            { ScoreRating.D, 1f },
+            { ScoreRating.C, 1.1f },
+            { ScoreRating.B, 1.3f },
+            { ScoreRating.A, 1.5f },
+            { ScoreRating.S, 1.7f }
+        };
+
+        private readonly Dictionary<ScoreRating, float> ratingDecayRates = new Dictionary<ScoreRating, float>
+        {
+            { ScoreRating.D, 1f },
+            { ScoreRating.C, 2f },
+            { ScoreRating.B, 4f },
+            { ScoreRating.A, 5f },
+            { ScoreRating.S, 7f }
+        };
+
+        // Combo
+        private int currentCombo = 0;
+        private float comboWindowTimer = 0f;
+        private const float ComboWindowDuration = 3f; // 3秒重置
+
         #endregion
-        
+
         public Action OnGameStarted;
         public Action OnGameFinished;
         public Action OnGameOver;
@@ -35,10 +75,18 @@ namespace KidGame.Core
         private void Start()
         {
             InitGame();
-            if (TestMode) StartGame(); // 测试模式下直接开始游戏
+            if (TestMode) StartGame();
+        }
+
+        private void Update()
+        {
+            if (isGamePuased) return;
+
+            UpdateRatingProgress();
         }
 
         #region 游戏循环
+
         private void InitGame()
         {
             PlayerManager.Instance.Init();
@@ -48,6 +96,10 @@ namespace KidGame.Core
             // UI 初始化
             GamePlayPanelController.Instance.Init();
             CameraController.Instance.Init();
+
+            currentRating = ScoreRating.D;
+            ratingProgress = 0f;
+            currentCombo = 0;
         }
 
         private void DiscardGame()
@@ -55,7 +107,7 @@ namespace KidGame.Core
             PlayerManager.Instance.Discard();
             MapManager.Instance.Discard();
             GameLevelManager.Instance.Discard();
-            
+
             GamePlayPanelController.Instance.Discard();
             CameraController.Instance.Discard();
         }
@@ -65,13 +117,12 @@ namespace KidGame.Core
         /// </summary>
         public void StartGame()
         {
-            if (gameStarted) return; // 避免重复调用
+            if (gameStarted) return;
 
             gameStarted = true;
             GameLevelManager.Instance.InitFirstLevel();
             GameLevelManager.Instance.StartDayPhase();
-
-            // 触发游戏开始事件
+            
             OnGameStarted?.Invoke();
         }
 
@@ -95,28 +146,84 @@ namespace KidGame.Core
 
             gameFinished = true;
             OnGameOver?.Invoke();
-            Signals.Get<GameFailSignal>().Dispatch();
+            Signals.Get<GameFailSignal>().Dispatch(); // 用于显示UI
         }
+
         #endregion
 
         #region 分数统计
+
         public void AddScore(int score)
         {
-            currentLoopScore += score;
+            lastScoreTime = Time.time;
+
+            currentCombo++;
+            comboWindowTimer = ComboWindowDuration;
+            
+            // 评级进度增加
+            float progressIncrease = currentRating switch
+            {
+                ScoreRating.D => 30f,
+                ScoreRating.C => 25f,
+                ScoreRating.B => 20f,
+                ScoreRating.A => 15f,
+                ScoreRating.S => 10f,
+                _ => 0f
+            };
+            
+            ratingProgress = Mathf.Min(100f, ratingProgress + progressIncrease);
+            
+            if (ratingProgress >= 100f && currentRating < ScoreRating.S)
+            {
+                currentRating++;
+                ratingProgress = 0f;
+                
+            }
+            
+            int comboScore = (int)(currentCombo * (1 + 0.1f * currentCombo) * 10);
+            int totalScore = (int)(score * ratingMultipliers[currentRating]) + comboScore;
+            
+            currentLoopScore += totalScore;
             OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
             UIHelper.Instance.ShowOneSildUIText("+" + score, 0.75f);
         }
-
-        public int GetCurrentLoopScore() => currentLoopScore;
-
-        public void ResetLoopScore()
+        
+        private void UpdateRatingProgress()
         {
-            currentLoopScore = 0;
-            OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
+            // 若一段时间内没有触发陷阱或使用手持道具，窗口进度就会下降
+            if (Time.time - lastScoreTime > 1f)
+            {
+                ratingProgress = Mathf.Max(0, ratingProgress - ratingDecayRates[currentRating] * Time.deltaTime);
+                
+                if (ratingProgress <= 0 && currentRating > ScoreRating.D)
+                {
+                    currentRating--;
+                    ratingProgress = 99f;
+                }
+            }
         }
+        
+        /// <summary>
+        /// 被敌人抓住时扣分
+        /// </summary>
+        public void DeductScore()
+        {
+            int deduction = (int)(currentLoopScore * 0.05f);
+            currentLoopScore = Mathf.Max(0, currentLoopScore - deduction);
+            OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
+            
+            ResetCombo();
+        }
+        
+        private void ResetCombo()
+        {
+            currentCombo = 0;
+        }
+
         #endregion
 
         #region 游戏暂停
+
         public void GamePause()
         {
             isGamePuased = true;
@@ -128,6 +235,7 @@ namespace KidGame.Core
             isGamePuased = false;
             Time.timeScale = 1;
         }
+
         #endregion
     }
 }

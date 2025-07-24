@@ -155,8 +155,6 @@ namespace KidGame.Core
 
             _levelStarted = true;
             _levelFinished = false;
-
-            GameManager.Instance.ResetLoopScore();
         }
 
         public void StartNightPhase()
