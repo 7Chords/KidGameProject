@@ -18,6 +18,7 @@ namespace KidGame.UI
         {
             rectTran = GetComponent<RectTransform>();
         }
+
         public void Init(GameObject creator, string iconPath)
         {
             this.creator = creator;
@@ -25,8 +26,8 @@ namespace KidGame.UI
             // º∆À„Œª÷√
             screenPos = Camera.main.WorldToScreenPoint(creator.transform.position) * (1080f / 300);
             rectTran.localPosition = UIHelper.Instance.ScreenPointToUIPoint(rectTran, screenPos);
-
         }
+
         private void Update()
         {
             if (creator != null)

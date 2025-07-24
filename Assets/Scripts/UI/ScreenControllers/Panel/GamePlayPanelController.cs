@@ -17,9 +17,9 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     [SerializeField] private Transform healthHudContainer;
     [SerializeField] private GameObject healthIconPrefab;
-    [SerializeField] private GameObject lostHealthIconPrefab; // New prefab for lost health
-    [SerializeField] private int maxhealthSlots;
+    [SerializeField] private GameObject lostHealthIconPrefab;
     
+    private int maxhealthSlots;
     private List<GameObject> healthIcons = new List<GameObject>();
 
     #endregion
@@ -57,18 +57,17 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         if (PlayerController.Instance != null)
         {
             PlayerController.Instance.OnHealthChanged += UpdateHealthBar;
-            PlayerController.Instance.OnStaminaChanged += UpdateStaminaBar; // 新增体力变化事件监听
+            PlayerController.Instance.OnStaminaChanged += UpdateStaminaBar;
             PlayerController.Instance.OnMouseWheelValueChanged += UpdateSelectItem;
         }
-        
+
         if (GameLevelManager.Instance != null)
         {
             GameLevelManager.Instance.OnPhaseTimeUpdated += UpdateTimeClock;
         }
-        
+
         PlayerBag.Instance.OnQuickAccessBagUpdated += UpdateQuickAccessHud;
         GameManager.Instance.OnCurrentLoopScoreChanged += CurrentLoopScoreChanged;
-        
     }
 
 
@@ -77,9 +76,8 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         if (PlayerController.Instance != null)
         {
             PlayerController.Instance.OnHealthChanged -= UpdateHealthBar;
-            PlayerController.Instance.OnStaminaChanged -= UpdateStaminaBar; // 移除体力变化事件监听
+            PlayerController.Instance.OnStaminaChanged -= UpdateStaminaBar;
             PlayerController.Instance.OnMouseWheelValueChanged -= UpdateSelectItem;
-
         }
 
         if (GameLevelManager.Instance != null)
@@ -114,6 +112,8 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     private void UpdateHealthBar(float healthPercentage)
     {
+        Debug.Log(healthPercentage);
+        
         if (healthHudContainer == null || healthIconPrefab == null || lostHealthIconPrefab == null) 
             return;
 
@@ -158,10 +158,6 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 体力UI
 
-    /// <summary>
-    /// 更新体力进度条显示
-    /// </summary>
-    /// <param name="staminaPercentage">当前体力百分比</param>
     private void UpdateStaminaBar(float staminaPercentage)
     {
         if (energyProgressBar != null)
@@ -240,12 +236,16 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
     #endregion
 
     #region 分数UI
+
     private void CurrentLoopScoreChanged(int score)
     {
         ScoreText.text = score.ToString();
     }
+
     #endregion
-    
+
+    #region 时间UI
+
     private void UpdateTimeClock(GameLevelManager.LevelPhase phase, float timePercentage)
     {
         if (clockBar != null)
@@ -253,4 +253,6 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
             clockBar.UpdatePhaseTime(phase, timePercentage);
         }
     }
+
+    #endregion
 }

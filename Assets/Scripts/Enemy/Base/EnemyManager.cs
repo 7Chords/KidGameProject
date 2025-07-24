@@ -30,6 +30,7 @@ namespace KidGame.Core
                 {
                     enemy.transform.position = bornPoints[i % bornPoints.Count].position;
                 }
+
                 enemyCtl.Init(enemyDataList[i]);
             }
         }

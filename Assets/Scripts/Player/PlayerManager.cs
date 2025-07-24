@@ -8,7 +8,6 @@ namespace KidGame.Core
     /// </summary>
     public class PlayerManager : Singleton<PlayerManager>
     {
-
         [SerializeField]
         private GameObject playerPrefab;
         public void Init()

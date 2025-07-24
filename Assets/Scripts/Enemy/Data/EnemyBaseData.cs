@@ -19,7 +19,5 @@ namespace KidGame.Core
         public float HearingRange = 4f;
 
         public float AttackRange = 0.5f;
-        
-        
     }
 }

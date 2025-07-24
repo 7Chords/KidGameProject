@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace KidGame.UI
 {
+    /// <summary>
+    /// 在HUD上使用的通用进度条
+    /// </summary>
     public class ProgressBar : MonoBehaviour
     {
         [Header("References")]

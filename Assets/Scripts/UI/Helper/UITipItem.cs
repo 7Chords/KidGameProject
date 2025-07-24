@@ -34,6 +34,7 @@ namespace KidGame.UI
             // ²¥·Å¶¯»­
             PlayShowAnimation();
         }
+
         public void InitWithRectTransform(GameObject creator, string content)
         {
             ContentText.text = content;

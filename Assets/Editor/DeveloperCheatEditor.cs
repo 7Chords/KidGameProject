@@ -5,18 +5,18 @@ using UnityEngine;
 using KidGame;
 
 /// <summary>
-/// ¿ª·¢Õß×÷±×Ãæ°å
+/// å¼€å‘è€…ä½œå¼Šé¢æ¿
 /// </summary>
 public class DeveloperCheatEditor : EditorWindow
 {
-    [MenuItem("×Ô¶¨Òå±à¼­Æ÷/¿ª·¢Õß×÷±×Ãæ°å")]
+    [MenuItem("è‡ªå®šä¹‰ç¼–è¾‘å™¨/å¼€å‘è€…ä½œå¼Šé¢æ¿")]
     public static void ShowWindow()
     {
-        GetWindow<DeveloperCheatEditor>("¿ª·¢Õß×÷±×Ãæ°å");
+        GetWindow<DeveloperCheatEditor>("å¼€å‘è€…ä½œå¼Šé¢æ¿");
     }
 
 
-    // ÕÛµş×´Ì¬±äÁ¿
+    // æŠ˜å çŠ¶æ€å˜é‡
     private bool showItemCheats = false;
     private bool showTrapCheats = false;
     private bool showMaterialCheats = false;
@@ -24,56 +24,64 @@ public class DeveloperCheatEditor : EditorWindow
     private bool showLevelCheats = true;
 
 
-    #region µÀ¾ßÏà¹Ø
+    #region é“å…·ç›¸å…³
+
     private string getTrapIDStr;
     private string getTrapAmountStr;
 
     private string deleteTrapIDStr;
     private string deleteTrapAmountStr;
+
     #endregion
+
     private void OnGUI()
     {
-        GUILayout.Label("################¿ª·¢Õß×÷±×Ãæ°å################", EditorStyles.boldLabel);
+        GUILayout.Label("################å¼€å‘è€…ä½œå¼Šé¢æ¿################", EditorStyles.boldLabel);
 
         EditorGUILayout.Space();
 
 
-        // µÀ¾ßÏà¹Ø×÷±×
-        showItemCheats = EditorGUILayout.Foldout(showItemCheats, "µÀ¾ßÏà¹Ø×÷±×", true);
+        // é“å…·ç›¸å…³ä½œå¼Š
+        showItemCheats = EditorGUILayout.Foldout(showItemCheats, "é“å…·ç›¸å…³ä½œå¼Š", true);
         if (showItemCheats)
         {
             EditorGUI.indentLevel++;
 
-            // ÏİÚå×÷±× (×Ó·ÖÀà)
-            showTrapCheats = EditorGUILayout.Foldout(showTrapCheats, "ÏİÚå×÷±×", true);
+            // é™·é˜±ä½œå¼Š (å­åˆ†ç±»)
+            showTrapCheats = EditorGUILayout.Foldout(showTrapCheats, "é™·é˜±ä½œå¼Š", true);
             if (showTrapCheats)
             {
                 EditorGUI.indentLevel++;
-                #region »ñµÃÏİÚå
+
+                #region è·å¾—é™·é˜±
+
                 EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("»ñµÃÏİÚå"))
+                if (GUILayout.Button("è·å¾—é™·é˜±"))
                 {
                     if (string.IsNullOrEmpty(getTrapIDStr) || string.IsNullOrEmpty(getTrapAmountStr)) return;
                     try
                     {
-                        PlayerBag.Instance.AddItemToCombineBag(getTrapIDStr, UseItemType.trap, int.Parse(getTrapAmountStr));
+                        PlayerBag.Instance.AddItemToCombineBag(getTrapIDStr, UseItemType.trap,
+                            int.Parse(getTrapAmountStr));
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogError(ex.Message);
                     }
                 }
 
-                // ¼òµ¥ÎÄ±¾ÊäÈë¿ò
-                getTrapIDStr = EditorGUILayout.TextField("ÏİÚåID", getTrapIDStr);
-                getTrapAmountStr = EditorGUILayout.TextField("»ñµÃÏİÚåÊıÁ¿", getTrapAmountStr);
+                // ç®€å•æ–‡æœ¬è¾“å…¥æ¡†
+                getTrapIDStr = EditorGUILayout.TextField("é™·é˜±ID", getTrapIDStr);
+                getTrapAmountStr = EditorGUILayout.TextField("è·å¾—é™·é˜±æ•°é‡", getTrapAmountStr);
                 EditorGUILayout.EndHorizontal();
+
                 #endregion
 
 
-                #region É¾³ıÏİÚå
+                #region åˆ é™¤é™·é˜±
+
                 EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("É¾³ıÏİÚå"))
+                if (GUILayout.Button("åˆ é™¤é™·é˜±"))
                 {
                     if (string.IsNullOrEmpty(deleteTrapIDStr) || string.IsNullOrEmpty(deleteTrapAmountStr)) return;
                     try
@@ -86,21 +94,19 @@ public class DeveloperCheatEditor : EditorWindow
                     }
                 }
 
-                // ¼òµ¥ÎÄ±¾ÊäÈë¿ò
-                getTrapIDStr = EditorGUILayout.TextField("ÏİÚåID", deleteTrapIDStr);
-                getTrapAmountStr = EditorGUILayout.TextField("É¾³ıÏİÚåÊıÁ¿", deleteTrapAmountStr);
+                deleteTrapIDStr = EditorGUILayout.TextField("é™·é˜±ID", deleteTrapIDStr);
+                deleteTrapAmountStr = EditorGUILayout.TextField("åˆ é™¤é™·é˜±æ•°é‡", deleteTrapAmountStr);
                 EditorGUILayout.EndHorizontal();
-                #endregion
 
+                #endregion
 
 
                 EditorGUI.indentLevel--;
                 EditorGUILayout.Space();
-
             }
 
-            // ²ÄÁÏ×÷±× (×Ó·ÖÀà)
-            showMaterialCheats = EditorGUILayout.Foldout(showMaterialCheats, "²ÄÁÏ×÷±×", true);
+            // ææ–™ä½œå¼Š (å­åˆ†ç±»)
+            showMaterialCheats = EditorGUILayout.Foldout(showMaterialCheats, "ææ–™ä½œå¼Š", true);
             if (showMaterialCheats)
             {
                 EditorGUI.indentLevel++;
@@ -112,8 +118,8 @@ public class DeveloperCheatEditor : EditorWindow
             EditorGUILayout.Space();
         }
 
-        //// Íæ¼ÒÏà¹Ø×÷±×
-        //showPlayerCheats = EditorGUILayout.Foldout(showPlayerCheats, "Íæ¼Ò×÷±×", true);
+        //// ç©å®¶ç›¸å…³ä½œå¼Š
+        //showPlayerCheats = EditorGUILayout.Foldout(showPlayerCheats, "ç©å®¶ä½œå¼Š", true);
         //if (showPlayerCheats)
         //{
         //    EditorGUI.indentLevel++;
@@ -137,8 +143,8 @@ public class DeveloperCheatEditor : EditorWindow
         //    EditorGUILayout.Space();
         //}
 
-        //// ¹Ø¿¨Ïà¹Ø×÷±×
-        //showLevelCheats = EditorGUILayout.Foldout(showLevelCheats, "¹Ø¿¨×÷±×", true);
+        //// å…³å¡ç›¸å…³ä½œå¼Š
+        //showLevelCheats = EditorGUILayout.Foldout(showLevelCheats, "å…³å¡ä½œå¼Š", true);
         //if (showLevelCheats)
         //{
         //    EditorGUI.indentLevel++;
@@ -158,10 +164,11 @@ public class DeveloperCheatEditor : EditorWindow
         //}
 
 
-        EditorGUILayout.HelpBox("ÕâĞ©×÷±×¹¦ÄÜÖ»ÔÚÓÎÏ·ÔËĞĞÊ±ÓĞĞ§", MessageType.Info);
+        EditorGUILayout.HelpBox("è¿™äº›ä½œå¼ŠåŠŸèƒ½åªåœ¨æ¸¸æˆè¿è¡Œæ—¶æœ‰æ•ˆ", MessageType.Info);
     }
+
     /// <summary>
-    /// ¸¨Öú·½·¨£ºÈ·±£Ö»ÔÚÓÎÏ·ÔËĞĞÊ±Ö´ĞĞ
+    /// è¾…åŠ©æ–¹æ³•ï¼šç¡®ä¿åªåœ¨æ¸¸æˆè¿è¡Œæ—¶æ‰§è¡Œ
     /// </summary>
     /// <param name="action"></param>
     private void ExecuteInPlayMode(System.Action action)
@@ -172,12 +179,11 @@ public class DeveloperCheatEditor : EditorWindow
         }
         else
         {
-            Debug.LogWarning("×÷±×¹¦ÄÜÖ»ÔÚÓÎÏ·ÔËĞĞÊ±ÓĞĞ§£¡");
+            Debug.LogWarning("ä½œå¼ŠåŠŸèƒ½åªåœ¨æ¸¸æˆè¿è¡Œæ—¶æœ‰æ•ˆï¼");
         }
     }
 
     #region Callback
-
 
     #endregion
 }

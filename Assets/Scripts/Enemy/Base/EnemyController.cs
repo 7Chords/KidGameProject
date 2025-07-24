@@ -12,16 +12,24 @@ namespace KidGame.Core
     /// 封装敌人相关变量与方法
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-    public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable,ISoundable
+    public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable, ISoundable
     {
-        [SerializeField]
-        private List<string> randomDamgeSfxList;
-        public List<string> RandomDamgeSfxList { get => randomDamgeSfxList; set { randomDamgeSfxList = value; } }
+        [SerializeField] private List<string> randomDamgeSfxList;
 
-        [SerializeField]
-        private ParticleSystem damagePartical;
-        public ParticleSystem DamagePartical { get => damagePartical; set { damagePartical = value; } }
-        
+        public List<string> RandomDamgeSfxList
+        {
+            get => randomDamgeSfxList;
+            set { randomDamgeSfxList = value; }
+        }
+
+        [SerializeField] private ParticleSystem damagePartical;
+
+        public ParticleSystem DamagePartical
+        {
+            get => damagePartical;
+            set { damagePartical = value; }
+        }
+
         #region Comp
 
         private Rigidbody rb;
@@ -43,9 +51,13 @@ namespace KidGame.Core
         public EnemyBaseData EnemyBaseData => enemyBaseData;
 
         private Transform player;
-        public Transform Player { get { return player; } }
 
-        private Dictionary<RoomType, bool> roomSearchStateDic;//房间搜索情况字典
+        public Transform Player
+        {
+            get { return player; }
+        }
+
+        private Dictionary<RoomType, bool> roomSearchStateDic; //房间搜索情况字典
 
         private List<RoomInfo> _roomsToCheck = new List<RoomInfo>();
 
@@ -63,9 +75,9 @@ namespace KidGame.Core
         #region 有目的搜索
 
         public string _currentTargetItemId;
-        
+
         #endregion
-        
+
         #region 理智变量
 
         private int _currentHealth;
@@ -77,9 +89,8 @@ namespace KidGame.Core
         private RoomType _currentRoomType;
         public RoomType CurrentRoomType => _currentRoomType;
 
-
         #endregion
-        
+
         #region 生命周期
 
         private void Awake()
@@ -113,24 +124,20 @@ namespace KidGame.Core
                 .OrderBy(r => Vector3.Distance(transform.position, r.CenterWorldPosition))
                 .ToList();
             roomSearchStateDic = new Dictionary<RoomType, bool>();
-            foreach(var info in allRoomInfos)
+            foreach (var info in allRoomInfos)
             {
                 roomSearchStateDic.Add(info.RoomType, false);
             }
-            roomSearchStateDic[RoomType.Corridor] = true;
-            //InitSkills();
 
+            roomSearchStateDic[RoomType.Corridor] = true;
 
             behaviorTree.Start();
             agent.enabled = true;
         }
+
         public void Discard()
         {
-            //回收状态机
-            //stateMachine.ObjectPushPool();
-
             enemyBuffHandler.Discard();
-            //DiscardSkills();
 
             behaviorTree.DisableBehavior();
             behaviorTree = null;
@@ -140,8 +147,9 @@ namespace KidGame.Core
             roomSearchStateDic.Clear();
             roomSearchStateDic = null;
         }
+
         #endregion
-        
+
 
         #region 感知判断
 
@@ -157,6 +165,7 @@ namespace KidGame.Core
                 SetVisionIndicator(false);
                 return false;
             }
+
             // 扇形角度检查
             float angleToPlayer = Vector3.Angle(transform.forward, dirToPlayer);
             if (angleToPlayer > enemyBaseData.VisionAngle / 2f)
@@ -165,16 +174,6 @@ namespace KidGame.Core
                 return false;
             }
 
-            // TODO:视线遮挡检查(视线被挡住也不算看到玩家）
-            //RaycastHit hit;
-            //if (Physics.Raycast(transform.position, dirToPlayer.normalized, out hit, distanceToPlayer))
-            //{
-            //    if (hit.collider.transform != player)
-            //    {
-            //        // 有物体遮挡玩家
-            //        return false;
-            //    }
-            //}
             SetVisionIndicator(true);
             return true;
         }
@@ -188,21 +187,19 @@ namespace KidGame.Core
                 targetPos = player.position;
                 return true;
             }
-            return false;
-            if (hearingGO != null) return true;
+
             return false;
         }
 
         #endregion
 
         #region 受击
+
         public void TakeDamage(DamageInfo damageInfo)
         {
-            // 现有伤害处理逻辑...
             curSanity = Mathf.Clamp(curSanity - damageInfo.damage, 0, enemyBaseData.MaxSanity);
             enemyBuffHandler.AddBuff(damageInfo.buffInfo);
-            //是否进入眩晕状态
-            if(curSanity == 0)
+            if (curSanity == 0)
             {
                 SetDizzyState(true);
             }
@@ -211,18 +208,16 @@ namespace KidGame.Core
         public void SetDizzyState(bool newState)
         {
             IsDizzying = newState;
-            if(!IsDizzying)
+            if (!IsDizzying)
             {
                 curSanity = enemyBaseData.MaxSanity;
             }
         }
+
         public bool CheckDizzyState()
         {
             return IsDizzying;
         }
-       
-
-     
 
         #endregion
 
@@ -238,10 +233,6 @@ namespace KidGame.Core
 
         #endregion
 
-        
-
-        
-
         #region 行为树封装方法
 
         /// <summary>
@@ -253,6 +244,7 @@ namespace KidGame.Core
             targetPos = player.transform.position;
             Agent.SetDestination(targetPos);
         }
+
         /// <summary>
         /// 设置目标到某个点
         /// </summary>
@@ -262,7 +254,7 @@ namespace KidGame.Core
             targetPos = position;
             Agent.SetDestination(targetPos);
         }
-        
+
         #endregion
 
         /// <summary>
@@ -271,10 +263,11 @@ namespace KidGame.Core
         /// <returns></returns>
         public bool CheckAllRooms()
         {
-            foreach(var pair in roomSearchStateDic)
+            foreach (var pair in roomSearchStateDic)
             {
                 if (pair.Value == false) return false;
             }
+
             return true;
         }
 
@@ -287,42 +280,46 @@ namespace KidGame.Core
                 .ToList();
             targetPos = Vector3.zero;
             RoomType nearestRoonType = RoomType.Corridor;
-            foreach(var room in _roomsToCheck)
+            foreach (var room in _roomsToCheck)
             {
-                if(roomSearchStateDic[room.RoomType])
+                if (roomSearchStateDic[room.RoomType])
                 {
                     continue;
                 }
+
                 targetPos = room.CenterWorldPosition;
                 nearestRoonType = room.RoomType;
                 break;
             }
+
             Agent.speed = enemyBaseData.MoveSpeed;
             Agent.SetDestination(targetPos);
             return nearestRoonType;
         }
+
         public void ResetAllRoomsCheckState()
         {
             var roomTypeList = new List<RoomType>(roomSearchStateDic.Keys);
-            for (int i = 0; i < roomTypeList.Count; i++)//不要foreach里面修改 会报错
+            for (int i = 0; i < roomTypeList.Count; i++) //不要foreach里面修改 会报错
             {
                 var roomType = roomTypeList[i];
                 // 现在可以安全地修改roomCheckStates集合
-                SetRoomCheckState(roomType,false);
+                SetRoomCheckState(roomType, false);
             }
-
         }
-        public void SetRoomCheckState(RoomType roomType,bool state)
+
+        public void SetRoomCheckState(RoomType roomType, bool state)
         {
             roomSearchStateDic[roomType] = state;
         }
 
         public bool CheckArriveDestination(bool checkHearing = false)
         {
-            if(checkHearing)
+            if (checkHearing)
             {
                 hearingGO = null;
             }
+
             return Vector3.Distance(transform.position, targetPos) < 0.5f;
         }
 
@@ -342,23 +339,27 @@ namespace KidGame.Core
         {
             VisionIndicatorRenderer.material.SetColor("_Color", seePlayer ? SeePlayerColor : NoSeePlayerColor);
         }
+
         public void StopNav()
         {
             agent.isStopped = true;
         }
+
         public void StartNav()
         {
             agent.isStopped = false;
         }
 
-        public void ProduceSound(float range) { }
+        public void ProduceSound(float range)
+        {
+        }
 
         public void ReceiveSound(GameObject creator)
         {
             hearingGO = creator;
         }
-        #region Gizoms
 
+        #region Gizoms
 
         private void OnDrawGizmos()
         {

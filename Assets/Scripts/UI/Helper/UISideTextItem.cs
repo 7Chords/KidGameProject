@@ -40,4 +40,3 @@ namespace KidGame.UI
         }
     }
 }
-
