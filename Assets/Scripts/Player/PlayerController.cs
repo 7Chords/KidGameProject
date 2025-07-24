@@ -5,6 +5,7 @@ using UnityEngine;
 using Utils;
 using System;
 using Unity.VisualScripting;
+using KidGame.UI;
 
 namespace KidGame.Core
 {
@@ -54,9 +55,8 @@ namespace KidGame.Core
 
         private StateMachine stateMachine;
         private PlayerState playerState; // 玩家的当前状态        
-
         #endregion
-        
+
         #region 玩家挣扎
         private float struggleDemand = 1f;
         private float struggleAmountOneTime = 10f;
@@ -194,7 +194,10 @@ namespace KidGame.Core
         {
             Signals.Get<ControlBagSignal>().Dispatch();
         }
-
+        private void Update()
+        {
+            Debug.Log(playerState);
+        }
         /// <summary>
         /// 玩家旋转 TODO:优化？
         /// </summary>
@@ -202,7 +205,6 @@ namespace KidGame.Core
         {
             transform.rotation = Quaternion.LookRotation(dir);
         }
-
         public void ChangeState(PlayerState playerState, bool reCurrstate = false)
         {
             // 如果处于体力耗尽状态只能进入Idle状态
@@ -266,7 +268,11 @@ namespace KidGame.Core
 
         public void TryPlaceTrap()
         {
-            //todo:7Chords fix
+            if (playerState != PlayerState.Idle)
+            {
+                UIHelper.Instance.ShowOneTip(new TipInfo("当前状态不可布置陷阱", gameObject));
+                return;
+            }
             ChangeState(PlayerState.Use);
         }
 

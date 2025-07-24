@@ -42,6 +42,11 @@ namespace KidGame.Core
             }
         }
 
+        public kidgame_game_data_config GetGameDataConfig()
+        {
+            return soDic[SoConst.KID_GAME_DATA_CONFIG] as kidgame_game_data_config;
+        }
+
         /// <summary>
         /// 传入值为想要找的某个物体的string类型的id
         /// 以及这个Data Type的名字
