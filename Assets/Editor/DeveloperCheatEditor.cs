@@ -39,6 +39,12 @@ public class DeveloperCheatEditor : EditorWindow
     private string deleteMatIDStr;
     private string deleteMatAmountStr;
     private string getAllMatAmountStr;
+
+    private string getWeaponIDStr;
+    private string getWeaponAmountStr;
+    private string deleteWeaponIDStr;
+    private string deleteWeaponAmountStr;
+    private string getAllWeaponAmountStr;
     #endregion
 
     private void OnGUI()
@@ -49,7 +55,7 @@ public class DeveloperCheatEditor : EditorWindow
 
 
         // 道具相关作弊
-        showItemCheats = EditorGUILayout.Foldout(showItemCheats, "————————道具相关作弊", true);
+        showItemCheats = EditorGUILayout.Foldout(showItemCheats, "道具相关作弊", true);
         if (showItemCheats)
         {
             EditorGUI.indentLevel++;
@@ -222,6 +228,77 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUI.indentLevel++;
 
 
+                #region 获得武器
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("获得武器"))
+                {
+                    if (string.IsNullOrEmpty(getWeaponIDStr) || string.IsNullOrEmpty(getWeaponAmountStr)) return;
+                    try
+                    {
+                        PlayerBag.Instance.AddItemToCombineBag(getWeaponIDStr, UseItemType.weapon,
+                            int.Parse(getWeaponAmountStr));
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+
+                }
+
+                // 简单文本输入框
+                getWeaponIDStr = EditorGUILayout.TextField("武器ID", getWeaponIDStr);
+                getWeaponAmountStr = EditorGUILayout.TextField("获得武器数量", getWeaponAmountStr);
+                EditorGUILayout.EndHorizontal();
+
+                #endregion
+
+                #region 删除武器
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("删除武器"))
+                {
+                    if (string.IsNullOrEmpty(deleteWeaponIDStr) || string.IsNullOrEmpty(deleteWeaponAmountStr)) return;
+                    try
+                    {
+                        PlayerBag.Instance.DeleteItemInCombineBag(deleteWeaponIDStr, int.Parse(deleteWeaponAmountStr));
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+                }
+
+                deleteWeaponIDStr = EditorGUILayout.TextField("武器ID", deleteWeaponIDStr);
+                deleteWeaponAmountStr = EditorGUILayout.TextField("删除武器数量", deleteWeaponAmountStr);
+                EditorGUILayout.EndHorizontal();
+
+                #endregion
+
+                #region 获得所有武器
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("获得所有武器"))
+                {
+                    if (string.IsNullOrEmpty(getAllWeaponAmountStr)) return;
+                    try
+                    {
+                        foreach (var data in SoLoader.Instance.GetGameDataConfig().WeaponDataList)
+                        {
+                            PlayerBag.Instance.AddItemToCombineBag(data.Id, UseItemType.weapon,
+                                int.Parse(getAllWeaponAmountStr));
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(ex.Message);
+                    }
+                }
+                getAllWeaponAmountStr = EditorGUILayout.TextField("获得武器数量", getAllWeaponAmountStr);
+                EditorGUILayout.EndHorizontal();
+
+                #endregion
+
                 EditorGUI.indentLevel--;
             }
 
@@ -242,9 +319,10 @@ public class DeveloperCheatEditor : EditorWindow
 
 
         // 关卡内相关作弊
-        showLevelCheats = EditorGUILayout.Foldout(showLevelCheats, "————————关卡相关作弊", true);
+        showLevelCheats = EditorGUILayout.Foldout(showLevelCheats, "关卡相关作弊", true);
 
         EditorGUILayout.HelpBox("这些作弊功能只在游戏运行时有效", MessageType.Info);
+
     }
 
 }

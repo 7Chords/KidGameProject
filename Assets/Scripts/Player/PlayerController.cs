@@ -406,7 +406,7 @@ namespace KidGame.Core
             else if(slotInfo.ItemData is WeaponData weaponData)
             {
                 // to do: 不要每次都生成一个武器
-                if (weaponData.id == currentWeaponData.id) return;
+                if (currentWeaponData != null && weaponData.id == currentWeaponData.id) return;
                 // 如果不是重复的 销毁现在的 取得新的
                 DiscardWeapon();
                 currentWeapon = SpawnWeaponOnHand(
