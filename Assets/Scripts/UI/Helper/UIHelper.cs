@@ -104,6 +104,7 @@ namespace KidGame.UI
 
         //圆形进度条相关字段
         public GameObject CircleProgressPrefab;
+        private GameObject currentProgressGO;
 
         private void Start()
         {
@@ -317,8 +318,18 @@ namespace KidGame.UI
             GameObject circleProgressGO = Instantiate(CircleProgressPrefab);
             circleProgressGO.transform.SetParent(transform);
             circleProgressGO.GetComponent<UICommonProgressItem>().Init(creator,duration);
-            Destroy(circleProgressGO, duration);
+            currentProgressGO = circleProgressGO;
+            Destroy(currentProgressGO, duration);
         }
+
+        public void DestoryCurrentCircleProgress()
+        {
+            if(currentProgressGO != null)//todo：和destory延迟销毁存在冲突问题？
+            {
+                Destroy(currentProgressGO);
+            }
+        }
+
         #endregion
 
         #region Util

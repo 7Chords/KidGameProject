@@ -161,7 +161,6 @@ namespace KidGame.Core
             inputSettings.OnMouseWheelValueChanged += SwitchSelectItem;
 
             PlayerBag.Instance.OnSelectItemAction += OnItemSelected;
-            //PlayerBag.Instance.OnSelectItemAction += Instance_OnSelectItemAction;
         }
 
 
@@ -193,10 +192,6 @@ namespace KidGame.Core
         private void ControlBag()
         {
             Signals.Get<ControlBagSignal>().Dispatch();
-        }
-        private void Update()
-        {
-            Debug.Log(playerState);
         }
         /// <summary>
         /// 玩家旋转 TODO:优化？

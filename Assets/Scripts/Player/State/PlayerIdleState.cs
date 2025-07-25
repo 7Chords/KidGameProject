@@ -28,9 +28,5 @@ namespace KidGame.Core
         }
 
 
-        public override void Exit()
-        {
-            base.Exit();
-        }
     }
 }

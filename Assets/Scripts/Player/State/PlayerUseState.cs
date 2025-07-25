@@ -15,6 +15,7 @@ namespace KidGame.Core
         private Vector3 position;
         private Quaternion rotation;
 
+
         public override void Enter()
         {
             useTimer = -0.1f;
@@ -65,6 +66,16 @@ namespace KidGame.Core
         public override void Update()
         {
             base.Update();
+
+            Vector2 inputVal = player.InputSettings.MoveDir();
+            // ¼ì²âÍæ¼ÒµÄÊäÈë
+            if (inputVal != Vector2.zero)
+            {
+                UIHelper.Instance.DestoryCurrentCircleProgress();
+                // ÇÐ»»×´Ì¬
+                player.ChangeState(PlayerState.Move);
+                return;
+            }
             switch (selectedItem.ItemData.UseItemType)
             {
                 case UseItemType.trap:

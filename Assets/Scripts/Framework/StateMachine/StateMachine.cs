@@ -70,7 +70,6 @@ namespace KidGame.Core
         private StateBase GetState<T>(int stateType) where T : StateBase, new()
         {
             if (stateDic.ContainsKey(stateType)) return stateDic[stateType];
-            //TODO:¶ÔÏó³Ø
             StateBase state = PoolManager.Instance.GetObject<T>();
             state.Init(owner, stateType, this);
             stateDic.Add(stateType, state);
