@@ -66,15 +66,10 @@ public class BackpackWindowController : WindowController
     private void OnBagCellClick(GameObject cell, int index)
     {
         int cellIndex = index - 1;
-        int materialCount = _materialSlotInfos.Count;
-
-        if (cellIndex >= materialCount)
-        {
-            int trapIndex = cellIndex - materialCount;
-            // 原本的道具栏与背包互换代码移动到了playerBag.cs
-            PlayerBag.Instance.MoveItemToQuickAccessBag(trapIndex);
-            RefreshLists();
-        }
+        // 原本的道具栏与背包互换代码移动到了playerBag.cs
+        PlayerBag.Instance.MoveItemToQuickAccessBag(cellIndex);
+        RefreshLists();
+        OnHideItemDetail();
     }
 
     private void OnPocketCellClick(GameObject cell, int index)
@@ -83,6 +78,7 @@ public class BackpackWindowController : WindowController
         // 原本的道具栏与背包互换代码移动到了playerBag.cs
         PlayerBag.Instance.MoveItemToBackBag(cellIndex);
         RefreshLists();
+        OnHideItemDetail();
     }
     
     private void RefreshLists()
