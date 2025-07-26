@@ -46,9 +46,18 @@ namespace KidGame.Core
         private BehaviorTree behaviorTree;
 
         #endregion
+        
+        #region 行为树所用参数
+
+        public float testTime;
+        
+        #endregion
+        
 
         [SerializeField] private EnemyBaseData enemyBaseData;
         public EnemyBaseData EnemyBaseData => enemyBaseData;
+        
+        private PlayerController playerController;
 
         private Transform player;
 
@@ -114,7 +123,9 @@ namespace KidGame.Core
             //stateMachine = PoolManager.Instance.GetObject<StateMachine>();
             //stateMachine.Init(this);
             //ChangeState(EnemyState.Idle); // 初始状态
-            player = FindObjectOfType<PlayerController>().gameObject.transform;
+            playerController = FindObjectOfType<PlayerController>();
+            
+            player = playerController.gameObject.transform;
 
             enemyBuffHandler = new BuffHandler();
             enemyBuffHandler.Init();
@@ -181,8 +192,9 @@ namespace KidGame.Core
         public bool PlayerInHearing()
         {
             if (player == null) return false;
-
-            if ((player.position - transform.position).magnitude <= enemyBaseData.HearingRange)
+            // 目前好像还没声音系统，暂时这么写
+            if ((player.position - transform.position).magnitude <= 
+                enemyBaseData.HearingRange&&(playerController.IsPlayerState(PlayerState.Dash)||playerController.InputSettings.GetIfRun()))
             {
                 targetPos = player.position;
                 return true;

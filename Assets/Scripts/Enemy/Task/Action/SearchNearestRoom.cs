@@ -20,7 +20,7 @@ namespace KidGame.Core
                 enemy.SetRoomCheckState(searchRoomType, true);
                 return TaskStatus.Success;
             }
-            return TaskStatus.Running;
+            return TaskStatus.Failure;
 
         }
         //public override void OnEnd()

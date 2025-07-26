@@ -183,6 +183,12 @@ namespace KidGame.Core
         #endregion
 
         #region 功能
+        
+
+        public bool IsPlayerState(PlayerState state)
+        {
+            return state == playerState;
+        }
 
         private void GamePause()
         {
