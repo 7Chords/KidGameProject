@@ -10,6 +10,7 @@ namespace KidGame.UI
 
         private RectTransform rectTran;
         private float originalY;
+        private Sequence seq;
 
         private void Awake()
         {
@@ -32,11 +33,16 @@ namespace KidGame.UI
 
         private void PlayShowAnimation()
         {
-            Sequence seq = DOTween.Sequence();
+            seq = DOTween.Sequence();
             // 缩放动画
             seq.Append(transform.DOScale(Vector3.one, 0.3f));
             // 上移动画
             seq.Append(rectTran.DOLocalMoveY(originalY + 50f, 0.5f));
+        }
+
+        private void OnDestroy()
+        {
+            seq.Kill();//不销毁的话如果物体被销毁序列依然存在 产生waring
         }
     }
 }

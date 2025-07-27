@@ -12,7 +12,7 @@ namespace KidGame.UI
         private RectTransform rectTran;
         private Vector2 screenPos;
         private float originalY;
-
+        private Sequence seq;
         private void Awake()
         {
             rectTran = GetComponent<RectTransform>();
@@ -51,25 +51,18 @@ namespace KidGame.UI
             // 播放动画
             PlayShowAnimation();
         }
-
         private void PlayShowAnimation()
         {
-            Sequence seq = DOTween.Sequence();
+            seq = DOTween.Sequence();
             // 缩放动画
             seq.Append(transform.DOScale(Vector3.one, 0.3f));
             // 上移动画
             seq.Append(rectTran.DOLocalMoveY(originalY + 50f, 0.5f));
         }
 
-        // 更新位置
-        //private void Update()
-        //{
-        //    if (creator != null)
-        //    {
-        //        screenPos = Camera.main.WorldToScreenPoint(creator.transform.position) * (1080f / 300);
-        //        Vector2 newPos = UIHelper.Instance.ScreenPointToUIPoint(rectTran, screenPos);
-        //        rectTran.localPosition = new Vector2(newPos.x, originalY + 50f); // 保持Y轴偏移
-        //    }
-        //}
+        private void OnDestroy()
+        {
+            seq.Kill();//不销毁的话如果物体被销毁序列依然存在 产生waring
+        }
     }
 }

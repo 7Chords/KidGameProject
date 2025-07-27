@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public class BuffHandler : MonoBehaviour
+    public class BuffHandler
     {
         public List<BuffInfo> buffList = new List<BuffInfo>();
 

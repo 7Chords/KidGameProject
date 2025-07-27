@@ -68,5 +68,10 @@ namespace KidGame.UI
             yield return _tweener.WaitForCompletion();
             Destroy(gameObject);
         }
+
+        private void OnDestroy()
+        {
+            _tweener.Kill();
+        }
     }
 }
