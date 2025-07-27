@@ -46,17 +46,17 @@ namespace KidGame.Core
         private BehaviorTree behaviorTree;
 
         #endregion
-        
+
         #region 行为树所用参数
 
         public float testTime;
-        
+
         #endregion
-        
+
 
         [SerializeField] private EnemyBaseData enemyBaseData;
         public EnemyBaseData EnemyBaseData => enemyBaseData;
-        
+
         private PlayerController playerController;
 
         private Transform player;
@@ -72,6 +72,7 @@ namespace KidGame.Core
 
         private Vector3 targetPos;
 
+        [Header("VisionIndicatorSetting")]
         public Renderer VisionIndicatorRenderer;
         public Color NoSeePlayerColor;
         public Color SeePlayerColor;
@@ -124,7 +125,7 @@ namespace KidGame.Core
             //stateMachine.Init(this);
             //ChangeState(EnemyState.Idle); // 初始状态
             playerController = FindObjectOfType<PlayerController>();
-            
+
             player = playerController.gameObject.transform;
 
             enemyBuffHandler = new BuffHandler();
@@ -161,7 +162,6 @@ namespace KidGame.Core
 
         #endregion
 
-
         #region 感知判断
 
         public bool PlayerInSight()
@@ -193,8 +193,9 @@ namespace KidGame.Core
         {
             if (player == null) return false;
             // 目前好像还没声音系统，暂时这么写
-            if ((player.position - transform.position).magnitude <= 
-                enemyBaseData.HearingRange&&(playerController.IsPlayerState(PlayerState.Dash)||playerController.InputSettings.GetIfRun()))
+            if ((player.position - transform.position).magnitude <=
+                enemyBaseData.HearingRange && (playerController.IsPlayerState(PlayerState.Dash) ||
+                                               playerController.InputSettings.GetIfRun()))
             {
                 targetPos = player.position;
                 return true;
@@ -369,6 +370,11 @@ namespace KidGame.Core
         public void ReceiveSound(GameObject creator)
         {
             hearingGO = creator;
+        }
+        
+        public List<BuffInfo> GetBuffList()
+        {
+            return enemyBuffHandler.buffList;
         }
 
         #region Gizoms
