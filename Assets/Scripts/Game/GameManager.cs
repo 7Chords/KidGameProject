@@ -23,7 +23,7 @@ namespace KidGame.Core
         #region 分数变量
 
         private int currentLoopScore;
-        public int CurrentLoopScore => currentLoopScore;
+
         public Action<int> OnCurrentLoopScoreChanged;
 
         // 得分评级
@@ -37,17 +37,17 @@ namespace KidGame.Core
         }
 
         private ScoreRating currentRating = ScoreRating.D;
-        private float ratingProgress = 0f;
+        private float ratingProgress = 0f; // 评级进度
         private float lastScoreTime = 0f;
 
         private readonly Dictionary<ScoreRating, float> ratingMultipliers = new Dictionary<ScoreRating, float>
         {
-            { ScoreRating.D, 1f },
-            { ScoreRating.C, 1.1f },
-            { ScoreRating.B, 1.3f },
-            { ScoreRating.A, 1.5f },
-            { ScoreRating.S, 1.7f }
-        };
+            { ScoreRating.D, 30f },
+            { ScoreRating.C, 25f },
+            { ScoreRating.B, 20f },
+            { ScoreRating.A, 15f },
+            { ScoreRating.S, 10f }
+        }; // 不同评级的分数倍率
 
         private readonly Dictionary<ScoreRating, float> ratingDecayRates = new Dictionary<ScoreRating, float>
         {
@@ -56,7 +56,7 @@ namespace KidGame.Core
             { ScoreRating.B, 4f },
             { ScoreRating.A, 5f },
             { ScoreRating.S, 7f }
-        };
+        };// 不同评级的分数退减速度
 
         // Combo
         private int currentCombo = 0;
@@ -170,6 +170,7 @@ namespace KidGame.Core
                 ScoreRating.S => 10f,
                 _ => 0f
             };
+            // todo.如果是手持道具
             
             ratingProgress = Mathf.Min(100f, ratingProgress + progressIncrease);
             
@@ -177,9 +178,10 @@ namespace KidGame.Core
             {
                 currentRating++;
                 ratingProgress = 0f;
-                
             }
             
+            // （陷阱/手持道具得分*得分评级倍率 + combo数量 *（1+0.1*combo数量）* 10 + 特别组合得分）*（1+ 恐慌倍率）
+            // todo.添加恐慌倍率的分数影响
             int comboScore = (int)(currentCombo * (1 + 0.1f * currentCombo) * 10);
             int totalScore = (int)(score * ratingMultipliers[currentRating]) + comboScore;
             
