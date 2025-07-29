@@ -255,7 +255,7 @@ namespace KidGame.Core
             {
                 existing.Amount += addAmount;
             }
-            else if (QuickAccessBag.Count < 4)
+            else if (QuickAccessBag.Count < GlobalValue.QUICK_ACCESS_BAG_CAPACITY)
             {
                 switch (itemType)
                 {
@@ -272,7 +272,7 @@ namespace KidGame.Core
                     default:
                         break;
                 }
-                //物品栏获得第一个东西时 马上触发一下
+                //当前选中的物品栏从无到有 马上刷新
                 if(QuickAccessBag.Count == SelectedIndex + 1)
                 {
                     OnSelectItemAction(QuickAccessBag[SelectedIndex]);

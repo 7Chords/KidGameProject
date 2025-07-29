@@ -52,6 +52,7 @@ namespace KidGame.Core
                 Object.Destroy(trapObj);
                 return null;
             }
+            trapObj.transform.rotation = parent.rotation;
             trapObj.transform.SetParent(parent);
             trap.ShowPlacePreview();
             return trapObj;

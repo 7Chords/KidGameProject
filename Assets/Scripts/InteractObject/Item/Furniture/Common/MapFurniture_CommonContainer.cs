@@ -21,13 +21,11 @@ namespace KidGame.Core
             }
             else
             {
-                MaterialBase tmpMat = new MaterialBase();
                 foreach (var item in materialHoldList)
                 {
                     for (int i = 0; i < item.amount; i++)
                     {
-                        tmpMat.Init(item.data);
-                        PlayerUtil.Instance.CallPlayerPickItem(tmpMat.materialData.id,UseItemType.Material);
+                        PlayerUtil.Instance.CallPlayerPickItem(item.data.id,UseItemType.Material);
                         UIHelper.Instance.ShowTipByQueue(new TipInfo("»ñµÃÁË" + item.data.materialName + "¡Á1", gameObject, 0.5f));
                     }
                 }
