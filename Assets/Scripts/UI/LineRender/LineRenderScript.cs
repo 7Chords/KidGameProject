@@ -14,30 +14,36 @@ namespace KidGame.Core
         public LineRenderer lineRenderer; // 拖拽引用
         public Vector3 startPoint;       // 起始位置
         public Vector3 endPoint;         // 结束位置
-        public float heightFactor;  // 抛物线高度因子
-        public float heightHeightFactor; // 抛物线高度的高度因子
-        public int resolution = 100;        // 轨迹点数量
+        public float heightFactor = 1f;  // 抛物线高度因子
+        public float heightHeightFactor = 20f; // 抛物线高度的高度因子
+        public int resolution = 50;        // 轨迹点数量
         public AnimationCurve widthCurve;  // 宽度曲线
         public float currentWidth;
-        public float startWidth;    // 默认宽度
-        public float arrowStartWidth;     // 后面逐渐减小的宽度
+        public float startWidth = 0.05f;    // 默认宽度
+        public float arrowStartWidth = 0.05f;     // 后面逐渐减小的宽度
         public float heightFactorLerpMin = 0.9f;
         public float heightFactorLerpMax = 1.2f;
         public Vector3[] points;
+        private Vector3 lastFrameStartPositon;// 上一帧开始位置
+        private Vector3 lastFrameEndPositon;// 上一帧结束位置
         #endregion
         private void Start()
         {
+            widthCurve = new AnimationCurve();
             DrawParabola();
         }
 
         private void Update()
         {
-            // 时实更新
-            DrawParabola();
+            // 条件时实更新
+            if(lastFrameStartPositon != startPoint || lastFrameEndPositon != endPoint)
+                DrawParabola();
         }
 
         void DrawParabola()
         {
+            lastFrameEndPositon = endPoint;
+            lastFrameStartPositon = startPoint;
             // 瞎√8调了一下这个高度 好像还算能接受 效果还行
             // 这边是在算一个高度因子
             float distance = Vector3.Distance(startPoint, endPoint);
@@ -47,8 +53,9 @@ namespace KidGame.Core
             if (startPoint == null || endPoint == null) return;
             // 设置线的轨迹点数
             lineRenderer.positionCount = resolution;
-            if (points.Length > 0)
+            if (points != null && points.Length > 0)
                 Array.Clear(points, 0, points.Length);
+
             points = new Vector3[resolution];
 
             // 基础高度位置 取连线中点
@@ -73,7 +80,7 @@ namespace KidGame.Core
                     currentWidth = Mathf.Lerp(arrowStartWidth, 0, (t - 0.7f) / 0.3f);
                 }
                 // 抛物线宽度曲线
-                widthCurve.AddKey(t, currentWidth);
+                if(widthCurve != null) widthCurve.AddKey(t, currentWidth);
             }
 
             // 应用轨迹点

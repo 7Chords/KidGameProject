@@ -46,11 +46,32 @@ namespace KidGame.Core
         protected virtual void Update()
         {
             if (!isOnHand) WeaponUseLogic();
-            else SetEndPoint();
+            else
+            {
+                SetStartPoint();
+                SetEndPoint();
+            }
         }
+
+        // 设置抛物线终点
         private void SetEndPoint()
         {
-            lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
+            if(lineRenderScript != null)
+            {
+                Vector3 curVector3 = MouseRaycaster.Instance.GetMousePosi();
+                if(curVector3 != Vector3.zero)
+                {
+                    lineRenderScript.endPoint = curVector3;
+                }
+            }
+        }
+        // 设置抛物线起点
+        private void SetStartPoint()
+        {
+            if (lineRenderScript != null)
+            {
+               lineRenderScript.startPoint = this.transform.position;
+            }
         }
         public virtual void InitWeaponData(WeaponData weaponData)
         {
@@ -59,9 +80,9 @@ namespace KidGame.Core
         protected virtual void InitLineRender()
         {
             // 把曲线脚本挂上
-            lineRenderer = this.AddComponent<LineRenderer>();
+            lineRenderer = GetComponent<LineRenderer>();
             // 把控制曲线的脚本挂上
-            lineRenderScript = this.AddComponent<LineRenderScript>();
+            lineRenderScript = GetComponent<LineRenderScript>();
             lineRenderScript.lineRenderer = lineRenderer;
             lineRenderScript.startPoint = this.transform.position;
             lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();

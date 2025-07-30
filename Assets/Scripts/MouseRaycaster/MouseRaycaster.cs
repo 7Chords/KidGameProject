@@ -1,5 +1,7 @@
+using KidGame.UI.Game;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -31,16 +33,17 @@ namespace KidGame.Core
         public Vector3 GetMousePosi()
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
+            
             RaycastHit hitInfo;
 
             // 发射射线 检测碰撞
             if (Physics.Raycast(ray, out hitInfo, raycastMaxDistance))
             {
+                Debug.DrawLine(this.transform.position,hitInfo.point);
                 // 射线碰撞到了物体 获取碰撞到的交点
                 return hitInfo.point;
             }
-            else return Vector3.negativeInfinity;
+            else return Vector3.zero;
         }
 
     }

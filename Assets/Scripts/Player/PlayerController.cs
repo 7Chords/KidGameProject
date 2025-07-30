@@ -48,6 +48,7 @@ namespace KidGame.Core
         private BuffHandler playerBuffHandler;
 
         public Transform PlaceTrapPoint;
+        private Vector3 SpawnWeaponOffset = new Vector3(0, 1, 0.5f);
         private GameObject curPreviewGO;
         #endregion
 
@@ -447,7 +448,7 @@ namespace KidGame.Core
         public GameObject SpawnWeaponOnHand(WeaponData weaponData, Vector3 position, Quaternion rotation)
         {
 
-            GameObject newWeapon = WeaponFactory.CreateEntity(weaponData, position, this.gameObject.transform);
+            GameObject newWeapon = WeaponFactory.CreateEntity(weaponData, SpawnWeaponOffset, this.gameObject.transform);
             if (newWeapon != null)
             {
                 newWeapon.transform.rotation = rotation;
