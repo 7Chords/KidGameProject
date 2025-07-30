@@ -82,7 +82,7 @@ MonoBehaviour:
   MaterialDataList:
   - id: M001
     materialName: "\u7EF3\u5B50"
-    materialDesc: 
+    materialDesc: 12123
     materialIconPath: 
     rare: 1
     pickSoundName: 

@@ -114,13 +114,6 @@ namespace KidGame.UI.Game
         {
             uiFrame.OpenWindow(ScreenIds.GameFailWindow);
         }
-
-        public void ShowPopItemContainerWindow()
-        {
-            PopItemContainerWindowProperties popItemContainerWindowProperties = new PopItemContainerWindowProperties();
-            uiFrame.OpenWindow(ScreenIds.BackpackWindow);
-            uiFrame.OpenWindow<PopItemContainerWindowProperties>(ScreenIds.PopItemContainerWindow,popItemContainerWindowProperties);
-        }
         
         #endregion
 

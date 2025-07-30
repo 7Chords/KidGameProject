@@ -2,7 +2,6 @@ using KidGame.Interface;
 using KidGame.UI;
 using System.Collections;
 using System.Collections.Generic;
-using KidGame.UI.Game;
 using UnityEngine;
 
 
@@ -26,13 +25,8 @@ namespace KidGame.Core
                 {
                     for (int i = 0; i < item.amount; i++)
                     {
-                        UIController.Instance.ShowPopItemContainerWindow();
-
-
-
-                        //原来的
-                        /*PlayerUtil.Instance.CallPlayerPickItem(item.data.id,UseItemType.Material);
-                        UIHelper.Instance.ShowTipByQueue(new TipInfo("获得了" + item.data.materialName + "×1", gameObject, 0.5f));*/
+                        PlayerUtil.Instance.CallPlayerPickItem(item.data.id,UseItemType.Material);
+                        UIHelper.Instance.ShowTipByQueue(new TipInfo("获得了" + item.data.materialName + "×1", gameObject, 0.5f));
                     }
                 }
                 materialHoldList.Clear();
