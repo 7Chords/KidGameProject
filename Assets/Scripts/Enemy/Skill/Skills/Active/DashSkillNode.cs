@@ -7,9 +7,9 @@ using UnityEngine;
 namespace KidGame.Core
 {
     public class DashSkillNode : BaseEnemyAction {
-        [SerializeField] private DashSkill dashSkill; // 单个技能资产
-        private bool isDashing = false; // 协程状态标记
-        private Coroutine dashCoroutine; // 协程引用
+        [SerializeField] private DashSkill dashSkill; // ???????????
+        private bool isDashing = false; // Э???????
+        private Coroutine dashCoroutine; // Э??????
 
         public override void OnAwake()
         {
@@ -19,57 +19,57 @@ namespace KidGame.Core
 
 
         public override TaskStatus OnUpdate() {
-            // 1. 协程执行中 → 返回Running锁定节点
+            // 1. Э??????? ?? ????Running???????
             if (isDashing)
             {
                 return TaskStatus.Running;
             }
 
-            // 2. 检查技能是否可触发
+            // 2. ??鼼?????????
             if (!dashSkill.CanTrigger())
             {
                 return TaskStatus.Failure;
             }
 
-            // 启动准备与冲刺的完整协程（核心修改）
+            // ????????????????Э???????????
             dashCoroutine = enemy.StartCoroutine(PrepareAndDashCoroutine());
             return TaskStatus.Running;
         }
         
-        // 新增：准备冲刺的完整流程协程
+        // ?????????????????????Э??
         private IEnumerator PrepareAndDashCoroutine()
         {
             isDashing = true;
 
-            // 1. 记录玩家当前位置（锁定冲刺目标）
+            // 1. ????????λ?????????????
             Vector3 recordedPlayerPos = enemy.Player.position;
             enemy.Rb.velocity = Vector3.zero;
             dashSkill.StopNavAgent();
-            // 2. 平滑转向记录的玩家位置
+            // 2. ?????????????λ??
             yield return StartCoroutine(TurnToTarget(recordedPlayerPos));
 
-            // 3. 等待冲刺准备时间（可配置）
+            // 3. ???????????????????
             yield return new WaitForSeconds(dashSkill.prepareTime);
 
-            // 4. 执行冲刺（使用锁定的位置）
+            // 4. ??г????????????λ???
             yield return enemy.StartCoroutine(dashSkill.TriggerCoroutine(recordedPlayerPos));
 
-            // 5. 重置状态
+            // 5. ??????
             isDashing = false;
             dashCoroutine = null;
         }
-        // 新增：平滑转向协程
+        // ????????????Э??
         private IEnumerator TurnToTarget(Vector3 targetPosition)
         {
             Vector3 lookDirection = (targetPosition - enemy.transform.position).normalized;
-            lookDirection.y = 0; // 忽略Y轴，保持平面旋转
+            lookDirection.y = 0; // ????Y????????????
 
-            if (lookDirection.sqrMagnitude < 0.01f) yield break; // 目标过近无需转向
+            if (lookDirection.sqrMagnitude < 0.01f) yield break; // ?????????????
 
             Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
             float rotateSpeed = dashSkill.rotateSpeed;
 
-            // 平滑插值旋转
+            // ?????????
             while (Quaternion.Angle(enemy.transform.rotation, targetRotation) > 10f)
             {
                 enemy.transform.rotation = Quaternion.Lerp(
@@ -79,11 +79,11 @@ namespace KidGame.Core
                 );
                 yield return null;
             }
-            enemy.transform.rotation = targetRotation; // 确保最终旋转到位
+            enemy.transform.rotation = targetRotation; // ????????????λ
         }
         
 
-        // 节点被中断时终止协程（如被更高优先级行为打断）
+        // ????ж?????Э????类????????????????
         public override void OnEnd()
         {
             if (dashCoroutine != null)
@@ -91,7 +91,7 @@ namespace KidGame.Core
                 enemy.StopCoroutine(dashCoroutine);
                 isDashing = false;
                 dashCoroutine = null;
-                dashSkill.StopDash(); // 通知技能终止冲刺
+                dashSkill.StopDash(); // ????????????
             }
         }
     }

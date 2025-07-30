@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Data/SkillData/DashSkill.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/PassiveSkillNode.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/Skills/Active/DashSkillNode.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/Skills/DashSkill.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InteractObject/Item/Furniture/Common/MapFurniture_CommonContainer.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerBag.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Player/State/PlayerMoveState.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/GamePauseWindows/BackpackWindowController.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/GamePlayPanelController.cs" charset="GBK" />
+  </component>
+</project>

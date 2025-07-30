@@ -8,6 +8,11 @@ using TMPro;
 using UnityEngine;
 using Utils;
 
+public class RefreshBackpackSignal : ASignal
+{
+    
+}
+
 public class BackpackWindowController : WindowController
 {
     private UICircularScrollView scrollView;
@@ -32,8 +37,23 @@ public class BackpackWindowController : WindowController
         detailPanel = transform.Find("DetailPanel").gameObject;
         detailText = transform.Find("DetailPanel/DetailText").GetComponent<TextMeshProUGUI>();
         detailPanel.SetActive(false);
+        
+    }
+
+    protected override void AddListeners()
+    {
+        base.AddListeners();
         Signals.Get<ShowItemDetailSignal>().AddListener(OnShowItemDetail);
         Signals.Get<HideItemDetailSignal>().AddListener(OnHideItemDetail);
+        Signals.Get<RefreshBackpackSignal>().AddListener(RefreshLists);
+    }
+
+    protected override void RemoveListeners()
+    {
+        base.RemoveListeners();
+        Signals.Get<ShowItemDetailSignal>().RemoveListener(OnShowItemDetail);
+        Signals.Get<HideItemDetailSignal>().RemoveListener(OnHideItemDetail);
+        Signals.Get<RefreshBackpackSignal>().RemoveListener(RefreshLists);
     }
 
     protected override void OnPropertiesSet()
@@ -51,12 +71,7 @@ public class BackpackWindowController : WindowController
         pocketScrollView.Init(_tempSlotInfos.Count, OnPocketCellUpdate, OnPocketCellClick, null);
     }
     
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        Signals.Get<ShowItemDetailSignal>().RemoveListener(OnShowItemDetail);
-        Signals.Get<HideItemDetailSignal>().RemoveListener(OnHideItemDetail);
-    }
+
     
     protected override void WhileHiding()
     {
