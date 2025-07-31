@@ -22,5 +22,6 @@ namespace KidGame.Core.Data
         public Texture2D texture;
         public List<GridPos> posList;
         public GameObject furniturePrefab;
+        public Vector2Int gridLayout;
     }
 }

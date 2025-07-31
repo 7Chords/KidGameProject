@@ -56,7 +56,7 @@ namespace KidGame.Editor
         private ObjectField LevelResDataField; //关卡资源数据配置
         private ObjectField MapDataField; //关卡资源数据配置
 
-        private LevelResData levelResData;//当前的关卡资源数据
+        private GameLevelData gameLevelData;//当前的关卡资源数据
         private MapData mapData;
 
         private void InitTopMenu()
@@ -65,7 +65,7 @@ namespace KidGame.Editor
             InfoButton.clicked += OnInfoButtonClicked;
 
             LevelResDataField = root.Q<ObjectField>(nameof(LevelResDataField));
-            LevelResDataField.objectType = typeof(LevelResData);
+            LevelResDataField.objectType = typeof(GameLevelData);
             LevelResDataField.RegisterValueChangedCallback(LevelResDataFieldValueChanged);
             LevelResDataField.RegisterCallback<MouseDownEvent>(OnLevelResDataFieldClicked);
 
@@ -83,14 +83,14 @@ namespace KidGame.Editor
 
         private void LevelResDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
         {
-            levelResData = evt.newValue as LevelResData;
+            gameLevelData = evt.newValue as GameLevelData;
             UpdateWorkSpaceView();
         }
         private void OnLevelResDataFieldClicked(MouseDownEvent evt)
         {
-            if (levelResData != null)
+            if (gameLevelData != null)
             {
-                Selection.activeObject = levelResData; //设置Inspector显示
+                Selection.activeObject = gameLevelData; //设置Inspector显示
             }
         }
 
@@ -113,10 +113,10 @@ namespace KidGame.Editor
         /// </summary>
         public void SaveConfig()
         {
-            if (levelResData != null)
+            if (gameLevelData != null)
             {
-                EditorUtility.SetDirty(levelResData);
-                AssetDatabase.SaveAssetIfDirty(levelResData);
+                EditorUtility.SetDirty(gameLevelData);
+                AssetDatabase.SaveAssetIfDirty(gameLevelData);
             }
         }
 

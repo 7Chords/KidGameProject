@@ -6,6 +6,8 @@ namespace KidGame.Core.Data
     [Serializable]
     public class MapFurnitureData
     {
+        public int serialNumber;//序列号 用于和资源配置列表里的家具做对应
+
         public FurnitureData furnitureData;
 
         public List<GridPos> mapPosList;

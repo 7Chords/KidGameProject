@@ -30,7 +30,7 @@ namespace KidGame.Core
                 Object.Destroy(materialObj);
                 return null;
             }
-
+            material.Init(materialData);
             return materialObj;
         }
     }

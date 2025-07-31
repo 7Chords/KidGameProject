@@ -103,7 +103,7 @@ namespace KidGame.Core
         public void InitFirstLevel()
         {
             _currentDay = 1;
-            LevelResManager.Instance.InitLevelRes(_levelDataList[0].levelResData);
+            LevelResManager.Instance.InitLevelRes(_levelDataList[0].f2MMappingList,_levelDataList[0].r2MMappingList);
             StartDayPhase();
         }
 
@@ -117,7 +117,7 @@ namespace KidGame.Core
             }
             
             PlayerSaveData.Instance.AutoSave();
-            LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].levelResData);
+            LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].f2MMappingList,_levelDataList[levelIndex].r2MMappingList);
         }
 
         public void DiscardLevel()
@@ -159,7 +159,7 @@ namespace KidGame.Core
 
         public void StartNightPhase()
         {
-            EnemyManager.Instance.InitEnemy(_levelDataList[levelIndex].enemyDataList, bornPointList);
+            EnemyManager.Instance.InitEnemy(_levelDataList[levelIndex].enemySpawnCfgList);
             
             _currentPhase = LevelPhase.Night;
             _phaseDuration = nightDuration;
