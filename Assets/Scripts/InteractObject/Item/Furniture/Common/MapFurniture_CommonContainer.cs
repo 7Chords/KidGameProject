@@ -26,7 +26,7 @@ namespace KidGame.Core
                 {
                     for (int i = 0; i < item.amount; i++)
                     {
-                        UIController.Instance.ShowPopItemContainerWindow();
+                        UIController.Instance.ShowPopItemContainerWindow(materialHoldList,mapFurnitureData.furnitureData.rowCount,mapFurnitureData.furnitureData.columnCount);
 
 
 
@@ -35,7 +35,7 @@ namespace KidGame.Core
                         UIHelper.Instance.ShowTipByQueue(new TipInfo("»ñµÃÁË" + item.data.materialName + "¡Á1", gameObject, 0.5f));*/
                     }
                 }
-                materialHoldList.Clear();
+                //materialHoldList.Clear();
             }
         }
     }

@@ -24,5 +24,7 @@ namespace KidGame.Core.Data
         public GameObject furniturePrefab;
         public Vector2Int gridLayout;
         public GameObject furnitureContainer;
+        public int rowCount = 2;
+        public int columnCount = 2;
     }
 }

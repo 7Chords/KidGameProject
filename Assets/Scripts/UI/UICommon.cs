@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using KidGame.Core;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -7,14 +8,14 @@ using UnityEngine.UI;
 namespace KidGame.UI
 {
     /// <summary>
-    /// UIÍ¨ÓÃµÄÒ»Ð©·½·¨·â×°
+    /// UIÍ¨ï¿½Ãµï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°
     /// </summary>
     public static class UICommon
     {
         #region RichText
 
         /// <summary>
-        /// Îª¸»ÎÄ±¾×Ö·û´®Ìí¼ÓÑÕÉ«
+        /// Îªï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
         /// </summary>
         /// <param name="txt"></param>
         /// <param name="color"></param>
@@ -22,11 +23,11 @@ namespace KidGame.UI
         public static string AddColorForRichText(string txt, Color color)
         {
             string richTextColor = "#" + ColorToString(color);
-            return string.Format("<color={0}>{1}</color>", richTextColor, txt);//¸»ÎÄ±¾·â×°
+            return string.Format("<color={0}>{1}</color>", richTextColor, txt);//ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½×°
         }
 
         /// <summary>
-        /// Ôö¼ÓÐ±Ìå±êÇ©
+        /// ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ç©
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -36,7 +37,7 @@ namespace KidGame.UI
         }
 
         /// <summary>
-        /// Ìí¼Ó´ÖÌå±êÇ©
+        /// ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ï¿½Ç©
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -49,7 +50,7 @@ namespace KidGame.UI
 
 
         /// <summary>
-        /// Ìí¼ÓÄ³²¿·Ö×Ö·û´®µÄÏìÓ¦·½·¨ ±ÈÈçÃèÊöÖÐµÄbuff ¿ÉÒÔÊó±ê½øµ½buff×Ö·û´®ÉÏ²é¿´ÏêÏ¸ÃèÊö
+        /// ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½buff ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½buffï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ï²é¿´ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         public static void AddEventToStrInText(Text text, string str, EventTriggerType triggerType, UnityAction<BaseEventData> callBack)
         {
@@ -58,32 +59,32 @@ namespace KidGame.UI
             if (tran != null) buttonObj = tran.gameObject;
             if (buttonObj == null)
             {
-                // ´´½¨Í¸Ã÷°´Å¥
+                // ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½Å¥
                 buttonObj = new GameObject("TextStrEventMask");
                 buttonObj.transform.SetParent(text.transform, false);
-                //// Ìí¼ÓÍ¸Ã÷Í¼Ïñ£¨°´Å¥ÐèÒªImage×é¼þ²ÅÄÜ¹¤×÷£©
+                //// ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½Í¼ï¿½ñ£¨°ï¿½Å¥ï¿½ï¿½ÒªImageï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¹ï¿½ï¿½ï¿½ï¿½ï¿½
                 Image image = buttonObj.AddComponent<Image>();
-                image.color = new Color(0, 0, 0, 0); // ÍêÈ«Í¸Ã÷
+                image.color = new Color(0, 0, 0, 0); // ï¿½ï¿½È«Í¸ï¿½ï¿½
             }
 
             AddUIListener(buttonObj, triggerType, callBack);
 
-            // Ç¿ÖÆË¢ÐÂText Generator
+            // Ç¿ï¿½ï¿½Ë¢ï¿½ï¿½Text Generator
             TextGenerator textGen = text.cachedTextGenerator;
             TextGenerationSettings generationSettings = text.GetGenerationSettings(text.rectTransform.rect.size);
             textGen.Populate(text.text, generationSettings);
-            // »ñÈ¡ÎÄ±¾ÖÐÌØ¶¨×Ö·û´®µÄÎ»ÖÃÐÅÏ¢
+            // ï¿½ï¿½È¡ï¿½Ä±ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Ï¢
             int strIndex = text.text.IndexOf(str);
             if (strIndex < 0) return;
 
             Vector2 startPos = textGen.GetCharactersArray()[strIndex].cursorPos;
             Vector2 endPos = textGen.GetCharactersArray()[strIndex + str.Length].cursorPos;
 
-            // ¼ÆËã°´Å¥Î»ÖÃºÍ´óÐ¡
+            // ï¿½ï¿½ï¿½ã°´Å¥Î»ï¿½ÃºÍ´ï¿½Ð¡
             float width = (endPos.x - startPos.x);
-            float height = textGen.fontSizeUsedForBestFit * 1.2f; // ÉÔÎ¢±È×ÖÌå´óÒ»µã
+            float height = textGen.fontSizeUsedForBestFit * 1.2f; // ï¿½ï¿½Î¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 
-            // ÉèÖÃ°´Å¥Î»ÖÃºÍ´óÐ¡
+            // ï¿½ï¿½ï¿½Ã°ï¿½Å¥Î»ï¿½ÃºÍ´ï¿½Ð¡
             RectTransform buttonRect = buttonObj.GetComponent<RectTransform>();
             buttonRect.anchorMin = new Vector2(0, 1);
             buttonRect.anchorMax = new Vector2(0, 1);
@@ -95,7 +96,7 @@ namespace KidGame.UI
 
 
         /// <summary>
-        /// Îª×é¼þÌí¼Ó¼àÌýÊÂ¼þ
+        /// Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="eventTriggerType"></param>
@@ -123,7 +124,7 @@ namespace KidGame.UI
         }
 
         /// <summary>
-        /// ÑÕÉ«×ª×Ö·û´®
+        /// ï¿½ï¿½É«×ªï¿½Ö·ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -135,6 +136,22 @@ namespace KidGame.UI
             int a = Mathf.RoundToInt(color.a * 255.0f);
             string hex = string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
             return hex;
+        }
+
+        /// <summary>
+        /// MaterailItemè½¬ISlotInfo
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="eventTriggerType"></param>
+        /// <param name="callback"></param>
+        public static List<ISlotInfo> MaterialItemsToSlotInfo(IList<MaterialItem> materials)
+        {
+            List<ISlotInfo> result = new List<ISlotInfo>();
+            foreach (var material in materials)
+            {
+                result.Add(new MaterialSlotInfo(material.data,material.amount));
+            }
+            return result;
         }
     }
 }

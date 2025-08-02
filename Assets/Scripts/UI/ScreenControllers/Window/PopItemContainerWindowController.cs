@@ -39,23 +39,39 @@ namespace KidGame.UI
             this.title = title;
         }
     }
+    [Serializable]
     public class PopItemContainerWindowController : WindowController<PopItemContainerWindowProperties>
     {
         private UICircularScrollView scrollView;
+        private RectTransform rectTransform;
         private RectTransform scrollViewRectTransform;
         private RectTransform cellRect;
+        private RectTransform itemContainerRect;
         private float spacing = 10f;
         private TextMeshProUGUI lab_title;
         private Button btn_getAll;
+        public float xspacing = 20f;
+        public float yspacing = 20f;
+
+        protected override void AddListeners()
+        {
+            
+        }
+
+        protected override void RemoveListeners()
+        {
+            
+        }
         protected override void OnPropertiesSet()
         {
             base.OnPropertiesSet();
+            rectTransform = GetComponent<RectTransform>();
             scrollView = transform.Find("ItemContainer/ScrollView").GetComponent<UICircularScrollView>();
             scrollViewRectTransform = scrollView.GetComponent<RectTransform>();
             cellRect = scrollView.m_CellGameObject.GetComponent<RectTransform>();
             lab_title = transform.Find("ItemContainer/lab_title").GetComponent<TextMeshProUGUI>();
             btn_getAll = transform.Find("ItemContainer/btn_getAll").GetComponent<Button>();
-            
+            itemContainerRect = transform.Find("ItemContainer").GetComponent<RectTransform>();
             // 初始化标题
             InitTitle();
             
@@ -99,9 +115,23 @@ namespace KidGame.UI
             float contentHeight = properties.row * cellHeight + (properties.row - 1) * spacing;
             
             // 设置滚动视图大小
+            
             scrollViewRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
+            itemContainerRect.sizeDelta = new Vector2(contentWidth+xspacing, contentHeight+yspacing);
+            rectTransform.sizeDelta = new Vector2(contentWidth+xspacing + 5f, contentHeight+yspacing + 5f);
+            CenterPanel();
         }
-        
+        /// <summary>
+        /// 确保面板居中显示
+        /// </summary>
+        private void CenterPanel()
+        {
+            // 强制刷新布局
+            LayoutRebuilder.ForceRebuildLayoutImmediate(itemContainerRect);
+    
+            
+
+        }
         /// <summary>
         /// 更新容器单元格显示
         /// </summary>
@@ -207,6 +237,8 @@ namespace KidGame.UI
                 btn_getAll.onClick.RemoveListener(OnGetAllClick);
             }
         }
+        
+        
     }
     
 }

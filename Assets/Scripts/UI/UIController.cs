@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KidGame.Core;
 using Utils;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -115,11 +116,15 @@ namespace KidGame.UI.Game
             uiFrame.OpenWindow(ScreenIds.GameFailWindow);
         }
 
-        public void ShowPopItemContainerWindow()
+        public void ShowPopItemContainerWindow(List<MaterialItem> materialHoldList,int rowCount,int columnCount)
         {
             PopItemContainerWindowProperties popItemContainerWindowProperties = new PopItemContainerWindowProperties();
+            
+            popItemContainerWindowProperties.items = UICommon.MaterialItemsToSlotInfo(materialHoldList);
+            popItemContainerWindowProperties.row = rowCount;
+            popItemContainerWindowProperties.column = columnCount;
             uiFrame.OpenWindow(ScreenIds.BackpackWindow);
-            uiFrame.OpenWindow<PopItemContainerWindowProperties>(ScreenIds.PopItemContainerWindow,popItemContainerWindowProperties);
+            uiFrame.OpenWindow(ScreenIds.PopItemContainerWindow,popItemContainerWindowProperties);
         }
         
         #endregion
