@@ -82,6 +82,7 @@ namespace KidGame.Core
 
             //¿ªÆô½»»¥´¥·¢Æ÷
             coll.enabled = true;
+            model.SetActive(true);
         }
 
         public virtual void Discard()
