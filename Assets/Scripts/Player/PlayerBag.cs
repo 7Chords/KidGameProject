@@ -397,5 +397,33 @@ namespace KidGame.Core
         }
         
         #endregion
+        
+        #region 道具栏与家具容器互换位置
+
+        public void MoveItemToItemContainer(int selectIndex,PopItemContainerProp prop)
+        {
+            if (selectIndex < 0 || selectIndex >= BackBag.Count || prop.items.Count >= prop.maxCount)
+                return;
+
+            var item = BackBag[selectIndex];
+            BackBag.RemoveAt(selectIndex);
+            prop.items.Add(item);
+
+            //OnQuickAccessBagUpdated?.Invoke();
+        }
+
+        public void MoveContainerItemToBackBag(int selectIndex,PopItemContainerProp prop)
+        {
+            if (selectIndex < 0 || selectIndex >= prop.maxCount || BackBag.Count >= GlobalValue.BACKPACK_CAPACITY)
+                return;
+            
+            var item = prop.items[selectIndex];
+            prop.items.RemoveAt(selectIndex);
+            BackBag.Add(item);
+
+            //OnQuickAccessBagUpdated?.Invoke();
+        }
+        
+        #endregion
     }
 }

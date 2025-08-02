@@ -58,7 +58,7 @@ public class BackpackPanelController : PanelController
         else
         {
             GameManager.Instance.GamePause();
-            Show(null);
+            Show();
         }
     }
     

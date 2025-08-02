@@ -14,33 +14,34 @@ namespace KidGame.UI
     /// PlayerWindow属性类
     /// </summary>
     [Serializable]
-    public class PopItemContainerWindowProperties : WindowProperties
+    public class PopItemContainerProp : WindowProperties
     {
         public List<ISlotInfo> items;//库存背包
         public int row;
         public int column;
         public string title = String.Empty;
+        public int maxCount => row * column;
 
-        public PopItemContainerWindowProperties()
+        public PopItemContainerProp()
         {
             items = new List<ISlotInfo>();
             row = 2;
             column = 2;
         }
         
-        public PopItemContainerWindowProperties(List<ISlotInfo> items, int row, int column) {
+        public PopItemContainerProp(List<ISlotInfo> items, int row, int column) {
             this.items = items;
             this.row = row;
             this.column = column;
         }
 
-        public PopItemContainerWindowProperties(List<ISlotInfo> items, int row, int column, string title):this(items, row, column)
+        public PopItemContainerProp(List<ISlotInfo> items, int row, int column, string title):this(items, row, column)
         {
             this.title = title;
         }
     }
     [Serializable]
-    public class PopItemContainerWindowController : WindowController<PopItemContainerWindowProperties>
+    public class PopItemContainerWindowController : WindowController<PopItemContainerProp>
     {
         private UICircularScrollView scrollView;
         private RectTransform rectTransform;
@@ -50,8 +51,8 @@ namespace KidGame.UI
         private float spacing = 10f;
         private TextMeshProUGUI lab_title;
         private Button btn_getAll;
-        public float xspacing = 20f;
-        public float yspacing = 20f;
+        public float xspacing = 800f;
+        public float yspacing = 800f;
 
         protected override void AddListeners()
         {
@@ -70,7 +71,6 @@ namespace KidGame.UI
             scrollViewRectTransform = scrollView.GetComponent<RectTransform>();
             cellRect = scrollView.m_CellGameObject.GetComponent<RectTransform>();
             lab_title = transform.Find("ItemContainer/lab_title").GetComponent<TextMeshProUGUI>();
-            btn_getAll = transform.Find("ItemContainer/btn_getAll").GetComponent<Button>();
             itemContainerRect = transform.Find("ItemContainer").GetComponent<RectTransform>();
             // 初始化标题
             InitTitle();
@@ -81,8 +81,6 @@ namespace KidGame.UI
             // 初始化滚动视图
             scrollView.Init(Properties.items.Count, OnContainerCellUpdate, OnContainerCellClick, null);
             
-            // 绑定按钮事件
-            btn_getAll.onClick.AddListener(OnGetAllClick);
             
         }
         /// <summary>
@@ -104,7 +102,7 @@ namespace KidGame.UI
         /// <summary>
         /// 设置滚动视图大小
         /// </summary>
-        public void SetScrollViewSize(PopItemContainerWindowProperties properties)
+        public void SetScrollViewSize(PopItemContainerProp properties)
         {
             if (cellRect == null) return;
             
@@ -118,20 +116,9 @@ namespace KidGame.UI
             
             scrollViewRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
             itemContainerRect.sizeDelta = new Vector2(contentWidth+xspacing, contentHeight+yspacing);
-            rectTransform.sizeDelta = new Vector2(contentWidth+xspacing + 5f, contentHeight+yspacing + 5f);
-            CenterPanel();
+            rectTransform.sizeDelta = new Vector2(contentWidth+xspacing + 300f, contentHeight+yspacing + 180f);
         }
-        /// <summary>
-        /// 确保面板居中显示
-        /// </summary>
-        private void CenterPanel()
-        {
-            // 强制刷新布局
-            LayoutRebuilder.ForceRebuildLayoutImmediate(itemContainerRect);
-    
-            
-
-        }
+        
         /// <summary>
         /// 更新容器单元格显示
         /// </summary>
@@ -152,26 +139,19 @@ namespace KidGame.UI
         /// </summary>
         public void OnContainerCellClick(GameObject cell, int index)
         {
-            if (index < 0 || index >= Properties.items.Count) return;
-            
-            // 获取容器中的物品
-            ISlotInfo containerItem = Properties.items[index];
-            
-            // 从背包中查找可交换的空位或相同类型物品
-            int backpackIndex = FindBackpackSwapIndex(containerItem);
-            
-            if (backpackIndex >= 0)
-            {
-                // 交换物品（调用PlayerBag单例进行数据交换）
-                ISlotInfo backpackItem = PlayerBag.Instance.BackBag[backpackIndex];
-                PlayerBag.Instance.BackBag[backpackIndex] = containerItem;
-                Properties.items[index] = backpackItem;
-                
-                // 刷新UI
-                RefreshContainer();
-                // 通知背包UI刷新
-                Signals.Get<RefreshBackpackSignal>().Dispatch();
-            }
+            if (index-1 < 0 || index-1 >= Properties.items.Count) return;
+            // 原本的道具栏与背包互换代码移动到了playerBag.cs
+            PlayerBag.Instance.MoveItemToItemContainer(index - 1,Properties);
+            RefreshLists();
+            OnHideItemDetail();
+        }
+        private void RefreshLists()
+        {
+            scrollView.ShowList(Properties.items.Count);
+        }
+        private void OnHideItemDetail()
+        {
+           // detailPanel.SetActive(false);
         }
         /// <summary>
         /// 查找背包中可交换的物品索引
@@ -202,7 +182,7 @@ namespace KidGame.UI
         /// <summary>
         /// 一键拿取所有物品
         /// </summary>
-        private void OnGetAllClick()
+        public void UI_OnGetAllClick()
         {
             // 将容器中所有物品移动到背包
             foreach (var item in Properties.items)
@@ -229,15 +209,7 @@ namespace KidGame.UI
             scrollView.ShowList(Properties.items.Count);
         }
 
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            if (btn_getAll != null)
-            {
-                btn_getAll.onClick.RemoveListener(OnGetAllClick);
-            }
-        }
-        
+       
         
     }
     

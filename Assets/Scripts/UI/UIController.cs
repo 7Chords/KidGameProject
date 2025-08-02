@@ -118,13 +118,13 @@ namespace KidGame.UI.Game
 
         public void ShowPopItemContainerWindow(List<MaterialItem> materialHoldList,int rowCount,int columnCount)
         {
-            PopItemContainerWindowProperties popItemContainerWindowProperties = new PopItemContainerWindowProperties();
+            PopItemContainerProp popItemContainerProp = new PopItemContainerProp();
             
-            popItemContainerWindowProperties.items = UICommon.MaterialItemsToSlotInfo(materialHoldList);
-            popItemContainerWindowProperties.row = rowCount;
-            popItemContainerWindowProperties.column = columnCount;
-            uiFrame.OpenWindow(ScreenIds.BackpackWindow);
-            uiFrame.OpenWindow(ScreenIds.PopItemContainerWindow,popItemContainerWindowProperties);
+            popItemContainerProp.items = UICommon.MaterialItemsToSlotInfo(materialHoldList);
+            popItemContainerProp.row = rowCount;
+            popItemContainerProp.column = columnCount;
+            uiFrame.OpenWindow(ScreenIds.BackpackWindow,new BackpackProp(popItemContainerProp.items));
+            uiFrame.OpenWindow(ScreenIds.PopItemContainerWindow,popItemContainerProp);
         }
         
         #endregion

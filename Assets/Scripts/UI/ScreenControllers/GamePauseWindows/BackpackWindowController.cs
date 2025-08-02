@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,19 @@ public class RefreshBackpackSignal : ASignal
 {
     
 }
+[Serializable]
+public class BackpackProp : WindowProperties
+{
+    //移动物品时的对面的物品列表引用
+    private List<ISlotInfo> targetList;
 
-public class BackpackWindowController : WindowController
+    public BackpackProp(List<ISlotInfo> targetList)
+    {
+        hideOnForegroundLost = false;
+        this.targetList = targetList;
+    }
+}
+public class BackpackWindowController : WindowController<BackpackProp>
 {
     private UICircularScrollView scrollView;
     private UICircularScrollView pocketScrollView;
