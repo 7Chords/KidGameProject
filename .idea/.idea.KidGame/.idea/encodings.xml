@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/PassiveSkillNode.cs" charset="GBK" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/Skills/Active/DashSkillNode.cs" charset="GBK" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/Skills/DashSkill.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Game/LevelResManager.cs" charset="GBK" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/InteractObject/Item/Furniture/Common/MapFurniture_CommonContainer.cs" charset="GBK" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs" charset="GBK" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerBag.cs" charset="GBK" />

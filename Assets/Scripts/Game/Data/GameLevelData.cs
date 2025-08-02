@@ -12,7 +12,7 @@ namespace KidGame.Core
         public string materialId;
         public int randomAmount_min;
         public int randomAmount_max;
-        public float spawnChance;//生成的概率
+        public float spawnChance;//锟斤拷锟缴的革拷锟斤拷
     }
 
     [Serializable]
@@ -23,17 +23,17 @@ namespace KidGame.Core
     }
 
     [Serializable]
-    //家具中存在的道具的映射
+    //锟揭撅拷锟叫达拷锟节的碉拷锟竭碉拷映锟斤拷
     public class Furniture2MaterialMapping
     {
-        [HideInInspector] public int serialNumber;//序列号 用于和家具列表的家具做对应
+        [HideInInspector] public int serialNumber;//锟斤拷锟叫猴拷 锟斤拷锟节和家撅拷锟叫憋拷锟侥家撅拷锟斤拷锟斤拷应
         public float gridSpawnMatChance_min;
         public float gridSpawnMatChance_max;
         public List<MaterialResCfg> materialDataList;
     }
 
     [Serializable]
-    //房间中直接可以获取的道具的映射
+    //锟斤拷锟斤拷锟斤拷直锟接匡拷锟皆伙拷取锟侥碉拷锟竭碉拷映锟斤拷
     public class Room2MaterialMapping
     {
         public Vector3 spawnPos;

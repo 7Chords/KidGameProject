@@ -6,11 +6,11 @@ using UnityEngine;
 namespace KidGame.Core
 {
     /// <summary>
-    /// Ò»¾ÖÓÎÏ·ÄÚµÄÒ»¸ö¸ö¹Ø¿¨µÄ¹ÜÀíÆ÷
+    /// Ò»ï¿½ï¿½ï¿½ï¿½Ï·ï¿½Úµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public class GameLevelManager : Singleton<GameLevelManager>
     {
-        #region ¹Ø¿¨½ø¶È
+        #region ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½
 
         private bool _levelStarted;
         public bool levelStarted => _levelStarted;
@@ -20,7 +20,7 @@ namespace KidGame.Core
 
         #endregion
 
-        private float _phaseDuration = 0f; // µ±Ç°½×¶Î×ÜÊ±³¤
+        private float _phaseDuration = 0f; // ï¿½ï¿½Ç°ï¿½×¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 
         private List<GameLevelData> _levelDataList;
 
@@ -28,7 +28,7 @@ namespace KidGame.Core
 
         private int levelIndex;
 
-        #region ÖçÒ¹×´Ì¬
+        #region ï¿½ï¿½Ò¹×´Ì¬
 
         public enum LevelPhase
         {
@@ -40,14 +40,14 @@ namespace KidGame.Core
         private LevelPhase _currentPhase = LevelPhase.Day;
 
         private float _phaseTimer = 0f;
-        private float dayDuration = 10f; // °×Ìì³ÖÐøÊ±¼ä£¨Ãë£©
-        private float nightDuration = 60f; // Ò¹Íí³ÖÐøÊ±¼ä£¨Ãë£©
+        private float dayDuration = 10f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¨ï¿½ë£©
+        private float nightDuration = 60f; // Ò¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¨ï¿½ë£©
         private bool _timerRunning = false;
 
         [SerializeField] private Material skyMaterial;
 
-        private int _totalDays = 3; // ×ÜÌìÊý
-        private int _currentDay = 0; // µ±Ç°ÌìÊý
+        private int _totalDays = 3; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        private int _currentDay = 0; // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
         
         public event Action<LevelPhase, float> OnPhaseTimeUpdated;
 
@@ -97,9 +97,9 @@ namespace KidGame.Core
             }
         }
 
-        #region ¹Ø¿¨Ñ­»·
+        #region ï¿½Ø¿ï¿½Ñ­ï¿½ï¿½
 
-        // ³õÊ¼µÚÒ»¹Ø
+        // ï¿½ï¿½Ê¼ï¿½ï¿½Ò»ï¿½ï¿½
         public void InitFirstLevel()
         {
             _currentDay = 1;
@@ -107,7 +107,7 @@ namespace KidGame.Core
             StartDayPhase();
         }
 
-        // ³õÊ¼»¯ÏÂÒ»¹Ø¿¨£¬ÔÚÕâÀï±£´æ½ø¶È£¬¹©Íæ¼Ò¶Áµµ
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï±£ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½
         public void InitNextLevel()
         {
             levelIndex++;
@@ -137,13 +137,13 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ÖçÒ¹Ñ­»·
+        #region ï¿½ï¿½Ò¹Ñ­ï¿½ï¿½
 
         public void StartDayPhase()
         {
             if (_currentDay > _totalDays)
             {
-                // ËùÓÐÌìÊýÒÑÍê³É
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 GameManager.Instance.FinishGame();
                 return;
             }
@@ -182,7 +182,7 @@ namespace KidGame.Core
             }
             else
             {
-                // ËùÓÐÌìÊýÍê³É
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 GameManager.Instance.FinishGame();
             }
         }
