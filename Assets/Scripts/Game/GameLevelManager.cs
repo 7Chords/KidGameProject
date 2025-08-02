@@ -24,8 +24,6 @@ namespace KidGame.Core
 
         private List<GameLevelData> _levelDataList;
 
-        public List<Transform> bornPointList;
-
         private int levelIndex;
 
         #region ÖçÒ¹×´Ì¬

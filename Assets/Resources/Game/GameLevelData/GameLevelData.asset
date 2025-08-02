@@ -13,5 +13,13 @@ MonoBehaviour:
   m_Name: GameLevelData
   m_EditorClassIdentifier: 
   enemySpawnCfgList: []
-  f2MMappingList: []
+  f2MMappingList:
+  - serialNumber: 0
+    gridSpawnMatChance_min: 0.2
+    gridSpawnMatChance_max: 0.5
+    materialDataList:
+    - materialId: M001
+      randomAmount_min: 2
+      randomAmount_max: 5
+      spawnChance: 0.2
   r2MMappingList: []
