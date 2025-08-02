@@ -1,0 +1,212 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using KidGame.Core;
+using KidGame.UI.Game;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Utils;
+
+namespace KidGame.UI
+{
+    /// <summary>
+    /// PlayerWindow属性类
+    /// </summary>
+    [Serializable]
+    public class PopItemContainerWindowProperties : WindowProperties
+    {
+        public List<ISlotInfo> items;//库存背包
+        public int row;
+        public int column;
+        public string title = String.Empty;
+
+        public PopItemContainerWindowProperties()
+        {
+            items = new List<ISlotInfo>();
+            row = 2;
+            column = 2;
+        }
+        
+        public PopItemContainerWindowProperties(List<ISlotInfo> items, int row, int column) {
+            this.items = items;
+            this.row = row;
+            this.column = column;
+        }
+
+        public PopItemContainerWindowProperties(List<ISlotInfo> items, int row, int column, string title):this(items, row, column)
+        {
+            this.title = title;
+        }
+    }
+    public class PopItemContainerWindowController : WindowController<PopItemContainerWindowProperties>
+    {
+        private UICircularScrollView scrollView;
+        private RectTransform scrollViewRectTransform;
+        private RectTransform cellRect;
+        private float spacing = 10f;
+        private TextMeshProUGUI lab_title;
+        private Button btn_getAll;
+        protected override void OnPropertiesSet()
+        {
+            base.OnPropertiesSet();
+            scrollView = transform.Find("ItemContainer/ScrollView").GetComponent<UICircularScrollView>();
+            scrollViewRectTransform = scrollView.GetComponent<RectTransform>();
+            cellRect = scrollView.m_CellGameObject.GetComponent<RectTransform>();
+            lab_title = transform.Find("ItemContainer/lab_title").GetComponent<TextMeshProUGUI>();
+            btn_getAll = transform.Find("ItemContainer/btn_getAll").GetComponent<Button>();
+            
+            // 初始化标题
+            InitTitle();
+            
+            // 设置滚动视图大小
+            SetScrollViewSize(Properties);
+            
+            // 初始化滚动视图
+            scrollView.Init(Properties.items.Count, OnContainerCellUpdate, OnContainerCellClick, null);
+            
+            // 绑定按钮事件
+            btn_getAll.onClick.AddListener(OnGetAllClick);
+            
+        }
+        /// <summary>
+        /// 初始化标题显示
+        /// </summary>
+        private void InitTitle()
+        {
+            if (!string.IsNullOrEmpty(Properties.title))
+            {
+                lab_title.text = Properties.title;
+                lab_title.gameObject.SetActive(true);
+            }
+            else
+            {
+                lab_title.gameObject.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// 设置滚动视图大小
+        /// </summary>
+        public void SetScrollViewSize(PopItemContainerWindowProperties properties)
+        {
+            if (cellRect == null) return;
+            
+            // 计算滚动视图内容大小（考虑格子大小和间距）
+            float cellWidth = cellRect.rect.width;
+            float cellHeight = cellRect.rect.height;
+            float contentWidth = properties.column * cellWidth + (properties.column - 1) * spacing;
+            float contentHeight = properties.row * cellHeight + (properties.row - 1) * spacing;
+            
+            // 设置滚动视图大小
+            scrollViewRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
+        }
+        
+        /// <summary>
+        /// 更新容器单元格显示
+        /// </summary>
+        public void OnContainerCellUpdate(GameObject cell, int index)
+        {
+            if (index < 0 || index >= Properties.items.Count) return;
+            
+            CellUI cellUI = cell.GetComponent<CellUI>();
+            ISlotInfo slotInfo = Properties.items[index];
+            
+            // 根据物品类型设置单元格显示
+            cellUI.SetUIWithGenericSlot(slotInfo);
+            
+        }
+
+        /// <summary>
+        /// 容器单元格点击事件（与背包交换物品）
+        /// </summary>
+        public void OnContainerCellClick(GameObject cell, int index)
+        {
+            if (index < 0 || index >= Properties.items.Count) return;
+            
+            // 获取容器中的物品
+            ISlotInfo containerItem = Properties.items[index];
+            
+            // 从背包中查找可交换的空位或相同类型物品
+            int backpackIndex = FindBackpackSwapIndex(containerItem);
+            
+            if (backpackIndex >= 0)
+            {
+                // 交换物品（调用PlayerBag单例进行数据交换）
+                ISlotInfo backpackItem = PlayerBag.Instance.BackBag[backpackIndex];
+                PlayerBag.Instance.BackBag[backpackIndex] = containerItem;
+                Properties.items[index] = backpackItem;
+                
+                // 刷新UI
+                RefreshContainer();
+                // 通知背包UI刷新
+                Signals.Get<RefreshBackpackSignal>().Dispatch();
+            }
+        }
+        /// <summary>
+        /// 查找背包中可交换的物品索引
+        /// </summary>
+        private int FindBackpackSwapIndex(ISlotInfo containerItem)
+        {
+            // 1. 优先查找相同类型的物品（可堆叠）
+            for (int i = 0; i < PlayerBag.Instance.BackBag.Count; i++)
+            {
+                ISlotInfo backpackItem = PlayerBag.Instance.BackBag[i];
+                if (backpackItem.ItemData == containerItem.ItemData)
+                {
+                    return i;
+                }
+            }
+            
+            // 2. 查找空槽位
+            for (int i = 0; i < PlayerBag.Instance.BackBag.Count; i++)
+            {
+                if (PlayerBag.Instance.BackBag[i].ItemData == null)
+                {
+                    return i;
+                }
+            }
+            
+            return -1; // 背包已满，无法交换
+        }
+        /// <summary>
+        /// 一键拿取所有物品
+        /// </summary>
+        private void OnGetAllClick()
+        {
+            // 将容器中所有物品移动到背包
+            foreach (var item in Properties.items)
+            {
+                if (item.ItemData != null)
+                {
+                    PlayerBag.Instance.AddItemToCombineBag(item.ItemData.Id, item.ItemData.UseItemType,item.Amount);
+                }
+            }
+            
+            // 清空容器
+            Properties.items.Clear();
+            RefreshContainer();
+            
+            // 通知背包UI刷新
+            Signals.Get<RefreshBackpackSignal>().Dispatch();
+        }
+        
+        /// <summary>
+        /// 刷新容器列表
+        /// </summary>
+        private void RefreshContainer()
+        {
+            scrollView.ShowList(Properties.items.Count);
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (btn_getAll != null)
+            {
+                btn_getAll.onClick.RemoveListener(OnGetAllClick);
+            }
+        }
+    }
+    
+}

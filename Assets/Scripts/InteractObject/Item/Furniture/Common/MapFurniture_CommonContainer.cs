@@ -2,6 +2,7 @@ using KidGame.Interface;
 using KidGame.UI;
 using System.Collections;
 using System.Collections.Generic;
+using KidGame.UI.Game;
 using UnityEngine;
 
 
@@ -10,11 +11,10 @@ namespace KidGame.Core
     /// <summary>
     /// 通用的可以拿东西的家具
     /// </summary>
-    public class MapFurniture_CommonContainer : MapFurniture, IInteractive
+    public class MapFurniture_CommonContainer : MapFurniture, IPickable
     {
 
-
-        public void InteractPositive(GameObject interactor)
+        public virtual void Pick()
         {
             if (materialHoldList == null || materialHoldList.Count == 0)
             {
@@ -22,20 +22,21 @@ namespace KidGame.Core
             }
             else
             {
-                //foreach (var item in materialHoldList)
-                //{
-                //    for (int i = 0; i < item.amount; i++)
-                //    {
-                //        PlayerUtil.Instance.CallPlayerPickItem(item.data.id, UseItemType.Material);
-                //        UIHelper.Instance.ShowTipByQueue(new TipInfo("获得了" + item.data.materialName + "×1", gameObject, 0.5f));
-                //    }
-                //}
-                //materialHoldList.Clear();
+                foreach (var item in materialHoldList)
+                {
+                    for (int i = 0; i < item.amount; i++)
+                    {
+                        UIController.Instance.ShowPopItemContainerWindow();
 
-                //todo：传入materialHoldList打开获取材料面板 rst
+
+
+                        //原来的
+                        /*PlayerUtil.Instance.CallPlayerPickItem(item.data.id,UseItemType.Material);
+                        UIHelper.Instance.ShowTipByQueue(new TipInfo("获得了" + item.data.materialName + "×1", gameObject, 0.5f));*/
+                    }
+                }
+                materialHoldList.Clear();
             }
         }
-        public void InteractNegative(GameObject interactor) { }
-
     }
 }
