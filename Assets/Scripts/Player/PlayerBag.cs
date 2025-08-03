@@ -343,20 +343,23 @@ namespace KidGame.Core
 
         public bool UseWeapon(ISlotInfo slot, Vector3 position, Quaternion rotation)
         {
-
             if (slot is WeaponSlotInfo weaponSlot)
             {
-                //销毁现在的手持武器 并且把player里的那个引用指向空
+                // 销毁现在的手持武器 并且把player里的那个引用指向空
                 PlayerController.Instance.DiscardWeapon();
 
                 GameObject newWeapon = WeaponFactory.CreateEntity(weaponSlot.weaponData, position, this.gameObject.transform);
-                
-                if (newWeapon != null)
+                WeaponBase curWeaponScript = newWeapon.GetComponent<WeaponBase>();
+                // 如果是远程的消耗性物品:
+                if (newWeapon != null
+                    && curWeaponScript.weaponData.weaponType == 1
+                    && curWeaponScript.weaponData.useType == 0)
                 {
-                    //不在手上 区别于选择物品的时候 把这个生成的武器直接开始主要逻辑
-                    newWeapon.GetComponent<WeaponBase>().SetOnHandOrNot(false);
+                    // 不在手上 区别于选择物品的时候 把这个生成的武器直接开始主要逻辑
+                    newWeapon.transform.SetParent(null);
                     newWeapon.transform.rotation = rotation;
                     DeleteItemInCombineBag(slot.ItemData.Id, 1);
+                    curWeaponScript.SetOnHandOrNot(false);
                     return true;
                 }
             }

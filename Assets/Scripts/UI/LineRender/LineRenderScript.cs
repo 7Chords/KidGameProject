@@ -23,14 +23,19 @@ namespace KidGame.Core
         public float arrowStartWidth = 0.05f;     // 后面逐渐减小的宽度
         public float heightFactorLerpMin = 0.9f;
         public float heightFactorLerpMax = 1.2f;
-        public Vector3[] points;
+        private Vector3[] points;
         private Vector3 lastFrameStartPositon;// 上一帧开始位置
         private Vector3 lastFrameEndPositon;// 上一帧结束位置
         #endregion
-        private void Start()
+
+        private void Awake()
         {
+            points = new Vector3[resolution];
             widthCurve = new AnimationCurve();
             DrawParabola();
+        }
+        private void Start()
+        {
         }
 
         private void Update()
@@ -50,13 +55,10 @@ namespace KidGame.Core
             float t = (float)distance / heightHeightFactor;
             t = Mathf.Clamp01(1 - t);
             heightFactor = Mathf.Lerp(heightFactorLerpMin, heightFactorLerpMax, t);
-            if (startPoint == null || endPoint == null) return;
             // 设置线的轨迹点数
             lineRenderer.positionCount = resolution;
             if (points != null && points.Length > 0)
                 Array.Clear(points, 0, points.Length);
-
-            points = new Vector3[resolution];
 
             // 基础高度位置 取连线中点
             Vector3 controlPoint = (startPoint + endPoint) / 2f;
@@ -98,6 +100,15 @@ namespace KidGame.Core
             float tt = t * t;
             float uu = u * u;
             return uu * p0 + 2 * u * t * p1 + tt * p2;
+        }
+
+
+        public Vector3[] GetPoints()
+        {
+            // 返回数组的副本（创建新数组并复制值）
+            Vector3[] copy = new Vector3[points.Length];
+            Array.Copy(points, copy, points.Length);
+            return copy;
         }
     }
 }

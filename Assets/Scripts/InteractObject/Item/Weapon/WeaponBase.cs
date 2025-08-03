@@ -33,14 +33,12 @@ namespace KidGame.Core
 
         protected virtual void Awake()
         {
-            
         }
 
         protected virtual void Start()
         {
             // 生成不在这里做 这里只做逻辑
             self = this.gameObject;
-            InitLineRender();
         }
 
         protected virtual void Update()
@@ -84,7 +82,10 @@ namespace KidGame.Core
             // 把控制曲线的脚本挂上
             lineRenderScript = GetComponent<LineRenderScript>();
             lineRenderScript.lineRenderer = lineRenderer;
-            lineRenderScript.startPoint = this.transform.position;
+            lineRenderScript.startPoint = 
+                PlayerController.Instance.transform.position
+                + PlayerController.Instance.transform.forward;
+            //TODO：在玩家组件上加一个物体 通过这个空物体来设置发射起点,否则有时序问题
             lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
         }
 

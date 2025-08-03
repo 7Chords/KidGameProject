@@ -38,7 +38,9 @@ namespace KidGame.Core
                     canUseItem = player.GetCanPlaceTrap();
                     break;
                 case UseItemType.weapon:
-                    canUseItem = PlayerBag.Instance.UseWeapon(selectedItem, position, rotation);
+                    canUseItem = PlayerBag.Instance.UseWeapon(selectedItem
+                        , PlayerController.Instance.GetWeaponSpawnOffSet()
+                        , rotation);
                     break;
                 case UseItemType.food:
                     canUseItem = PlayerBag.Instance.UseFood(selectedItem, player);

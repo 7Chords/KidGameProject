@@ -407,13 +407,11 @@ namespace KidGame.Core
             }
             else if(slotInfo.ItemData is WeaponData weaponData)
             {
-                // to do: 不要每次都生成一个武器
                 if (currentWeaponData != null && weaponData.id == currentWeaponData.id) return;
                 // 如果不是重复的 销毁现在的 取得新的
                 DiscardWeapon();
                 currentWeapon = SpawnWeaponOnHand(
                     weaponData,
-                    this.transform.position,
                     this.transform.rotation
                     );
                 
@@ -451,14 +449,18 @@ namespace KidGame.Core
         }
 
         //生成在手上的武器 但是不执行逻辑
-        public GameObject SpawnWeaponOnHand(WeaponData weaponData, Vector3 position, Quaternion rotation)
+        public GameObject SpawnWeaponOnHand(WeaponData weaponData, Quaternion rotation)
         {
-
-            GameObject newWeapon = WeaponFactory.CreateEntity(weaponData, SpawnWeaponOffset, this.gameObject.transform);
+            GameObject newWeapon = WeaponFactory.CreateEntity(
+                weaponData
+                , SpawnWeaponOffset
+                , this.transform);
             if (newWeapon != null)
             {
                 newWeapon.transform.rotation = rotation;
             }
+            // 在手上的话 启用渲染
+            newWeapon.GetComponent<LineRenderer>().enabled = true;
             return newWeapon;
         }
 
@@ -591,6 +593,12 @@ namespace KidGame.Core
         {
             if (curPreviewGO == null) return false;
             return curPreviewGO.GetComponentInParent<TrapBase>().CanPlaceTrap;
+        }
+
+
+        public Vector3 GetWeaponSpawnOffSet()
+        {
+            return SpawnWeaponOffset;
         }
     }
 }

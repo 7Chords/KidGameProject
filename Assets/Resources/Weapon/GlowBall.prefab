@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 7249139098678292716}
   - component: {fileID: 4795082152844657261}
   - component: {fileID: 3593232144809600350}
-  - component: {fileID: 909674208339867723}
   - component: {fileID: 3252679261783247009}
-  - component: {fileID: -5374972895344394687}
   - component: {fileID: 2037518860739528474}
+  - component: {fileID: -5374972895344394687}
   m_Layer: 0
   m_Name: GlowBall
   m_TagString: Untagged
@@ -31,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6384504307499303976}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.365193, y: 1.2248725, z: 0.67257315}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87,27 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &909674208339867723
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6384504307499303976}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3252679261783247009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,36 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8614a3dbace40f24e8c4dc31d4d523dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-5374972895344394687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6384504307499303976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e84768381aa12504da34be15885dfdbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 2037518860739528474}
-  startPoint: {x: 0, y: 0, z: 0}
-  endPoint: {x: 0, y: 0, z: 0}
-  heightFactor: 1
-  heightHeightFactor: 20
-  resolution: 50
-  widthCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  currentWidth: 0
-  startWidth: 0.05
-  arrowStartWidth: 0.05
-  heightFactorLerpMin: 0.9
-  heightFactorLerpMax: 1.2
-  points: []
 --- !u!120 &2037518860739528474
 LineRenderer:
   serializedVersion: 2
@@ -254,3 +202,32 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &-5374972895344394687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6384504307499303976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e84768381aa12504da34be15885dfdbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 2037518860739528474}
+  startPoint: {x: 0, y: 0, z: 0}
+  endPoint: {x: 0, y: 0, z: 0}
+  heightFactor: 1
+  heightHeightFactor: 20
+  resolution: 50
+  widthCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  currentWidth: 0
+  startWidth: 0.05
+  arrowStartWidth: 0.05
+  heightFactorLerpMin: 0.9
+  heightFactorLerpMax: 1.2
