@@ -584,7 +584,6 @@ namespace KidGame.Editor
             if (evt.button == 2) //ЪѓБъжаМќ
             {
                 mouseCenterDrag = true;
-                //Debug.Log(mouseCenterDrag);
             }
             else if (evt.button == 0)
             {

@@ -57,6 +57,7 @@ namespace KidGame.Editor
             InitTopMenu();
             InitItemMenu();
             InitWorkSpace();
+            InitF2MConfigSpace();
         }
 
         public void ResetView()
@@ -270,6 +271,9 @@ namespace KidGame.Editor
 
         private float startOffsetX, startOffsetY;
 
+        private int serialNumber;
+
+        private MapFurnitureData curMapFurnitureData;
         private void InitWorkSpace()
         {
             WorkContainer = root.Q<IMGUIContainer>(nameof(WorkContainer));
@@ -332,16 +336,21 @@ namespace KidGame.Editor
             //画数据
             if (mapData != null)
             {
+
                 foreach (var tile in mapData.tileList)
                 {
                     float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
                     float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
                     if ((tile.mapPos.x - offsetGridX) < 0 || (tile.mapPos.y - offsetGridY) < 0) continue;
-                    GUI.color = colorList[(int)tile.roomType];
+
+                    //瓦片画淡一点
+                    GUI.color = new Color(colorList[(int)tile.roomType].r,
+                        colorList[(int)tile.roomType].g,
+                        colorList[(int)tile.roomType].b, 0.5f);
                     GUI.DrawTexture(new Rect((tile.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
                         (tile.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
                         mapEditorConfig.curGridUnitLength,
-                        mapEditorConfig.curGridUnitLength), tile.tileData.texture);
+                        mapEditorConfig.curGridUnitLength), tile.tileData.texture,ScaleMode.ScaleToFit);
                 }
 
                 GUI.color = Color.white;
@@ -380,6 +389,8 @@ namespace KidGame.Editor
                     float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
                     //画墙的图
                     if ((mapXMin - offsetGridX) < 0 || (mapYMin - offsetGridY) < 0) continue;
+                    //墙画淡一点
+                    GUI.color = new Color(1, 1, 1, 0.5f);
                     GUI.DrawTexture(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
                         (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
                         (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength,
@@ -403,7 +414,50 @@ namespace KidGame.Editor
             if (evt.button == 2) //鼠标中键
             {
                 mouseCenterDrag = true;
-                //Debug.Log(mouseCenterDrag);
+            }
+            else if(evt.button == 0)//鼠标左键
+            {
+                if (mapData == null) return;
+                if (gameLevelData == null) return;
+
+                int x = (int)((evt.localMousePosition.x) / mapEditorConfig.curGridUnitLength);
+                int y = (int)((evt.localMousePosition.y) / mapEditorConfig.curGridUnitLength);
+                int mapX = (int)(startOffsetX / mapEditorConfig.curGridUnitLength) + x;
+                int mapY = (int)(startOffsetY / mapEditorConfig.curGridUnitLength) + y;
+                //对于不规整地图视角下的偏移做补正
+                if (evt.localMousePosition.x > (x * mapEditorConfig.curGridUnitLength) +
+                    (mapEditorConfig.curGridUnitLength - startOffsetX % mapEditorConfig.curGridUnitLength)
+                    && evt.localMousePosition.x < ((x + 1) * mapEditorConfig.curGridUnitLength))
+                {
+                    mapX++;
+                }
+
+                if (evt.localMousePosition.y > (y * mapEditorConfig.curGridUnitLength) +
+                    (mapEditorConfig.curGridUnitLength - startOffsetY % mapEditorConfig.curGridUnitLength)
+                    && evt.localMousePosition.y < ((y + 1) * mapEditorConfig.curGridUnitLength))
+                {
+                    mapY++;
+                }
+
+                //没有选中菜单栏的东西 等于是要配置地图上的家具材料列表
+                if(curSelectItem == null)
+                {
+                    GridPos mapPos = new GridPos(mapX, mapY);
+                    for(int i =0;i< mapData.furnitureList.Count;i++)
+                    {
+                        if (mapData.furnitureList[i].mapPosList.Contains(mapPos))
+                        {
+                            curMapFurnitureData = mapData.furnitureList[i];
+                            serialNumber = i;//序列号就是家具在地图数据列表中的索引
+                            break;
+                        }
+                    }
+                    UpdateF2MConfigView();
+                }
+                else
+                {
+                    //todo
+                }
             }
 
             WorkContainer.MarkDirtyLayout();
@@ -449,6 +503,49 @@ namespace KidGame.Editor
             {
                 mouseCenterDrag = false;
             }
+        }
+        #endregion
+
+
+        #region F2M Config Space
+
+        private Label SelectFurnitureLabel;
+        private Label FurnitureGridLabel;
+
+        private Button AddMaterialConfigButton;
+        private Button SaveConfigToListButton;
+
+
+        private void InitF2MConfigSpace()
+        {
+            SelectFurnitureLabel = root.Q<Label>(nameof(SelectFurnitureLabel));
+            FurnitureGridLabel = root.Q<Label>(nameof(FurnitureGridLabel));
+
+            AddMaterialConfigButton = root.Q<Button>(nameof(AddMaterialConfigButton));
+            AddMaterialConfigButton.clicked += OnAddMaterialConfigButtonClicked;
+
+            SaveConfigToListButton = root.Q<Button>(nameof(SaveConfigToListButton));
+            SaveConfigToListButton.clicked += OnSaveConfigToListButtonClicked;
+
+        }
+
+        private void UpdateF2MConfigView()
+        {
+            if (curMapFurnitureData == null) return;
+
+            SelectFurnitureLabel.text = "当前选中的家具：" + curMapFurnitureData.furnitureData.furnitureName;
+            FurnitureGridLabel.text = "该家具的格子数排布：" + curMapFurnitureData.furnitureData.gridLayout.x + "×" + curMapFurnitureData.furnitureData.gridLayout.y;
+
+        }
+
+        private void OnSaveConfigToListButtonClicked()
+        {
+
+        }
+
+        private void OnAddMaterialConfigButtonClicked()
+        {
+
         }
         #endregion
     }
