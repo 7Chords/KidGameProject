@@ -15,6 +15,7 @@
             <ui:FloatField label="家具Y轴旋转(90x)" value="0" name="PlaceRotationField" usage-hints="None" style="width: 115px; -unity-text-align: middle-center; align-items: center; flex-direction: column;" />
             <ui:FloatField label="家具Y轴偏移" value="0" name="PlaceRotationField" usage-hints="None" style="width: 100px; -unity-text-align: middle-center; align-items: center; flex-direction: column;" />
         </ui:VisualElement>
+        <ui:Label tabindex="-1" text="❀" parse-escape-sequences="true" display-tooltip-when-elided="true" />
     </ui:VisualElement>
     <ui:VisualElement name="Content" style="flex-grow: 1; justify-content: flex-start; left: auto; top: auto; align-items: center; height: auto; align-self: auto; width: auto; flex-direction: row; min-height: auto; max-height: none;">
         <ui:VisualElement name="ItemGroup" style="flex-grow: 0; justify-content: flex-start; left: auto; top: auto; align-items: stretch; flex-direction: column; height: 100%; width: 25%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 0; border-bottom-width: 1px; border-left-width: 1px;">
