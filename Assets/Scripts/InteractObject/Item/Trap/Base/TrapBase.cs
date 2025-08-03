@@ -211,6 +211,7 @@ namespace KidGame.Core
                     true,
                     1f);
             }
+            if(Rb) Rb.isKinematic = false;
         }
 
         /// <summary>

@@ -441,6 +441,12 @@ namespace KidGame.Core
 
         private void DestoryCurrentTrapPreview()
         {
+            //在放置陷阱时切换 立刻结束放置状态
+            if (playerState == PlayerState.Use)
+            {
+                ChangeState(PlayerState.Idle);
+                UIHelper.Instance.DestoryCurrentCircleProgress();
+            }
             if (curPreviewGO) Destroy(curPreviewGO);
         }
 
