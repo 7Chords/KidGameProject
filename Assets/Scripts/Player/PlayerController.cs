@@ -67,12 +67,12 @@ namespace KidGame.Core
         
         #region 玩家生命值
 
-        private float currentHealth;
+        private int currentHealth;
         private bool isInvulnerable = false;
-        public float CurrentHealth => currentHealth;
-        public float MaxHealth => PlayerBaseData.Hp;
+        public int CurrentHealth => currentHealth;
+        public int MaxHealth => PlayerBaseData.Hp;
 
-        public event Action<float> OnHealthChanged;
+        public event Action<int> OnHealthChanged;
         public event Action OnPlayerDeath;
 
         #endregion
@@ -475,10 +475,10 @@ namespace KidGame.Core
         {
             if (isInvulnerable) return;
     
-            currentHealth -= damageInfo.damage;
+            currentHealth -= (int)damageInfo.damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
             
-            OnHealthChanged?.Invoke(currentHealth / MaxHealth);
+            OnHealthChanged?.Invoke(currentHealth);
     
             if (currentHealth <= 0)
             {
@@ -527,9 +527,9 @@ namespace KidGame.Core
         /// <param name="healAmount">恢复值</param>
         public void Heal(float healAmount)
         {
-            currentHealth += healAmount;
+            currentHealth += (int)healAmount;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
-            OnHealthChanged?.Invoke(currentHealth / MaxHealth);
+            OnHealthChanged?.Invoke(currentHealth);
         }
 
         public void Dead()
@@ -556,7 +556,7 @@ namespace KidGame.Core
 
                 if (currentStamina >= maxStamina)
                 {
-                    currentHealth = maxStamina;
+                    currentStamina = maxStamina;
                     isRecovering = false;
                 }
             }
