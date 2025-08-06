@@ -48,6 +48,7 @@ namespace KidGame.UI
         private RectTransform scrollViewRectTransform;
         private RectTransform cellRect;
         private RectTransform itemContainerRect;
+        private RectTransform viewPortRect;
         private float spacing = 10f;
         private TextMeshProUGUI lab_title;
         private Button btn_getAll;
@@ -72,6 +73,7 @@ namespace KidGame.UI
             cellRect = scrollView.m_CellGameObject.GetComponent<RectTransform>();
             lab_title = transform.Find("ItemContainer/lab_title").GetComponent<TextMeshProUGUI>();
             itemContainerRect = transform.Find("ItemContainer").GetComponent<RectTransform>();
+            viewPortRect = scrollView.transform.Find("Viewport").GetComponent<RectTransform>();
             // 初始化标题
             InitTitle();
             
@@ -109,12 +111,13 @@ namespace KidGame.UI
             // 计算滚动视图内容大小（考虑格子大小和间距）
             float cellWidth = cellRect.rect.width;
             float cellHeight = cellRect.rect.height;
-            float contentWidth = properties.column * cellWidth + (properties.column - 1) * spacing;
-            float contentHeight = properties.row * cellHeight + (properties.row - 1) * spacing;
+            float contentWidth = properties.column * cellWidth + (properties.column) * spacing + 50f;
+            float contentHeight = properties.row * cellHeight + (properties.row) * spacing;
             
             // 设置滚动视图大小
             
             scrollViewRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
+            viewPortRect.sizeDelta = new Vector2(contentWidth, contentHeight);
             itemContainerRect.sizeDelta = new Vector2(contentWidth+xspacing, contentHeight+yspacing);
             rectTransform.sizeDelta = new Vector2(contentWidth+xspacing + 300f, contentHeight+yspacing + 180f);
         }

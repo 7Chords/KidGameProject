@@ -1327,7 +1327,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7826750544707668366}
-        m_TargetAssemblyTypeName: KidGame.UI.WindowController`1[[KidGame.UI.PopItemContainerWindowProperties,
+        m_TargetAssemblyTypeName: KidGame.UI.WindowController`1[[KidGame.UI.PopItemContainerProp,
           Assembly-CSharp
         m_MethodName: UI_Close
         m_Mode: 1

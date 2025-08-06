@@ -26,7 +26,7 @@ namespace KidGame.Core
                 {
                     for (int i = 0; i < item.amount; i++)
                     {
-                        UIController.Instance.ShowPopItemContainerWindow(materialHoldList,mapFurnitureData.furnitureData.rowCount,mapFurnitureData.furnitureData.columnCount);
+                        UIController.Instance.ShowPopItemContainerWindow(materialHoldList,mapFurnitureData.furnitureData.gridLayout.x,mapFurnitureData.furnitureData.gridLayout.y);
 
 
 
