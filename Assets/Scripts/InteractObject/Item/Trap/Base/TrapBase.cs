@@ -82,6 +82,7 @@ namespace KidGame.Core
 
             //¿ªÆô½»»¥´¥·¢Æ÷
             coll.enabled = true;
+            model.SetActive(true);
         }
 
         public virtual void Discard()
@@ -210,6 +211,7 @@ namespace KidGame.Core
                     true,
                     1f);
             }
+            if(Rb) Rb.isKinematic = false;
         }
 
         /// <summary>

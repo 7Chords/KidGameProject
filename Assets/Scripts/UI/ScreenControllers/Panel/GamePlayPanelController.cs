@@ -19,7 +19,6 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
     [SerializeField] private GameObject healthIconPrefab;
     [SerializeField] private GameObject lostHealthIconPrefab;
     
-    private int maxhealthSlots;
     private List<GameObject> healthIcons = new List<GameObject>();
 
     #endregion
@@ -43,6 +42,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         RegisterEvents();
         InitializeHealthHud();
         InitializeQuickAccessHud();
+
     }
     
     public void Discard()
@@ -103,36 +103,19 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         }
         healthIcons.Clear();
         
-        for (int i = 0; i < maxhealthSlots; i++)
+        for (int i = 0; i < PlayerController.Instance.MaxHealth; i++)
         {
             var icon = Instantiate(healthIconPrefab, healthHudContainer);
             healthIcons.Add(icon);
         }
     }
 
-    private void UpdateHealthBar(float healthPercentage)
+    private void UpdateHealthBar(int currentHealth)
     {
-        Debug.Log(healthPercentage);
         
         if (healthHudContainer == null || healthIconPrefab == null || lostHealthIconPrefab == null) 
             return;
 
-        float maxHealth = PlayerController.Instance.MaxHealth;
-        int currentHealth = Mathf.RoundToInt(maxHealth * healthPercentage);
-
-        while (healthIcons.Count < maxHealth)
-        {
-            var icon = Instantiate(healthIconPrefab, healthHudContainer);
-            healthIcons.Add(icon);
-        }
-
-        while (healthIcons.Count > maxHealth)
-        {
-            var lastIndex = healthIcons.Count - 1;
-            Destroy(healthIcons[lastIndex]);
-            healthIcons.RemoveAt(lastIndex);
-        }
-        
         for (int i = 0; i < healthIcons.Count; i++)
         {
             if (i < currentHealth)

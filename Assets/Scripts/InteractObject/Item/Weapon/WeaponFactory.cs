@@ -11,14 +11,17 @@ namespace KidGame.Core
         public static GameObject CreateEntity(WeaponData weaponData, Vector3 position, Transform parent)
         {
             GameObject weaponPrefab = Resources.Load<GameObject>("Weapon/" + weaponData.name);
-
             if (weaponPrefab == null)
             {
                 Debug.LogWarning($"找不到武器预制体: {weaponData.name}");
                 return null;
             }
             WeaponBase weapon = null;
-            GameObject weaponObj = Object.Instantiate(weaponPrefab, Vector3.zero, Quaternion.identity);
+            GameObject weaponObj = Object.Instantiate(weaponPrefab
+                , position
+                , Quaternion.identity
+                , parent);
+            weaponObj.transform.localPosition = PlayerController.Instance.GetWeaponSpawnOffSet();
             if (weaponObj != null)
                 weapon = weaponObj.GetComponent<WeaponBase>();
             else Debug.LogError("weaponObj == NULL!!!");
@@ -29,10 +32,8 @@ namespace KidGame.Core
                 Object.Destroy(weaponObj);
                 return null;
             }
-
             weapon.InitWeaponData(weaponData);
-            weaponObj.transform.SetParent(parent);
-            weaponObj.transform.transform.localPosition = position;
+            weapon.GetComponent<LineRenderer>().enabled = false;
             weapon.SetOnHandOrNot(true);
             return weaponObj;
         }

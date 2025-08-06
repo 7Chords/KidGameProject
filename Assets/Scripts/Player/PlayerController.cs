@@ -67,12 +67,12 @@ namespace KidGame.Core
         
         #region 玩家生命值
 
-        private float currentHealth;
+        private int currentHealth;
         private bool isInvulnerable = false;
-        public float CurrentHealth => currentHealth;
-        public float MaxHealth => PlayerBaseData.Hp;
+        public int CurrentHealth => currentHealth;
+        public int MaxHealth => PlayerBaseData.Hp;
 
-        public event Action<float> OnHealthChanged;
+        public event Action<int> OnHealthChanged;
         public event Action OnPlayerDeath;
 
         #endregion
@@ -407,13 +407,11 @@ namespace KidGame.Core
             }
             else if(slotInfo.ItemData is WeaponData weaponData)
             {
-                // to do: 不要每次都生成一个武器
                 if (currentWeaponData != null && weaponData.id == currentWeaponData.id) return;
                 // 如果不是重复的 销毁现在的 取得新的
                 DiscardWeapon();
                 currentWeapon = SpawnWeaponOnHand(
                     weaponData,
-                    this.transform.position,
                     this.transform.rotation
                     );
                 
@@ -441,18 +439,28 @@ namespace KidGame.Core
 
         private void DestoryCurrentTrapPreview()
         {
+            //在放置陷阱时切换 立刻结束放置状态
+            if (playerState == PlayerState.Use)
+            {
+                ChangeState(PlayerState.Idle);
+                UIHelper.Instance.DestoryCurrentCircleProgress();
+            }
             if (curPreviewGO) Destroy(curPreviewGO);
         }
 
         //生成在手上的武器 但是不执行逻辑
-        public GameObject SpawnWeaponOnHand(WeaponData weaponData, Vector3 position, Quaternion rotation)
+        public GameObject SpawnWeaponOnHand(WeaponData weaponData, Quaternion rotation)
         {
-
-            GameObject newWeapon = WeaponFactory.CreateEntity(weaponData, SpawnWeaponOffset, this.gameObject.transform);
+            GameObject newWeapon = WeaponFactory.CreateEntity(
+                weaponData
+                , SpawnWeaponOffset
+                , this.transform);
             if (newWeapon != null)
             {
                 newWeapon.transform.rotation = rotation;
             }
+            // 在手上的话 启用渲染
+            newWeapon.GetComponent<LineRenderer>().enabled = true;
             return newWeapon;
         }
 
@@ -467,10 +475,10 @@ namespace KidGame.Core
         {
             if (isInvulnerable) return;
     
-            currentHealth -= damageInfo.damage;
+            currentHealth -= (int)damageInfo.damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
             
-            OnHealthChanged?.Invoke(currentHealth / MaxHealth);
+            OnHealthChanged?.Invoke(currentHealth);
     
             if (currentHealth <= 0)
             {
@@ -519,9 +527,9 @@ namespace KidGame.Core
         /// <param name="healAmount">恢复值</param>
         public void Heal(float healAmount)
         {
-            currentHealth += healAmount;
+            currentHealth += (int)healAmount;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
-            OnHealthChanged?.Invoke(currentHealth / MaxHealth);
+            OnHealthChanged?.Invoke(currentHealth);
         }
 
         public void Dead()
@@ -548,7 +556,7 @@ namespace KidGame.Core
 
                 if (currentStamina >= maxStamina)
                 {
-                    currentHealth = maxStamina;
+                    currentStamina = maxStamina;
                     isRecovering = false;
                 }
             }
@@ -585,6 +593,12 @@ namespace KidGame.Core
         {
             if (curPreviewGO == null) return false;
             return curPreviewGO.GetComponentInParent<TrapBase>().CanPlaceTrap;
+        }
+
+
+        public Vector3 GetWeaponSpawnOffSet()
+        {
+            return SpawnWeaponOffset;
         }
     }
 }

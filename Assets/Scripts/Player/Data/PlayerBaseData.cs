@@ -7,7 +7,7 @@ public class PlayerBaseData : ScriptableObject
 {
     public float WalkSpeed;
     public float RunSpeed;
-    public float Hp;
+    public int Hp;
     public float Sp;
 
     public float DashStaminaOneTime;

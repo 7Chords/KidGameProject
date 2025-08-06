@@ -15,27 +15,30 @@ namespace KidGame.Core
         #region 贝塞尔曲线相关变量
         private Vector3[] bezierPoints; // 贝塞尔曲线点集合
         private int currentPointIndex = 0;
-        private bool isFollowingBezier = false;
-        private float bezierSpeed = 5f; // 贝塞尔曲线移动速度
+        private bool isFollowingBezier = true;
+        private float bezierSpeed = 10f; // 贝塞尔曲线移动速度
         private bool isSimulateEnd = false;
         #endregion
         protected override void Awake()
         {
             // 初始化贝塞尔曲线
-            if (lineRenderScript != null && lineRenderScript.points != null)
-            {
-                bezierPoints = lineRenderScript.points;
-                isFollowingBezier = bezierPoints.Length > 1;
-
-                if (isFollowingBezier)
-                {
-                    transform.position = bezierPoints[0]; // 设置初始位置为第一个点
-                }
-            }
+            this.InitLineRender();
         }
+
         protected override void Start()
         {
             base.Start();
+            if (lineRenderScript != null && lineRenderScript.GetPoints() != null && !isOnHand)
+            {
+                bezierPoints = lineRenderScript.GetPoints();
+                isFollowingBezier = bezierPoints.Length > 1;
+                if (isFollowingBezier)
+                {
+                    transform.position = bezierPoints[0]; // 设置初始位置为第1个点
+                }
+                for (int i = 1; i < bezierPoints.Length; i++)
+                    Debug.Log(bezierPoints[i]);
+            }
         }
         protected override void Update()
         {
@@ -45,6 +48,7 @@ namespace KidGame.Core
             if(isOnHand) SetbezierPoints(bezierPoints);
             else
             {
+                // 进入了这里
                 if (isFollowingBezier && bezierPoints != null && currentPointIndex < bezierPoints.Length)
                 {
                     FollowBezierPath();
@@ -59,10 +63,9 @@ namespace KidGame.Core
         public override void WeaponUseLogic()
         {
             // 如果还没到达终点 不要执行这段代码
-            if (isSimulateEnd) return;
-
+            if (!isSimulateEnd) return;
             // 如果到达目的地了 
-            if(Vector3.Distance(transform.position, lineRenderScript.endPoint) <= 0.05f)
+            if (Vector3.Distance(transform.position, lineRenderScript.endPoint) <= 0.05f)
             {
                 // 半径内的所有碰撞体 是否有敌人
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, checkRadius);
@@ -70,7 +73,7 @@ namespace KidGame.Core
                 foreach (Collider collider in hitColliders)
                 {
                     if (isEnemyHere == true) break;
-                    if (collider.CompareTag("Enemy") && collider)
+                    if (collider.CompareTag("Enemy") && collider != null)
                     {
                         enemyCollider = collider;
                         isEnemyHere = true;
@@ -79,15 +82,16 @@ namespace KidGame.Core
                 }
                 // 如果附近没目标 直接消失 也许应该延时？
                 // 否则吸附上去 持续 X秒 协程计时
-                if (!isEnemyHere || enemyCollider == null) Destroy(gameObject);
+                if (!isEnemyHere || enemyCollider == null)
+                {
+                    Destroy(gameObject);
+                }
                 else
                 {
-                    if(!isStartCoroutine) StartCoroutine(AttachAndDestroySelf());
+                    if (!isStartCoroutine) StartCoroutine(AttachAndDestroySelf());
                 }
-
                 return;
             }
-            // 朝着目标移动
         }
 
         IEnumerator AttachAndDestroySelf()

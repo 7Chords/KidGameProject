@@ -17,8 +17,22 @@ namespace KidGame.Editor
     {
         public static LevelResEditorWindow Instance;
 
+        private LevelResMapEditorConfig mapEditorConfig = new LevelResMapEditorConfig();
+
         public Color unSelectColor = new Color(0.7372549f, 0.7372549f, 0.7372549f, 1);
         public Color selectColor = Color.yellow;
+
+        public static List<Color> colorList = new List<Color>()
+        {
+            MapEditorColorCfg.color_light_green,
+            MapEditorColorCfg.color_light_blue,
+            MapEditorColorCfg.color_red,
+            MapEditorColorCfg.color_purple,
+            MapEditorColorCfg.color_yellow,
+            MapEditorColorCfg.color_brown,
+            MapEditorColorCfg.color_dark_blue,
+            //etc
+        };
 
         [MenuItem("自定义编辑器/关卡配置器")]
         public static void ShowExample()
@@ -42,7 +56,8 @@ namespace KidGame.Editor
 
             InitTopMenu();
             InitItemMenu();
-
+            InitWorkSpace();
+            InitF2MConfigSpace();
         }
 
         public void ResetView()
@@ -131,7 +146,7 @@ namespace KidGame.Editor
         private Label ItemGroupTitle;
 
         private LevelEditorItem curSelectItem;
-        private ItemMenuType itemMenuType;
+        private ResConfigMenuType itemMenuType;
         private int itemMenuIdx;
         private void InitItemMenu()
         {
@@ -144,20 +159,42 @@ namespace KidGame.Editor
 
             ItemGroupTitle = root.Q<Label>(nameof(ItemGroupTitle));
 
+            editorItemList = new List<LevelEditorItem>();
+            SetItemMenu(0);
 
-;
         }
 
         private void OnRightButtonClicked()
         {
-            throw new NotImplementedException();
+            itemMenuIdx = (itemMenuIdx + 1) > 1 ? 0 : itemMenuIdx + 1;
+            itemMenuType = (ResConfigMenuType)itemMenuIdx;
+            SetItemMenu(itemMenuType);
         }
 
         private void OnLeftButtonClicked()
         {
-            throw new NotImplementedException();
+            itemMenuIdx = (itemMenuIdx - 1) < 0 ? 1 : itemMenuIdx - 1;
+            itemMenuType = (ResConfigMenuType)itemMenuIdx;
+            SetItemMenu(itemMenuType);
         }
+        private void SetItemMenu(ResConfigMenuType menuType)
+        {
+            itemMenuType = menuType;
+            switch (itemMenuType)
+            {
+                case ResConfigMenuType.Logic:
+                    ItemGroupTitle.text = "逻辑相关";
+                    break;
+                case ResConfigMenuType.Material:
+                    ItemGroupTitle.text = "材料生成点";
+                    break;
+                default:
+                    break;
+            }
 
+            curSelectItem = null;
+            RefreshItemGroupView();
+        }
         public void SelectOneItem(LevelEditorItem selectItem)
         {
             curSelectItem = selectItem;
@@ -173,6 +210,48 @@ namespace KidGame.Editor
                 }
             }
         }
+
+        private void RefreshItemGroupView()
+        {
+            ClearItemGroupView();
+            if (itemMenuType == ResConfigMenuType.Logic)
+            {
+                //for (int i = 0; i < mapEditorItemGroupConfig.TileList.Count; i++)
+                //{
+                //    MapEditorItem editItem = new MapEditorItem();
+                //    editorItemList.Add(editItem);
+                //    editItem.Init(ItemListView, mapEditorItemGroupConfig.TileList[i].tileName);
+                //}
+            }
+            else if (itemMenuType == ResConfigMenuType.Material)
+            {
+                List<MaterialData> dataList = Resources.Load<kidgame_game_data_config>("ScriptObject/kidgame_game_data_config").MaterialDataList;
+                for (int i = 0; i < dataList.Count; i++)
+                {
+                    LevelEditorItem editItem = new LevelEditorItem();
+                    editorItemList.Add(editItem);
+                    editItem.Init(ItemListView, dataList[i].materialName);
+                }
+            }
+        }
+
+        private void ClearItemGroupView()
+        {
+            if (editorItemList == null)
+            {
+                editorItemList = new List<LevelEditorItem>();
+                return;
+            }
+            foreach (var item in editorItemList)
+            {
+                item.Destory();
+            }
+
+            editorItemList.Clear();
+        }
+
+
+
         public void SetButtonBorderColor(Button btn, Color color)
         {
             btn.style.borderBottomColor = color;
@@ -186,7 +265,285 @@ namespace KidGame.Editor
 
         #region WorkSpace
 
+        private IMGUIContainer WorkContainer;
+
+        private bool mouseCenterDrag;
+
+        private float startOffsetX, startOffsetY;
+
+        private int serialNumber;
+
+        private MapFurnitureData curMapFurnitureData;
+        private void InitWorkSpace()
+        {
+            WorkContainer = root.Q<IMGUIContainer>(nameof(WorkContainer));
+            //IMGUI的绘制函数
+            WorkContainer.onGUIHandler = DrawWorkSpace;
+            WorkContainer.RegisterCallback<WheelEvent>(WorkSpaceWheel);
+            WorkContainer.RegisterCallback<MouseDownEvent>(WorkSpaceMouseDown);
+            WorkContainer.RegisterCallback<MouseMoveEvent>(WorkSpaceMouseMove);
+            WorkContainer.RegisterCallback<MouseUpEvent>(WorkSpaceMouseUp);
+            WorkContainer.RegisterCallback<MouseOutEvent>(WorkSpaceMouseOut);
+        }
+
+        private void WorkSpaceWheel(WheelEvent evt)
+        {
+            int delta = (int)evt.delta.y;
+            mapEditorConfig.curGridUnitLength = Mathf.Clamp(mapEditorConfig.curGridUnitLength - delta
+                , LevelResMapEditorConfig.minGridUnitLength, LevelResMapEditorConfig.maxGridUnitLength);
+            UpdateWorkSpaceView();
+            //Debug.Log(mapEditorConfig.curGridUnitLength);
+        }
+
+
         private void UpdateWorkSpaceView()
+        {
+            if (WorkContainer == null) return;
+            WorkContainer.MarkDirtyLayout(); // 标志为需要重新绘制的
+        }
+
+        private void DrawWorkSpace()
+        {
+            Handles.BeginGUI();
+            Handles.color = Color.white;
+
+            //画网格
+            Rect rect = WorkContainer.contentRect;
+
+            float height = rect.height > LevelResMapEditorConfig.maxMapSizeY ? LevelResMapEditorConfig.maxMapSizeY : rect.height;
+            float width = rect.width > LevelResMapEditorConfig.maxMapSizeX ? LevelResMapEditorConfig.maxMapSizeX : rect.width;
+
+            //画横线
+            float startY = startOffsetY % mapEditorConfig.curGridUnitLength;
+            for (float i = mapEditorConfig.curGridUnitLength - startY;
+                 i <= height;
+                 i += mapEditorConfig.curGridUnitLength)
+            {
+                Handles.DrawLine(new Vector3(0, i),
+                    new Vector3(width, i));
+            }
+
+            //画竖线
+            float startX = startOffsetX % mapEditorConfig.curGridUnitLength;
+            for (float i = mapEditorConfig.curGridUnitLength - startX;
+                 i <= width;
+                 i += mapEditorConfig.curGridUnitLength)
+            {
+                Handles.DrawLine(new Vector3(i, 0),
+                    new Vector3(i, height));
+            }
+
+            //画数据
+            if (mapData != null)
+            {
+
+                foreach (var tile in mapData.tileList)
+                {
+                    float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
+                    float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
+                    if ((tile.mapPos.x - offsetGridX) < 0 || (tile.mapPos.y - offsetGridY) < 0) continue;
+
+                    //瓦片画淡一点
+                    GUI.color = new Color(colorList[(int)tile.roomType].r,
+                        colorList[(int)tile.roomType].g,
+                        colorList[(int)tile.roomType].b, 0.5f);
+                    GUI.DrawTexture(new Rect((tile.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                        (tile.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                        mapEditorConfig.curGridUnitLength,
+                        mapEditorConfig.curGridUnitLength), tile.tileData.texture,ScaleMode.ScaleToFit);
+                }
+
+                GUI.color = Color.white;
+                foreach (var furniture in mapData.furnitureList)
+                {
+                    int mapXMin = 999, mapXMax = -1, mapYMin = 999, mapYMax = -1;
+                    foreach (var pos in furniture.mapPosList)
+                    {
+                        if (pos.x < mapXMin) mapXMin = pos.x;
+                        if (pos.x > mapXMax) mapXMax = pos.x;
+                        if (pos.y < mapYMin) mapYMin = pos.y;
+                        if (pos.y > mapYMax) mapYMax = pos.y;
+                    }
+
+                    float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
+                    float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
+                    if ((mapXMin - offsetGridX) < 0 || (mapYMin - offsetGridY) < 0) continue;
+                    GUI.DrawTexture(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                        (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                        (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength,
+                        (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength), furniture.furnitureData.texture);
+                }
+
+                foreach (var wall in mapData.wallList)
+                {
+                    int mapXMin = 999, mapXMax = -1, mapYMin = 999, mapYMax = -1;
+                    foreach (var pos in wall.mapPosList)
+                    {
+                        if (pos.x < mapXMin) mapXMin = pos.x;
+                        if (pos.x > mapXMax) mapXMax = pos.x;
+                        if (pos.y < mapYMin) mapYMin = pos.y;
+                        if (pos.y > mapYMax) mapYMax = pos.y;
+                    }
+
+                    float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
+                    float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
+                    //画墙的图
+                    if ((mapXMin - offsetGridX) < 0 || (mapYMin - offsetGridY) < 0) continue;
+                    //墙画淡一点
+                    GUI.color = new Color(1, 1, 1, 0.5f);
+                    GUI.DrawTexture(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                        (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                        (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength,
+                        (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength), wall.wallData.texture);
+                    //画墙的数量
+                    GUIStyle labelStyle = new GUIStyle();
+                    labelStyle.fontSize = 30 * (mapEditorConfig.curGridUnitLength / MapEditorConfig.maxGridUnitLength);
+                    GUI.Label(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
+                        (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                        mapEditorConfig.curGridUnitLength,
+                        mapEditorConfig.curGridUnitLength), wall.stackLayer.ToString(), labelStyle);
+                }
+            }
+
+
+            Handles.EndGUI();
+        }
+
+        private void WorkSpaceMouseDown(MouseDownEvent evt)
+        {
+            if (evt.button == 2) //鼠标中键
+            {
+                mouseCenterDrag = true;
+            }
+            else if(evt.button == 0)//鼠标左键
+            {
+                if (mapData == null) return;
+                if (gameLevelData == null) return;
+
+                int x = (int)((evt.localMousePosition.x) / mapEditorConfig.curGridUnitLength);
+                int y = (int)((evt.localMousePosition.y) / mapEditorConfig.curGridUnitLength);
+                int mapX = (int)(startOffsetX / mapEditorConfig.curGridUnitLength) + x;
+                int mapY = (int)(startOffsetY / mapEditorConfig.curGridUnitLength) + y;
+                //对于不规整地图视角下的偏移做补正
+                if (evt.localMousePosition.x > (x * mapEditorConfig.curGridUnitLength) +
+                    (mapEditorConfig.curGridUnitLength - startOffsetX % mapEditorConfig.curGridUnitLength)
+                    && evt.localMousePosition.x < ((x + 1) * mapEditorConfig.curGridUnitLength))
+                {
+                    mapX++;
+                }
+
+                if (evt.localMousePosition.y > (y * mapEditorConfig.curGridUnitLength) +
+                    (mapEditorConfig.curGridUnitLength - startOffsetY % mapEditorConfig.curGridUnitLength)
+                    && evt.localMousePosition.y < ((y + 1) * mapEditorConfig.curGridUnitLength))
+                {
+                    mapY++;
+                }
+
+                //没有选中菜单栏的东西 等于是要配置地图上的家具材料列表
+                if(curSelectItem == null)
+                {
+                    GridPos mapPos = new GridPos(mapX, mapY);
+                    for(int i =0;i< mapData.furnitureList.Count;i++)
+                    {
+                        if (mapData.furnitureList[i].mapPosList.Contains(mapPos))
+                        {
+                            curMapFurnitureData = mapData.furnitureList[i];
+                            serialNumber = i;//序列号就是家具在地图数据列表中的索引
+                            break;
+                        }
+                    }
+                    UpdateF2MConfigView();
+                }
+                else
+                {
+                    //todo
+                }
+            }
+
+            WorkContainer.MarkDirtyLayout();
+        }
+
+        private void WorkSpaceMouseMove(MouseMoveEvent evt)
+        {
+            if (mouseCenterDrag)
+            {
+                float height = WorkContainer.contentRect.height > LevelResMapEditorConfig.maxMapSizeY
+                    ? LevelResMapEditorConfig.maxMapSizeY
+                    : WorkContainer.contentRect.height;
+                float width = WorkContainer.contentRect.width > LevelResMapEditorConfig.maxMapSizeX
+                    ? LevelResMapEditorConfig.maxMapSizeX
+                    : WorkContainer.contentRect.width;
+                float maxHeight = mapEditorConfig.curGridUnitLength *
+                                  (LevelResMapEditorConfig.maxMapSizeY / LevelResMapEditorConfig.minGridUnitLength);
+                float maxWidth = mapEditorConfig.curGridUnitLength *
+                                 (LevelResMapEditorConfig.maxMapSizeX / LevelResMapEditorConfig.minGridUnitLength);
+                //Debug.Log(evt.mouseDelta);
+                //Debug.Log(maxWidth - width);
+                startOffsetX = Mathf.Clamp(startOffsetX - evt.mouseDelta.x, 0, maxWidth - width);
+                startOffsetY = Mathf.Clamp(startOffsetY - evt.mouseDelta.y, 0, maxHeight - height);
+                //Debug.Log(startOffsetX + "," + startOffsetY);
+                UpdateWorkSpaceView();
+            }
+        }
+
+        private void WorkSpaceMouseUp(MouseUpEvent evt)
+        {
+            if (evt.button == 2)
+            {
+                if (mouseCenterDrag)
+                {
+                    mouseCenterDrag = false;
+                }
+            }
+        }
+
+        private void WorkSpaceMouseOut(MouseOutEvent evt)
+        {
+            if (mouseCenterDrag)
+            {
+                mouseCenterDrag = false;
+            }
+        }
+        #endregion
+
+
+        #region F2M Config Space
+
+        private Label SelectFurnitureLabel;
+        private Label FurnitureGridLabel;
+
+        private Button AddMaterialConfigButton;
+        private Button SaveConfigToListButton;
+
+
+        private void InitF2MConfigSpace()
+        {
+            SelectFurnitureLabel = root.Q<Label>(nameof(SelectFurnitureLabel));
+            FurnitureGridLabel = root.Q<Label>(nameof(FurnitureGridLabel));
+
+            AddMaterialConfigButton = root.Q<Button>(nameof(AddMaterialConfigButton));
+            AddMaterialConfigButton.clicked += OnAddMaterialConfigButtonClicked;
+
+            SaveConfigToListButton = root.Q<Button>(nameof(SaveConfigToListButton));
+            SaveConfigToListButton.clicked += OnSaveConfigToListButtonClicked;
+
+        }
+
+        private void UpdateF2MConfigView()
+        {
+            if (curMapFurnitureData == null) return;
+
+            SelectFurnitureLabel.text = "当前选中的家具：" + curMapFurnitureData.furnitureData.furnitureName;
+            FurnitureGridLabel.text = "该家具的格子数排布：" + curMapFurnitureData.furnitureData.gridLayout.x + "×" + curMapFurnitureData.furnitureData.gridLayout.y;
+
+        }
+
+        private void OnSaveConfigToListButtonClicked()
+        {
+
+        }
+
+        private void OnAddMaterialConfigButtonClicked()
         {
 
         }
@@ -197,5 +554,15 @@ namespace KidGame.Editor
     {
         Material = 0,
         Logic = 1,//逻辑点配置，如敌人生成位置
+    }
+
+    public class LevelResMapEditorConfig
+    {
+        public const int standardGridUnitLength = 40; // 标准网格单位边长
+        public const int maxGridUnitLength = 60; //  最大网格单位边长
+        public const int minGridUnitLength = 20; //  最小网格单位边长
+        public const int maxMapSizeX = 900;
+        public const int maxMapSizeY = 600;
+        public int curGridUnitLength = 40; //  当前网格单位边长
     }
 }
