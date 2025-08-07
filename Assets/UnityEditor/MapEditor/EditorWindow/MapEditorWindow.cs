@@ -19,9 +19,6 @@ namespace KidGame.Editor
         public Color unSelectColor = new Color(0.7372549f, 0.7372549f, 0.7372549f, 1);
         public Color selectColor = Color.yellow;
 
-        private Stack<MapData> historyStack = new Stack<MapData>();
-        private const int maxHistorySteps = 20; // 最大撤销步数
-
         public static List<Color> colorList = new List<Color>()
         {
             MapEditorColorCfg.color_light_green,
@@ -62,28 +59,13 @@ namespace KidGame.Editor
 
             ResetView();
         }
-        //private void OnKeyDown(KeyDownEvent evt)
-        //{
-        //    if (evt.keyCode == KeyCode.Z && evt.ctrlKey)
-        //    {
-        //        Undo();
-        //        evt.StopPropagation();
-        //    }
-        //}
+
         public void ResetView()
         {
             MapData tmpMapData = mapData;
             MapDataField.value = null;
             MapDataField.value = tmpMapData;
 
-            // 清空历史记录
-            historyStack.Clear();
-
-            //// 如果有地图数据，保存初始状态
-            //if (mapData != null)
-            //{
-            //    SaveToHistory();
-            //}
         }
 
 
@@ -804,85 +786,6 @@ namespace KidGame.Editor
         }
 
         #endregion
-
-
-        //#region 撤销(Ctrl+Z)
-        //private void SaveToHistory()
-        //{
-        //    if (mapData == null) return;
-
-        //    // 深拷贝当前地图数据
-        //    MapData copy = new MapData();
-        //    copy.tileList = new List<MapTileData>(mapData.tileList.Select(t => new MapTileData()
-        //    {
-        //        tileData = t.tileData,
-        //        mapPos = t.mapPos,
-        //        roomType = t.roomType
-        //    }));
-
-        //    copy.furnitureList = new List<MapFurnitureData>(mapData.furnitureList.Select(f => new MapFurnitureData()
-        //    {
-        //        furnitureData = f.furnitureData,
-        //        mapPosList = new List<GridPos>(f.mapPosList),
-        //        roomType = f.roomType,
-        //        rotation = f.rotation
-        //    }));
-
-        //    copy.wallList = new List<MapWallData>(mapData.wallList.Select(w => new MapWallData()
-        //    {
-        //        wallData = w.wallData,
-        //        mapPosList = new List<GridPos>(w.mapPosList),
-        //        stackLayer = w.stackLayer
-        //    }));
-
-        //    // 保存到历史记录
-        //    historyStack.Push(copy);
-
-        //    // 限制历史记录数量
-        //    if (historyStack.Count > maxHistorySteps)
-        //    {
-        //        // 移除最旧的历史记录
-        //        var list = historyStack.ToList();
-        //        list.RemoveAt(list.Count - 1);
-        //        historyStack = new Stack<MapData>(list);
-        //    }
-        //}
-
-        //private void Undo()
-        //{
-        //    if (historyStack.Count == 0 || mapData == null) return;
-
-        //    MapData previousState = historyStack.Pop();
-
-        //    // 恢复地图数据
-        //    mapData.tileList = new List<MapTileData>(previousState.tileList.Select(t => new MapTileData()
-        //    {
-        //        tileData = t.tileData,
-        //        mapPos = t.mapPos,
-        //        roomType = t.roomType
-        //    }));
-
-        //    mapData.furnitureList = new List<MapFurnitureData>(previousState.furnitureList.Select(f => new MapFurnitureData()
-        //    {
-        //        furnitureData = f.furnitureData,
-        //        mapPosList = new List<GridPos>(f.mapPosList),
-        //        roomType = f.roomType,
-        //        rotation = f.rotation
-        //    }));
-
-        //    mapData.wallList = new List<MapWallData>(previousState.wallList.Select(w => new MapWallData()
-        //    {
-        //        wallData = w.wallData,
-        //        mapPosList = new List<GridPos>(w.mapPosList),
-        //        stackLayer = w.stackLayer
-        //    }));
-
-        //    SaveConfig();
-        //    UpdateWorkSpaceView();
-        //}
-
-
-        //#endregion
     }
 
     public enum ItemMenuType
