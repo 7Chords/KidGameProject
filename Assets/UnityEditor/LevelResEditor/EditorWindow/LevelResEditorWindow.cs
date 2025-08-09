@@ -307,104 +307,159 @@ namespace KidGame.Editor
             Handles.BeginGUI();
             Handles.color = Color.white;
 
-            //画网格
+            // 获取工作区矩形
             Rect rect = WorkContainer.contentRect;
 
-            float height = rect.height > LevelResMapEditorConfig.maxMapSizeY ? LevelResMapEditorConfig.maxMapSizeY : rect.height;
-            float width = rect.width > LevelResMapEditorConfig.maxMapSizeX ? LevelResMapEditorConfig.maxMapSizeX : rect.width;
+            // 计算实际绘制范围（不超过最大地图尺寸）
+            float visibleHeight = Mathf.Min(rect.height, LevelResMapEditorConfig.maxMapSizeY);
+            float visibleWidth = Mathf.Min(rect.width, LevelResMapEditorConfig.maxMapSizeX);
 
-            //画横线
+            // 计算当前可见区域的网格坐标范围（考虑滚动偏移）
+            float startGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
+            float startGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
+            float endGridX = startGridX + (visibleWidth / mapEditorConfig.curGridUnitLength);
+            float endGridY = startGridY + (visibleHeight / mapEditorConfig.curGridUnitLength);
+
+            // 画网格横线
             float startY = startOffsetY % mapEditorConfig.curGridUnitLength;
-            for (float i = mapEditorConfig.curGridUnitLength - startY;
-                 i <= height;
-                 i += mapEditorConfig.curGridUnitLength)
+            for (float y = mapEditorConfig.curGridUnitLength - startY; y <= visibleHeight; y += mapEditorConfig.curGridUnitLength)
             {
-                Handles.DrawLine(new Vector3(0, i),
-                    new Vector3(width, i));
+                Handles.DrawLine(new Vector3(0, y), new Vector3(visibleWidth, y));
             }
 
-            //画竖线
+            // 画网格竖线
             float startX = startOffsetX % mapEditorConfig.curGridUnitLength;
-            for (float i = mapEditorConfig.curGridUnitLength - startX;
-                 i <= width;
-                 i += mapEditorConfig.curGridUnitLength)
+            for (float x = mapEditorConfig.curGridUnitLength - startX; x <= visibleWidth; x += mapEditorConfig.curGridUnitLength)
             {
-                Handles.DrawLine(new Vector3(i, 0),
-                    new Vector3(i, height));
+                Handles.DrawLine(new Vector3(x, 0), new Vector3(x, visibleHeight));
             }
 
-            //画数据
+            // 画数据
             if (mapData != null)
             {
-
+                // 绘制瓦片
                 foreach (var tile in mapData.tileList)
                 {
-                    float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
-                    float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
-                    if ((tile.mapPos.x - offsetGridX) < 0 || (tile.mapPos.y - offsetGridY) < 0) continue;
+                    // 检查瓦片是否在可见范围内
+                    if (tile.mapPos.x < startGridX || tile.mapPos.x > endGridX ||
+                        tile.mapPos.y < startGridY || tile.mapPos.y > endGridY)
+                    {
+                        continue;
+                    }
 
-                    //瓦片画淡一点
+                    // 计算屏幕坐标
+                    float screenX = (tile.mapPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
+                    float screenY = (tile.mapPos.y - startGridY) * mapEditorConfig.curGridUnitLength;
+
+                    // 瓦片画淡一点
                     GUI.color = new Color(colorList[(int)tile.roomType].r,
                         colorList[(int)tile.roomType].g,
                         colorList[(int)tile.roomType].b, 0.5f);
-                    GUI.DrawTexture(new Rect((tile.mapPos.x - offsetGridX) * mapEditorConfig.curGridUnitLength,
-                        (tile.mapPos.y - offsetGridY) * mapEditorConfig.curGridUnitLength,
+                    GUI.DrawTexture(new Rect(screenX, screenY,
                         mapEditorConfig.curGridUnitLength,
-                        mapEditorConfig.curGridUnitLength), tile.tileData.texture,ScaleMode.ScaleToFit);
+                        mapEditorConfig.curGridUnitLength),
+                        tile.tileData.texture, ScaleMode.ScaleToFit);
                 }
 
                 GUI.color = Color.white;
+
+                // 绘制家具
                 foreach (var furniture in mapData.furnitureList)
                 {
                     int mapXMin = 999, mapXMax = -1, mapYMin = 999, mapYMax = -1;
+                    bool isVisible = false;
+
+                    // 计算家具的边界并检查可见性
                     foreach (var pos in furniture.mapPosList)
                     {
                         if (pos.x < mapXMin) mapXMin = pos.x;
                         if (pos.x > mapXMax) mapXMax = pos.x;
                         if (pos.y < mapYMin) mapYMin = pos.y;
                         if (pos.y > mapYMax) mapYMax = pos.y;
+
+                        // 检查是否至少有一个点在可见范围内
+                        if (pos.x >= startGridX && pos.x <= endGridX &&
+                            pos.y >= startGridY && pos.y <= endGridY)
+                        {
+                            isVisible = true;
+                        }
                     }
 
-                    float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
-                    float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
-                    if ((mapXMin - offsetGridX) < 0 || (mapYMin - offsetGridY) < 0) continue;
-                    GUI.DrawTexture(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
-                        (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
-                        (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength,
-                        (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength), furniture.furnitureData.texture);
+                    // 如果完全不可见则跳过
+                    if (!isVisible) continue;
+
+                    // 计算屏幕坐标
+                    float screenX = (mapXMin - startGridX) * mapEditorConfig.curGridUnitLength;
+                    float screenY = (mapYMin - startGridY) * mapEditorConfig.curGridUnitLength;
+                    float width = (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength;
+                    float height = (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength;
+
+                    // 确保不会绘制到可见区域之外
+                    if (screenX + width < 0 || screenX > visibleWidth ||
+                        screenY + height < 0 || screenY > visibleHeight)
+                    {
+                        continue;
+                    }
+
+                    GUI.DrawTexture(new Rect(screenX, screenY, width, height),
+                        furniture.furnitureData.texture);
                 }
 
+                // 绘制墙
                 foreach (var wall in mapData.wallList)
                 {
                     int mapXMin = 999, mapXMax = -1, mapYMin = 999, mapYMax = -1;
+                    bool isVisible = false;
+
+                    // 计算墙的边界并检查可见性
                     foreach (var pos in wall.mapPosList)
                     {
                         if (pos.x < mapXMin) mapXMin = pos.x;
                         if (pos.x > mapXMax) mapXMax = pos.x;
                         if (pos.y < mapYMin) mapYMin = pos.y;
                         if (pos.y > mapYMax) mapYMax = pos.y;
+
+                        // 检查是否至少有一个点在可见范围内
+                        if (pos.x >= startGridX && pos.x <= endGridX &&
+                            pos.y >= startGridY && pos.y <= endGridY)
+                        {
+                            isVisible = true;
+                        }
                     }
 
-                    float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
-                    float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
-                    //画墙的图
-                    if ((mapXMin - offsetGridX) < 0 || (mapYMin - offsetGridY) < 0) continue;
-                    //墙画淡一点
+                    // 如果完全不可见则跳过
+                    if (!isVisible) continue;
+
+                    // 计算屏幕坐标
+                    float screenX = (mapXMin - startGridX) * mapEditorConfig.curGridUnitLength;
+                    float screenY = (mapYMin - startGridY) * mapEditorConfig.curGridUnitLength;
+                    float width = (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength;
+                    float height = (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength;
+
+                    // 确保不会绘制到可见区域之外
+                    if (screenX + width < 0 || screenX > visibleWidth ||
+                        screenY + height < 0 || screenY > visibleHeight)
+                    {
+                        continue;
+                    }
+
+                    // 墙画淡一点
                     GUI.color = new Color(1, 1, 1, 0.5f);
-                    GUI.DrawTexture(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
-                        (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
-                        (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength,
-                        (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength), wall.wallData.texture);
-                    //画墙的数量
-                    GUIStyle labelStyle = new GUIStyle();
-                    labelStyle.fontSize = 30 * (mapEditorConfig.curGridUnitLength / MapEditorConfig.maxGridUnitLength);
-                    GUI.Label(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
-                        (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
-                        mapEditorConfig.curGridUnitLength,
-                        mapEditorConfig.curGridUnitLength), wall.stackLayer.ToString(), labelStyle);
+                    GUI.DrawTexture(new Rect(screenX, screenY, width, height),
+                        wall.wallData.texture);
+
+                    // 画墙的数量
+                    if (mapEditorConfig.curGridUnitLength >= MapEditorConfig.maxGridUnitLength * 0.5f)
+                    {
+                        GUIStyle labelStyle = new GUIStyle();
+                        labelStyle.fontSize = (int)(30 * (mapEditorConfig.curGridUnitLength / MapEditorConfig.maxGridUnitLength));
+                        GUI.Label(new Rect(screenX, screenY,
+                            mapEditorConfig.curGridUnitLength,
+                            mapEditorConfig.curGridUnitLength),
+                            wall.stackLayer.ToString(), labelStyle);
+                    }
                 }
             }
-
 
             Handles.EndGUI();
         }
@@ -515,6 +570,13 @@ namespace KidGame.Editor
         private Button AddMaterialConfigButton;
         private Button SaveConfigToListButton;
 
+        private VisualElement F2MConfigGroup;
+        private VisualElement R2MConfigGroup;
+
+
+        private VisualElement ConfigItemListView;
+
+        private List<F2MConfigItem> f2mConfigItemList;
 
         private void InitF2MConfigSpace()
         {
@@ -527,6 +589,9 @@ namespace KidGame.Editor
             SaveConfigToListButton = root.Q<Button>(nameof(SaveConfigToListButton));
             SaveConfigToListButton.clicked += OnSaveConfigToListButtonClicked;
 
+            ConfigItemListView = root.Q<VisualElement>(nameof(ConfigItemListView));
+
+            f2mConfigItemList = new List<F2MConfigItem>();
         }
 
         private void UpdateF2MConfigView()
@@ -545,8 +610,17 @@ namespace KidGame.Editor
 
         private void OnAddMaterialConfigButtonClicked()
         {
+            if (f2mConfigItemList == null) return;
+            if (curMapFurnitureData == null) return;
 
+            F2MConfigItem configItem = new F2MConfigItem();
+            f2mConfigItemList.Add(configItem);
+            configItem.Init(ConfigItemListView, ()=>
+            {
+                f2mConfigItemList.Remove(configItem);
+            });
         }
+
         #endregion
     }
 

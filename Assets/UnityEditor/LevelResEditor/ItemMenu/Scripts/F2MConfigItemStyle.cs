@@ -8,6 +8,7 @@ namespace KidGame.Editor
         private const string levelEditorF2MConfigItemAssetPath = "Assets/UnityEditor/LevelResEditor/ItemMenu/Assets/F2MConfigItem.uxml";
         private VisualElement selfParent;
         private VisualElement selfRoot;
+        public VisualElement SelfRoot => selfRoot;
 
         public void Init(VisualElement parent)
         {

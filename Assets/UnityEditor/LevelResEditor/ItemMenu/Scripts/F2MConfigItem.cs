@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.UIElements;
 
 namespace KidGame.Editor
@@ -11,13 +12,16 @@ namespace KidGame.Editor
         private FloatField MaterialAmountMaxField;
         private FloatField MaterialAmountMinField;
         private FloatField MaterialSpawnChanceField;
+        private Button DeleteConfigButton;
 
         private string materialIDStr;
         private float materialAmountMaxStr;
         private float materialAmountMinStr;
         private float materialSpawnChanceStr;
 
-        public void Init(VisualElement parent)
+        private Action onDestory;
+
+        public void Init(VisualElement parent ,Action onDestory)
         {
 
             itemStyle = new F2MConfigItemStyle();
@@ -35,7 +39,13 @@ namespace KidGame.Editor
             MaterialSpawnChanceField = parent.Q<FloatField>(nameof(MaterialSpawnChanceField));
             MaterialSpawnChanceField.RegisterValueChangedCallback(MaterialSpawnChanceFieldValueChanged);
 
+            DeleteConfigButton = itemStyle.SelfRoot.Q<Button>(nameof(DeleteConfigButton));
+            DeleteConfigButton.clicked += OnDeleteConfigButtonClicked;
+
+            this.onDestory = onDestory;
         }
+
+
         private void MaterialIDFieldValueChanged(ChangeEvent<string> evt)
         {
             materialIDStr = evt.newValue;
@@ -54,7 +64,11 @@ namespace KidGame.Editor
             materialSpawnChanceStr = evt.newValue;
         }
 
-
+        private void OnDeleteConfigButtonClicked()
+        {
+            Destory();
+            onDestory?.Invoke();
+        }
         public void Destory()
         {
             if (itemStyle != null)
