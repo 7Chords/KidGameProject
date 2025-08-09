@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using ObjectField = UnityEditor.UIElements.ObjectField;
+using Random = UnityEngine.Random;
 
 namespace KidGame.Editor
 {
@@ -637,6 +638,13 @@ namespace KidGame.Editor
                     }
 
                     if (mapData.furnitureList.Find(x => x.mapPosList.Contains(new GridPos(mapX, mapY))) != null) return;
+
+                    //搞一个唯一的序列号
+                    do
+                    {
+                        mapFurniture.serialNumber = Random.Range(0, 1000);
+                    } while (mapData.furnitureList.Any(f => f.serialNumber == mapFurniture.serialNumber));
+
                     mapData.furnitureList.Add(mapFurniture);
                     SaveConfig();
                 }

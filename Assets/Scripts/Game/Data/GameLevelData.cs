@@ -13,6 +13,14 @@ namespace KidGame.Core
         public int randomAmount_min;
         public int randomAmount_max;
         public float spawnChance;//���ɵĸ���
+
+        public MaterialResCfg(string materialId, int randomAmount_min, int randomAmount_max, float spawnChance)
+        {
+            this.materialId = materialId;
+            this.randomAmount_min = randomAmount_min;
+            this.randomAmount_max = randomAmount_max;
+            this.spawnChance = spawnChance;
+        }
     }
 
     [Serializable]

@@ -34,8 +34,8 @@
                 <ui:Button text="保存该家具配置到列表" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SaveConfigToListButton" style="width: 150px; height: 25px; margin-top: 5px;" />
             </ui:VisualElement>
             <ui:VisualElement name="GridSpawnChanceGroup" style="flex-grow: 1; height: 250px; flex-direction: column;">
-                <ui:TextField picking-mode="Ignore" label="格子生成材料概率上限" value="1" name="TextField" style="height: 40%; width: 252px; align-items: stretch; justify-content: center; align-self: auto; flex-direction: row; -unity-text-align: middle-center;" />
-                <ui:TextField picking-mode="Ignore" label="格子生成材料概率下限" value="0" hide-mobile-input="false" auto-correction="false" multiline="false" readonly="false" max-length="-1" style="height: 40%; width: 252px; align-items: stretch; justify-content: center; align-self: auto; flex-direction: row; -unity-text-align: middle-center;" />
+                <ui:FloatField label="格子生成材料概率上限" value="1" name="GridSpawnMaxChanceField" style="width: 252px; height: 40%; justify-content: center; -unity-text-align: middle-left;" />
+                <ui:FloatField label="格子生成材料概率下限" value="0.2" name="GridSpawnMinChanceField" style="width: 252px; height: 40%; justify-content: center; -unity-text-align: middle-left;" />
             </ui:VisualElement>
             <ui:ScrollView name="MaterialConfigScrollView" style="flex-grow: 1; height: auto;">
                 <ui:VisualElement name="ConfigItemListView" style="flex-grow: 1; height: 2000px; flex-direction: row; flex-wrap: wrap; align-items: stretch; align-self: auto; min-height: auto;" />

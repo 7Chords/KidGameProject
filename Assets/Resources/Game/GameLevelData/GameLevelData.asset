@@ -16,12 +16,12 @@ MonoBehaviour:
   - enemyData: {fileID: 11400000, guid: 2d9933c2cbffa47c188e018bb8e950ac, type: 2}
     enemySpawnPos: {x: 22.5, y: 1, z: -21}
   f2MMappingList:
-  - serialNumber: 0
-    gridSpawnMatChance_min: 0.2
+  - serialNumber: 908
+    gridSpawnMatChance_min: 0
     gridSpawnMatChance_max: 0.5
     materialDataList:
-    - materialId: M001
-      randomAmount_min: 2
-      randomAmount_max: 5
-      spawnChance: 0.2
+    - materialId: T001
+      randomAmount_min: 1
+      randomAmount_max: 10
+      spawnChance: 0.5
   r2MMappingList: []

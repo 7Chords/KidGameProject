@@ -58,13 +58,23 @@ namespace KidGame.Editor
             InitItemMenu();
             InitWorkSpace();
             InitF2MConfigSpace();
+
+            ResetView();
         }
 
         public void ResetView()
         {
+            MapData tmpMapData = mapData;
+            MapDataField.value = null;
+            MapDataField.value = tmpMapData;
 
+            GameLevelData tmpLevelData = gameLevelData;
+            LevelResDataField.value = null;
+            LevelResDataField.value = tmpLevelData;
+
+            curMapFurnitureData = null;
+            curSelectItem = null;
         }
-
 
         #region TopMenu
         private Button InfoButton;
@@ -497,17 +507,24 @@ namespace KidGame.Editor
                 //没有选中菜单栏的东西 等于是要配置地图上的家具材料列表
                 if(curSelectItem == null)
                 {
+                    bool needRefresh = false;
+                    MapFurnitureData tmpData;
                     GridPos mapPos = new GridPos(mapX, mapY);
                     for(int i =0;i< mapData.furnitureList.Count;i++)
                     {
                         if (mapData.furnitureList[i].mapPosList.Contains(mapPos))
                         {
-                            curMapFurnitureData = mapData.furnitureList[i];
+                            tmpData = mapData.furnitureList[i];
+                            if(curMapFurnitureData != tmpData)
+                            {
+                                needRefresh = true;
+                                curMapFurnitureData = tmpData;
+                            }
                             serialNumber = i;//序列号就是家具在地图数据列表中的索引
                             break;
                         }
                     }
-                    UpdateF2MConfigView();
+                    if(needRefresh) UpdateF2MConfigView();
                 }
                 else
                 {
@@ -573,10 +590,17 @@ namespace KidGame.Editor
         private VisualElement F2MConfigGroup;
         private VisualElement R2MConfigGroup;
 
+        private FloatField GridSpawnMaxChanceField;
+        private FloatField GridSpawnMinChanceField;
 
         private VisualElement ConfigItemListView;
 
         private List<F2MConfigItem> f2mConfigItemList;
+
+        private float gridSpawnMaxChance;
+        private float gridSpawnMinChance;
+
+
 
         private void InitF2MConfigSpace()
         {
@@ -589,6 +613,12 @@ namespace KidGame.Editor
             SaveConfigToListButton = root.Q<Button>(nameof(SaveConfigToListButton));
             SaveConfigToListButton.clicked += OnSaveConfigToListButtonClicked;
 
+            GridSpawnMaxChanceField = root.Q<FloatField>(nameof(GridSpawnMaxChanceField));
+            GridSpawnMaxChanceField.RegisterValueChangedCallback(GridSpawnMaxChanceFieldValueChanged);
+
+            GridSpawnMinChanceField = root.Q<FloatField>(nameof(GridSpawnMinChanceField));
+            GridSpawnMinChanceField.RegisterValueChangedCallback(GridSpawnMinChanceFieldValueChanged);
+
             ConfigItemListView = root.Q<VisualElement>(nameof(ConfigItemListView));
 
             f2mConfigItemList = new List<F2MConfigItem>();
@@ -596,16 +626,70 @@ namespace KidGame.Editor
 
         private void UpdateF2MConfigView()
         {
+            if (gameLevelData == null) return;
             if (curMapFurnitureData == null) return;
 
             SelectFurnitureLabel.text = "当前选中的家具：" + curMapFurnitureData.furnitureData.furnitureName;
             FurnitureGridLabel.text = "该家具的格子数排布：" + curMapFurnitureData.furnitureData.gridLayout.x + "×" + curMapFurnitureData.furnitureData.gridLayout.y;
 
+            //生成该家具上原有的配置
+
+            Furniture2MaterialMapping mapping = gameLevelData.f2MMappingList.Find(x => x.serialNumber == curMapFurnitureData.serialNumber);
+
+            if(mapping!=null)
+            {
+                GridSpawnMaxChanceField.value = mapping.gridSpawnMatChance_max;
+                GridSpawnMinChanceField.value = mapping.gridSpawnMatChance_min;
+                foreach(var cfg in mapping.materialDataList)
+                {
+                    F2MConfigItem configItem = new F2MConfigItem();
+                    f2mConfigItemList.Add(configItem);
+                    configItem.Init(ConfigItemListView, () =>
+                    {
+                        f2mConfigItemList.Remove(configItem);
+                    });
+                    configItem.SetInfo(cfg.materialId, cfg.randomAmount_max, cfg.randomAmount_min, cfg.spawnChance);
+                }
+            }
+            else
+            {
+                foreach(var item in f2mConfigItemList)
+                {
+                    item.Destory();
+                }
+                f2mConfigItemList.Clear();
+            }
         }
 
         private void OnSaveConfigToListButtonClicked()
         {
-
+            if (f2mConfigItemList == null || f2mConfigItemList.Count==0) return;
+            if (curMapFurnitureData == null) return;
+            Furniture2MaterialMapping f2MMapping = gameLevelData.f2MMappingList.Find(x => x.serialNumber == curMapFurnitureData.serialNumber);
+            //列表原来里面有 更新数据
+            if (f2MMapping != null)
+            {
+                f2MMapping.gridSpawnMatChance_min = gridSpawnMinChance;
+                f2MMapping.gridSpawnMatChance_max = gridSpawnMaxChance;
+                f2MMapping.materialDataList.Clear();
+                foreach (var cfgItem in f2mConfigItemList)
+                {
+                    f2MMapping.materialDataList.Add(new MaterialResCfg(cfgItem.MaterialID, cfgItem.MaterialAmountMin, cfgItem.MaterialAmountMax, cfgItem.MaterialSpawnChance));
+                }
+            }
+            else
+            {
+                f2MMapping = new Furniture2MaterialMapping();
+                f2MMapping.serialNumber = curMapFurnitureData.serialNumber;
+                f2MMapping.gridSpawnMatChance_min = gridSpawnMinChance;
+                f2MMapping.gridSpawnMatChance_max = gridSpawnMaxChance;
+                f2MMapping.materialDataList = new List<MaterialResCfg>();
+                foreach (var cfgItem in f2mConfigItemList)
+                {
+                    f2MMapping.materialDataList.Add(new MaterialResCfg(cfgItem.MaterialID, cfgItem.MaterialAmountMin, cfgItem.MaterialAmountMax, cfgItem.MaterialSpawnChance));
+                }
+                gameLevelData.f2MMappingList.Add(f2MMapping);
+            }
         }
 
         private void OnAddMaterialConfigButtonClicked()
@@ -619,6 +703,15 @@ namespace KidGame.Editor
             {
                 f2mConfigItemList.Remove(configItem);
             });
+        }
+
+        private void GridSpawnMaxChanceFieldValueChanged(ChangeEvent<float> evt)
+        {
+            gridSpawnMaxChance = evt.newValue;
+        }
+        private void GridSpawnMinChanceFieldValueChanged(ChangeEvent<float> evt)
+        {
+            gridSpawnMinChance = evt.newValue;
         }
 
         #endregion

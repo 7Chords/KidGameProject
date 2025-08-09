@@ -9,15 +9,21 @@ namespace KidGame.Editor
         private F2MConfigItemStyle itemStyle;
 
         private TextField MaterialIDField;
-        private FloatField MaterialAmountMaxField;
-        private FloatField MaterialAmountMinField;
+        private IntegerField MaterialAmountMaxField;
+        private IntegerField MaterialAmountMinField;
         private FloatField MaterialSpawnChanceField;
         private Button DeleteConfigButton;
 
         private string materialIDStr;
-        private float materialAmountMaxStr;
-        private float materialAmountMinStr;
+        private int materialAmountMaxStr;
+        private int materialAmountMinStr;
         private float materialSpawnChanceStr;
+
+        public string MaterialID => materialIDStr;
+        public int MaterialAmountMax => materialAmountMaxStr;
+        public int MaterialAmountMin => materialAmountMinStr;
+        public float MaterialSpawnChance => materialSpawnChanceStr;
+
 
         private Action onDestory;
 
@@ -30,10 +36,10 @@ namespace KidGame.Editor
             MaterialIDField = parent.Q<TextField>(nameof(MaterialIDField));
             MaterialIDField.RegisterValueChangedCallback(MaterialIDFieldValueChanged);
 
-            MaterialAmountMaxField = parent.Q<FloatField>(nameof(MaterialAmountMaxField));
+            MaterialAmountMaxField = parent.Q<IntegerField>(nameof(MaterialAmountMaxField));
             MaterialAmountMaxField.RegisterValueChangedCallback(MaterialAmountMaxFieldValueChanged);
 
-            MaterialAmountMinField = parent.Q<FloatField>(nameof(MaterialAmountMinField));
+            MaterialAmountMinField = parent.Q<IntegerField>(nameof(MaterialAmountMinField));
             MaterialAmountMinField.RegisterValueChangedCallback(MaterialAmountMinFieldValueChanged);
 
             MaterialSpawnChanceField = parent.Q<FloatField>(nameof(MaterialSpawnChanceField));
@@ -45,17 +51,29 @@ namespace KidGame.Editor
             this.onDestory = onDestory;
         }
 
+        public void SetInfo(string materialId,int materialSpawnMaxAmount, int materialSpawnMinAmount,float materialSpawnChance)
+        {
+            materialIDStr = materialId;
+            materialAmountMaxStr = materialSpawnMaxAmount;
+            materialAmountMinStr = materialSpawnMinAmount;
+            materialSpawnChanceStr = materialSpawnChance;
+            MaterialIDField.value = materialIDStr;
+            MaterialAmountMaxField.value = materialAmountMaxStr;
+            MaterialAmountMinField.value = materialAmountMinStr;
+            MaterialSpawnChanceField.value = materialSpawnChanceStr;
+        }
+
 
         private void MaterialIDFieldValueChanged(ChangeEvent<string> evt)
         {
             materialIDStr = evt.newValue;
         }
-        private void MaterialAmountMaxFieldValueChanged(ChangeEvent<float> evt)
+        private void MaterialAmountMaxFieldValueChanged(ChangeEvent<int> evt)
         {
             materialAmountMaxStr = evt.newValue;
         }
 
-        private void MaterialAmountMinFieldValueChanged(ChangeEvent<float> evt)
+        private void MaterialAmountMinFieldValueChanged(ChangeEvent<int> evt)
         {
             materialAmountMinStr = evt.newValue;
         }
