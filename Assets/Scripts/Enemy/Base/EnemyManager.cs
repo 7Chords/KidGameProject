@@ -20,7 +20,9 @@ namespace KidGame.Core
             for (int i = 0; i < enemySpawnCfgList.Count; i++)
             {
                 GameObject enemy = Instantiate(enemyPrefab);
-                enemy.transform.position = enemySpawnCfgList[i].enemySpawnPos;
+                enemy.transform.position = new Vector3(enemySpawnCfgList[i].enemySpawnPos.x,
+                    enemySpawnCfgList[i].enemySpawnPos.y,
+                    -enemySpawnCfgList[i].enemySpawnPos.z) + GameManager.Instance.GameGeneratePoint.position;
                 EnemyController enemyCtl = enemy.GetComponent<EnemyController>();
                 enemyList.Add(enemyCtl);
                 enemyCtl.Init(enemySpawnCfgList[i].enemyData);

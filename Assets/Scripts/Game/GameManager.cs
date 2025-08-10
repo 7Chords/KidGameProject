@@ -20,6 +20,8 @@ namespace KidGame.Core
         private bool isGamePuased;
         public bool IsGamePaused => isGamePuased;
 
+        public Transform GameGeneratePoint;
+
         #region 分数变量
 
         private int currentLoopScore;
@@ -89,7 +91,7 @@ namespace KidGame.Core
 
         private void InitGame()
         {
-            PlayerManager.Instance.Init();
+            PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
             MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
 

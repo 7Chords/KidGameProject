@@ -16,15 +16,19 @@ namespace KidGame.Editor
 
         public int Rare => rare;
 
+        private LevelConfigModeType configType;
 
-        public void Init(VisualElement parent, string id,string name,int rare)
+        public LevelConfigModeType ConfigType => configType;
+
+        public void Init(VisualElement parent, LevelConfigModeType configType, string id,string name,int rare)
         {
             itemName = name;
             this.id = id;
             this.rare = rare;
+            this.configType = configType;
 
             itemStyle = new LevelEditorItemStyle();
-            itemStyle.Init(parent, name);
+            itemStyle.Init(parent, name,rare);
 
             ((Button)itemStyle.SelfRoot).clicked += OnItemButtonClicked;
         }

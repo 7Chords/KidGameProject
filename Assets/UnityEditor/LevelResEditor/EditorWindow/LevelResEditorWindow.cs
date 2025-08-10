@@ -22,6 +22,11 @@ namespace KidGame.Editor
         public Color unSelectColor = new Color(0.7372549f, 0.7372549f, 0.7372549f, 1);
         public Color selectColor = Color.yellow;
 
+        public const float ENEMY_SPAWN_Y_OFFSET = 2;
+        public const float MATERIAL_SPAWN_Y_OFFSET = 1;
+        public const float Player_SPAWN_Y_OFFSET = 2;
+
+
         public static List<Color> colorList = new List<Color>()
         {
             MapEditorColorCfg.color_light_green,
@@ -35,6 +40,7 @@ namespace KidGame.Editor
         };
 
         private List<MaterialData> dataList;
+
         [MenuItem("自定义编辑器/关卡配置器")]
         public static void ShowExample()
         {
@@ -213,7 +219,9 @@ namespace KidGame.Editor
         public void SelectOneItem(LevelEditorItem selectItem)
         {
             curSelectItem = selectItem;
-            SetConfigMode(LevelConfigModeType.R2M);
+
+            SetConfigMode(selectItem.ConfigType);
+
             foreach (var item in editorItemList)
             {
                 if (item == selectItem)
@@ -232,12 +240,14 @@ namespace KidGame.Editor
             ClearItemGroupView();
             if (itemMenuType == ResConfigMenuType.Logic)
             {
-                //for (int i = 0; i < mapEditorItemGroupConfig.TileList.Count; i++)
-                //{
-                //    MapEditorItem editItem = new MapEditorItem();
-                //    editorItemList.Add(editItem);
-                //    editItem.Init(ItemListView, mapEditorItemGroupConfig.TileList[i].tileName);
-                //}
+                LevelEditorItem editItem = new LevelEditorItem();
+                editorItemList.Add(editItem);
+                editItem.Init(ItemListView,LevelConfigModeType.Enemy, "EnemySpawnPoint", "敌人生成点", -1);
+
+                editItem = new LevelEditorItem();
+                editorItemList.Add(editItem);
+                editItem.Init(ItemListView, LevelConfigModeType.Player,"PlayerSpawnPoint", "玩家生成点", -1);
+
             }
             else if (itemMenuType == ResConfigMenuType.Material)
             {
@@ -246,7 +256,7 @@ namespace KidGame.Editor
                 {
                     LevelEditorItem editItem = new LevelEditorItem();
                     editorItemList.Add(editItem);
-                    editItem.Init(ItemListView, dataList[i].id,dataList[i].materialName, dataList[i].rare);
+                    editItem.Init(ItemListView, LevelConfigModeType.R2M, dataList[i].id,dataList[i].materialName, dataList[i].rare);
                 }
             }
         }
@@ -476,31 +486,59 @@ namespace KidGame.Editor
                 }
             }
 
-            // 绘制地图上散落的材料
+            // 绘制地图上散落的材料和敌人与玩家配置点
             if(gameLevelData != null)
             {
                 GUI.color = Color.white;
-                Texture2D defaultTex = Resources.Load<Texture2D>("GUI/Editor/Default");
+                Texture2D tex = Resources.Load<Texture2D>("GUI/Editor/MaterialConfigTex");
                 GUIStyle labelStyle = new GUIStyle();
                 labelStyle.fontSize = (int)(30 * (mapEditorConfig.curGridUnitLength / MapEditorConfig.maxGridUnitLength));
-                labelStyle.alignment = TextAnchor.MiddleCenter;
                 MaterialData tmpData;
                 dataList = Resources.Load<kidgame_game_data_config>("ScriptObject/kidgame_game_data_config").MaterialDataList;
+                float screenX, screenY;
                 foreach (var mapping in gameLevelData.r2MMappingList)
                 {
+                    labelStyle.alignment = TextAnchor.MiddleCenter;
                     tmpData = dataList.Find(x => x.id == mapping.materialId);
                     // 计算屏幕坐标
-                    float screenX = (mapping.spawnPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
-                    float screenY = (mapping.spawnPos.z - startGridY) * mapEditorConfig.curGridUnitLength;
+                    screenX = (mapping.spawnPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
+                    screenY = (mapping.spawnPos.z - startGridY) * mapEditorConfig.curGridUnitLength;
                     GUI.DrawTexture(new Rect(screenX, screenY,
                          mapEditorConfig.curGridUnitLength,
                          mapEditorConfig.curGridUnitLength),
-                         defaultTex, ScaleMode.ScaleToFit);
+                         tex, ScaleMode.ScaleToFit);
                     GUI.Label(new Rect(screenX, screenY,
                         mapEditorConfig.curGridUnitLength,
                         mapEditorConfig.curGridUnitLength),
                         tmpData.materialName, labelStyle);
+                    labelStyle.alignment = TextAnchor.LowerRight;
+                    GUI.Label(new Rect(screenX, screenY,
+                        mapEditorConfig.curGridUnitLength,
+                        mapEditorConfig.curGridUnitLength),
+                        "["+ mapping .randomAmount_min+","+ mapping.randomAmount_max + "]", labelStyle);
+
                 }
+                GUI.color = Color.red;
+                tex = Resources.Load<Texture2D>("GUI/Editor/EnemySpawnConfigTex");
+                // 画敌人生成点
+                foreach (var cfg in gameLevelData.enemySpawnCfgList)
+                {
+                    screenX = (cfg.enemySpawnPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
+                    screenY = (cfg.enemySpawnPos.z - startGridY) * mapEditorConfig.curGridUnitLength;
+                    GUI.DrawTexture(new Rect(screenX, screenY,
+                         mapEditorConfig.curGridUnitLength,
+                         mapEditorConfig.curGridUnitLength),
+                         tex, ScaleMode.ScaleToFit);
+                }
+                GUI.color = Color.green;
+                tex = Resources.Load<Texture2D>("GUI/Editor/PlayerSpawnConfigTex");
+                screenX = (gameLevelData.playerSpawnPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
+                screenY = (gameLevelData.playerSpawnPos.z - startGridY) * mapEditorConfig.curGridUnitLength;
+                GUI.DrawTexture(new Rect(screenX, screenY,
+                     mapEditorConfig.curGridUnitLength,
+                     mapEditorConfig.curGridUnitLength),
+                     tex, ScaleMode.ScaleToFit);
+
             }
 
 
@@ -558,25 +596,54 @@ namespace KidGame.Editor
                     }
                 }
                 if (needRefresh) UpdateF2MConfigView();
-
-                if(!clickFurniture && curSelectItem != null)
+                if (!clickFurniture && curSelectItem != null)
                 {
-                    //加到数据列表里
-                    Room2MaterialMapping mapping;
-                    mapping = gameLevelData.r2MMappingList.Find(x => x.spawnPos == new Vector3(mapPos.x, 0, mapPos.y));
-                    if(mapping==null)
+                    switch(curSelectItem.ConfigType)
                     {
-                        //todo:y轴的问题
-                        mapping = new Room2MaterialMapping(new Vector3(mapPos.x, 0, mapPos.y),
-                            curSelectItem.Id, r2MSpawnAmountMin, r2MSpawnAmountMax);
-                        gameLevelData.r2MMappingList.Add(mapping);
+                        case LevelConfigModeType.R2M:
+                            //加到数据列表里
+                            Room2MaterialMapping mapping;
+                            mapping = gameLevelData.r2MMappingList.Find(x => x.spawnPos == new Vector3(mapPos.x, MATERIAL_SPAWN_Y_OFFSET, mapPos.y));
+                            if (mapping == null)
+                            {
+                                //todo:y轴的问题
+                                mapping = new Room2MaterialMapping(new Vector3(mapPos.x, MATERIAL_SPAWN_Y_OFFSET, mapPos.y),
+                                    curSelectItem.Id, r2MSpawnAmountMin, r2MSpawnAmountMax);
+                                gameLevelData.r2MMappingList.Add(mapping);
+                            }
+                            else
+                            {
+                                mapping.materialId = curSelectItem.Id;
+                                mapping.randomAmount_max = r2MSpawnAmountMax;
+                                mapping.randomAmount_min = r2MSpawnAmountMin;
+                            }
+                            break;
+                        case LevelConfigModeType.Enemy:
+                            if(enemyData != null)
+                            {
+                                EnemySpawnCfg enemyCfg;
+                                enemyCfg = gameLevelData.enemySpawnCfgList.Find(x => x.enemySpawnPos == new Vector3(mapPos.x, ENEMY_SPAWN_Y_OFFSET, mapPos.y));
+                                if (enemyCfg == null)
+                                {
+                                    enemyCfg = new EnemySpawnCfg();
+                                    enemyCfg.enemyData = enemyData;
+                                    //todo:y轴问题
+                                    enemyCfg.enemySpawnPos = new Vector3(mapPos.x, ENEMY_SPAWN_Y_OFFSET, mapPos.y);
+                                    gameLevelData.enemySpawnCfgList.Add(enemyCfg);
+                                }
+                                else
+                                {
+                                    enemyCfg.enemyData = enemyData;
+                                    enemyCfg.enemySpawnPos = new Vector3(mapPos.x, ENEMY_SPAWN_Y_OFFSET, mapPos.y);
+                                }
+                            }
+                            break;
+                        case LevelConfigModeType.Player:
+                            gameLevelData.playerSpawnPos = new Vector3(mapPos.x, Player_SPAWN_Y_OFFSET, mapPos.y);
+                            break;
+                        default:
+                            break;
                     }
-                    else
-                    {
-                        mapping.materialId = curSelectItem.Id;
-                        mapping.randomAmount_max = r2MSpawnAmountMax;
-                        mapping.randomAmount_min = r2MSpawnAmountMin;
-                    } 
                 }
 
             }
@@ -604,15 +671,20 @@ namespace KidGame.Editor
                     mapY++;
                 }
 
-                Room2MaterialMapping mapping = gameLevelData.r2MMappingList.Find(x => x.spawnPos == new Vector3(mapX, 0, mapY));
-                if(mapping != null)
+                //移除顺序：敌人配置-->材料生成配置
+                EnemySpawnCfg enemyCfg = gameLevelData.enemySpawnCfgList.Find(x => x.enemySpawnPos == new Vector3(mapX, ENEMY_SPAWN_Y_OFFSET, mapY));
+                if(enemyCfg != null)
                 {
-                    gameLevelData.r2MMappingList.Remove(mapping);
+                    gameLevelData.enemySpawnCfgList.Remove(enemyCfg);
                 }
-                
-
-
-
+                else
+                {
+                    Room2MaterialMapping mapping = gameLevelData.r2MMappingList.Find(x => x.spawnPos == new Vector3(mapX, MATERIAL_SPAWN_Y_OFFSET, mapY));
+                    if (mapping != null)
+                    {
+                        gameLevelData.r2MMappingList.Remove(mapping);
+                    }
+                }
             }
 
             WorkContainer.MarkDirtyLayout();
@@ -632,11 +704,8 @@ namespace KidGame.Editor
                                   (LevelResMapEditorConfig.maxMapSizeY / LevelResMapEditorConfig.minGridUnitLength);
                 float maxWidth = mapEditorConfig.curGridUnitLength *
                                  (LevelResMapEditorConfig.maxMapSizeX / LevelResMapEditorConfig.minGridUnitLength);
-                //Debug.Log(evt.mouseDelta);
-                //Debug.Log(maxWidth - width);
                 startOffsetX = Mathf.Clamp(startOffsetX - evt.mouseDelta.x, 0, maxWidth - width);
                 startOffsetY = Mathf.Clamp(startOffsetY - evt.mouseDelta.y, 0, maxHeight - height);
-                //Debug.Log(startOffsetX + "," + startOffsetY);
                 UpdateWorkSpaceView();
             }
         }
@@ -672,6 +741,9 @@ namespace KidGame.Editor
 
         private VisualElement F2MConfigGroup;
         private VisualElement R2MConfigGroup;
+        private VisualElement EnemyConfigGroup;
+        private VisualElement PlayerConfigGroup;
+
 
         private FloatField GridSpawnMaxChanceField;
         private FloatField GridSpawnMinChanceField;
@@ -679,8 +751,9 @@ namespace KidGame.Editor
         private IntegerField R2MSpawnAmountMaxChanceField;
         private IntegerField R2MSpawnAmountMinChanceField;
 
-
         private VisualElement ConfigItemListView;
+
+        private ObjectField EnemyDataField;
 
         private List<F2MConfigItem> f2mConfigItemList;
 
@@ -689,6 +762,8 @@ namespace KidGame.Editor
 
         private int r2MSpawnAmountMax;
         private int r2MSpawnAmountMin;
+
+        private EnemyBaseData enemyData;
 
 
         private void InitF2MConfigSpace()
@@ -722,14 +797,44 @@ namespace KidGame.Editor
             R2MSpawnAmountMinChanceField.value = 1;
             r2MSpawnAmountMin = 1;
 
+            EnemyDataField = root.Q<ObjectField>(nameof(EnemyDataField));
+            EnemyDataField.objectType = typeof(EnemyBaseData);
+            EnemyDataField.RegisterValueChangedCallback(EnemyDataFieldValueChanged);
+
+
             F2MConfigGroup = root.Q<VisualElement>(nameof(F2MConfigGroup));
             R2MConfigGroup = root.Q<VisualElement>(nameof(R2MConfigGroup));
+            EnemyConfigGroup = root.Q<VisualElement>(nameof(EnemyConfigGroup));
+            PlayerConfigGroup = root.Q<VisualElement>(nameof(PlayerConfigGroup));
+
 
             ConfigItemListView = root.Q<VisualElement>(nameof(ConfigItemListView));
 
             f2mConfigItemList = new List<F2MConfigItem>();
         }
 
+
+
+        private void SetConfigMode(LevelConfigModeType mode)
+        {
+            currentMode = mode;
+            R2MConfigGroup.style.display = currentMode == LevelConfigModeType.R2M ? DisplayStyle.Flex : DisplayStyle.None;
+            F2MConfigGroup.style.display = currentMode == LevelConfigModeType.F2M ? DisplayStyle.Flex : DisplayStyle.None;
+            EnemyConfigGroup.style.display = currentMode == LevelConfigModeType.Enemy ? DisplayStyle.Flex : DisplayStyle.None;
+            PlayerConfigGroup.style.display = currentMode == LevelConfigModeType.Player ? DisplayStyle.Flex : DisplayStyle.None;
+
+
+            if(currentMode != LevelConfigModeType.R2M)
+            {
+                foreach (var item in editorItemList)
+                {
+                    item.UnSelect();
+                }
+
+                if(currentMode == LevelConfigModeType.F2M)
+                    curSelectItem = null;
+            }
+        }
 
         private void UpdateF2MConfigView()
         {
@@ -747,11 +852,11 @@ namespace KidGame.Editor
                 item.Destory();
             }
             f2mConfigItemList.Clear();
-            if (mapping!=null)
+            if (mapping != null)
             {
                 GridSpawnMaxChanceField.value = mapping.gridSpawnMatChance_max;
                 GridSpawnMinChanceField.value = mapping.gridSpawnMatChance_min;
-                foreach(var cfg in mapping.materialDataList)
+                foreach (var cfg in mapping.materialDataList)
                 {
                     F2MConfigItem configItem = new F2MConfigItem();
                     f2mConfigItemList.Add(configItem);
@@ -760,30 +865,6 @@ namespace KidGame.Editor
                         f2mConfigItemList.Remove(configItem);
                     });
                     configItem.SetInfo(cfg.materialId, cfg.randomAmount_max, cfg.randomAmount_min, cfg.spawnChance);
-                }
-            }
-            //else
-            //{
-            //    foreach(var item in f2mConfigItemList)
-            //    {
-            //        item.Destory();
-            //    }
-            //    f2mConfigItemList.Clear();
-            //}
-        }
-
-        private void SetConfigMode(LevelConfigModeType mode)
-        {
-            currentMode = mode;
-            R2MConfigGroup.style.display = currentMode == LevelConfigModeType.R2M ? DisplayStyle.Flex : DisplayStyle.None;
-            F2MConfigGroup.style.display = currentMode == LevelConfigModeType.F2M ? DisplayStyle.Flex : DisplayStyle.None;
-
-            if(currentMode == LevelConfigModeType.F2M)
-            {
-                curSelectItem = null;
-                foreach (var item in editorItemList)
-                {
-                    item.UnSelect();
                 }
             }
         }
@@ -861,6 +942,10 @@ namespace KidGame.Editor
             r2MSpawnAmountMin = evt.newValue;
         }
 
+        private void EnemyDataFieldValueChanged(ChangeEvent<UnityEngine.Object> evt)
+        {
+            enemyData = evt.newValue as EnemyBaseData;
+        }
         #endregion
     }
 
@@ -874,7 +959,10 @@ namespace KidGame.Editor
     {
         R2M,
         F2M,
+        Enemy,
+        Player,
     }
+
 
     public class LevelResMapEditorConfig
     {
@@ -885,4 +973,5 @@ namespace KidGame.Editor
         public const int maxMapSizeY = 600;
         public int curGridUnitLength = 40; //  当前网格单位边长
     }
+
 }

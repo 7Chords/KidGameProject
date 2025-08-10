@@ -10,10 +10,11 @@ namespace KidGame.Core
     {
         [SerializeField]
         private GameObject playerPrefab;
-        public void Init()
+        public void Init(Vector3 playerSpawnPos)
         {
-            //todo
-            Instantiate(playerPrefab);
+            GameObject playerGO = Instantiate(playerPrefab);
+            playerGO.transform.position = new Vector3(playerSpawnPos.x, playerSpawnPos.y, -playerSpawnPos.z)
+                + GameManager.Instance.GameGeneratePoint.position;
 
             PlayerUtil.Instance.Init();
             PlayerController.Instance.Init();

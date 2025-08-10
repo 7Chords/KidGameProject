@@ -13,7 +13,6 @@ namespace KidGame.Core
         private List<Room2MaterialMapping> _r2MMappingList;
 
         private GameObject _materialRoot;
-
         public void Init()
         {
         }
@@ -93,10 +92,14 @@ namespace KidGame.Core
                 if (_materialRoot == null)
                 {
                     _materialRoot = new GameObject("Material_Root");
+                    _materialRoot.transform.position = GameManager.Instance.GameGeneratePoint.position;
                 }
 
-                GameObject materialGO = MaterialFactory.CreateEntity(SoLoader.Instance.GetMaterialDataDataById(mapping.materialId), mapping.spawnPos);
+                GameObject materialGO = MaterialFactory.CreateEntity(SoLoader.Instance.GetMaterialDataDataById(mapping.materialId), 
+                    new Vector3(mapping.spawnPos.x,mapping.spawnPos.y,-mapping.spawnPos.z),
+                    Random.Range(mapping.randomAmount_min,mapping.randomAmount_max+1));
                 materialGO.transform.SetParent(_materialRoot.transform);
+                materialGO.transform.position += _materialRoot.transform.position;
             }
         }
 

@@ -17,19 +17,26 @@ namespace KidGame.Core
 
         public override string EntityName => _materialData.materialName;
 
+        public int playerGetAmount;
         /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="materialData"></param>
-        public virtual void Init(MaterialData materialData)
+        public virtual void Init(MaterialData materialData,int getAmount)
         {
             _materialData = materialData;
+            playerGetAmount = getAmount;
         }
 
         public override void Pick()
         {
             PlayerController.Instance.RemovePickableFromList(this);
-            PlayerUtil.Instance.CallPlayerPickItem(_materialData.id,UseItemType.Material);
+
+            for(int i =0;i<playerGetAmount;i++)
+            {
+                PlayerUtil.Instance.CallPlayerPickItem(_materialData.id, UseItemType.Material);
+            }
+
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
             //todo:播放音效和特效
             if (!string.IsNullOrEmpty(materialData.pickSoundName))
@@ -46,7 +53,7 @@ namespace KidGame.Core
                     true,
                     1f);
             }
-            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
+            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×" + playerGetAmount, gameObject));
             //TODO:工厂回收？
             Destroy(gameObject);
         }

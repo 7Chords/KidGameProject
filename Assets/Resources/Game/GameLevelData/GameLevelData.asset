@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b4d60e0276f8ba42899e1694f3aca08, type: 3}
   m_Name: GameLevelData
   m_EditorClassIdentifier: 
-  enemySpawnCfgList:
-  - enemyData: {fileID: 11400000, guid: 2d9933c2cbffa47c188e018bb8e950ac, type: 2}
-    enemySpawnPos: {x: 22.5, y: 1, z: -21}
+  playerSpawnPos: {x: 6, y: 2, z: 5}
+  enemySpawnCfgList: []
   f2MMappingList:
   - serialNumber: 908
     gridSpawnMatChance_min: 0.2
@@ -36,20 +35,4 @@ MonoBehaviour:
       randomAmount_min: 0
       randomAmount_max: 10
       spawnChance: 0.2
-  r2MMappingList:
-  - spawnPos: {x: 5, y: 0, z: 3}
-    materialId: M002
-    randomAmount_min: 1
-    randomAmount_max: 5
-  - spawnPos: {x: 5, y: 0, z: 2}
-    materialId: M002
-    randomAmount_min: 1
-    randomAmount_max: 5
-  - spawnPos: {x: 6, y: 0, z: 2}
-    materialId: M002
-    randomAmount_min: 1
-    randomAmount_max: 5
-  - spawnPos: {x: 6, y: 0, z: 3}
-    materialId: M002
-    randomAmount_min: 1
-    randomAmount_max: 5
+  r2MMappingList: []

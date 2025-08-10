@@ -13,13 +13,18 @@ namespace KidGame.Editor
         private VisualElement selfRoot;
         public VisualElement SelfRoot => selfRoot;
 
-        public void Init(VisualElement parent, string name)
+        private Label RareLabel;
+
+        public void Init(VisualElement parent, string name,int rare)
         {
             selfParent = parent;
             selfRoot = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(mapEditorItemAssetPath).Instantiate().Query()
                 .ToList()[1];
+            RareLabel = selfRoot.Q<Label>(nameof(RareLabel));
             parent.Add(selfRoot);
+
             ((Button)selfRoot).text = name;
+            RareLabel.text = rare.ToString();
         }
 
         public void Destory()

@@ -9,7 +9,7 @@ namespace KidGame.Core
     /// </summary>
     public static class MaterialFactory
     {
-        public static GameObject CreateEntity(MaterialData materialData, Vector3 position)
+        public static GameObject CreateEntity(MaterialData materialData, Vector3 position,int amount)
         {
             //这里应该根据trapID加载对应的预制体
             //实际项目中应该使用资源管理系统
@@ -30,7 +30,7 @@ namespace KidGame.Core
                 Object.Destroy(materialObj);
                 return null;
             }
-            material.Init(materialData);
+            material.Init(materialData, amount);
             return materialObj;
         }
     }

@@ -24,8 +24,6 @@ namespace KidGame.Core
         public Dictionary<RoomType, List<MapFurniture>> mapFurnitureDic;
         public List<MapWall> mapWallList;
 
-        public Transform MapGeneratePoint;
-
         private readonly Dictionary<Vector2Int, RoomType> _grid2RoomType = new();
 
         public void Init(MapData mapData)
@@ -44,11 +42,11 @@ namespace KidGame.Core
         public void GenerateMap(MapData mapData)
         {
             if (mapData == null) return;
-            if (MapGeneratePoint == null) return;
+            if (GameManager.Instance.GameGeneratePoint == null) return;
             GameObject tmpRoot = GameObject.Find("Map");
             if (tmpRoot != null) DestroyImmediate(tmpRoot);
             GameObject root = new GameObject("Map");
-            root.transform.position = MapGeneratePoint.position;
+            root.transform.position = GameManager.Instance.GameGeneratePoint.position;
 
             GameObject tileRoot = new GameObject("Tile");
             GameObject furnitureRoot = new GameObject("Furniture");
@@ -156,11 +154,11 @@ namespace KidGame.Core
         public bool TryGetRoomTypeAtWorldPos(Vector3 worldPos, out RoomType roomType)
         {
             roomType = default;
-            if (_grid2RoomType.Count == 0 || MapGeneratePoint == null)
+            if (_grid2RoomType.Count == 0 || GameManager.Instance.GameGeneratePoint == null)
                 return false;
 
             // 将世界坐标转换为格子坐标
-            Vector3 local = worldPos - MapGeneratePoint.position;
+            Vector3 local = worldPos - GameManager.Instance.GameGeneratePoint.position;
             int gridX = Mathf.RoundToInt(local.x);
             int gridY = Mathf.RoundToInt(-local.z);
 

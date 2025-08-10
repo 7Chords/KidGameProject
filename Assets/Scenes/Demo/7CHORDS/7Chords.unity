@@ -245,7 +245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 409529138}
   m_Layer: 0
-  m_Name: MapGeneratePoint
+  m_Name: GameGeneratePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,7 +264,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1529857602}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &450148022
 GameObject:
@@ -685,7 +685,7 @@ MonoBehaviour:
   - 
   lastID: 0
   unlockedItems: []
---- !u!84 &1225829124
+--- !u!84 &923746184
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -941,6 +941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameData: {fileID: 11400000, guid: a52eb694c66d0394d8303d3b69706507, type: 2}
+  GameGeneratePoint: {fileID: 409529138}
   mapData: {fileID: 11400000, guid: 7bc200724a03a15459ddf605391cf50e, type: 2}
   TestMode: 1
 --- !u!114 &1406033295
@@ -1062,8 +1063,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 409529138}
+  m_Children: []
   m_Father: {fileID: 1406033293}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1529857603
@@ -1081,7 +1081,6 @@ MonoBehaviour:
   mapTileList: []
   mapFurnitureList: []
   mapWallList: []
-  MapGeneratePoint: {fileID: 409529138}
 --- !u!114 &1529857604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1706,7 +1705,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1225829124}
+      objectReference: {fileID: 923746184}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size
@@ -2229,6 +2228,7 @@ SceneRoots:
   - {fileID: 1669298382}
   - {fileID: 1378303219}
   - {fileID: 1930347173}
+  - {fileID: 409529138}
   - {fileID: 1406033293}
   - {fileID: 1633150990}
   - {fileID: 807108086}

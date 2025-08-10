@@ -61,6 +61,8 @@ namespace KidGame.Core
     [CreateAssetMenu(fileName = "GameLevelData", menuName = "KidGameSO/Game/GameLevelData")]
     public class GameLevelData : ScriptableObject
     {
+        public Vector3 playerSpawnPos;
+
         public List<EnemySpawnCfg> enemySpawnCfgList;
 
         public List<Furniture2MaterialMapping> f2MMappingList;
