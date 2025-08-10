@@ -9,9 +9,19 @@ namespace KidGame.Editor
         private string itemName;
         public string ItemName => itemName;
 
-        public void Init(VisualElement parent, string name)
+        private string id;
+        public string Id => id;
+
+        public int rare;
+
+        public int Rare => rare;
+
+
+        public void Init(VisualElement parent, string id,string name,int rare)
         {
             itemName = name;
+            this.id = id;
+            this.rare = rare;
 
             itemStyle = new LevelEditorItemStyle();
             itemStyle.Init(parent, name);

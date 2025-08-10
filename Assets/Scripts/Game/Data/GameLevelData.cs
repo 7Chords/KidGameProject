@@ -31,23 +31,31 @@ namespace KidGame.Core
     }
 
     [Serializable]
-    //�Ҿ��д��ڵĵ��ߵ�ӳ��
+    //家具到材料的映射
     public class Furniture2MaterialMapping
     {
-        [HideInInspector] public int serialNumber;//���к� ���ںͼҾ��б��ļҾ�����Ӧ
+        [HideInInspector] public int serialNumber;//序列号 与地图数据中的家具一一对应
         public float gridSpawnMatChance_min;
         public float gridSpawnMatChance_max;
         public List<MaterialResCfg> materialDataList;
     }
 
     [Serializable]
-    //������ֱ�ӿ��Ի�ȡ�ĵ��ߵ�ӳ��
+    //房间到材料的映射
     public class Room2MaterialMapping
     {
         public Vector3 spawnPos;
         public string materialId;
         public int randomAmount_min;
         public int randomAmount_max;
+
+        public Room2MaterialMapping(Vector3 spawnPos, string materialId, int randomAmount_min, int randomAmount_max)
+        {
+            this.spawnPos = spawnPos;
+            this.materialId = materialId;
+            this.randomAmount_min = randomAmount_min;
+            this.randomAmount_max = randomAmount_max;
+        }
     }
 
     [CreateAssetMenu(fileName = "GameLevelData", menuName = "KidGameSO/Game/GameLevelData")]

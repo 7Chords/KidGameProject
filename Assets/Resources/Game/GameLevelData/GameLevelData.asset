@@ -17,11 +17,39 @@ MonoBehaviour:
     enemySpawnPos: {x: 22.5, y: 1, z: -21}
   f2MMappingList:
   - serialNumber: 908
-    gridSpawnMatChance_min: 0
+    gridSpawnMatChance_min: 0.2
     gridSpawnMatChance_max: 0.5
     materialDataList:
     - materialId: T001
-      randomAmount_min: 1
+      randomAmount_min: 0
       randomAmount_max: 10
-      spawnChance: 0.5
-  r2MMappingList: []
+      spawnChance: 0.2
+    - materialId: T002
+      randomAmount_min: 0
+      randomAmount_max: 10
+      spawnChance: 0.2
+  - serialNumber: 995
+    gridSpawnMatChance_min: 0.2
+    gridSpawnMatChance_max: 0.5
+    materialDataList:
+    - materialId: T002
+      randomAmount_min: 0
+      randomAmount_max: 10
+      spawnChance: 0.2
+  r2MMappingList:
+  - spawnPos: {x: 5, y: 0, z: 3}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5
+  - spawnPos: {x: 5, y: 0, z: 2}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5
+  - spawnPos: {x: 6, y: 0, z: 2}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5
+  - spawnPos: {x: 6, y: 0, z: 3}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5
