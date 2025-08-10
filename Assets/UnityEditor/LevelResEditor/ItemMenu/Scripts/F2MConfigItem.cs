@@ -15,14 +15,14 @@ namespace KidGame.Editor
         private Button DeleteConfigButton;
 
         private string materialIDStr;
-        private int materialAmountMaxStr;
-        private int materialAmountMinStr;
-        private float materialSpawnChanceStr;
+        private int materialAmountMax;
+        private int materialAmountMin;
+        private float materialSpawnChance;
 
         public string MaterialID => materialIDStr;
-        public int MaterialAmountMax => materialAmountMaxStr;
-        public int MaterialAmountMin => materialAmountMinStr;
-        public float MaterialSpawnChance => materialSpawnChanceStr;
+        public int MaterialAmountMax => materialAmountMax;
+        public int MaterialAmountMin => materialAmountMin;
+        public float MaterialSpawnChance => materialSpawnChance;
 
 
         private Action onDestory;
@@ -33,17 +33,24 @@ namespace KidGame.Editor
             itemStyle = new F2MConfigItemStyle();
             itemStyle.Init(parent);
 
-            MaterialIDField = parent.Q<TextField>(nameof(MaterialIDField));
+            MaterialIDField = itemStyle.SelfRoot.Q<TextField>(nameof(MaterialIDField));
             MaterialIDField.RegisterValueChangedCallback(MaterialIDFieldValueChanged);
+            materialIDStr = "T001";
 
-            MaterialAmountMaxField = parent.Q<IntegerField>(nameof(MaterialAmountMaxField));
+            MaterialAmountMaxField = itemStyle.SelfRoot.Q<IntegerField>(nameof(MaterialAmountMaxField));
             MaterialAmountMaxField.RegisterValueChangedCallback(MaterialAmountMaxFieldValueChanged);
+            MaterialAmountMaxField.value = 10;
+            materialAmountMax = 10;
 
-            MaterialAmountMinField = parent.Q<IntegerField>(nameof(MaterialAmountMinField));
+            MaterialAmountMinField = itemStyle.SelfRoot.Q<IntegerField>(nameof(MaterialAmountMinField));
             MaterialAmountMinField.RegisterValueChangedCallback(MaterialAmountMinFieldValueChanged);
+            MaterialAmountMinField.value = 0;
+            materialAmountMin = 0;
 
-            MaterialSpawnChanceField = parent.Q<FloatField>(nameof(MaterialSpawnChanceField));
+            MaterialSpawnChanceField = itemStyle.SelfRoot.Q<FloatField>(nameof(MaterialSpawnChanceField));
             MaterialSpawnChanceField.RegisterValueChangedCallback(MaterialSpawnChanceFieldValueChanged);
+            MaterialSpawnChanceField.value = 0.2f;
+            materialSpawnChance = 0.2f;
 
             DeleteConfigButton = itemStyle.SelfRoot.Q<Button>(nameof(DeleteConfigButton));
             DeleteConfigButton.clicked += OnDeleteConfigButtonClicked;
@@ -54,13 +61,13 @@ namespace KidGame.Editor
         public void SetInfo(string materialId,int materialSpawnMaxAmount, int materialSpawnMinAmount,float materialSpawnChance)
         {
             materialIDStr = materialId;
-            materialAmountMaxStr = materialSpawnMaxAmount;
-            materialAmountMinStr = materialSpawnMinAmount;
-            materialSpawnChanceStr = materialSpawnChance;
+            materialAmountMax = materialSpawnMaxAmount;
+            materialAmountMin = materialSpawnMinAmount;
+            this.materialSpawnChance = materialSpawnChance;
             MaterialIDField.value = materialIDStr;
-            MaterialAmountMaxField.value = materialAmountMaxStr;
-            MaterialAmountMinField.value = materialAmountMinStr;
-            MaterialSpawnChanceField.value = materialSpawnChanceStr;
+            MaterialAmountMaxField.value = materialAmountMax;
+            MaterialAmountMinField.value = materialAmountMin;
+            MaterialSpawnChanceField.value = this.materialSpawnChance;
         }
 
 
@@ -70,16 +77,16 @@ namespace KidGame.Editor
         }
         private void MaterialAmountMaxFieldValueChanged(ChangeEvent<int> evt)
         {
-            materialAmountMaxStr = evt.newValue;
+            materialAmountMax = evt.newValue;
         }
 
         private void MaterialAmountMinFieldValueChanged(ChangeEvent<int> evt)
         {
-            materialAmountMinStr = evt.newValue;
+            materialAmountMin = evt.newValue;
         }
         private void MaterialSpawnChanceFieldValueChanged(ChangeEvent<float> evt)
         {
-            materialSpawnChanceStr = evt.newValue;
+            materialSpawnChance = evt.newValue;
         }
 
         private void OnDeleteConfigButtonClicked()

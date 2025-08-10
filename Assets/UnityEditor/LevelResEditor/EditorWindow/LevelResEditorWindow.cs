@@ -615,10 +615,12 @@ namespace KidGame.Editor
 
             GridSpawnMaxChanceField = root.Q<FloatField>(nameof(GridSpawnMaxChanceField));
             GridSpawnMaxChanceField.RegisterValueChangedCallback(GridSpawnMaxChanceFieldValueChanged);
+            GridSpawnMaxChanceField.value = 0.8f;
 
             GridSpawnMinChanceField = root.Q<FloatField>(nameof(GridSpawnMinChanceField));
             GridSpawnMinChanceField.RegisterValueChangedCallback(GridSpawnMinChanceFieldValueChanged);
-
+            GridSpawnMinChanceField.value = 0.2f;
+             
             ConfigItemListView = root.Q<VisualElement>(nameof(ConfigItemListView));
 
             f2mConfigItemList = new List<F2MConfigItem>();
@@ -663,22 +665,33 @@ namespace KidGame.Editor
 
         private void OnSaveConfigToListButtonClicked()
         {
-            if (f2mConfigItemList == null || f2mConfigItemList.Count==0) return;
+            if (f2mConfigItemList == null) return;
             if (curMapFurnitureData == null) return;
             Furniture2MaterialMapping f2MMapping = gameLevelData.f2MMappingList.Find(x => x.serialNumber == curMapFurnitureData.serialNumber);
             //列表原来里面有 更新数据
             if (f2MMapping != null)
             {
+                if(f2mConfigItemList.Count == 0)
+                {
+                    gameLevelData.f2MMappingList.Remove(f2MMapping);
+                    return;
+                }
                 f2MMapping.gridSpawnMatChance_min = gridSpawnMinChance;
                 f2MMapping.gridSpawnMatChance_max = gridSpawnMaxChance;
                 f2MMapping.materialDataList.Clear();
                 foreach (var cfgItem in f2mConfigItemList)
                 {
+                    Debug.Log(cfgItem.MaterialID);
                     f2MMapping.materialDataList.Add(new MaterialResCfg(cfgItem.MaterialID, cfgItem.MaterialAmountMin, cfgItem.MaterialAmountMax, cfgItem.MaterialSpawnChance));
                 }
             }
             else
             {
+                if (f2mConfigItemList.Count == 0)
+                {
+                    Debug.LogWarning("没有配置任何生成的材料，添加不了配置到列表！");
+                    return;
+                }
                 f2MMapping = new Furniture2MaterialMapping();
                 f2MMapping.serialNumber = curMapFurnitureData.serialNumber;
                 f2MMapping.gridSpawnMatChance_min = gridSpawnMinChance;

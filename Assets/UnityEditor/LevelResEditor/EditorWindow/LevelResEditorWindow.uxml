@@ -34,7 +34,7 @@
                 <ui:Button text="保存该家具配置到列表" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SaveConfigToListButton" style="width: 150px; height: 25px; margin-top: 5px;" />
             </ui:VisualElement>
             <ui:VisualElement name="GridSpawnChanceGroup" style="flex-grow: 1; height: 250px; flex-direction: column;">
-                <ui:FloatField label="格子生成材料概率上限" value="1" name="GridSpawnMaxChanceField" style="width: 252px; height: 40%; justify-content: center; -unity-text-align: middle-left;" />
+                <ui:FloatField label="格子生成材料概率上限" value="0.8" name="GridSpawnMaxChanceField" style="width: 252px; height: 40%; justify-content: center; -unity-text-align: middle-left;" />
                 <ui:FloatField label="格子生成材料概率下限" value="0.2" name="GridSpawnMinChanceField" style="width: 252px; height: 40%; justify-content: center; -unity-text-align: middle-left;" />
             </ui:VisualElement>
             <ui:ScrollView name="MaterialConfigScrollView" style="flex-grow: 1; height: auto;">
