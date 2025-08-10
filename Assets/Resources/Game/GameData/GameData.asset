@@ -14,5 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelDataList:
   - {fileID: 11400000, guid: 8ef36d87b7ee9bb4183629ccd14a8cf6, type: 2}
-  levelResData:
-  - {fileID: 11400000, guid: 2c5dcb465de341046a0769763f82725e, type: 2}
