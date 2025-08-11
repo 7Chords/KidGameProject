@@ -645,6 +645,7 @@ namespace KidGame.Editor
                             break;
                     }
                 }
+                SaveConfig();
 
             }
             else if(evt.button == 1)
@@ -685,6 +686,7 @@ namespace KidGame.Editor
                         gameLevelData.r2MMappingList.Remove(mapping);
                     }
                 }
+                SaveConfig();
             }
 
             WorkContainer.MarkDirtyLayout();
