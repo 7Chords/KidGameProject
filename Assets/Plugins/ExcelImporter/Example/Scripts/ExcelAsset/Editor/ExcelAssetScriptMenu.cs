@@ -16,7 +16,8 @@ public class ExcelAssetScriptMenu : EditorWindow
     string relativePath;//相对路径
     private string selectedExcelName = "未选择文件";
     private string selectedExcelPath = "";
-    [MenuItem("自定义编辑器/Excel导出")]
+    //ctrl + shift + e
+    [MenuItem("自定义编辑器/Excel导出  %#e")]
     public static void ShowWindow()
     {
         GetWindow<ExcelAssetScriptMenu>("Excel导出");

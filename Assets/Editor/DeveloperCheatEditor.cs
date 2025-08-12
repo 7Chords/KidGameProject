@@ -9,7 +9,8 @@ using KidGame;
 /// </summary>
 public class DeveloperCheatEditor : EditorWindow
 {
-    [MenuItem("自定义编辑器/开发者作弊面板")]
+    //ctrl + shift + k
+    [MenuItem("自定义编辑器/开发者作弊面板 %#k")]
     public static void ShowWindow()
     {
         GetWindow<DeveloperCheatEditor>("开发者作弊面板");

@@ -39,7 +39,7 @@ namespace KidGame.Core
                     break;
                 case UseItemType.weapon:
                     canUseItem = PlayerBag.Instance.UseWeapon(selectedItem
-                        , PlayerController.Instance.GetWeaponSpawnOffSet()
+                        , PlayerController.Instance.SpawnAndUseThrowWeaponPoint.position
                         , rotation);
                     break;
                 case UseItemType.food:

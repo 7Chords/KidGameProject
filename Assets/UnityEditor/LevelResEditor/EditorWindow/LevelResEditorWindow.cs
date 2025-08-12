@@ -40,8 +40,8 @@ namespace KidGame.Editor
         };
 
         private List<MaterialData> dataList;
-
-        [MenuItem("自定义编辑器/关卡配置器")]
+        //ctrl + shift + o
+        [MenuItem("自定义编辑器/关卡配置器 %#o")]
         public static void ShowExample()
         {
             LevelResEditorWindow wnd = GetWindow<LevelResEditorWindow>();

@@ -31,8 +31,8 @@ namespace KidGame.Editor
             MapEditorColorCfg.color_dark_blue,
             //etc
         };
-
-        [MenuItem("自定义编辑器/地图编辑器")]
+        //ctrl + shift + m
+        [MenuItem("自定义编辑器/地图编辑器  %#m")]
         public static void ShowExample()
         {
             MapEditorWindow wnd = GetWindow<MapEditorWindow>();

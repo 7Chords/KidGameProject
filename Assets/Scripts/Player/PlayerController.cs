@@ -48,7 +48,7 @@ namespace KidGame.Core
         private BuffHandler playerBuffHandler;
 
         public Transform PlaceTrapPoint;
-        private Vector3 SpawnWeaponOffset = new Vector3(0, 1, 0.5f);
+        public Transform SpawnAndUseThrowWeaponPoint;
         private GameObject curPreviewGO;
         #endregion
 
@@ -451,9 +451,13 @@ namespace KidGame.Core
         //生成在手上的武器 但是不执行逻辑
         public GameObject SpawnWeaponOnHand(WeaponData weaponData, Quaternion rotation)
         {
+
+            if (PlayerController.Instance.SpawnAndUseThrowWeaponPoint == null) return null;
+
+
             GameObject newWeapon = WeaponFactory.CreateEntity(
                 weaponData
-                , SpawnWeaponOffset
+                , PlayerController.Instance.SpawnAndUseThrowWeaponPoint.position
                 , this.transform);
             if (newWeapon != null)
             {
@@ -596,9 +600,5 @@ namespace KidGame.Core
         }
 
 
-        public Vector3 GetWeaponSpawnOffSet()
-        {
-            return SpawnWeaponOffset;
-        }
     }
 }

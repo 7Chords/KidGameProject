@@ -1,4 +1,4 @@
-using KidGame.Interface;
+/*using KidGame.Interface;
 using KidGame.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,10 +82,13 @@ namespace KidGame.Core
             // 把控制曲线的脚本挂上
             lineRenderScript = GetComponent<LineRenderScript>();
             lineRenderScript.lineRenderer = lineRenderer;
-            lineRenderScript.startPoint = 
+            *//*lineRenderScript.startPoint = 
                 PlayerController.Instance.transform.position
-                + PlayerController.Instance.transform.forward;
-            //TODO：在玩家组件上加一个物体 通过这个空物体来设置发射起点,否则有时序问题
+                + PlayerController.Instance.transform.forward;*//*
+            if(PlayerController.Instance != null)
+            {
+                lineRenderScript.startPoint = PlayerController.Instance.PlaceTrapPoint.position;
+            }
             lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
         }
 
@@ -130,4 +133,113 @@ namespace KidGame.Core
         public abstract void WeaponUseLogic();
     }
 
+}
+*/
+
+
+using KidGame.Interface;
+using KidGame.UI;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+namespace KidGame.Core
+{
+    public abstract class WeaponBase : MapItem, IInteractive
+    {
+        protected bool isOnHand = true;
+        protected WeaponData _weaponData;
+        protected GameObject self;
+        protected LineRenderer lineRenderer;
+        protected LineRenderScript lineRenderScript;
+
+        public override string EntityName { get => _weaponData.name; }
+        public WeaponData weaponData => _weaponData;
+
+        protected virtual void Awake() { }
+
+        protected virtual void Start()
+        {
+            self = gameObject;
+            InitLineRender(); // 初始化曲线渲染
+        }
+
+        protected virtual void Update()
+        {
+            if (!isOnHand)
+                WeaponUseLogic();
+            else
+            {
+                SetStartPoint();
+                SetEndPoint();
+            }
+        }
+
+        // 设置抛物线终点（鼠标位置）
+        private void SetEndPoint()
+        {
+            if (lineRenderScript != null)
+            {
+                Vector3 mousePos = MouseRaycaster.Instance.GetMousePosi();
+                if (mousePos != Vector3.zero)
+                    lineRenderScript.endPoint = mousePos;
+            }
+        }
+
+        // 设置抛物线起点（武器位置）
+        private void SetStartPoint()
+        {
+            if (lineRenderScript != null)
+            {
+                if (PlayerController.Instance != null)
+                    lineRenderScript.startPoint = PlayerController.Instance.PlaceTrapPoint.position;
+                else
+                    lineRenderScript.startPoint = transform.position;
+            }
+        }
+
+        public virtual void InitWeaponData(WeaponData weaponData)
+        {
+            _weaponData = weaponData;
+        }
+
+        protected virtual void InitLineRender()
+        {
+            lineRenderer = GetComponent<LineRenderer>();
+            lineRenderScript = GetComponent<LineRenderScript>();
+            if (lineRenderScript != null && lineRenderer != null)
+                lineRenderScript.lineRenderer = lineRenderer;
+
+            // 初始化起点和终点
+            if (PlayerController.Instance != null)
+                lineRenderScript.startPoint = PlayerController.Instance.PlaceTrapPoint.position;
+            lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
+        }
+
+        // 捡起武器逻辑
+        public override void Pick()
+        {
+            PlayerController.Instance.RemovePickableFromList(this);
+            PlayerUtil.Instance.CallPlayerPickItem(weaponData.id, UseItemType.weapon);
+            UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
+            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
+            Destroy(gameObject);
+        }
+
+        public void SetOnHandOrNot(bool onHand)
+        {
+            isOnHand = onHand;
+            // 发射后隐藏轨迹预览
+            if (!onHand && lineRenderer != null)
+                lineRenderer.enabled = false;
+        }
+
+        public bool GetOnHandOrNot() => isOnHand;
+
+        public virtual void InteractPositive(GameObject interactor) { }
+        public virtual void InteractNegative(GameObject interactor) { }
+
+        public abstract void WeaponUseLogic();
+    }
 }

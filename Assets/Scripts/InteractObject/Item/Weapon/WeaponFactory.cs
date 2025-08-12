@@ -21,7 +21,6 @@ namespace KidGame.Core
                 , position
                 , Quaternion.identity
                 , parent);
-            weaponObj.transform.localPosition = PlayerController.Instance.GetWeaponSpawnOffSet();
             if (weaponObj != null)
                 weapon = weaponObj.GetComponent<WeaponBase>();
             else Debug.LogError("weaponObj == NULL!!!");
