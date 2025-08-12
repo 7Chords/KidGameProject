@@ -3967,3 +3967,10 @@ MonoBehaviour:
       y: 2
     roomType: 1
     rotation: 0
+  - serialNumber: 640
+    furnitureData: {fileID: 11400000, guid: 330198b46aa880043a1a888cdefc12f6, type: 2}
+    mapPosList:
+    - x: 3
+      y: 16
+    roomType: 0
+    rotation: 0

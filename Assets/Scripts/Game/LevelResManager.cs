@@ -93,6 +93,7 @@ namespace KidGame.Core
                 {
                     _materialRoot = new GameObject("Material_Root");
                     _materialRoot.transform.position = GameManager.Instance.GameGeneratePoint.position;
+                    _materialRoot.transform.parent = GameObject.Find("Map").transform;
                 }
 
                 GameObject materialGO = MaterialFactory.CreateEntity(SoLoader.Instance.GetMaterialDataDataById(mapping.materialId), 

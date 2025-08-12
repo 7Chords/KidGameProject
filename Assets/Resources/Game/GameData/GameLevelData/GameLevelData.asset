@@ -35,4 +35,20 @@ MonoBehaviour:
       randomAmount_min: 0
       randomAmount_max: 10
       spawnChance: 0.2
-  r2MMappingList: []
+  r2MMappingList:
+  - spawnPos: {x: 1, y: 1, z: 2}
+    materialId: M001
+    randomAmount_min: 1
+    randomAmount_max: 5
+  - spawnPos: {x: 11, y: 1, z: 1}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5
+  - spawnPos: {x: 8, y: 1, z: 4}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5
+  - spawnPos: {x: 1, y: 1, z: 9}
+    materialId: M001
+    randomAmount_min: 1
+    randomAmount_max: 5

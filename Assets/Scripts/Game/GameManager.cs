@@ -91,9 +91,9 @@ namespace KidGame.Core
 
         private void InitGame()
         {
-            PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
             MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
+            PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
 
             // UI ≥ı ºªØ
             GamePlayPanelController.Instance.Init();
