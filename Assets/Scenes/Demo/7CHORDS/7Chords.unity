@@ -685,7 +685,7 @@ MonoBehaviour:
   - 
   lastID: 0
   unlockedItems: []
---- !u!84 &1017990962
+--- !u!84 &1197906305
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1674,7 +1674,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1017990962}
+      objectReference: {fileID: 1197906305}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size

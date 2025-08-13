@@ -102,6 +102,8 @@ namespace KidGame.Core
             currentRating = ScoreRating.D;
             ratingProgress = 0f;
             currentCombo = 0;
+
+            GameObject.Find("Map").transform.rotation = GameGeneratePoint.transform.rotation;
         }
 
         private void DiscardGame()
@@ -112,6 +114,8 @@ namespace KidGame.Core
 
             GamePlayPanelController.Instance.Discard();
             CameraController.Instance.Discard();
+
+
         }
 
         /// <summary>
@@ -126,6 +130,8 @@ namespace KidGame.Core
             GameLevelManager.Instance.StartDayPhase();
             
             OnGameStarted?.Invoke();
+
+
         }
 
         /// <summary>

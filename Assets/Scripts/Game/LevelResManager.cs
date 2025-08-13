@@ -13,6 +13,7 @@ namespace KidGame.Core
         private List<Room2MaterialMapping> _r2MMappingList;
 
         private GameObject _materialRoot;
+        private Transform _mapRoot;
         public void Init()
         {
         }
@@ -25,6 +26,9 @@ namespace KidGame.Core
         {
             _f2MMappingList = f2MMappingList;
             _r2MMappingList = r2MMappingList;
+
+            //todo:清空场上所有的材料 家具和散落
+            if (_materialRoot) Destroy(_materialRoot);
 
             // 初始化有材料的家具
             InitializeFurnitureMaterials();
@@ -92,16 +96,19 @@ namespace KidGame.Core
                 if (_materialRoot == null)
                 {
                     _materialRoot = new GameObject("Material_Root");
-                    _materialRoot.transform.position = GameManager.Instance.GameGeneratePoint.position;
-                    _materialRoot.transform.parent = GameObject.Find("Map").transform;
+                    if (_mapRoot == null) _mapRoot = GameObject.Find("Map").transform;
+                    _materialRoot.transform.position = _mapRoot.position;
+                    _materialRoot.transform.SetParent(_mapRoot);
                 }
 
                 GameObject materialGO = MaterialFactory.CreateEntity(SoLoader.Instance.GetMaterialDataDataById(mapping.materialId), 
                     new Vector3(mapping.spawnPos.x,mapping.spawnPos.y,-mapping.spawnPos.z),
                     Random.Range(mapping.randomAmount_min,mapping.randomAmount_max+1));
                 materialGO.transform.SetParent(_materialRoot.transform);
-                materialGO.transform.position += _materialRoot.transform.position;
+                materialGO.transform.position += _mapRoot.transform.position;
+
             }
+            _materialRoot.transform.rotation = _mapRoot.rotation;
         }
 
 
