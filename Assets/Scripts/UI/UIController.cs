@@ -65,7 +65,6 @@ namespace KidGame.UI.Game
 
         private void OnToGameScene()
         {
-            // uiFrame.ShowPanel(ScreenIds.GamePlayPanel);
         }
 
         private void OnToSettingsWindow()

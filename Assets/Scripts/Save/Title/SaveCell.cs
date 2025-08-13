@@ -53,14 +53,11 @@ namespace KidGame.UI
                 OnExit();
         }
 
-        //初始化时设置序号
-        public void SetID(int i)
-        {
-            indexText.text = i.ToString();
-        }
-
+        // 设置档位信息
         public void SetName(int i)
         {
+            indexText.text = i.ToString();
+            
             //空档
             if (RecordData.Instance.recordName[i] == "")
             {

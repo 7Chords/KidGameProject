@@ -131,6 +131,8 @@ namespace KidGame.Core
                 }
             }
             tileRoot.isStatic = true;
+            
+            root.transform.rotation = GameManager.Instance.GameGeneratePoint.rotation;
             NavMeshSurface surface = tileRoot.AddComponent<NavMeshSurface>();
             surface.BuildNavMesh();
         }
