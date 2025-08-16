@@ -97,7 +97,7 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FogDensity: 0.418
-    - _GapSize: 0.1
+    - _GapSize: 0.087
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0

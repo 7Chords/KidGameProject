@@ -127,7 +127,6 @@ namespace KidGame.Core
 
             gameStarted = true;
             GameLevelManager.Instance.InitFirstLevel();
-            GameLevelManager.Instance.StartDayPhase();
             
             OnGameStarted?.Invoke();
 

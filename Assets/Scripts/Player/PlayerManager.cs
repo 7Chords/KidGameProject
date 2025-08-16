@@ -16,6 +16,7 @@ namespace KidGame.Core
             playerGO.transform.position = new Vector3(playerSpawnPos.x, playerSpawnPos.y, -playerSpawnPos.z)
                 + GameManager.Instance.GameGeneratePoint.position;
 
+            //地图旋转导致的位置修正
             playerGO.transform.RotateAround(new Vector3(GameManager.Instance.GameGeneratePoint.position.x, playerSpawnPos.y, GameManager.Instance.GameGeneratePoint.position.z),
                 Vector3.up, 
                 GameManager.Instance.GameGeneratePoint.rotation.eulerAngles.y);

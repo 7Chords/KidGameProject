@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public class TestMaterial : MaterialBase
+    public class CommonMaterial : MaterialBase
     {
 
     }
