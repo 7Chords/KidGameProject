@@ -15,6 +15,10 @@ namespace KidGame.Core
             enemyList = new List<EnemyController>();
         }
 
+        public void Discard()
+        {
+
+        }
         public void InitEnemy(List<EnemySpawnCfg> enemySpawnCfgList)
         {
             for (int i = 0; i < enemySpawnCfgList.Count; i++)

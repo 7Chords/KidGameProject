@@ -158,6 +158,8 @@ namespace KidGame.Core
             _roomsToCheck = null;
             roomSearchStateDic.Clear();
             roomSearchStateDic = null;
+
+            Destroy(gameObject);
         }
 
         #endregion

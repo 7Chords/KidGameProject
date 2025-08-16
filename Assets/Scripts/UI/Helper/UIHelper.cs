@@ -200,41 +200,59 @@ namespace KidGame.UI
 
         #region Tip
 
+            #region Delete
         /// <summary>
         /// 添加提示到队列
         /// </summary>
         /// <param name="content">提示内容</param>
         /// <param name="creator">创建者</param>
         /// <param name="showTime">显示时长</param>
-        public void ShowTipByQueue(TipInfo info,float intervalTime = 0.5f)
-        {
-            tipQueue.Enqueue(info);
+        //public void ShowTipByQueue(TipInfo info,float intervalTime = 0.5f)
+        //{
+        //    tipQueue.Enqueue(info);
 
-            // 如果没有正在显示的提示，立即开始显示
-            if (!isShowingTip && showTipCoroutine == null)
-            {
-                showTipCoroutine = StartCoroutine(ProcessTipQueue(intervalTime));
-            }
-        }
+        //    // 如果没有正在显示的提示，立即开始显示
+        //    if (!isShowingTip && showTipCoroutine == null)
+        //    {
+        //        showTipCoroutine = StartCoroutine(ProcessTipQueue(intervalTime));
+        //    }
+        //}
 
         /// <summary>
         /// 处理提示队列的协程
         /// </summary>
-        private IEnumerator ProcessTipQueue(float intervalTime)
-        {
-            isShowingTip = true;
+        //private IEnumerator ProcessTipQueue(float intervalTime)
+        //{
+        //    isShowingTip = true;
 
-            while (tipQueue.Count > 0)
-            {
-                TipInfo tipInfo = tipQueue.Dequeue();
-                ShowOneTip(tipInfo);
-                // 如果不是最后一个提示，等待间隔时间
-                yield return new WaitForSeconds(intervalTime);
-            }
+        //    while (tipQueue.Count > 0)
+        //    {
+        //        TipInfo tipInfo = tipQueue.Dequeue();
+        //        ShowOneTip(tipInfo);
+        //        // 如果不是最后一个提示，等待间隔时间
+        //        yield return new WaitForSeconds(intervalTime);
+        //    }
 
-            isShowingTip = false;
-            showTipCoroutine = null;
-        }
+        //    isShowingTip = false;
+        //    showTipCoroutine = null;
+        //}
+
+        /// <summary>
+        /// 清空提示队列
+        /// </summary>
+        //public void ClearTipQueue()
+        //{
+        //    tipQueue.Clear();
+
+        //    if (showTipCoroutine != null)
+        //    {
+        //        StopCoroutine(showTipCoroutine);
+        //        showTipCoroutine = null;
+        //    }
+
+        //    isShowingTip = false;
+        //}
+            #endregion
 
         /// <summary>
         /// 直接展示一个提示信息
@@ -262,21 +280,6 @@ namespace KidGame.UI
         }
 
         
-        /// <summary>
-        /// 清空提示队列
-        /// </summary>
-        public void ClearTipQueue()
-        {
-            tipQueue.Clear();
-
-            if (showTipCoroutine != null)
-            {
-                StopCoroutine(showTipCoroutine);
-                showTipCoroutine = null;
-            }
-
-            isShowingTip = false;
-        }
         #endregion
 
         #region Sign

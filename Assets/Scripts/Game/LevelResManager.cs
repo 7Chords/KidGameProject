@@ -27,14 +27,18 @@ namespace KidGame.Core
             _f2MMappingList = f2MMappingList;
             _r2MMappingList = r2MMappingList;
 
-            //todo:清空场上所有的材料 家具和散落
-            if (_materialRoot) Destroy(_materialRoot);
 
             // 初始化有材料的家具
             InitializeFurnitureMaterials();
 
             // 生成房间里散落的材料
             SpawnRoomMaterials();
+        }
+
+        public void DiscardLevelRes()
+        {
+            //todo:清空场上所有的材料 家具和散落
+            if (_materialRoot) Destroy(_materialRoot);
         }
 
         private void InitializeFurnitureMaterials()

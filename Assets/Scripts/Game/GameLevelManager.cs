@@ -61,6 +61,8 @@ namespace KidGame.Core
 
         public void Discard()
         {
+            EnemyManager.Instance.Discard();
+            LevelResManager.Instance.Discard();
         }
 
         private void Update()
@@ -118,19 +120,10 @@ namespace KidGame.Core
             LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].f2MMappingList,_levelDataList[levelIndex].r2MMappingList);
         }
 
-        public void DiscardLevel()
+        public void DiscardCurrentLevel()
         {
+            LevelResManager.Instance.DiscardLevelRes();
             EnemyManager.Instance.DiscardEnemy();
-        }
-
-        public void StartLevel()
-        {
-            _levelStarted = true;
-        }
-
-        public void FinishLevel()
-        {
-            _levelFinished = true;
         }
 
         #endregion
@@ -175,6 +168,7 @@ namespace KidGame.Core
             
             if (_currentDay <= _totalDays)
             {
+                DiscardCurrentLevel();
                 InitNextLevel();
                 StartDayPhase();
             }
