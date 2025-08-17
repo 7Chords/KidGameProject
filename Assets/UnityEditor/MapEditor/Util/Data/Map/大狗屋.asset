@@ -106,11 +106,6 @@ MonoBehaviour:
     roomType: 1
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
-      x: 3
-      y: 2
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
       x: 1
       y: 2
     roomType: 1
@@ -146,17 +141,7 @@ MonoBehaviour:
     roomType: 1
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
-      x: 4
-      y: 3
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
       x: 3
-      y: 3
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
-      x: 5
       y: 3
     roomType: 1
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
@@ -216,11 +201,6 @@ MonoBehaviour:
     roomType: 1
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
-      x: 5
-      y: 4
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
       x: 3
       y: 4
     roomType: 1
@@ -241,17 +221,7 @@ MonoBehaviour:
     roomType: 1
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
-      x: 4
-      y: 4
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
       x: 8
-      y: 4
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
-      x: 6
       y: 4
     roomType: 1
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
@@ -272,11 +242,6 @@ MonoBehaviour:
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
       x: 6
-      y: 5
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
-      x: 5
       y: 5
     roomType: 1
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
@@ -667,11 +632,6 @@ MonoBehaviour:
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
       x: 7
-      y: 6
-    roomType: 0
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
-      x: 8
       y: 6
     roomType: 0
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
@@ -2763,11 +2723,6 @@ MonoBehaviour:
     mapPos:
       x: 18
       y: 12
-    roomType: 4
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
-      x: 19
-      y: 13
     roomType: 4
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
@@ -3376,11 +3331,6 @@ MonoBehaviour:
     roomType: 6
   - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
     mapPos:
-      x: 5
-      y: 2
-    roomType: 1
-  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
-    mapPos:
       x: 16
       y: 10
     roomType: 4
@@ -3429,6 +3379,56 @@ MonoBehaviour:
       x: 13
       y: 2
     roomType: 2
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 19
+      y: 13
+    roomType: 4
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 3
+      y: 2
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 5
+      y: 2
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 4
+      y: 3
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 5
+      y: 3
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 5
+      y: 4
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 4
+      y: 4
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 5
+      y: 5
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 6
+      y: 4
+    roomType: 1
+  - tileData: {fileID: 11400000, guid: 2247c4fad5f110346a688405a4f66324, type: 2}
+    mapPos:
+      x: 8
+      y: 6
+    roomType: 0
   wallList:
   - wallData: {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
     mapPosList:
@@ -3708,17 +3708,6 @@ MonoBehaviour:
   - wallData: {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}
     mapPosList:
     - x: 1
-      y: 5
-    - x: 2
-      y: 5
-    - x: 3
-      y: 5
-    - x: 4
-      y: 5
-    stackLayer: 1
-  - wallData: {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}
-    mapPosList:
-    - x: 1
       y: 15
     - x: 2
       y: 15
@@ -3825,6 +3814,17 @@ MonoBehaviour:
       y: 3
     - x: 0
       y: 4
+    stackLayer: 1
+  - wallData: {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}
+    mapPosList:
+    - x: 1
+      y: 5
+    - x: 2
+      y: 5
+    - x: 3
+      y: 5
+    - x: 4
+      y: 5
     stackLayer: 1
   furnitureList:
   - serialNumber: 0
@@ -3942,17 +3942,6 @@ MonoBehaviour:
       y: 1
     roomType: 0
     rotation: 0
-  - serialNumber: 0
-    furnitureData: {fileID: 11400000, guid: 3270d58e6c6b81441ba85eed6b3df03a, type: 2}
-    mapPosList:
-    - x: 20
-      y: 12
-    - x: 20
-      y: 13
-    - x: 20
-      y: 14
-    roomType: 0
-    rotation: 90
   - serialNumber: 995
     furnitureData: {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
     mapPosList:

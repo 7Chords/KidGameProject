@@ -67,6 +67,15 @@ namespace KidGame.Editor
             MapDataField.value = null;
             MapDataField.value = tmpMapData;
 
+            MapEditorItemGroupConfig tmpItemConfig = mapEditorItemGroupConfig;
+            ItemConfigField.value = null;
+            ItemConfigField.value = tmpItemConfig;
+
+            GeneratePointField.value = null;
+            ScaleField.value = 1;
+            RoomTypeField.value = RoomType.Corridor;
+            PlaceRotationField.value = 0;
+
         }
 
 
@@ -81,7 +90,7 @@ namespace KidGame.Editor
         private ObjectField ItemConfigField; //菜单栏配置数据
         private FloatField ScaleField; //生成地图缩放系数
         private EnumField RoomTypeField; //房间类型枚举下拉
-        private FloatField PlaceRotationField;
+        private FloatField PlaceRotationField;//家具Y旋转
 
         private MapData mapData;
         private MapEditorItemGroupConfig mapEditorItemGroupConfig;
@@ -522,10 +531,21 @@ namespace KidGame.Editor
                     float offsetGridX = startOffsetX / mapEditorConfig.curGridUnitLength;
                     float offsetGridY = startOffsetY / mapEditorConfig.curGridUnitLength;
                     if ((mapXMin - offsetGridX) < 0 || (mapYMin - offsetGridY) < 0) continue;
+
+
+                    //float pivotX = (mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength;
+                    //float pivotY = (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength;
+
+                    //Matrix4x4 matrixBackup = GUI.matrix;
+                    //GUIUtility.RotateAroundPivot(furniture.rotation, new Vector2(pivotX, pivotY)); // 绕左下角旋转
+
                     GUI.DrawTexture(new Rect((mapXMin - offsetGridX) * mapEditorConfig.curGridUnitLength,
                         (mapYMin - offsetGridY) * mapEditorConfig.curGridUnitLength,
                         (mapXMax - mapXMin + 1) * mapEditorConfig.curGridUnitLength,
                         (mapYMax - mapYMin + 1) * mapEditorConfig.curGridUnitLength), furniture.furnitureData.texture);
+
+                    // Restore the matrix
+                    //GUI.matrix = matrixBackup;
                 }
 
                 foreach (var wall in mapData.wallList)

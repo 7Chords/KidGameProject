@@ -503,6 +503,14 @@ namespace KidGame.Editor
                     // 计算屏幕坐标
                     screenX = (mapping.spawnPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
                     screenY = (mapping.spawnPos.z - startGridY) * mapEditorConfig.curGridUnitLength;
+
+                    // 确保不会绘制到可见区域之外
+                    if (screenX < 0 || screenX > visibleWidth ||
+                        screenY < 0 || screenY > visibleHeight)
+                    {
+                        continue;
+                    }
+
                     GUI.DrawTexture(new Rect(screenX, screenY,
                          mapEditorConfig.curGridUnitLength,
                          mapEditorConfig.curGridUnitLength),
@@ -525,6 +533,14 @@ namespace KidGame.Editor
                 {
                     screenX = (cfg.enemySpawnPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
                     screenY = (cfg.enemySpawnPos.z - startGridY) * mapEditorConfig.curGridUnitLength;
+
+                    // 确保不会绘制到可见区域之外
+                    if (screenX < 0 || screenX > visibleWidth ||
+                        screenY < 0 || screenY > visibleHeight)
+                    {
+                        continue;
+                    }
+
                     GUI.DrawTexture(new Rect(screenX, screenY,
                          mapEditorConfig.curGridUnitLength,
                          mapEditorConfig.curGridUnitLength),
@@ -534,11 +550,15 @@ namespace KidGame.Editor
                 tex = Resources.Load<Texture2D>("GUI/Editor/PlayerSpawnConfigTex");
                 screenX = (gameLevelData.playerSpawnPos.x - startGridX) * mapEditorConfig.curGridUnitLength;
                 screenY = (gameLevelData.playerSpawnPos.z - startGridY) * mapEditorConfig.curGridUnitLength;
-                GUI.DrawTexture(new Rect(screenX, screenY,
+
+                if(screenX >= 0 && screenX <= visibleWidth && 
+                    screenY >= 0 && screenY <= visibleHeight)
+                {
+                    GUI.DrawTexture(new Rect(screenX, screenY,
                      mapEditorConfig.curGridUnitLength,
                      mapEditorConfig.curGridUnitLength),
                      tex, ScaleMode.ScaleToFit);
-
+                }
             }
 
 
