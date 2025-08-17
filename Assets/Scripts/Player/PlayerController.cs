@@ -100,6 +100,8 @@ namespace KidGame.Core
         private Dictionary<IPickable, float> pickableDict;
 
         public event Action<float> OnMouseWheelValueChanged;
+
+        private Vector3 rotateDir;
         #endregion
 
         #region 生命周期
@@ -201,11 +203,17 @@ namespace KidGame.Core
             Signals.Get<ControlBagSignal>().Dispatch();
         }
         /// <summary>
-        /// 玩家旋转 TODO:优化？
+        /// 玩家旋转
         /// </summary>
-        public void Rotate(Vector3 dir)
+        public void Rotate()
         {
-            transform.rotation = Quaternion.LookRotation(dir);
+            // 将鼠标屏幕坐标转换为世界坐标（忽略Y轴差异）
+            Vector3 mouseWorldPos = MouseRaycaster.Instance.GetMousePosi();
+            mouseWorldPos.y = transform.position.y;
+
+            // 计算方向向量
+            rotateDir = (mouseWorldPos - transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(rotateDir);
         }
         public void ChangeState(PlayerState playerState, bool reCurrstate = false)
         {

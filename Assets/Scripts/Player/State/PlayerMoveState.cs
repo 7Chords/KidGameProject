@@ -50,7 +50,7 @@ namespace KidGame.Core
             {
                 dir = new Vector3(inputVal.x, 0, inputVal.y);
             }
-            player.Rotate(dir);
+            player.Rotate();
         }
 
         private void UpdateSpeed()

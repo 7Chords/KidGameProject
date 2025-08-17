@@ -11,7 +11,7 @@ namespace KidGame.Core
             player.PlayAnimation("Dash");
             player.ProduceSound(GlobalValue.MIDDLE_RANGE_SOUND_SPREAD);
             //todo
-            player.Rb.AddForce(player.transform.forward * 50f, ForceMode.Impulse);
+            player.Rb.AddForce(player.Rb.velocity.normalized * 50f, ForceMode.Impulse);
             // todo.ÏûºÄÌåÁ¦
             player.ConsumeStamina(player.PlayerBaseData.DashStaminaOneTime);
         }
