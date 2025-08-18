@@ -13,7 +13,7 @@ namespace KidGame.Core
 
         public Dictionary<string, ScriptableObject> soDic;
 
-        //×°EntityµÄ id -> EntityµÄÆ¥Åä
+        //×°Entityï¿½ï¿½ id -> Entityï¿½ï¿½Æ¥ï¿½ï¿½
         private Dictionary<string, object> entityDic;
 
         protected override void Awake()
@@ -29,16 +29,16 @@ namespace KidGame.Core
         {
             ScriptableObject[] allSobj = Resources.LoadAll<ScriptableObject>("ScriptObject");
 
-            Debug.Log($"ÕÒµ½ {allSobj.Length} ¸ö ScriptableObject");
-            // Ìí¼Óµ½×Öµä£¨¼üÎªÎÄ¼þÃû£¬²»º¬À©Õ¹Ãû£©
+            Debug.Log($"ï¿½Òµï¿½ {allSobj.Length} ï¿½ï¿½ ScriptableObject");
+            // ï¿½ï¿½ï¿½Óµï¿½ï¿½Öµä£¨ï¿½ï¿½Îªï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½
             foreach (var so in allSobj)
             {
                 if (so != null)
                 {
                     if (!soDic.ContainsKey(so.name)) soDic.Add(so.name, so);
-                    else Debug.LogWarning("ÖØ¸´¼ÓÔØ£¡£¡ ¼ì²éÊÇ·ñÓÐÖØÃûÅä±íµ¼ÖÂµÄÖØÃûSO£¡£¡");
+                    else Debug.LogWarning("ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½SOï¿½ï¿½ï¿½ï¿½");
                 }
-                else Debug.LogWarning("soÎª¿Õ£¡£¡");
+                else Debug.LogWarning("soÎªï¿½Õ£ï¿½ï¿½ï¿½");
             }
         }
 
@@ -48,40 +48,40 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ´«ÈëÖµÎªÏëÒªÕÒµÄÄ³¸öÎïÌåµÄstringÀàÐÍµÄid
-        /// ÒÔ¼°Õâ¸öData TypeµÄÃû×Ö
-        /// ºÍ ×°ÔØÕâ¸öEntityµÄ SoÃû×Ö
+        /// ï¿½ï¿½ï¿½ï¿½ÖµÎªï¿½ï¿½Òªï¿½Òµï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½stringï¿½ï¿½ï¿½Íµï¿½id
+        /// ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Data Typeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        /// ï¿½ï¿½ ×°ï¿½ï¿½ï¿½ï¿½ï¿½Entityï¿½ï¿½ Soï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private object GetDataById(string id, string dataName, string soName)
         {
-            // Ö±½Ó´Ó»º´æÖÐ²éÕÒ
+            // Ö±ï¿½Ó´Ó»ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
             string compositeKey = $"{dataName}_{id}";
             if (entityDic.TryGetValue(compositeKey, out object cachedData))
             {
                 return cachedData;
             }
 
-            // »º´æÖÐÃ»ÓÐ£¬´ÓSOÖÐ²éÕÒ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð£ï¿½ï¿½ï¿½SOï¿½Ð²ï¿½ï¿½ï¿½
             if (!soDic.TryGetValue(soName, out ScriptableObject so))
             {
-                Debug.LogError("ÕÒ²»µ½SO: " + soName);
+                Debug.LogError("ï¿½Ò²ï¿½ï¿½ï¿½SO: " + soName);
                 return null;
             }
 
-            // ÔÚSOÖÐ²éÕÒÊµÌåÁÐ±í
+            // ï¿½ï¿½SOï¿½Ð²ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Ð±ï¿½
             object foundEntity = FindEntityInSo(so, id);
             if (foundEntity != null)
             {
-                // Ìí¼Óµ½»º´æ
+                // ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½
                 entityDic[compositeKey] = foundEntity;
                 return foundEntity;
             }
 
-            Debug.LogWarning($"ÔÚSO '{soName}' ÖÐÎ´ÕÒµ½IDÎª {id} µÄÊµÌå");
+            Debug.LogWarning($"ï¿½ï¿½SO '{soName}' ï¿½ï¿½Î´ï¿½Òµï¿½IDÎª {id} ï¿½ï¿½Êµï¿½ï¿½");
             return null;
         }
 
-        // ÔÚSOÖÐ²éÕÒÌØ¶¨IDµÄÊµÌå
+        // ï¿½ï¿½SOï¿½Ð²ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½IDï¿½ï¿½Êµï¿½ï¿½
         /*private object FindEntityInSo(ScriptableObject so, string id)
         {
             var fields = so.GetType().GetFields();
@@ -89,29 +89,29 @@ namespace KidGame.Core
             foreach (var field in fields)
             {
                 field.GetValue("id");
-                // ¼ì²é×Ö¶ÎÊÇ·ñÎªList<>ÀàÐÍ
+                // ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½Ç·ï¿½ÎªList<>ï¿½ï¿½ï¿½ï¿½
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
                 {
                     var entityList = field.GetValue(so);
-                    */ /*Ö±½ÓÊ¹ÓÃ entityList.Count ²»ÏãÂð£¿ÎªÊ²Ã´ÒªÈÆÕâÃ´Ò»´óÈ¦£¿
-Ô­Òò£º               entityList µÄÀàÐÍÔÚ±àÒëÊ±ÊÇ object£¨ÒòÎªÍ¨¹ý·´Éä»ñÈ¡µÄ×Ö¶ÎÖµÄ¬ÈÏÊÇ object ÀàÐÍ£©£¬
-                    ±àÒëÆ÷²»ÖªµÀËüÊÇÒ»¸öÁÐ±í£¬Òò´ËÎÞ·¨Ö±½Ó·ÃÎÊ Count ÊôÐÔ¡£*/ /*
+                    */ /*Ö±ï¿½ï¿½Ê¹ï¿½ï¿½ entityList.Count ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÊ²Ã´Òªï¿½ï¿½ï¿½ï¿½Ã´Ò»ï¿½ï¿½È¦ï¿½ï¿½
+Ô­ï¿½ï¿½               entityList ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ objectï¿½ï¿½ï¿½ï¿½ÎªÍ¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ö¶ï¿½ÖµÄ¬ï¿½ï¿½ï¿½ï¿½ object ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½
+                    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Ö±ï¿½Ó·ï¿½ï¿½ï¿½ Count ï¿½ï¿½ï¿½Ô¡ï¿½*/ /*
                     //GetType->List    GetProperty->Count   GetValue  -> num
                     var count = (int)entityList.GetType().GetProperty("Count").GetValue(entityList);
                     for (int i = 0; i < count; i++)
                     {
-                        */ /*µÚÒ»¸ö²ÎÊý entityList£º±íÊ¾Òª»ñÈ¡ÊôÐÔÖµµÄ¶ÔÏó£¨¼´ÁÐ±íÊµÀý£©¡£
-                        µÚ¶þ¸ö²ÎÊý new object[] { i }£ºË÷ÒýÆ÷µÄ²ÎÊý£¨ÕâÀï´«ÈëË÷ÒýÖµ i£¬±íÊ¾Òª»ñÈ¡µÚ i ¸öÔªËØ£©¡£*/ /*
+                        */ /*ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ entityListï¿½ï¿½ï¿½ï¿½Ê¾Òªï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Öµï¿½Ä¶ï¿½ï¿½ó£¨¼ï¿½ï¿½Ð±ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                        ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ new object[] { i }ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï´«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ iï¿½ï¿½ï¿½ï¿½Ê¾Òªï¿½ï¿½È¡ï¿½ï¿½ i ï¿½ï¿½Ôªï¿½Ø£ï¿½ï¿½ï¿½*/ /*
                         var entity = entityList.GetType().GetProperty("Item").GetValue(entityList, new object[] { i });
 
-                        // ¼ì²éÊµÌåÊÇ·ñÓÐ"id"ÊôÐÔ
+                        // ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½"id"ï¿½ï¿½ï¿½ï¿½
                         var idProperty = entity.GetType().GetProperty("id");
 
                         if (idProperty != null)
                         {
                             string entityId = idProperty.GetValue(entity).ToString();
                             //Debug.Log(entityId);
-                            // ÕÒµ½Æ¥ÅäIDµÄÊµÌå
+                            // ï¿½Òµï¿½Æ¥ï¿½ï¿½IDï¿½ï¿½Êµï¿½ï¿½
                             if (entityId == id)
                             {
                                 return entity;
@@ -126,30 +126,30 @@ namespace KidGame.Core
 */
         private object FindEntityInSo(ScriptableObject so, string id)
         {
-            //fieldÊÇ×Ö¶Î    valueÊÇÄÃÖµ
-            //GetPropertyÊÇÄÃÊôÐÔ    public string Id { get; set; } // id ÊÇÊôÐÔ
+            //fieldï¿½ï¿½ï¿½Ö¶ï¿½    valueï¿½ï¿½ï¿½ï¿½Öµ
+            //GetPropertyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    public string Id { get; set; } // id ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             var fields = so.GetType().GetFields();
 
             foreach (var field in fields)
             {
-                // ¼ì²é×Ö¶ÎÊÇ·ñÎª List<> ÀàÐÍ
+                // ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½Ç·ï¿½Îª List<> ï¿½ï¿½ï¿½ï¿½
                 if (field.FieldType.IsGenericType &&
                     field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
                 {
-                    //´ÓsoÕâ¸öfields»ñÈ¡Ò»¸öfield
+                    //ï¿½ï¿½soï¿½ï¿½ï¿½fieldsï¿½ï¿½È¡Ò»ï¿½ï¿½field
                     var entityList = field.GetValue(so);
                     if (entityList == null) continue;
 
-                    // ¸ü¸ßÐ§µÄ·½Ê½ Ö±½Ó×ª»»Îª IList ±ÜÃâ·´Éä Count
+                    // ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä·ï¿½Ê½ Ö±ï¿½ï¿½×ªï¿½ï¿½Îª IList ï¿½ï¿½ï¿½â·´ï¿½ï¿½ Count
                     var list = entityList as System.Collections.IList;
                     if (list == null) continue;
 
                     for (int i = 0; i < list.Count; i++)
                     {
-                        var entity = list[i]; // Ö±½ÓÍ¨¹ýË÷Òý·ÃÎÊ 
+                        var entity = list[i]; // Ö±ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
                         if (entity == null) continue;
 
-                        // ¼ì²éÊµÌåÊÇ·ñÓÐ "id" ×Ö¶Î
+                        // ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ "id" ï¿½Ö¶ï¿½
                         var idField = entity.GetType().GetField("id");
                         if (idField != null)
                         {
@@ -166,7 +166,7 @@ namespace KidGame.Core
             return null;
         }
 
-        #region Õë¶ÔÃ¿Ò»ÖÖData ×öÀàËÆµÄµ«ÊÇ²»Í¬µÄ´¦Àí
+        #region ï¿½ï¿½ï¿½Ã¿Ò»ï¿½ï¿½Data ï¿½ï¿½ï¿½ï¿½ï¿½ÆµÄµï¿½ï¿½Ç²ï¿½Í¬ï¿½Ä´ï¿½ï¿½ï¿½
 
         //So kidgame_game_data_config
 

@@ -20,6 +20,7 @@ namespace KidGame.Core
         private InputAction gamePauseAction;
 
         public event Action OnInteractionPress;
+        public event Action OnInteractionPressWithoutTime;
         public event Action OnDashPress;
         public event Action OnRunPress;
         public event Action OnRunRelease;
@@ -35,7 +36,7 @@ namespace KidGame.Core
         {
             playerInput = GetComponent<PlayerInput>();
             inputActionAsset = playerInput.actions;
-
+            
             moveAction = inputActionAsset.FindAction("Move");
             interactionAction = inputActionAsset.FindAction("Interaction");
             dashAction = inputActionAsset.FindAction("Dash");
@@ -48,11 +49,13 @@ namespace KidGame.Core
             gamePauseAction = inputActionAsset.FindAction("GamePause");
 
             interactionAction.performed += OnInteractionActionPerformed;
+            //interactionAction.performed += OnInteractActionPerformedWithoutTime;
+            interactionAction.started += OnInteractActionPerformedWithoutTime;
             dashAction.performed += OnDashActionPerformed;
             runAction.performed += OnRunActionPerformed;
             runAction.canceled += OnRunActionCanceled;
             useAction.performed += OnUseActionPerformed;
-            //throwAction.performed += OnThrowActionPerformed;
+            
             bagAction.performed+= OnBagActionPerformed;
             pickAction.performed += OnPickActionPerformed;
             mouseWheelAction.performed += OnMouseWheelActionPerformed;
@@ -64,6 +67,8 @@ namespace KidGame.Core
         private void OnDestroy()
         {
             interactionAction.performed -= OnInteractionActionPerformed;
+            
+            interactionAction.started -= OnInteractActionPerformedWithoutTime;
             dashAction.performed -= OnDashActionPerformed;
             runAction.performed -= OnRunActionPerformed;
             runAction.canceled -= OnRunActionCanceled;
@@ -116,6 +121,11 @@ namespace KidGame.Core
         {
             if (GameManager.Instance.IsGamePaused) return;
             OnInteractionPress?.Invoke();
+        }
+        //无视时间缩放的互动事件
+        private void OnInteractActionPerformedWithoutTime(InputAction.CallbackContext context)
+        {
+            OnInteractionPressWithoutTime?.Invoke();
         }
 
         private void OnDashActionPerformed(InputAction.CallbackContext context)

@@ -11,24 +11,24 @@ namespace KidGame.Core
     {
         public GameData GameData;
         
-        private bool gameStarted; // ×ÜµÄÓÎÏ·¿ªÊ¼
-        private bool gameFinished; // ×ÜµÄÓÎÏ·½áÊø
+        private bool gameStarted; // ï¿½Üµï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ê¼
+        private bool gameFinished; // ï¿½Üµï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½
 
         private int levelIndex;
 
-        // ÓÎÏ·ÔÝÍ£
+        // ï¿½ï¿½Ï·ï¿½ï¿½Í£
         private bool isGamePuased;
         public bool IsGamePaused => isGamePuased;
 
         public Transform GameGeneratePoint;
 
-        #region ·ÖÊý±äÁ¿
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
         private int currentLoopScore;
 
         public Action<int> OnCurrentLoopScoreChanged;
 
-        // µÃ·ÖÆÀ¼¶
+        // ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½
         public enum ScoreRating
         {
             D,
@@ -39,7 +39,7 @@ namespace KidGame.Core
         }
 
         private ScoreRating currentRating = ScoreRating.D;
-        private float ratingProgress = 0f; // ÆÀ¼¶½ø¶È
+        private float ratingProgress = 0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         private float lastScoreTime = 0f;
 
         private readonly Dictionary<ScoreRating, float> ratingMultipliers = new Dictionary<ScoreRating, float>
@@ -49,7 +49,7 @@ namespace KidGame.Core
             { ScoreRating.B, 20f },
             { ScoreRating.A, 15f },
             { ScoreRating.S, 10f }
-        }; // ²»Í¬ÆÀ¼¶µÄ·ÖÊý±¶ÂÊ
+        }; // ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
         private readonly Dictionary<ScoreRating, float> ratingDecayRates = new Dictionary<ScoreRating, float>
         {
@@ -58,12 +58,12 @@ namespace KidGame.Core
             { ScoreRating.B, 4f },
             { ScoreRating.A, 5f },
             { ScoreRating.S, 7f }
-        };// ²»Í¬ÆÀ¼¶µÄ·ÖÊýÍË¼õËÙ¶È
+        };// ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½Ë¼ï¿½ï¿½Ù¶ï¿½
 
         // Combo
         private int currentCombo = 0;
         private float comboWindowTimer = 0f;
-        private const float ComboWindowDuration = 3f; // 3ÃëÖØÖÃ
+        private const float ComboWindowDuration = 3f; // 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace KidGame.Core
         public Action OnGameOver;
 
         public MapData mapData;
-        public bool TestMode; // ²âÊÔÄ£Ê½
+        public bool TestMode; // ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 
         private void Start()
         {
@@ -87,7 +87,7 @@ namespace KidGame.Core
             UpdateRatingProgress();
         }
 
-        #region ÓÎÏ·Ñ­»·
+        #region ï¿½ï¿½Ï·Ñ­ï¿½ï¿½
 
         private void InitGame()
         {
@@ -95,7 +95,7 @@ namespace KidGame.Core
             GameLevelManager.Instance.Init(GameData.levelDataList);
             PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
 
-            // UI ³õÊ¼»¯
+            // UI ï¿½ï¿½Ê¼ï¿½ï¿½
             GamePlayPanelController.Instance.Init();
             CameraController.Instance.Init();
 
@@ -119,7 +119,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ¿ªÊ¼ÓÎÏ·
+        /// ï¿½ï¿½Ê¼ï¿½ï¿½Ï·
         /// </summary>
         public void StartGame()
         {
@@ -134,7 +134,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ½áÊøÓÎÏ·
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·
         /// </summary>
         public void FinishGame()
         {
@@ -145,7 +145,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ÓÎÏ·Ê§°Ü
+        /// ï¿½ï¿½Ï·Ê§ï¿½ï¿½
         /// </summary>
         public void GameOver()
         {
@@ -153,12 +153,12 @@ namespace KidGame.Core
 
             gameFinished = true;
             OnGameOver?.Invoke();
-            Signals.Get<GameFailSignal>().Dispatch(); // ÓÃÓÚÏÔÊ¾UI
+            Signals.Get<GameFailSignal>().Dispatch(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾UI
         }
 
         #endregion
 
-        #region ·ÖÊýÍ³¼Æ
+        #region ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½
 
         public void AddScore(int score)
         {
@@ -167,7 +167,7 @@ namespace KidGame.Core
             currentCombo++;
             comboWindowTimer = ComboWindowDuration;
             
-            // ÆÀ¼¶½ø¶ÈÔö¼Ó
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             float progressIncrease = currentRating switch
             {
                 ScoreRating.D => 30f,
@@ -177,7 +177,7 @@ namespace KidGame.Core
                 ScoreRating.S => 10f,
                 _ => 0f
             };
-            // todo.Èç¹ûÊÇÊÖ³ÖµÀ¾ß
+            // todo.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö³Öµï¿½ï¿½ï¿½
             
             ratingProgress = Mathf.Min(100f, ratingProgress + progressIncrease);
             
@@ -187,8 +187,8 @@ namespace KidGame.Core
                 ratingProgress = 0f;
             }
             
-            // £¨ÏÝÚå/ÊÖ³ÖµÀ¾ßµÃ·Ö*µÃ·ÖÆÀ¼¶±¶ÂÊ + comboÊýÁ¿ *£¨1+0.1*comboÊýÁ¿£©* 10 + ÌØ±ð×éºÏµÃ·Ö£©*£¨1+ ¿Ö»Å±¶ÂÊ£©
-            // todo.Ìí¼Ó¿Ö»Å±¶ÂÊµÄ·ÖÊýÓ°Ïì
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Ö³Öµï¿½ï¿½ßµÃ·ï¿½*ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ + comboï¿½ï¿½ï¿½ï¿½ *ï¿½ï¿½1+0.1*comboï¿½ï¿½ï¿½ï¿½ï¿½ï¿½* 10 + ï¿½Ø±ï¿½ï¿½ï¿½ÏµÃ·Ö£ï¿½*ï¿½ï¿½1+ ï¿½Ö»Å±ï¿½ï¿½Ê£ï¿½
+            // todo.ï¿½ï¿½ï¿½Ó¿Ö»Å±ï¿½ï¿½ÊµÄ·ï¿½ï¿½ï¿½Ó°ï¿½ï¿½
             int comboScore = (int)(currentCombo * (1 + 0.1f * currentCombo) * 10);
             int totalScore = (int)(score * ratingMultipliers[currentRating]) + comboScore;
             
@@ -199,7 +199,7 @@ namespace KidGame.Core
         
         private void UpdateRatingProgress()
         {
-            // ÈôÒ»¶ÎÊ±¼äÄÚÃ»ÓÐ´¥·¢ÏÝÚå»òÊ¹ÓÃÊÖ³ÖµÀ¾ß£¬´°¿Ú½ø¶È¾Í»áÏÂ½µ
+            // ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Ö³Öµï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ï¿½È¾Í»ï¿½ï¿½Â½ï¿½
             if (Time.time - lastScoreTime > 1f)
             {
                 ratingProgress = Mathf.Max(0, ratingProgress - ratingDecayRates[currentRating] * Time.deltaTime);
@@ -213,7 +213,7 @@ namespace KidGame.Core
         }
         
         /// <summary>
-        /// ±»µÐÈË×¥×¡Ê±¿Û·Ö
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¥×¡Ê±ï¿½Û·ï¿½
         /// </summary>
         public void DeductScore()
         {
@@ -231,7 +231,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ÓÎÏ·ÔÝÍ£
+        #region ï¿½ï¿½Ï·ï¿½ï¿½Í£
 
         public void GamePause()
         {

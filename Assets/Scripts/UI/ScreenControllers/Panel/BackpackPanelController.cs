@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using KidGame.Core;
 
-public class ControlBagSignal : ASignal
+public class ControlBackpackPanelSignal : ASignal
 {
 }
 
@@ -39,13 +39,13 @@ public class BackpackPanelController : PanelController
     protected override void AddListeners()
     {
         Signals.Get<GotoSelectedPanel>().AddListener(OnExternalNavigation);
-        Signals.Get<ControlBagSignal>().AddListener(Control);
+        Signals.Get<ControlBackpackPanelSignal>().AddListener(Control);
     }
     
     protected override void RemoveListeners()
     {
         Signals.Get<GotoSelectedPanel>().RemoveListener(OnExternalNavigation);
-        Signals.Get<ControlBagSignal>().RemoveListener(Control);
+        Signals.Get<ControlBackpackPanelSignal>().RemoveListener(Control);
     }
     
     private void Control()

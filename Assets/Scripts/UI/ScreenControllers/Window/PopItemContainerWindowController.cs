@@ -66,7 +66,9 @@ namespace KidGame.UI
         }
         protected override void OnPropertiesSet()
         {
+            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += UI_Close;
             base.OnPropertiesSet();
+            //GameManager.Instance.GamePause();
             rectTransform = GetComponent<RectTransform>();
             scrollView = transform.Find("ItemContainer/ScrollView").GetComponent<UICircularScrollView>();
             scrollViewRectTransform = scrollView.GetComponent<RectTransform>();
@@ -85,6 +87,14 @@ namespace KidGame.UI
             
             
         }
+        protected override void WhileHiding()
+        {
+            OnHideItemDetail();
+            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= UI_Close;
+            //GameManager.Instance.GameResume();
+            Signals.Get<CloseBackpackWindowSignal>().Dispatch();
+        }
+        
         /// <summary>
         /// 初始化标题显示
         /// </summary>

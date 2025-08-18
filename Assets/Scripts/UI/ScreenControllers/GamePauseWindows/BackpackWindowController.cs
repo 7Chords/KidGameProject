@@ -13,6 +13,11 @@ public class RefreshBackpackSignal : ASignal
 {
     
 }
+public class CloseBackpackWindowSignal : ASignal
+{
+    
+}
+
 [Serializable]
 public class BackpackProp : WindowProperties
 {
@@ -58,6 +63,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
         Signals.Get<ShowItemDetailSignal>().AddListener(OnShowItemDetail);
         Signals.Get<HideItemDetailSignal>().AddListener(OnHideItemDetail);
         Signals.Get<RefreshBackpackSignal>().AddListener(RefreshLists);
+        Signals.Get<CloseBackpackWindowSignal>().AddListener(AddCloseAction);
     }
 
     protected override void RemoveListeners()
@@ -66,10 +72,22 @@ public class BackpackWindowController : WindowController<BackpackProp>
         Signals.Get<ShowItemDetailSignal>().RemoveListener(OnShowItemDetail);
         Signals.Get<HideItemDetailSignal>().RemoveListener(OnHideItemDetail);
         Signals.Get<RefreshBackpackSignal>().RemoveListener(RefreshLists);
+        Signals.Get<CloseBackpackWindowSignal>().RemoveListener(AddCloseAction);
     }
 
+    public override void UI_Close()
+    {
+        base.UI_Close();
+        GameManager.Instance.GameResume();
+    }
+
+    private void AddCloseAction()
+    {
+        PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += UI_Close;
+    }
     protected override void OnPropertiesSet()
     {
+        GameManager.Instance.GamePause();
         scrollView = transform.Find("BackPag/ScrollView").GetComponent<UICircularScrollView>();
         pocketScrollView = transform.Find("PlayerPocket/ScrollView").GetComponent<UICircularScrollView>();
 
@@ -83,11 +101,11 @@ public class BackpackWindowController : WindowController<BackpackProp>
         pocketScrollView.Init(_tempSlotInfos.Count, OnPocketCellUpdate, OnPocketCellClick, null);
     }
     
-
     
     protected override void WhileHiding()
     {
         OnHideItemDetail();
+        PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= UI_Close;
     }
 
     private void OnBagCellClick(GameObject cell, int index)

@@ -200,7 +200,7 @@ namespace KidGame.Core
 
         private void ControlBag()
         {
-            Signals.Get<ControlBagSignal>().Dispatch();
+            Signals.Get<ControlBackpackPanelSignal>().Dispatch();
         }
         /// <summary>
         /// 玩家旋转
