@@ -23,7 +23,7 @@ MonoBehaviour:
     triggerType: 0
     validType: 0
     validTime: -1
-    deadTypeList: 01000000
+    deadTypeList: 00000000
     deadDelayTime: 1
     placeTime: 3
     hasCollider: 1
@@ -35,6 +35,7 @@ MonoBehaviour:
     pickParticleName: 
     workParticleName: 
     deadParticleName: 
+    soundRange: 10
   - id: T002
     trapName: "\u6C34\u6876\u6446\u9524_\u88AB\u52A8_\u7ECA\u7EBF"
     trapDesc: "\u5411\u56FA\u5B9A\u7684\u65B9\u5411\u98DE\u53BB\uFF0C\u6263\u9664\u654C\u4EBAx\u70B9\u7CBE\u795E\u503C\uFF0C\u4F7F\u654C\u4EBA\u5F80\u540E\u9000\u4E00\u6BB5\u8DDD\u79BB\u3002"
@@ -45,7 +46,7 @@ MonoBehaviour:
     triggerType: 1
     validType: 0
     validTime: -1
-    deadTypeList: 01000000
+    deadTypeList: 00000000
     deadDelayTime: 1
     placeTime: 4
     hasCollider: 1
@@ -57,9 +58,10 @@ MonoBehaviour:
     pickParticleName: 
     workParticleName: 
     deadParticleName: 
+    soundRange: 10
   - id: T003
     trapName: "\u7535\u52A8\u5C0F\u8F66"
-    trapDesc: "\u5411\u7740\u8F66\u5934\u7684\u65B9\u5411\u524D\u8FDB\uFF0C\u649E\u5230\u654C\u4EBA\u4E4B\u540E\u4F1A\u4F7F\u5176\u8DCC\u5012\u5E76\u6263\u9664x\u70B9\u7CBE\u795E\u503C\uFF0C\u649E\u5230\u5899\u4E86\u9677\u9631\u4E5F\u4F1A\u505C\u4E0B\uFF0C\u540C\u65F6\u53D1\u51FA\u8F83\u5927\u7684\u58F0\u97F3"
+    trapDesc: "\u5411\u7740\u8F66\u5934\u7684\u65B9\u5411\u524D\u8FDB\uFF0C\u649E\u5230\u654C\u4EBA\u4E4B\u540E\u4F1A\u4F7F\u5176\u8DCC\u5012\u5E76\u6263\u9664x\u70B9\u7CBE\u795E\u503C\uFF0C\u649E\u5230\u5899\u4E86\u9677\u9631\u4E5F\u4F1A\u505C\u4E0B"
     trapIconPath: 
     trapLevel: 1
     trapDamage: 20
@@ -67,8 +69,8 @@ MonoBehaviour:
     triggerType: 0
     validType: 0
     validTime: -1
-    deadTypeList: 0100000002000000
-    deadDelayTime: 5
+    deadTypeList: 0000000002000000
+    deadDelayTime: 1
     placeTime: 1
     hasCollider: 1
     interactSoundName: 
@@ -79,6 +81,7 @@ MonoBehaviour:
     pickParticleName: 
     workParticleName: 
     deadParticleName: 
+    soundRange: 5
   MaterialDataList:
   - id: M001
     materialName: "\u7EF3\u5B50"

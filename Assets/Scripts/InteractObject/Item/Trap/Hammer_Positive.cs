@@ -11,7 +11,13 @@ namespace KidGame.Core
         public float Damage;
         public Vector3 HalfDamageArea;
         public BuffData Buff;
-        private bool hasCausedDamage;
+        private List<GameObject> hasHurtEnemyList;
+        private Collider[] colls;
+        public override void Init(TrapData trapData)
+        {
+            base.Init(trapData);
+            hasHurtEnemyList = new List<GameObject>();
+        }
         public override void Trigger()
         {
             base.Trigger();
@@ -29,15 +35,19 @@ namespace KidGame.Core
 
         private void PerformTick()
         {
-            if (!hasCausedDamage)//todo:fix
+            if (hasHurtEnemyList == null) return;
+
+            colls = Physics.OverlapBox(transform.position, HalfDamageArea);
+            if (colls.Length == 0) return;
+
+            foreach (var coll in colls)
             {
-                Collider[] colls = Physics.OverlapBox(transform.position, HalfDamageArea);
-                foreach (var coll in colls)
+                if (coll == null) return;
+                if (coll.gameObject.tag == "Enemy")
                 {
-                    if (coll == null) return;
-                    if (coll.gameObject.tag == "Enemy")
+                    if(!hasHurtEnemyList.Contains(coll.gameObject))
                     {
-                        hasCausedDamage = true;
+                        hasHurtEnemyList.Add(coll.gameObject);
                         coll.GetComponent<EnemyController>().TakeDamage(
                             new DamageInfo(gameObject, Damage, Buff ? new BuffInfo(Buff, coll.gameObject) : null));
                         GameManager.Instance.AddScore(trapData.trapScore);

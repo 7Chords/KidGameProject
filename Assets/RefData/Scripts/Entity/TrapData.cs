@@ -28,6 +28,7 @@ public class TrapData : BagItemInfoBase
     public string pickParticleName;
     public string workParticleName;
     public string deadParticleName;
+    public float soundRange;
     public UseItemType UseItemType => UseItemType.trap;
     public string Id => id;
 }

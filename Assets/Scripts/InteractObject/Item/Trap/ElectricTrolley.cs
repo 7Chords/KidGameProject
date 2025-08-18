@@ -14,8 +14,14 @@ namespace KidGame.Core
         public BuffData Buff;
 
         private Vector3 dir;
-        private bool hasCausedDamage;
-        public int Score;
+        private List<GameObject> hasHurtEnemyList;
+        private Collider[] colls;
+
+        public override void Init(TrapData trapData)
+        {
+            base.Init(trapData);
+            hasHurtEnemyList = new List<GameObject>();
+        }
         public override void Trigger()
         {
             base.Trigger();
@@ -23,7 +29,6 @@ namespace KidGame.Core
             Vector3 noFixDir = (transform.position - interactor.transform.position).normalized;
             dir = new Vector3(noFixDir.x, 0, noFixDir.z);
             transform.rotation = Quaternion.LookRotation(dir);
-            //transform.LookAt(dir);
             this.OnFixedUpdate(PerformTick);
         }
 
@@ -36,16 +41,17 @@ namespace KidGame.Core
         private void PerformTick()
         {
             if(Rb) Rb.velocity = dir * Speed;
-
-            if(!hasCausedDamage)//todo:fix
+            if (hasHurtEnemyList == null) return;
+            colls = Physics.OverlapBox(transform.position, HalfDamageArea);
+            if (colls.Length == 0) return;
+            foreach (var coll in colls)
             {
-                Collider[] colls = Physics.OverlapBox(transform.position, HalfDamageArea);
-                foreach(var coll in colls)
+                if (coll == null) return;
+                if (coll.gameObject.tag == "Enemy")
                 {
-                    if (coll == null) return;
-                    if(coll.gameObject.tag == "Enemy")
+                    if(!hasHurtEnemyList.Contains(coll.gameObject))
                     {
-                        hasCausedDamage = true;
+                        hasHurtEnemyList.Add(coll.gameObject);
                         coll.GetComponent<EnemyController>().TakeDamage(
                             new DamageInfo(gameObject, Damage, Buff ? new BuffInfo(Buff, coll.gameObject) : null));
                         GameManager.Instance.AddScore(trapData.trapScore);
