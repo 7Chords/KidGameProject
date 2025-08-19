@@ -147,6 +147,13 @@ namespace KidGame.UI
             }
         }
 
+        public string GetCurrentWindowScreenId()
+        {
+            if(windowLayer.CurrentWindow == null)return null;
+            return windowLayer.CurrentWindow.ScreenId;
+        }
+        
+        
         /// <summary>
         /// 根据id打开窗口并且传递属性参数
         /// </summary>

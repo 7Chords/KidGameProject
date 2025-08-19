@@ -22,6 +22,6 @@ namespace KidGame.UI.Game
         
         public const string SaveWindow = "SaveWindow";
         
-        public const string PopItemContainerWindow= "PopItemContainerWindow";
+        public const string PopItemContainerPanel= "PopItemContainerPanel";
     }
 }

@@ -21,11 +21,11 @@ MonoBehaviour:
     gridSpawnMatChance_min: 0.2
     gridSpawnMatChance_max: 0.5
     materialDataList:
-    - materialId: T001
+    - materialId: M001
       randomAmount_min: 0
       randomAmount_max: 10
       spawnChance: 0.2
-    - materialId: T002
+    - materialId: M002
       randomAmount_min: 0
       randomAmount_max: 10
       spawnChance: 0.2
@@ -33,7 +33,7 @@ MonoBehaviour:
     gridSpawnMatChance_min: 0.2
     gridSpawnMatChance_max: 0.5
     materialDataList:
-    - materialId: T002
+    - materialId: M002
       randomAmount_min: 0
       randomAmount_max: 10
       spawnChance: 0.2

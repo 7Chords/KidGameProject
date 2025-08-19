@@ -120,10 +120,11 @@ namespace KidGame.UI.Game
             PopItemContainerProp popItemContainerProp = new PopItemContainerProp();
             
             popItemContainerProp.items = UICommon.MaterialItemsToSlotInfo(materialHoldList);
+            popItemContainerProp.originItems = materialHoldList;
             popItemContainerProp.row = rowCount;
             popItemContainerProp.column = columnCount;
             uiFrame.OpenWindow(ScreenIds.BackpackWindow,new BackpackProp(popItemContainerProp.items));
-            uiFrame.OpenWindow(ScreenIds.PopItemContainerWindow,popItemContainerProp);
+            uiFrame.ShowPanel(ScreenIds.PopItemContainerPanel,popItemContainerProp);
         }
         
         #endregion
@@ -140,6 +141,11 @@ namespace KidGame.UI.Game
         {
             uiFrame.HidePanel(ScreenIds.TransitionPanel);
         }
+
+        public void HidePanel(string panelName)
+        {
+            uiFrame.HidePanel(panelName);
+        }
         
         public void UICameraBindingVertexCamera()
         {
@@ -152,6 +158,15 @@ namespace KidGame.UI.Game
             // 将Overlay相机加入堆叠
             baseCameraData.cameraStack.Add(uiFrame.UICamera);
         }
+        #endregion
+
+        #region 辅助方法
+
+        public string GetCurrentWindowScreenId()
+        {
+            return uiFrame.GetCurrentWindowScreenId();
+        }
+
         #endregion
     }
 }

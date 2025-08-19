@@ -24,18 +24,6 @@ namespace KidGame.Core
             else
             {
                 UIController.Instance.ShowPopItemContainerWindow(materialHoldList,mapFurnitureData.furnitureData.gridLayout.x,mapFurnitureData.furnitureData.gridLayout.y);
-                /*
-                foreach (var item in materialHoldList)
-                {
-                    for (int i = 0; i < item.amount; i++)
-                    {
-                        //原来的
-                        PlayerUtil.Instance.CallPlayerPickItem(item.data.id,UseItemType.Material);
-                        UIHelper.Instance.ShowTipByQueue(new TipInfo("获得了" + item.data.materialName + "×1", gameObject, 0.5f));
-                    }
-                }*/
-        
-                //materialHoldList.Clear();
             }
         }
 

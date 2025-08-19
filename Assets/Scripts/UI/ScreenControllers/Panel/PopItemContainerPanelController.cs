@@ -14,12 +14,13 @@ namespace KidGame.UI
     /// PlayerWindow属性类
     /// </summary>
     [Serializable]
-    public class PopItemContainerProp : WindowProperties
+    public class PopItemContainerProp : PanelProperties
     {
         public List<ISlotInfo> items;//库存背包
         public int row;
         public int column;
         public string title = String.Empty;
+        public List<MaterialItem> originItems;
         public int maxCount => row * column;
 
         public PopItemContainerProp()
@@ -29,19 +30,20 @@ namespace KidGame.UI
             column = 2;
         }
         
-        public PopItemContainerProp(List<ISlotInfo> items, int row, int column) {
+        public PopItemContainerProp(List<ISlotInfo> items, int row, int column,List<MaterialItem> originItems) {
             this.items = items;
             this.row = row;
             this.column = column;
+            this.originItems = originItems;
         }
 
-        public PopItemContainerProp(List<ISlotInfo> items, int row, int column, string title):this(items, row, column)
+        public PopItemContainerProp(List<ISlotInfo> items, int row, int column, List<MaterialItem> originItems,string title):this(items, row, column,originItems)
         {
             this.title = title;
         }
     }
     [Serializable]
-    public class PopItemContainerWindowController : WindowController<PopItemContainerProp>
+    public class PopItemContainerPanelController : PanelController<PopItemContainerProp>
     {
         private UICircularScrollView scrollView;
         private RectTransform rectTransform;
@@ -66,7 +68,7 @@ namespace KidGame.UI
         }
         protected override void OnPropertiesSet()
         {
-            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += UI_Close;
+            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += HidePopPanel;
             base.OnPropertiesSet();
             //GameManager.Instance.GamePause();
             rectTransform = GetComponent<RectTransform>();
@@ -87,12 +89,19 @@ namespace KidGame.UI
             
             
         }
+
+        public void HidePopPanel()
+        {
+            UIController.Instance.HidePanel(ScreenIds.PopItemContainerPanel);
+            Signals.Get<CloseBackpackWindowSignal>().Dispatch();
+        }
+        
         protected override void WhileHiding()
         {
             OnHideItemDetail();
-            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= UI_Close;
+            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= HidePopPanel;
             //GameManager.Instance.GameResume();
-            Signals.Get<CloseBackpackWindowSignal>().Dispatch();
+            
         }
         
         /// <summary>
@@ -208,10 +217,12 @@ namespace KidGame.UI
             
             // 清空容器
             Properties.items.Clear();
+            Properties.originItems.Clear();
             RefreshContainer();
             
             // 通知背包UI刷新
             Signals.Get<RefreshBackpackSignal>().Dispatch();
+            
         }
         
         /// <summary>

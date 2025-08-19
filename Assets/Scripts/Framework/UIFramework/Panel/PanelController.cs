@@ -6,7 +6,8 @@
     public abstract class PanelController : APanelController<PanelProperties>
     {
     }
-
+    public abstract class PanelController<T> : APanelController<T> 
+        where T : IPanelProperties { }
     /// <summary>
     /// 面板控制器基类
     /// </summary>
@@ -31,5 +32,6 @@
         {
             base.SetProperties(props);
         }
+        
     }
 }

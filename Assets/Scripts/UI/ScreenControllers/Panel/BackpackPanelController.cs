@@ -50,6 +50,7 @@ public class BackpackPanelController : PanelController
     
     private void Control()
     {
+        if (UIController.Instance.GetCurrentWindowScreenId() == ScreenIds.BackpackWindow&&!gameObject.activeInHierarchy) return;
         if (gameObject.activeInHierarchy)
         {
             GameManager.Instance.GameResume();

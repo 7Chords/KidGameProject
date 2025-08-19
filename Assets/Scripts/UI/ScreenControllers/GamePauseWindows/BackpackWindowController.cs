@@ -63,7 +63,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
         Signals.Get<ShowItemDetailSignal>().AddListener(OnShowItemDetail);
         Signals.Get<HideItemDetailSignal>().AddListener(OnHideItemDetail);
         Signals.Get<RefreshBackpackSignal>().AddListener(RefreshLists);
-        Signals.Get<CloseBackpackWindowSignal>().AddListener(AddCloseAction);
+        Signals.Get<CloseBackpackWindowSignal>().AddListener(UI_Close);
     }
 
     protected override void RemoveListeners()
@@ -72,7 +72,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
         Signals.Get<ShowItemDetailSignal>().RemoveListener(OnShowItemDetail);
         Signals.Get<HideItemDetailSignal>().RemoveListener(OnHideItemDetail);
         Signals.Get<RefreshBackpackSignal>().RemoveListener(RefreshLists);
-        Signals.Get<CloseBackpackWindowSignal>().RemoveListener(AddCloseAction);
+        Signals.Get<CloseBackpackWindowSignal>().RemoveListener(UI_Close);
     }
 
     public override void UI_Close()

@@ -1072,7 +1072,7 @@ GameObject:
   - component: {fileID: 7826750544707668366}
   - component: {fileID: 6609482872063435635}
   m_Layer: 5
-  m_Name: PopItemContainerWindow
+  m_Name: PopItemContainerPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1183,9 +1183,7 @@ MonoBehaviour:
   animIn: {fileID: 0}
   animOut: {fileID: 0}
   properties:
-    hideOnForegroundLost: 0
-    windowQueuePriority: 0
-    isPopup: 0
+    priority: 1
     row: 2
     column: 2
     title: 
@@ -1327,9 +1325,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7826750544707668366}
-        m_TargetAssemblyTypeName: KidGame.UI.WindowController`1[[KidGame.UI.PopItemContainerProp,
-          Assembly-CSharp
-        m_MethodName: UI_Close
+        m_TargetAssemblyTypeName: KidGame.UI.PopItemContainerPanelController, Assembly-CSharp
+        m_MethodName: HidePopPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1442,7 +1439,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u4E00\u952E\u62FE\u53D6"
+  m_text: "\u4E00\u952E\u62FE\u53D6(E)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8be0e68b90d3ddf4ab0c32bd84c50928, type: 2}
   m_sharedMaterial: {fileID: -6241194014738429342, guid: 8be0e68b90d3ddf4ab0c32bd84c50928,
