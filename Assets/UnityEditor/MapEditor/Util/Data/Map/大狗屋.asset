@@ -3963,3 +3963,32 @@ MonoBehaviour:
       y: 1
     roomType: 2
     rotation: 180
+  - serialNumber: 974
+    furnitureData: {fileID: 11400000, guid: 8cefdb9ed051a9844b1ac694cda4e000, type: 2}
+    mapPosList:
+    - x: 14
+      y: 4
+    - x: 14
+      y: 5
+    - x: 14
+      y: 6
+    - x: 15
+      y: 4
+    - x: 16
+      y: 4
+    - x: 17
+      y: 4
+    - x: 15
+      y: 5
+    - x: 15
+      y: 6
+    - x: 16
+      y: 5
+    - x: 16
+      y: 6
+    - x: 17
+      y: 5
+    - x: 17
+      y: 6
+    roomType: 2
+    rotation: 0

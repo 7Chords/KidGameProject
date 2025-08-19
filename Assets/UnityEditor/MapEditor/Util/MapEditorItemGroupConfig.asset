@@ -20,11 +20,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba1dbbc7b6c137645b7fb062338a79a3, type: 2}
   - {fileID: 11400000, guid: 1a84076bd9d51524981a5283c0251dce, type: 2}
   - {fileID: 11400000, guid: 330198b46aa880043a1a888cdefc12f6, type: 2}
+  - {fileID: 11400000, guid: 8cefdb9ed051a9844b1ac694cda4e000, type: 2}
   WallList:
   - {fileID: 11400000, guid: 3545b1d2736186941b2acccfb378844e, type: 2}
   - {fileID: 11400000, guid: 62162044592c02f4481537fb442495f0, type: 2}
   MapListList:
   - {fileID: 11400000, guid: 8d1eebedc64564d4b99f71d8e09a5d98, type: 2}
   - {fileID: 11400000, guid: 7bc200724a03a15459ddf605391cf50e, type: 2}
-  FurntureRoomTypeNoMatchWarningSprite: {fileID: 21300000, guid: 1154d6a15c8ea684cb7c1dbd0c011c8c,
-    type: 3}
+  FurntureRoomTypeNoMatchWarningSprite: {fileID: 0}
