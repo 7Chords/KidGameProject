@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 namespace KidGame.Core
 {
@@ -25,6 +26,7 @@ namespace KidGame.Core
         public event Action OnRunPress;
         public event Action OnRunRelease;
         public event Action OnUsePress;
+        public event Action OnUseLongPress;
         //public event Action OnThrowPress;
         public event Action OnBagPress;
         public event Action OnPickPress;
@@ -149,7 +151,18 @@ namespace KidGame.Core
         private void OnUseActionPerformed(InputAction.CallbackContext context)
         {
             if (GameManager.Instance.IsGamePaused) return;
-            OnUsePress?.Invoke();
+
+            //如果是点击
+            if(context.interaction is PressInteraction)
+            {
+                OnUsePress?.Invoke();
+            }
+            //如果是长按
+            if (context.interaction is HoldInteraction)
+            {
+                OnUseLongPress?.Invoke();
+            }
+                
         }
 
         //private void OnThrowActionPerformed(InputAction.CallbackContext context)

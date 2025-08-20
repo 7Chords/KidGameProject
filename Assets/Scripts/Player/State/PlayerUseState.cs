@@ -38,9 +38,20 @@ namespace KidGame.Core
                     canUseItem = player.GetCanPlaceTrap();
                     break;
                 case UseItemType.weapon:
-                    canUseItem = PlayerBag.Instance.UseWeapon(selectedItem
-                        , PlayerController.Instance.SpawnAndUseThrowWeaponPoint.position
-                        , rotation);
+
+                    WeaponSlotInfo weaponItem = (WeaponSlotInfo)selectedItem;
+
+                    //如果是长按使用类型的
+                    if (weaponItem.weaponData.longOrShortPress == 0)
+                    {
+                        //Logic
+                    }
+                    else
+                    {
+                        canUseItem = PlayerBag.Instance.UseWeapon(selectedItem
+                            , PlayerController.Instance.SpawnAndUseThrowWeaponPoint.position
+                            , rotation);
+                    }
                     break;
                 case UseItemType.food:
                     canUseItem = PlayerBag.Instance.UseFood(selectedItem, player);

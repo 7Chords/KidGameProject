@@ -162,7 +162,7 @@ namespace KidGame.Core
             inputSettings.OnBagPress += ControlBag;
             inputSettings.OnGamePause += GamePause;
             inputSettings.OnMouseWheelValueChanged += SwitchSelectItem;
-
+            inputSettings.OnUseLongPress += TryUseWeaponUseLongPress;
             PlayerBag.Instance.OnSelectItemAction += OnItemSelected;
         }
 
@@ -278,12 +278,25 @@ namespace KidGame.Core
 
         public void TryPlaceTrap()
         {
-            if (playerState != PlayerState.Idle)
+            ISlotInfo currentUseItem = PlayerBag.Instance.GetSelectedQuickAccessItem();
+            if (currentUseItem == null) return;
+            UseItemType itemType = currentUseItem.ItemData.UseItemType;
+            //允许变走边使用武器
+            if (playerState != PlayerState.Idle && itemType != UseItemType.weapon)
             {
                 UIHelper.Instance.ShowOneTip(new TipInfo("当前状态不可布置陷阱", gameObject));
                 return;
             }
+            if(currentUseItem is WeaponSlotInfo weaponItem)
+            {
+                //不是短按类型的武器 我直接拦截
+                if (weaponItem.weaponData.longOrShortPress == 0) return;
+            }
             ChangeState(PlayerState.Use);
+        }
+        public void TryUseWeaponUseLongPress()
+        {
+            //Logic
         }
 
         /// <summary>

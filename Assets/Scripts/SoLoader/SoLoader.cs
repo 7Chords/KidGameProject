@@ -10,10 +10,10 @@ namespace KidGame.Core
 {
     public class SoLoader : SingletonPersistent<SoLoader>
     {
-
+        
         public Dictionary<string, ScriptableObject> soDic;
 
-        //װEntity�� id -> Entity��ƥ��
+        //装Entity的 id -> Entity 也就是一行数据的字典
         private Dictionary<string, object> entityDic;
 
         protected override void Awake()
@@ -29,16 +29,15 @@ namespace KidGame.Core
         {
             ScriptableObject[] allSobj = Resources.LoadAll<ScriptableObject>("ScriptObject");
 
-            Debug.Log($"�ҵ� {allSobj.Length} �� ScriptableObject");
-            // ���ӵ��ֵ䣨��Ϊ�ļ�����������չ����
+            Debug.Log($"共找到 {allSobj.Length} 个 ScriptableObject");
             foreach (var so in allSobj)
             {
                 if (so != null)
                 {
                     if (!soDic.ContainsKey(so.name)) soDic.Add(so.name, so);
-                    else Debug.LogWarning("�ظ����أ��� ����Ƿ�������������µ�����SO����");
+                    else Debug.LogWarning("重复加载！！！！");
                 }
-                else Debug.LogWarning("soΪ�գ���");
+                else Debug.LogWarning("So为空异常！！！");
             }
         }
 
@@ -46,42 +45,44 @@ namespace KidGame.Core
         {
             return soDic[SoConst.KID_GAME_DATA_CONFIG] as kidgame_game_data_config;
         }
-
+        
         /// <summary>
-        /// ����ֵΪ��Ҫ�ҵ�ĳ�������string���͵�id
-        /// �Լ����Data Type������
-        /// �� װ�����Entity�� So����
+        /// 通过id  配表名 
         /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dataName"></param>
+        /// <param name="soName"></param>
+        /// <returns></returns>
         private object GetDataById(string id, string dataName, string soName)
         {
-            // ֱ�Ӵӻ����в���
+            // 直接从缓存中查找
             string compositeKey = $"{dataName}_{id}";
             if (entityDic.TryGetValue(compositeKey, out object cachedData))
             {
                 return cachedData;
             }
 
-            // ������û�У���SO�в���
+            // 缓存中没有，从SO中查找
+
             if (!soDic.TryGetValue(soName, out ScriptableObject so))
             {
                 Debug.LogError("�Ҳ���SO: " + soName);
                 return null;
             }
 
-            // ��SO�в���ʵ���б�
+            // 在SO中查找实体列表
             object foundEntity = FindEntityInSo(so, id);
             if (foundEntity != null)
             {
-                // ���ӵ�����
+                // 添加到缓存
                 entityDic[compositeKey] = foundEntity;
                 return foundEntity;
             }
 
-            Debug.LogWarning($"��SO '{soName}' ��δ�ҵ�IDΪ {id} ��ʵ��");
+            Debug.LogWarning($"在SO '{soName}' 中未找到ID为 {id} 的实体");
             return null;
         }
 
-        // ��SO�в����ض�ID��ʵ��
         /*private object FindEntityInSo(ScriptableObject so, string id)
         {
             var fields = so.GetType().GetFields();
@@ -89,29 +90,29 @@ namespace KidGame.Core
             foreach (var field in fields)
             {
                 field.GetValue("id");
-                // ����ֶ��Ƿ�ΪList<>����
+                // 检查字段是否为List<>类型
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
                 {
                     var entityList = field.GetValue(so);
-                    */ /*ֱ��ʹ�� entityList.Count ������ΪʲôҪ����ôһ��Ȧ��
-ԭ��               entityList �������ڱ���ʱ�� object����Ϊͨ�������ȡ���ֶ�ֵĬ���� object ���ͣ���
-                    ��������֪������һ���б�������޷�ֱ�ӷ��� Count ���ԡ�*/ /*
+                    *//*直接使用 entityList.Count 不香吗？为什么要绕这么一大圈？
+        原因：               entityList 的类型在编译时是 object（因为通过反射获取的字段值默认是 object 类型），
+                    编译器不知道它是一个列表，因此无法直接访问 Count 属性。*//*
                     //GetType->List    GetProperty->Count   GetValue  -> num
                     var count = (int)entityList.GetType().GetProperty("Count").GetValue(entityList);
                     for (int i = 0; i < count; i++)
                     {
-                        */ /*��һ������ entityList����ʾҪ��ȡ����ֵ�Ķ��󣨼��б�ʵ������
-                        �ڶ������� new object[] { i }���������Ĳ��������ﴫ������ֵ i����ʾҪ��ȡ�� i ��Ԫ�أ���*/ /*
+                        *//*第一个参数 entityList：表示要获取属性值的对象（即列表实例）。
+                        第二个参数 new object[] { i }：索引器的参数（这里传入索引值 i，表示要获取第 i 个元素）。*//*
                         var entity = entityList.GetType().GetProperty("Item").GetValue(entityList, new object[] { i });
 
-                        // ���ʵ���Ƿ���"id"����
+                        // 检查实体是否有"id"属性
                         var idProperty = entity.GetType().GetProperty("id");
 
                         if (idProperty != null)
                         {
                             string entityId = idProperty.GetValue(entity).ToString();
                             //Debug.Log(entityId);
-                            // �ҵ�ƥ��ID��ʵ��
+                            // 找到匹配ID的实体
                             if (entityId == id)
                             {
                                 return entity;
@@ -123,33 +124,37 @@ namespace KidGame.Core
 
             return null;
         }
-*/
+        */
         private object FindEntityInSo(ScriptableObject so, string id)
         {
-            //field���ֶ�    value����ֵ
-            //GetProperty��������    public string Id { get; set; } // id ������
+            //field是字段    value是拿值
+            //GetProperty是拿属性    public string Id { get; set; } // id 是属性
             var fields = so.GetType().GetFields();
 
             foreach (var field in fields)
             {
-                // ����ֶ��Ƿ�Ϊ List<> ����
+                // 检查字段是否为 List<> 类型
+
                 if (field.FieldType.IsGenericType &&
                     field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
                 {
-                    //��so���fields��ȡһ��field
+                    //从so这个fields获取一个field
+
                     var entityList = field.GetValue(so);
                     if (entityList == null) continue;
 
-                    // ����Ч�ķ�ʽ ֱ��ת��Ϊ IList ���ⷴ�� Count
+                    // 更高效的方式 直接转换为 IList 避免反射 Count
+
                     var list = entityList as System.Collections.IList;
                     if (list == null) continue;
 
                     for (int i = 0; i < list.Count; i++)
                     {
-                        var entity = list[i]; // ֱ��ͨ���������� 
+                        var entity = list[i];  // 直接通过索引访问 
                         if (entity == null) continue;
 
-                        // ���ʵ���Ƿ��� "id" �ֶ�
+                        // 检查实体是否有 "id" 字段
+
                         var idField = entity.GetType().GetField("id");
                         if (idField != null)
                         {
@@ -166,7 +171,7 @@ namespace KidGame.Core
             return null;
         }
 
-        #region ���ÿһ��Data �����Ƶĵ��ǲ�ͬ�Ĵ���
+        #region 配表快捷获取方法 通过id
 
         //So kidgame_game_data_config
 

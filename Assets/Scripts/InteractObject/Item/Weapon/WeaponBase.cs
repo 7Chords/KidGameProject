@@ -162,22 +162,17 @@ namespace KidGame.Core
         protected virtual void Start()
         {
             self = gameObject;
-            InitLineRender(); // 初始化曲线渲染
+            InitLineRender();
+            //if(_weaponData != null && _weaponData.weaponType == 1) InitLineRender(); // 如果是远程道具才需要 初始化曲线渲染
         }
 
         protected virtual void Update()
         {
-            if (!isOnHand)
-                WeaponUseLogic();
-            else
-            {
-                SetStartPoint();
-                SetEndPoint();
-            }
+            WeaponUseLogic();
         }
 
         // 设置抛物线终点（鼠标位置）
-        private void SetEndPoint()
+        protected void SetEndPoint()
         {
             if (lineRenderScript != null)
             {
@@ -188,7 +183,7 @@ namespace KidGame.Core
         }
 
         // 设置抛物线起点（武器位置）
-        private void SetStartPoint()
+        protected void SetStartPoint()
         {
             if (lineRenderScript != null)
             {

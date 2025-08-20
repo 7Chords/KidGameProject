@@ -175,14 +175,17 @@ namespace KidGame.Core
             if (isOnHand && rb != null)
             {
                 rb.isKinematic = true;
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
             }
         }
 
         protected override void Update()
         {
-            base.Update();
+            if (!isOnHand) WeaponUseLogic();
+            else
+            {
+                SetStartPoint();
+                SetEndPoint();
+            }
             // 手持时保持物理禁用
             if (isOnHand && rb != null && !rb.isKinematic)
             {

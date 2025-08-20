@@ -11,6 +11,7 @@ public class WeaponData : BagItemInfoBase
     public int weaponType;// 近战 0 | 远程 1
     public float damage;
     public float impactForce;// 冲击力，击退力
+    public int longOrShortPress;// 使用方式是长按还是短按
     public UseItemType UseItemType => UseItemType.weapon;
     public string Id => id;
 }
