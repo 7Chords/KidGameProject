@@ -23,7 +23,7 @@ MonoBehaviour:
     triggerType: 0
     validType: 0
     validTime: -1
-    deadTypeList: 00000000
+    deadTypeList: 01000000
     deadDelayTime: 1
     placeTime: 3
     hasCollider: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
     triggerType: 1
     validType: 0
     validTime: -1
-    deadTypeList: 00000000
+    deadTypeList: 01000000
     deadDelayTime: 1
     placeTime: 4
     hasCollider: 1
@@ -69,8 +69,8 @@ MonoBehaviour:
     triggerType: 0
     validType: 0
     validTime: -1
-    deadTypeList: 0000000002000000
-    deadDelayTime: 1
+    deadTypeList: 0100000002000000
+    deadDelayTime: 5
     placeTime: 1
     hasCollider: 1
     interactSoundName: 

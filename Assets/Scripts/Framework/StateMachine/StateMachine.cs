@@ -47,19 +47,19 @@ namespace KidGame.Core
             // 退出当前状态
             if (currStateObj != null)
             {
-                currStateObj.Exit();
                 currStateObj.RemoveUpdate(currStateObj.Update);
                 currStateObj.RemoveLateUpdate(currStateObj.LateUpdate);
                 currStateObj.RemoveFixedUpdate(currStateObj.FixedUpdate);
+                currStateObj.Exit();
             }
 
             // 进入新状态
             currStateObj = GetState<T>(newStateType);
             CurrStateType = newStateType;
-            currStateObj.Enter();
             currStateObj.OnUpdate(currStateObj.Update);
             currStateObj.OnLateUpdate(currStateObj.LateUpdate);
             currStateObj.OnFixedUpdate(currStateObj.FixedUpdate);
+            currStateObj.Enter();
 
             return true;
         }
