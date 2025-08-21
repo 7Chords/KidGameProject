@@ -84,7 +84,6 @@ namespace KidGame.Core
             // ¼ì²âÍæ¼ÒµÄÊäÈë
             if (inputVal != Vector2.zero)
             {
-                UIHelper.Instance.DestoryCurrentCircleProgress();
                 // ÇÐ»»×´Ì¬
                 player.ChangeState(PlayerState.Move);
                 return;
@@ -109,6 +108,12 @@ namespace KidGame.Core
                     break;
             }
 
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            UIHelper.Instance.DestoryCurrentCircleProgress();
         }
     }
 }
