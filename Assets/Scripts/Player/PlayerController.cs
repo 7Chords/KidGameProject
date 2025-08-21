@@ -99,9 +99,12 @@ namespace KidGame.Core
         //key:可回收 value:和玩家距离
         private Dictionary<IPickable, float> pickableDict;
 
-        public event Action<float> OnMouseWheelValueChanged;
-
         private Vector3 rotateDir;
+        #endregion
+
+        #region 事件
+        public event Action<float> OnMouseWheelValueChanged;
+        public event Action<bool> OnMouseBtnReleaseAction;
         #endregion
 
         #region 生命周期
@@ -156,14 +159,21 @@ namespace KidGame.Core
         /// </summary>
         private void RegActions()
         {
+            #region 一次订阅
             inputSettings.OnInteractionPress += PlayerInteraction;
             inputSettings.OnPickPress += PlayerPick;
             inputSettings.OnUsePress += TryPlaceTrap;
             inputSettings.OnBagPress += ControlBag;
             inputSettings.OnGamePause += GamePause;
-            inputSettings.OnMouseWheelValueChanged += SwitchSelectItem;
             inputSettings.OnUseLongPress += TryUseWeaponUseLongPress;
             PlayerBag.Instance.OnSelectItemAction += OnItemSelected;
+            #endregion
+
+            #region 二次转发
+            //Relay 意为转发 Relay XXX 意味着函数内部做了转发回调信息的作用
+            inputSettings.OnMouseWheelValueChanged += RelaySwitchSelectItem;
+            inputSettings.OnUseLongPressRelease += RelayMouseBtnRelease;
+            #endregion
         }
 
 
@@ -177,8 +187,9 @@ namespace KidGame.Core
             inputSettings.OnUsePress -= TryPlaceTrap;
             inputSettings.OnBagPress -= ControlBag;
             inputSettings.OnGamePause -= GamePause;
-            inputSettings.OnMouseWheelValueChanged -= SwitchSelectItem;
-
+            inputSettings.OnMouseWheelValueChanged -= RelaySwitchSelectItem;
+            inputSettings.OnUseLongPress -= TryUseWeaponUseLongPress;
+            inputSettings.OnUseLongPressRelease -= RelayMouseBtnRelease;
             PlayerBag.Instance.OnSelectItemAction -= OnItemSelected;
 
         }
@@ -299,6 +310,12 @@ namespace KidGame.Core
             //Logic
         }
 
+        public void RelayMouseBtnRelease()
+        {
+            //当鼠标释放
+            OnMouseBtnReleaseAction?.Invoke(false);
+        }
+
         /// <summary>
         /// 添加到可交互列表
         /// </summary>
@@ -409,7 +426,7 @@ namespace KidGame.Core
         /// 切换选择的物品
         /// </summary>
         /// <param name="scrollValue">鼠标滚轮值</param>
-        public void SwitchSelectItem(float scrollValue)
+        public void RelaySwitchSelectItem(float scrollValue)
         {
             OnMouseWheelValueChanged?.Invoke(scrollValue);
         }

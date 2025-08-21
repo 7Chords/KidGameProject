@@ -1,4 +1,4 @@
-/*using KidGame.Core;
+ï»¿/*using KidGame.Core;
 using KidGame.UI;
 using System;
 using System.Collections.Generic;
@@ -10,22 +10,22 @@ namespace KidGame.Core
 {
     public class LineRenderScript : MonoBehaviour
     {
-        #region ÓĞµÄÃ»µÄ±äÁ¿
-        public LineRenderer lineRenderer; // ÍÏ×§ÒıÓÃ
-        public Vector3 startPoint;       // ÆğÊ¼Î»ÖÃ
-        public Vector3 endPoint;         // ½áÊøÎ»ÖÃ
-        public float heightFactor = 1f;  // Å×ÎïÏß¸ß¶ÈÒò×Ó
-        public float heightHeightFactor = 20f; // Å×ÎïÏß¸ß¶ÈµÄ¸ß¶ÈÒò×Ó
-        public int resolution = 50;        // ¹ì¼£µãÊıÁ¿
-        public AnimationCurve widthCurve;  // ¿í¶ÈÇúÏß
+        #region æœ‰çš„æ²¡çš„å˜é‡
+        public LineRenderer lineRenderer; // æ‹–æ‹½å¼•ç”¨
+        public Vector3 startPoint;       // èµ·å§‹ä½ç½®
+        public Vector3 endPoint;         // ç»“æŸä½ç½®
+        public float heightFactor = 1f;  // æŠ›ç‰©çº¿é«˜åº¦å› å­
+        public float heightHeightFactor = 20f; // æŠ›ç‰©çº¿é«˜åº¦çš„é«˜åº¦å› å­
+        public int resolution = 50;        // è½¨è¿¹ç‚¹æ•°é‡
+        public AnimationCurve widthCurve;  // å®½åº¦æ›²çº¿
         public float currentWidth;
-        public float startWidth = 0.05f;    // Ä¬ÈÏ¿í¶È
-        public float arrowStartWidth = 0.05f;     // ºóÃæÖğ½¥¼õĞ¡µÄ¿í¶È
+        public float startWidth = 0.05f;    // é»˜è®¤å®½åº¦
+        public float arrowStartWidth = 0.05f;     // åé¢é€æ¸å‡å°çš„å®½åº¦
         public float heightFactorLerpMin = 0.9f;
         public float heightFactorLerpMax = 1.2f;
         private Vector3[] points;
-        private Vector3 lastFrameStartPositon;// ÉÏÒ»Ö¡¿ªÊ¼Î»ÖÃ
-        private Vector3 lastFrameEndPositon;// ÉÏÒ»Ö¡½áÊøÎ»ÖÃ
+        private Vector3 lastFrameStartPositon;// ä¸Šä¸€å¸§å¼€å§‹ä½ç½®
+        private Vector3 lastFrameEndPositon;// ä¸Šä¸€å¸§ç»“æŸä½ç½®
         #endregion
 
         private void Awake()
@@ -40,7 +40,7 @@ namespace KidGame.Core
 
         private void Update()
         {
-            // Ìõ¼şÊ±Êµ¸üĞÂ
+            // æ¡ä»¶æ—¶å®æ›´æ–°
             if(lastFrameStartPositon != startPoint || lastFrameEndPositon != endPoint)
                 DrawParabola();
         }
@@ -49,51 +49,51 @@ namespace KidGame.Core
         {
             lastFrameEndPositon = endPoint;
             lastFrameStartPositon = startPoint;
-            // Ï¹¡Ì8µ÷ÁËÒ»ÏÂÕâ¸ö¸ß¶È ºÃÏñ»¹ËãÄÜ½ÓÊÜ Ğ§¹û»¹ĞĞ
-            // Õâ±ßÊÇÔÚËãÒ»¸ö¸ß¶ÈÒò×Ó
+            // çâˆš8è°ƒäº†ä¸€ä¸‹è¿™ä¸ªé«˜åº¦ å¥½åƒè¿˜ç®—èƒ½æ¥å— æ•ˆæœè¿˜è¡Œ
+            // è¿™è¾¹æ˜¯åœ¨ç®—ä¸€ä¸ªé«˜åº¦å› å­
             float distance = Vector3.Distance(startPoint, endPoint);
             float t = (float)distance / heightHeightFactor;
             t = Mathf.Clamp01(1 - t);
             heightFactor = Mathf.Lerp(heightFactorLerpMin, heightFactorLerpMax, t);
-            // ÉèÖÃÏßµÄ¹ì¼£µãÊı
+            // è®¾ç½®çº¿çš„è½¨è¿¹ç‚¹æ•°
             lineRenderer.positionCount = resolution;
             if (points != null && points.Length > 0)
                 Array.Clear(points, 0, points.Length);
 
-            // »ù´¡¸ß¶ÈÎ»ÖÃ È¡Á¬ÏßÖĞµã
+            // åŸºç¡€é«˜åº¦ä½ç½® å–è¿çº¿ä¸­ç‚¹
             Vector3 controlPoint = (startPoint + endPoint) / 2f;
-            // ×îÖÕ¸ß¶ÈÎ»ÖÃ Õâ¸ö5ÆäÊµÒ²ÊÇ¸öÏµÊı ĞèÒªµÄ»°¿ÉÒÔ×Ô¼ºĞ´Ò»¸öpublicµÄfactor
+            // æœ€ç»ˆé«˜åº¦ä½ç½® è¿™ä¸ª5å…¶å®ä¹Ÿæ˜¯ä¸ªç³»æ•° éœ€è¦çš„è¯å¯ä»¥è‡ªå·±å†™ä¸€ä¸ªpublicçš„factor
             controlPoint += Vector3.up * heightFactor * 5;
 
-            // Éú³É±´Èû¶ûÇúÏßÉÏµÄµã
+            // ç”Ÿæˆè´å¡å°”æ›²çº¿ä¸Šçš„ç‚¹
             for (int i = 0; i < resolution; i++)
             {
-                t = (float)i / (resolution - 1); // ¹éÒ»»¯
-                // Í¨¹ı±´Èû¶ûÇúÏßº¯Êı Ëã³öÃ¿¸öµãµÄ×ø±ê
+                t = (float)i / (resolution - 1); // å½’ä¸€åŒ–
+                // é€šè¿‡è´å¡å°”æ›²çº¿å‡½æ•° ç®—å‡ºæ¯ä¸ªç‚¹çš„åæ ‡
                 points[i] = CalculateBezierPoint(t, startPoint, controlPoint, endPoint);
 
-                // Õâ¸öcurve±ä»¯ÓÀÔ¶ÊÇ ÏßĞÔµÄ ²»ÊÇÁ¢¼´ÉèÖÃµÄ Ïë×öµ½Ò»¸ö¼ıÍ·Ğ§¹ûÊÇ²»¿ÉÄÜµÄ
-                // ³ı·Ç¼ÓºÜ¶àºÜ¶àµÄµã µ«ÊÇ¸Ğ¾õ»áµÃ²»³¥Ê§
+                // è¿™ä¸ªcurveå˜åŒ–æ°¸è¿œæ˜¯ çº¿æ€§çš„ ä¸æ˜¯ç«‹å³è®¾ç½®çš„ æƒ³åšåˆ°ä¸€ä¸ªç®­å¤´æ•ˆæœæ˜¯ä¸å¯èƒ½çš„
+                // é™¤éåŠ å¾ˆå¤šå¾ˆå¤šçš„ç‚¹ ä½†æ˜¯æ„Ÿè§‰ä¼šå¾—ä¸å¿å¤±
                 if (t < 0.7f && t >= 0f) currentWidth = startWidth;
                 else
                 {
-                    // ÔÚ×îºó30% 
-                    // ´Ó½áÎ²¿í¶È ¿ªÊ¼ÏÂ½µµ½¿í¶ÈÎª0 Ä£ÄâÒ»¸ö¼ıÍ·
+                    // åœ¨æœ€å30% 
+                    // ä»ç»“å°¾å®½åº¦ å¼€å§‹ä¸‹é™åˆ°å®½åº¦ä¸º0 æ¨¡æ‹Ÿä¸€ä¸ªç®­å¤´
                     currentWidth = Mathf.Lerp(arrowStartWidth, 0, (t - 0.7f) / 0.3f);
                 }
-                // Å×ÎïÏß¿í¶ÈÇúÏß
+                // æŠ›ç‰©çº¿å®½åº¦æ›²çº¿
                 if(widthCurve != null) widthCurve.AddKey(t, currentWidth);
             }
 
-            // Ó¦ÓÃ¹ì¼£µã
+            // åº”ç”¨è½¨è¿¹ç‚¹
             lineRenderer.SetPositions(points);
 
-            // Ó¦ÓÃ¿í¶ÈÇúÏß
+            // åº”ç”¨å®½åº¦æ›²çº¿
             lineRenderer.widthCurve = widthCurve;
         }
 
-        // ¼ÆËã¶ş´Î±´Èû¶ûÇúÏßÉÏµÄµã
-        // ¹«¹«ÓÖÊ½Ê½
+        // è®¡ç®—äºŒæ¬¡è´å¡å°”æ›²çº¿ä¸Šçš„ç‚¹
+        // å…¬å…¬åˆå¼å¼
         Vector3 CalculateBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
         {
             float u = 1 - t;
@@ -105,7 +105,7 @@ namespace KidGame.Core
 
         public Vector3[] GetPoints()
         {
-            // ·µ»ØÊı×éµÄ¸±±¾£¨´´½¨ĞÂÊı×é²¢¸´ÖÆÖµ£©
+            // è¿”å›æ•°ç»„çš„å‰¯æœ¬ï¼ˆåˆ›å»ºæ–°æ•°ç»„å¹¶å¤åˆ¶å€¼ï¼‰
             Vector3[] copy = new Vector3[points.Length];
             Array.Copy(points, copy, points.Length);
             return copy;
@@ -125,40 +125,40 @@ namespace KidGame.Core
 {
     public class LineRenderScript : MonoBehaviour
     {
-        #region ±äÁ¿
-        public LineRenderer lineRenderer; // ÍÏ×§ÒıÓÃ
-        public Vector3 startPoint;       // ÆğÊ¼Î»ÖÃ
-        public Vector3 endPoint;         // ½áÊøÎ»ÖÃ
-        public float heightFactor = 1f;  // Å×ÎïÏß¸ß¶ÈÒò×Ó
-        public float heightHeightFactor = 20f; // Å×ÎïÏß¸ß¶ÈµÄ»ù×¼¾àÀë
-        public int resolution = 30;      // ¹ì¼£µãÊıÁ¿£¨ÓÅ»¯Îª30£¬Æ½ºâĞÔÄÜÓë¾«¶È£©
-        public AnimationCurve widthCurve;  // ¿í¶ÈÇúÏß
+        #region å˜é‡
+        public LineRenderer lineRenderer; // æ‹–æ‹½å¼•ç”¨
+        public Vector3 startPoint;       // èµ·å§‹ä½ç½®a
+        public Vector3 endPoint;         // ç»“æŸä½ç½®
+        public float heightFactor = 1f;  // æŠ›ç‰©çº¿é«˜åº¦å› å­
+        public float heightHeightFactor = 20f; // æŠ›ç‰©çº¿é«˜åº¦çš„åŸºå‡†è·ç¦»
+        public int resolution = 30;      // è½¨è¿¹ç‚¹æ•°é‡ï¼ˆä¼˜åŒ–ä¸º30ï¼Œå¹³è¡¡æ€§èƒ½ä¸ç²¾åº¦ï¼‰
+        public AnimationCurve widthCurve;  // å®½åº¦æ›²çº¿
         public float currentWidth;
-        public float startWidth = 0.1f;    // Ä¬ÈÏ¿í¶È
-        public float arrowStartWidth = 0.1f;     // ¼ıÍ·ÆğÊ¼¿í¶È
-        public float heightFactorLerpMin = 0.9f;  // ¸ß¶ÈÒò×Ó×îĞ¡Öµ
-        public float heightFactorLerpMax = 1.2f;  // ¸ß¶ÈÒò×Ó×î´óÖµ
+        public float startWidth = 0.1f;    // é»˜è®¤å®½åº¦
+        public float arrowStartWidth = 0.1f;     // ç®­å¤´èµ·å§‹å®½åº¦
+        public float heightFactorLerpMin = 0.9f;  // é«˜åº¦å› å­æœ€å°å€¼
+        public float heightFactorLerpMax = 1.2f;  // é«˜åº¦å› å­æœ€å¤§å€¼
         private Vector3[] points;
-        private Vector3 lastFrameStartPositon;// ÉÏÒ»Ö¡¿ªÊ¼Î»ÖÃ
-        private Vector3 lastFrameEndPositon;// ÉÏÒ»Ö¡½áÊøÎ»ÖÃ
+        private Vector3 lastFrameStartPositon;// ä¸Šä¸€å¸§å¼€å§‹ä½ç½®
+        private Vector3 lastFrameEndPositon;// ä¸Šä¸€å¸§ç»“æŸä½ç½®
         #endregion
 
         private void Awake()
         {
             points = new Vector3[resolution];
             widthCurve = new AnimationCurve();
-            // ³õÊ¼»¯LineRenderer²ÎÊı
+            // åˆå§‹åŒ–LineRendererå‚æ•°
             if (lineRenderer != null)
             {
                 lineRenderer.positionCount = resolution;
-                lineRenderer.useWorldSpace = true; // È·±£Ê¹ÓÃÊÀ½ç×ø±ê
+                lineRenderer.useWorldSpace = true; // ç¡®ä¿ä½¿ç”¨ä¸–ç•Œåæ ‡
             }
             DrawParabola();
         }
 
         private void Update()
         {
-            // ½öÔÚÆğµã/ÖÕµã±ä»¯Ê±¸üĞÂÇúÏß£¨¼õÉÙ¼ÆËã£©
+            // ä»…åœ¨èµ·ç‚¹/ç»ˆç‚¹å˜åŒ–æ—¶æ›´æ–°æ›²çº¿ï¼ˆå‡å°‘è®¡ç®—ï¼‰
             if (lastFrameStartPositon != startPoint || lastFrameEndPositon != endPoint)
                 DrawParabola();
         }
@@ -168,30 +168,30 @@ namespace KidGame.Core
             lastFrameEndPositon = endPoint;
             lastFrameStartPositon = startPoint;
 
-            // ¼ÆËãË®Æ½¾àÀë£¨ºöÂÔYÖá£¬ÓÃÓÚµ÷ÕûÅ×ÎïÏß¸ß¶È£©
+            // è®¡ç®—æ°´å¹³è·ç¦»ï¼ˆå¿½ç•¥Yè½´ï¼Œç”¨äºè°ƒæ•´æŠ›ç‰©çº¿é«˜åº¦ï¼‰
             Vector3 horizontalStart = new Vector3(startPoint.x, 0, startPoint.z);
             Vector3 horizontalEnd = new Vector3(endPoint.x, 0, endPoint.z);
             float horizontalDistance = Vector3.Distance(horizontalStart, horizontalEnd);
 
-            // ¶¯Ì¬¼ÆËã¸ß¶ÈÒò×Ó£¨¾àÀëÔ½Ô¶£¬¸ß¶ÈÒò×ÓÔ½´ó£¬Å×ÎïÏß¸ü×ÔÈ»£©
+            // åŠ¨æ€è®¡ç®—é«˜åº¦å› å­ï¼ˆè·ç¦»è¶Šè¿œï¼Œé«˜åº¦å› å­è¶Šå¤§ï¼ŒæŠ›ç‰©çº¿æ›´è‡ªç„¶ï¼‰
             float t = Mathf.Clamp01(horizontalDistance / heightHeightFactor);
             heightFactor = Mathf.Lerp(heightFactorLerpMin, heightFactorLerpMax, 1 - t);
 
-            // ¼ÆËã¿ØÖÆµã£¨Æ¥ÅäÎïÀíÅ×ÎïÏß¶¥µã£©
-            Vector3 midPoint = (startPoint + endPoint) / 2f; // Ë®Æ½ÖĞµã
-            float apexHeight = heightFactor * (horizontalDistance / 4f); // ¶¥µã¸ß¶È£¨ÓëÎïÀí¹ì¼£Æ¥Åä£©
+            // è®¡ç®—æ§åˆ¶ç‚¹ï¼ˆåŒ¹é…ç‰©ç†æŠ›ç‰©çº¿é¡¶ç‚¹ï¼‰
+            Vector3 midPoint = (startPoint + endPoint) / 2f; // æ°´å¹³ä¸­ç‚¹
+            float apexHeight = heightFactor * (horizontalDistance / 4f); // é¡¶ç‚¹é«˜åº¦ï¼ˆä¸ç‰©ç†è½¨è¿¹åŒ¹é…ï¼‰
             Vector3 controlPoint = new Vector3(midPoint.x, startPoint.y + apexHeight, midPoint.z);
 
-            // Çå¿Õ¿í¶ÈÇúÏß£¨±ÜÃâÀÛ»ı¼üÖµ£©
+            // æ¸…ç©ºå®½åº¦æ›²çº¿ï¼ˆé¿å…ç´¯ç§¯é”®å€¼ï¼‰
             //widthCurve.keys = new Keyframe[0];
 
-            // Éú³É±´Èû¶ûÇúÏßÉÏµÄµã
+            // ç”Ÿæˆè´å¡å°”æ›²çº¿ä¸Šçš„ç‚¹
             for (int i = 0; i < resolution; i++)
             {
-                float tParam = (float)i / (resolution - 1); // ¹éÒ»»¯²ÎÊı
+                float tParam = (float)i / (resolution - 1); // å½’ä¸€åŒ–å‚æ•°
                 points[i] = CalculateBezierPoint(tParam, startPoint, controlPoint, endPoint);
 
-                // ¼ÆËã¿í¶ÈÇúÏß£¨¼ıÍ·Ğ§¹û£©
+                // è®¡ç®—å®½åº¦æ›²çº¿ï¼ˆç®­å¤´æ•ˆæœï¼‰
                 if (tParam < 0.7f)
                     currentWidth = startWidth;
                 else
@@ -200,12 +200,12 @@ namespace KidGame.Core
                 widthCurve.AddKey(tParam, currentWidth);
             }
 
-            // Ó¦ÓÃ¹ì¼£µãºÍ¿í¶ÈÇúÏß
+            // åº”ç”¨è½¨è¿¹ç‚¹å’Œå®½åº¦æ›²çº¿
             lineRenderer.SetPositions(points);
             lineRenderer.widthCurve = widthCurve;
         }
 
-        // ¼ÆËã¶ş´Î±´Èû¶ûÇúÏßÉÏµÄµã
+        // è®¡ç®—äºŒæ¬¡è´å¡å°”æ›²çº¿ä¸Šçš„ç‚¹
         Vector3 CalculateBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
         {
             float u = 1 - t;
@@ -216,7 +216,7 @@ namespace KidGame.Core
 
         public Vector3[] GetPoints()
         {
-            // ·µ»ØÊı×é¸±±¾£¬±ÜÃâÍâ²¿ĞŞ¸Ä
+            // è¿”å›æ•°ç»„å‰¯æœ¬ï¼Œé¿å…å¤–éƒ¨ä¿®æ”¹
             Vector3[] copy = new Vector3[points.Length];
             Array.Copy(points, copy, points.Length);
             return copy;

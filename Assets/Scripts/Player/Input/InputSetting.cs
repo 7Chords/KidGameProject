@@ -27,6 +27,7 @@ namespace KidGame.Core
         public event Action OnRunRelease;
         public event Action OnUsePress;
         public event Action OnUseLongPress;
+        public event Action OnUseLongPressRelease;
         //public event Action OnThrowPress;
         public event Action OnBagPress;
         public event Action OnPickPress;
@@ -57,7 +58,8 @@ namespace KidGame.Core
             runAction.performed += OnRunActionPerformed;
             runAction.canceled += OnRunActionCanceled;
             useAction.performed += OnUseActionPerformed;
-            
+            useAction.canceled += OnUseActionCancled;
+
             bagAction.performed+= OnBagActionPerformed;
             pickAction.performed += OnPickActionPerformed;
             mouseWheelAction.performed += OnMouseWheelActionPerformed;
@@ -75,6 +77,7 @@ namespace KidGame.Core
             runAction.performed -= OnRunActionPerformed;
             runAction.canceled -= OnRunActionCanceled;
             useAction.performed -= OnUseActionPerformed;
+            useAction.canceled -= OnUseActionCancled;
             //throwAction.performed -= OnThrowActionPerformed;
             bagAction.performed -= OnBagActionPerformed;
             pickAction.performed -= OnPickActionPerformed;
@@ -148,6 +151,14 @@ namespace KidGame.Core
             OnRunRelease?.Invoke();
         }
 
+        private void OnUseActionCancled(InputAction.CallbackContext context)
+        {
+            if (GameManager.Instance.IsGamePaused) return;
+            if(context.interaction is HoldInteraction)
+            {
+                OnUseLongPressRelease?.Invoke();
+            }
+        }
         private void OnUseActionPerformed(InputAction.CallbackContext context)
         {
             if (GameManager.Instance.IsGamePaused) return;
