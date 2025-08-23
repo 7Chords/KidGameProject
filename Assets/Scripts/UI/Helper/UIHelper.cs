@@ -100,7 +100,10 @@ namespace KidGame.UI
         public GameObject TipPrefab;
         public float ShowTipInterval;
         public Queue<TipInfo> TipQueue;
-        private bool isShowingTip;
+        //private bool isShowingTip;
+        public float QuickReplaceThreshold = 0.3f; // 快速替换阈值
+        private GameObject currentTipGO; // 当前显示的Tip对象
+        private float lastTipShowTime; // 上次显示Tip的时间
 
         [Header("Sign")]
         //图标提示相关字段
@@ -129,16 +132,15 @@ namespace KidGame.UI
         {
             bubbleInfoList = new List<BubbleInfo>();
             TipQueue = new Queue<TipInfo>();
+
+            this.OnUpdate(SortBubbleQueueByDist);
         }
         public void Discard()
         {
             bubbleInfoList.Clear();
             bubbleInfoList = null;
-        }
+            this.RemoveUpdate(SortBubbleQueueByDist);
 
-        private void Update()
-        {
-            SortBubbleQueueByDist();
         }
 
         #region Bubble
@@ -221,29 +223,43 @@ namespace KidGame.UI
         /// <param name="tipInfo"></param>
         public void ShowOneTip(TipInfo tipInfo)
         {
+            float currentTime = Time.time;
+            float timeSinceLastTip = currentTime - lastTipShowTime;
+
+            // 如果在快速替换阈值内且有当前显示的Tip，则替换内容
+            if (timeSinceLastTip <= QuickReplaceThreshold &&
+                //isShowingTip &&
+                currentTipGO != null)
+            {
+                // 更新当前显示的Tip内容
+                UITipItem tipItem = currentTipGO.GetComponent<UITipItem>();
+                if (tipItem != null)
+                {
+                    tipItem.ResetTip(tipInfo.creatorPos, tipInfo.content);
+
+                    lastTipShowTime = currentTime;
+                    return;
+                }
+            }
             TipQueue.Enqueue(tipInfo);
-            if (isShowingTip) return;
+            //if (isShowingTip) return;
             StartCoroutine(ShowTipCoroutine());
-            //GameObject tipGO = Instantiate(TipPrefab);
-            //tipGO.transform.SetParent(transform);
-            //tipGO.GetComponent<UITipItem>().Init(tipInfo.creator, tipInfo.content);
-            //Destroy(tipGO, tipInfo.showTime);
         }
 
         private IEnumerator ShowTipCoroutine()
         {
-            isShowingTip = true;
+            //isShowingTip = true;
             TipInfo tmpInfo = null;
             while(TipQueue.Count > 0)
             {
                 tmpInfo = TipQueue.Dequeue();
-                GameObject tipGO = Instantiate(TipPrefab);
-                tipGO.transform.SetParent(transform);
-                tipGO.GetComponent<UITipItem>().Init(tmpInfo.creatorPos, tmpInfo.content);
-                Destroy(tipGO, tmpInfo.showTime);
+                lastTipShowTime = Time.time;
+                currentTipGO = Instantiate(TipPrefab);
+                currentTipGO.transform.SetParent(transform);
+                currentTipGO.GetComponent<UITipItem>().Init(tmpInfo.creatorPos, tmpInfo.content, tmpInfo.showTime);
                 yield return new WaitForSeconds(ShowTipInterval);
             }
-            isShowingTip = false;
+            //isShowingTip = false;
         }
         
         //public void ShowOneTipWithParent(TipInfo tipInfo,Transform parent)

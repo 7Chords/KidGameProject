@@ -12,17 +12,19 @@ namespace KidGame.UI
         private RectTransform rectTran;
         private Vector2 screenPos;
         private float originalY;
-        private Sequence seq;
+        private Sequence animSeq;
+        private Sequence deadSequence;
+        private float deadTime;
         private void Awake()
         {
             rectTran = GetComponent<RectTransform>();
         }
 
-        public void Init(Vector3 creatorPos, string content)
+        public void Init(Vector3 creatorPos, string content,float deadTime)
         {
             ContentText.text = content;
             this.creatorPos = creatorPos;
-
+            this.deadTime = deadTime;
             // 初始状态
             transform.localScale = Vector3.zero;
 
@@ -33,6 +35,10 @@ namespace KidGame.UI
 
             // 播放动画
             PlayShowAnimation();
+            deadSequence = DOTween.Sequence().AppendInterval(deadTime).OnComplete(() =>
+            {
+                Destroy(gameObject);
+            });
         }
 
         //public void InitWithRectTransform(GameObject creator, string content)
@@ -53,16 +59,37 @@ namespace KidGame.UI
         //}
         private void PlayShowAnimation()
         {
-            seq = DOTween.Sequence();
+            animSeq = DOTween.Sequence();
             // 缩放动画
-            seq.Append(transform.DOScale(Vector3.one, 0.3f));
+            animSeq.Append(transform.DOScale(Vector3.one, 0.3f));
             // 上移动画
-            seq.Append(rectTran.DOLocalMoveY(originalY + 50f, 0.5f));
+            animSeq.Append(rectTran.DOLocalMoveY(originalY + 50f, 0.5f));
         }
 
+        public void ResetTip(Vector3 creatorPos, string content)
+        {
+            animSeq.Kill();
+            deadSequence.Kill();
+            ContentText.text = content;
+            this.creatorPos = creatorPos;
+            // 初始状态
+            transform.localScale = Vector3.zero;
+            // 计算位置
+            screenPos = Camera.main.WorldToScreenPoint(creatorPos) * (1080f / 300);
+            rectTran.localPosition = UIHelper.Instance.ScreenPointToUIPoint(rectTran, screenPos);
+            originalY = rectTran.localPosition.y;
+
+            // 播放动画
+            PlayShowAnimation();
+            deadSequence = DOTween.Sequence().AppendInterval(deadTime).OnComplete(() =>
+            {
+                Destroy(gameObject);
+            });
+        }
         private void OnDestroy()
         {
-            seq.Kill();//不销毁的话如果物体被销毁序列依然存在 产生waring
+            animSeq.Kill();//不销毁的话如果物体被销毁序列依然存在 产生waring
+            deadSequence.Kill();
         }
     }
 }

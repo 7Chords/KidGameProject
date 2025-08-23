@@ -296,8 +296,6 @@ namespace KidGame.Core
                     default:
                         break;
                 }
-
-                UIHelper.Instance.ShowOneTip(new TipInfo("道具栏已满，物品已放入背包", PlayerController.Instance.transform.position));
             }
 
             OnQuickAccessBagUpdated?.Invoke();
