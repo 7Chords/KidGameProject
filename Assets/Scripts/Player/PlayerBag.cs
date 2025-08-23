@@ -244,7 +244,7 @@ namespace KidGame.Core
         /// <param name="itemId"></param>
         /// <param name="itemType"></param>
         /// <param name="addAmount"></param>
-        public void AddItemToCombineBag(string itemId, UseItemType itemType, int addAmount)
+        public bool AddItemToCombineBag(string itemId, UseItemType itemType, int addAmount)
         {
             var existing = QuickAccessBag.Find(x => x.ItemData.Id == itemId);
             if(existing == null)
@@ -278,7 +278,7 @@ namespace KidGame.Core
                     OnSelectItemAction(QuickAccessBag[SelectedIndex]);
                 }
             }
-            else
+            else if(BackBag.Count<GlobalValue.BACKPACK_CAPACITY)
             {
                 // 道具栏已满，转移至背包
                 switch (itemType)
@@ -297,8 +297,14 @@ namespace KidGame.Core
                         break;
                 }
             }
-
+            else
+            {
+                return false;
+            }
+                
+        
             OnQuickAccessBagUpdated?.Invoke();
+            return true;
         }
 
         #endregion
@@ -405,10 +411,11 @@ namespace KidGame.Core
         {
             if (selectIndex < 0 || selectIndex >= BackBag.Count || prop.items.Count >= prop.maxCount)
                 return;
-
+            
             var item = BackBag[selectIndex];
+            if(!(item.ItemData is MaterialData))return;
             BackBag.RemoveAt(selectIndex);
-            prop.items.Add(item);
+            prop.originItems.Add(new MaterialItem(item.ItemData as MaterialData,item.Amount));
 
             //OnQuickAccessBagUpdated?.Invoke();
         }
@@ -419,8 +426,11 @@ namespace KidGame.Core
                 return;
             
             var item = prop.items[selectIndex];
-            prop.items.RemoveAt(selectIndex);
+            if(!(item.ItemData is MaterialData))return;
             BackBag.Add(item);
+            prop.originItems.RemoveAt(selectIndex);
+            prop.items.RemoveAt(selectIndex);
+            
 
             //OnQuickAccessBagUpdated?.Invoke();
         }

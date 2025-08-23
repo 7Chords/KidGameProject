@@ -1,6 +1,7 @@
 using KidGame;
 using KidGame.Core;
 using System.Collections;
+using KidGame.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,13 +9,7 @@ using UnityEngine.UI;
 using Utils;
 
 
-public class ShowItemDetailSignal : ASignal<CellUI>
-{
-}
 
-public class HideItemDetailSignal : ASignal
-{
-}
 
 public class CellUI : MonoBehaviour
 {
@@ -26,7 +21,7 @@ public class CellUI : MonoBehaviour
     public Transform detailPoint;
 
     private float timer = 0f;
-    private const float delay = 0.6f; // 悬停时间阈值
+    private const float delay = 0.4f; // 悬停时间阈值
 
     private void Awake()
     {
@@ -45,22 +40,21 @@ public class CellUI : MonoBehaviour
     {
         StopAllCoroutines(); // 停止所有协程
         timer = 0f; // 重置计时器
-        Signals.Get<HideItemDetailSignal>().Dispatch();
+        
+        UIHelper.Instance.HideItemDetail();
+        //Signals.Get<HideItemDetailSignal>().Dispatch();
     }
 
-    private IEnumerator ShowDetailPanel()
-    {
-        while (true)
-        {
-            timer += Time.unscaledTime;
-            if (timer >= delay)
-            {
-                Signals.Get<ShowItemDetailSignal>().Dispatch(this);
-                break;
-            }
-
-            yield return null;
+    private IEnumerator ShowDetailPanel() {
+        timer = 0f;  // 确保计时器从0开始
+        while (timer < delay) {
+            timer += Time.unscaledDeltaTime;  // 使用非缩放增量时间
+            yield return null;  // 即使timeScale=0，仍会等待下一帧
         }
+        // 计时结束，显示详情面板
+        
+        UIHelper.Instance.ShowItemDetail(this);
+        //Signals.Get<ShowItemDetailSignal>().Dispatch(this);
     }
 
     private void AddEventTrigger()

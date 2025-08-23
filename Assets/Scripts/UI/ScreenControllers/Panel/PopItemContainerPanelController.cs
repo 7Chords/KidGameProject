@@ -21,6 +21,7 @@ namespace KidGame.UI
         public int column;
         public string title = String.Empty;
         public List<MaterialItem> originItems;
+       
         public int maxCount => row * column;
 
         public PopItemContainerProp()
@@ -56,6 +57,8 @@ namespace KidGame.UI
         private Button btn_getAll;
         public float xspacing = 800f;
         public float yspacing = 800f;
+        
+        
 
         protected override void AddListeners()
         {
@@ -66,6 +69,9 @@ namespace KidGame.UI
         {
             
         }
+        
+        
+        
         protected override void OnPropertiesSet()
         {
             PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += HidePopPanel;
@@ -98,7 +104,7 @@ namespace KidGame.UI
         
         protected override void WhileHiding()
         {
-            OnHideItemDetail();
+            
             PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= HidePopPanel;
             //GameManager.Instance.GameResume();
             
@@ -149,7 +155,7 @@ namespace KidGame.UI
             if (index < 0 || index >= Properties.items.Count) return;
             
             CellUI cellUI = cell.GetComponent<CellUI>();
-            ISlotInfo slotInfo = Properties.items[index];
+            ISlotInfo slotInfo = Properties.items[index-1];
             
             // 根据物品类型设置单元格显示
             cellUI.SetUIWithGenericSlot(slotInfo);
@@ -163,18 +169,17 @@ namespace KidGame.UI
         {
             if (index-1 < 0 || index-1 >= Properties.items.Count) return;
             // 原本的道具栏与背包互换代码移动到了playerBag.cs
-            PlayerBag.Instance.MoveItemToItemContainer(index - 1,Properties);
+            PlayerBag.Instance.MoveContainerItemToBackBag(index - 1,Properties);
             RefreshLists();
-            OnHideItemDetail();
+            UIHelper.Instance.HideItemDetail();
         }
         private void RefreshLists()
         {
             scrollView.ShowList(Properties.items.Count);
+            // 通知背包UI刷新
+            Signals.Get<RefreshBackpackSignal>().Dispatch();
         }
-        private void OnHideItemDetail()
-        {
-           // detailPanel.SetActive(false);
-        }
+        
         /// <summary>
         /// 查找背包中可交换的物品索引
         /// </summary>
@@ -211,7 +216,12 @@ namespace KidGame.UI
             {
                 if (item.ItemData != null)
                 {
-                    PlayerBag.Instance.AddItemToCombineBag(item.ItemData.Id, item.ItemData.UseItemType,item.Amount);
+                    if (PlayerBag.Instance.AddItemToCombineBag(item.ItemData.Id, item.ItemData.UseItemType,
+                            item.Amount))
+                    {
+                        UIHelper.Instance.ShowOneTip(new TipInfo("背包已满", PlayerController.Instance.transform.position));
+                        break;
+                    }
                 }
             }
             
@@ -233,7 +243,9 @@ namespace KidGame.UI
             scrollView.ShowList(Properties.items.Count);
         }
 
-       
+        
+
+        
         
     }
     

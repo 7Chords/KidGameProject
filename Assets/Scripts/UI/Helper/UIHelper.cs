@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using KidGame.UI.Game;
+using TMPro;
 using UnityEngine;
 
 
@@ -132,6 +134,10 @@ namespace KidGame.UI
         {
             bubbleInfoList = new List<BubbleInfo>();
             TipQueue = new Queue<TipInfo>();
+            
+            detailPanel = UIController.Instance.uiCanvas.transform.Find("PriorityPanelLayer/DetailPanel").gameObject;
+            detailText = detailPanel.transform.Find("DetailText").GetComponent<TextMeshProUGUI>();
+            detailPanel.SetActive(false);
 
             this.OnUpdate(SortBubbleQueueByDist);
         }
@@ -308,7 +314,26 @@ namespace KidGame.UI
         #endregion
 
         #region Detail
-
+        
+        private GameObject detailPanel;
+        private TextMeshProUGUI detailText;
+        /// <summary>
+        /// 展示物品详情
+        /// </summary>
+        /// <param name="cellUI"></param>
+        public void ShowItemDetail(CellUI cellUI)
+        {
+            detailPanel.transform.SetAsLastSibling();
+            detailPanel.transform.position = cellUI.detailPoint.position;
+            detailText.text = cellUI.detailText;
+            detailPanel.SetActive(true);
+        }
+        
+        public void HideItemDetail()
+        {
+            detailPanel.SetActive(false);
+        }
+        
         #endregion
 
         #region Progress

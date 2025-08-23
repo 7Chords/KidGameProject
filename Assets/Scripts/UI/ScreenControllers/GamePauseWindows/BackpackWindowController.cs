@@ -44,10 +44,6 @@ public class BackpackWindowController : WindowController<BackpackProp>
     private GameObject detailPanel;
     private TextMeshProUGUI detailText;
 
-    // 陷阱列表最大容量 tips：移动到GlobalValue脚本里了，别的地方也要用
-    //private const int MAX_BACKPACK_TRAP = 10; // 背包陷阱最大数量
-    //private const int MAX_POCKET_TRAP = 5; // 口袋最大数量
-
     protected override void Awake()
     {
         base.Awake();
@@ -60,8 +56,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
     protected override void AddListeners()
     {
         base.AddListeners();
-        Signals.Get<ShowItemDetailSignal>().AddListener(OnShowItemDetail);
-        Signals.Get<HideItemDetailSignal>().AddListener(OnHideItemDetail);
+       
         Signals.Get<RefreshBackpackSignal>().AddListener(RefreshLists);
         Signals.Get<CloseBackpackWindowSignal>().AddListener(UI_Close);
     }
@@ -69,8 +64,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
     protected override void RemoveListeners()
     {
         base.RemoveListeners();
-        Signals.Get<ShowItemDetailSignal>().RemoveListener(OnShowItemDetail);
-        Signals.Get<HideItemDetailSignal>().RemoveListener(OnHideItemDetail);
+        
         Signals.Get<RefreshBackpackSignal>().RemoveListener(RefreshLists);
         Signals.Get<CloseBackpackWindowSignal>().RemoveListener(UI_Close);
     }
@@ -104,7 +98,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
     
     protected override void WhileHiding()
     {
-        OnHideItemDetail();
+        
         PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= UI_Close;
     }
 
@@ -114,7 +108,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
         // 原本的道具栏与背包互换代码移动到了playerBag.cs
         PlayerBag.Instance.MoveItemToQuickAccessBag(cellIndex);
         RefreshLists();
-        OnHideItemDetail();
+        UIHelper.Instance.HideItemDetail();
     }
 
     private void OnPocketCellClick(GameObject cell, int index)
@@ -123,7 +117,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
         // 原本的道具栏与背包互换代码移动到了playerBag.cs
         PlayerBag.Instance.MoveItemToBackBag(cellIndex);
         RefreshLists();
-        OnHideItemDetail();
+        UIHelper.Instance.HideItemDetail();
     }
     
     private void RefreshLists()
