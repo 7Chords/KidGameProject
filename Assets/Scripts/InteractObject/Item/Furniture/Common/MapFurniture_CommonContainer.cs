@@ -19,7 +19,7 @@ namespace KidGame.Core
             if(GameManager.Instance.IsGamePaused)return;
             if (materialHoldList == null || materialHoldList.Count == 0)
             {
-                UIHelper.Instance.ShowOneTip(new TipInfo("空空如也", gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("空空如也", transform.position));
             }
             else
             {

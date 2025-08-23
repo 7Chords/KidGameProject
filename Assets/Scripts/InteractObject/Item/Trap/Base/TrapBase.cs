@@ -184,7 +184,7 @@ namespace KidGame.Core
                     1f);
             }
 
-            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
+            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", transform.position));
             ChangeState(TrapState.Dead);
         }
 

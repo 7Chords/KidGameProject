@@ -218,7 +218,7 @@ namespace KidGame.Core
             PlayerController.Instance.RemovePickableFromList(this);
             PlayerUtil.Instance.CallPlayerPickItem(weaponData.id, UseItemType.weapon);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
-            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", gameObject));
+            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×1", transform.position));
             Destroy(gameObject);
         }
 

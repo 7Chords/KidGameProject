@@ -295,7 +295,7 @@ namespace KidGame.Core
             //允许变走边使用武器
             if (playerState != PlayerState.Idle && itemType != UseItemType.weapon)
             {
-                UIHelper.Instance.ShowOneTip(new TipInfo("当前状态不可布置陷阱", gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("当前状态不可布置陷阱", transform.position));
                 return;
             }
             if(currentUseItem is WeaponSlotInfo weaponItem)

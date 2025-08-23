@@ -31,8 +31,8 @@ namespace KidGame.Core
         public override void Pick()
         {
             PlayerController.Instance.RemovePickableFromList(this);
-
-            for(int i =0;i<playerGetAmount;i++)
+            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×" + playerGetAmount, transform.position));
+            for (int i =0;i<playerGetAmount;i++)
             {
                 PlayerUtil.Instance.CallPlayerPickItem(_materialData.id, UseItemType.Material);
             }
@@ -53,7 +53,6 @@ namespace KidGame.Core
                     true,
                     1f);
             }
-            UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×" + playerGetAmount, gameObject));
             //TODO:工厂回收？
             Destroy(gameObject);
         }

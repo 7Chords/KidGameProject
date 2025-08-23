@@ -82,3 +82,11 @@ MonoBehaviour:
     materialId: M002
     randomAmount_min: 1
     randomAmount_max: 5
+  - spawnPos: {x: 7, y: 1, z: 5}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5
+  - spawnPos: {x: 8, y: 1, z: 5}
+    materialId: M002
+    randomAmount_min: 1
+    randomAmount_max: 5

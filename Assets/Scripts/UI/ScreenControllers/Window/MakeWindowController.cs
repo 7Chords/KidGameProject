@@ -110,7 +110,7 @@ namespace KidGame.UI
                 //先检查 不能直接try delete 不然检查到一半才发现发现不够了 之前删掉了回不来了
                 if(!PlayerBag.Instance.CheckItemEnoughInCombineBag(slotInfo.ItemData.Id, slotInfo.Amount))
                 {
-                    UIHelper.Instance.ShowOneTipWithParent(new TipInfo("材料不足！", gameObject), transform);
+                    UIHelper.Instance.ShowOneFixedPosUIText(FixedUIPosType.Top,"材料不足！",0.5f);
                     break;
                 }
             }
@@ -121,7 +121,8 @@ namespace KidGame.UI
             }
             // todo.填写具体陷阱数量
             PlayerBag.Instance.AddItemToCombineBag(currentRecipe.trapData.id, UseItemType.trap,1);
-            UIHelper.Instance.ShowOneTipWithParent(new TipInfo("打造了" + currentRecipe.trapData.trapName, gameObject), transform);
+            UIHelper.Instance.ShowOneFixedPosUIText(FixedUIPosType.Top, "打造了" + currentRecipe.trapData.trapName, 0.5f);
+
         }
     }
 }

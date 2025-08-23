@@ -8,7 +8,7 @@ namespace KidGame.UI
     {
         public Text ContentText;
 
-        private GameObject creator;
+        private Vector3 creatorPos;
         private RectTransform rectTran;
         private Vector2 screenPos;
         private float originalY;
@@ -18,16 +18,16 @@ namespace KidGame.UI
             rectTran = GetComponent<RectTransform>();
         }
 
-        public void Init(GameObject creator, string content)
+        public void Init(Vector3 creatorPos, string content)
         {
             ContentText.text = content;
-            this.creator = creator;
+            this.creatorPos = creatorPos;
 
             // 初始状态
             transform.localScale = Vector3.zero;
 
             // 计算位置
-            screenPos = Camera.main.WorldToScreenPoint(creator.transform.position) * (1080f / 300);
+            screenPos = Camera.main.WorldToScreenPoint(creatorPos) * (1080f / 300);
             rectTran.localPosition = UIHelper.Instance.ScreenPointToUIPoint(rectTran, screenPos);
             originalY = rectTran.localPosition.y;
 
@@ -35,22 +35,22 @@ namespace KidGame.UI
             PlayShowAnimation();
         }
 
-        public void InitWithRectTransform(GameObject creator, string content)
-        {
-            ContentText.text = content;
-            this.creator = creator;
+        //public void InitWithRectTransform(GameObject creator, string content)
+        //{
+        //    ContentText.text = content;
+        //    this.creator = creator;
 
-            // 初始状态
-            transform.localScale = Vector3.one;
+        //    // 初始状态
+        //    transform.localScale = Vector3.one;
 
-            // 计算位置
-            screenPos = this.creator.GetComponent<RectTransform>().anchoredPosition;
-            rectTran.localPosition = screenPos;
-            originalY = rectTran.localPosition.y;
+        //    // 计算位置
+        //    screenPos = this.creator.GetComponent<RectTransform>().anchoredPosition;
+        //    rectTran.localPosition = screenPos;
+        //    originalY = rectTran.localPosition.y;
 
-            // 播放动画
-            PlayShowAnimation();
-        }
+        //    // 播放动画
+        //    PlayShowAnimation();
+        //}
         private void PlayShowAnimation()
         {
             seq = DOTween.Sequence();

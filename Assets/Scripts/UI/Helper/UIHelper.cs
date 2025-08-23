@@ -8,6 +8,12 @@ using UnityEngine;
 
 namespace KidGame.UI
 {
+
+    public enum FixedUIPosType
+    {
+        Left,Right,Top,Bottom,Center
+    }
+
     /// <summary>
     /// 气泡信息类
     /// </summary>
@@ -48,13 +54,13 @@ namespace KidGame.UI
     public class TipInfo
     {
         public string content;
-        public GameObject creator;
+        public Vector3 creatorPos;
         public float showTime; // 显示时长
 
-        public TipInfo(string content, GameObject creator, float showTime = 0.75f)
+        public TipInfo(string content, Vector3 creatorPos, float showTime = 0.75f)
         {
             this.content = content;
-            this.creator = creator;
+            this.creatorPos = creatorPos;
             this.showTime = showTime;
         }
     }
@@ -82,26 +88,34 @@ namespace KidGame.UI
     /// </summary>
     public class UIHelper : Singleton<UIHelper>
     {
+        [Header("Bubble")]
         //气泡相关字段
         public GameObject BubblePrefab;
         private GameObject currentBubble;
         private BubbleInfo currentBubbleInfo;
         public List<BubbleInfo> bubbleInfoList;
 
-
+        [Header("Tip")]
         // 文字提示相关字段
         public GameObject TipPrefab;
-        private Queue<TipInfo> tipQueue = new Queue<TipInfo>();
-        private bool isShowingTip = false;
-        private Coroutine showTipCoroutine;
+        public float ShowTipInterval;
+        public Queue<TipInfo> TipQueue;
+        private bool isShowingTip;
 
+        [Header("Sign")]
         //图标提示相关字段
         public GameObject SignPrefab;
 
+        [Header("FixedPos")]
         //固定UI位置相关字段
-        public GameObject SideTextPrefab;
-        public Transform SideShowPos;
+        public GameObject FixedPosTextPrefab;
+        public Transform LeftShowPos;
+        public Transform RightShowPos;
+        public Transform TopShowPos;
+        public Transform BottomShowPos;
+        public Transform CenterShowPos;
 
+        [Header("Progress")]
         //圆形进度条相关字段
         public GameObject CircleProgressPrefab;
         private GameObject currentProgressGO;
@@ -114,6 +128,7 @@ namespace KidGame.UI
         public void Init()
         {
             bubbleInfoList = new List<BubbleInfo>();
+            TipQueue = new Queue<TipInfo>();
         }
         public void Discard()
         {
@@ -200,84 +215,49 @@ namespace KidGame.UI
 
         #region Tip
 
-            #region Delete
-        /// <summary>
-        /// 添加提示到队列
-        /// </summary>
-        /// <param name="content">提示内容</param>
-        /// <param name="creator">创建者</param>
-        /// <param name="showTime">显示时长</param>
-        //public void ShowTipByQueue(TipInfo info,float intervalTime = 0.5f)
-        //{
-        //    tipQueue.Enqueue(info);
-
-        //    // 如果没有正在显示的提示，立即开始显示
-        //    if (!isShowingTip && showTipCoroutine == null)
-        //    {
-        //        showTipCoroutine = StartCoroutine(ProcessTipQueue(intervalTime));
-        //    }
-        //}
-
-        /// <summary>
-        /// 处理提示队列的协程
-        /// </summary>
-        //private IEnumerator ProcessTipQueue(float intervalTime)
-        //{
-        //    isShowingTip = true;
-
-        //    while (tipQueue.Count > 0)
-        //    {
-        //        TipInfo tipInfo = tipQueue.Dequeue();
-        //        ShowOneTip(tipInfo);
-        //        // 如果不是最后一个提示，等待间隔时间
-        //        yield return new WaitForSeconds(intervalTime);
-        //    }
-
-        //    isShowingTip = false;
-        //    showTipCoroutine = null;
-        //}
-
-        /// <summary>
-        /// 清空提示队列
-        /// </summary>
-        //public void ClearTipQueue()
-        //{
-        //    tipQueue.Clear();
-
-        //    if (showTipCoroutine != null)
-        //    {
-        //        StopCoroutine(showTipCoroutine);
-        //        showTipCoroutine = null;
-        //    }
-
-        //    isShowingTip = false;
-        //}
-            #endregion
-
         /// <summary>
         /// 直接展示一个提示信息
         /// </summary>
         /// <param name="tipInfo"></param>
         public void ShowOneTip(TipInfo tipInfo)
         {
-            GameObject tipGO = Instantiate(TipPrefab);
-            tipGO.transform.SetParent(transform);
-            tipGO.GetComponent<UITipItem>().Init(tipInfo.creator, tipInfo.content);
-            Destroy(tipGO, tipInfo.showTime);
+            TipQueue.Enqueue(tipInfo);
+            if (isShowingTip) return;
+            StartCoroutine(ShowTipCoroutine());
+            //GameObject tipGO = Instantiate(TipPrefab);
+            //tipGO.transform.SetParent(transform);
+            //tipGO.GetComponent<UITipItem>().Init(tipInfo.creator, tipInfo.content);
+            //Destroy(tipGO, tipInfo.showTime);
+        }
+
+        private IEnumerator ShowTipCoroutine()
+        {
+            isShowingTip = true;
+            TipInfo tmpInfo = null;
+            while(TipQueue.Count > 0)
+            {
+                tmpInfo = TipQueue.Dequeue();
+                GameObject tipGO = Instantiate(TipPrefab);
+                tipGO.transform.SetParent(transform);
+                tipGO.GetComponent<UITipItem>().Init(tmpInfo.creatorPos, tmpInfo.content);
+                Destroy(tipGO, tmpInfo.showTime);
+                yield return new WaitForSeconds(ShowTipInterval);
+            }
+            isShowingTip = false;
         }
         
-        public void ShowOneTipWithParent(TipInfo tipInfo,Transform parent)
-        {
-            GameObject tipGO = Instantiate(TipPrefab);
-            tipGO.transform.SetParent(parent);
-            tipGO.GetComponent<UITipItem>().InitWithRectTransform(tipInfo.creator, tipInfo.content);
+        //public void ShowOneTipWithParent(TipInfo tipInfo,Transform parent)
+        //{
+        //    GameObject tipGO = Instantiate(TipPrefab);
+        //    tipGO.transform.SetParent(parent);
+        //    tipGO.GetComponent<UITipItem>().InitWithRectTransform(tipInfo.creatorPos, tipInfo.content);
 
-            DOVirtual.DelayedCall(tipInfo.showTime, () =>
-            {
-                tipGO.transform.SetParent(transform);
-                Destroy(tipGO);
-            });
-        }
+        //    DOVirtual.DelayedCall(tipInfo.showTime, () =>
+        //    {
+        //        tipGO.transform.SetParent(transform);
+        //        Destroy(tipGO);
+        //    });
+        //}
 
         
         #endregion
@@ -297,16 +277,16 @@ namespace KidGame.UI
         }
         #endregion
 
-        #region SideText
+        #region FixedPosUI
         /// <summary>
         /// 展示一个屏幕侧边的UI文本（用于分数等）
         /// </summary>
-        public void ShowOneSildUIText(string content,float showTime)
+        public void ShowOneFixedPosUIText(FixedUIPosType posType,string content,float showTime)
         {
-            GameObject sideTextGO = Instantiate(SideTextPrefab);
-            sideTextGO.transform.SetParent(transform);
-            sideTextGO.GetComponent<UISideTextItem>().Init(content);
-            Destroy(sideTextGO, showTime);
+            GameObject fixedPosTextGO = Instantiate(FixedPosTextPrefab);
+            fixedPosTextGO.transform.SetParent(transform);
+            fixedPosTextGO.GetComponent<UIFixedPosTextItem>().Init(posType,content);
+            Destroy(fixedPosTextGO, showTime);
         }
 
         #endregion

@@ -16,12 +16,7 @@ namespace KidGame.Core
         //装Entity的 id -> Entity 也就是一行数据的字典
         private Dictionary<string, object> entityDic;
 
-
-        public SoLoader()
-        {
-             instance.InitialSoResource();
-        }
-        private void InitialSoResource()
+        public void InitialSoResource()
         {
 
             soDic = new Dictionary<string, ScriptableObject>();

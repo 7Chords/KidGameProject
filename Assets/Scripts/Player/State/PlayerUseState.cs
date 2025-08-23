@@ -24,7 +24,7 @@ namespace KidGame.Core
             selectedItem = PlayerBag.Instance.GetSelectedQuickAccessItem();
             if (selectedItem == null)
             {
-                UIHelper.Instance.ShowOneTip(new TipInfo("未选中道具", player.gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("未选中道具", player.transform.position));
                 player.ChangeState(PlayerState.Idle);
                 return;
             }
@@ -66,7 +66,7 @@ namespace KidGame.Core
 
             if (!canUseItem)
             {
-                UIHelper.Instance.ShowOneTip(new TipInfo("使用失败", player.gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("使用失败", player.transform.position));
                 player.ChangeState(PlayerState.Idle);
             }
             else if( canUseItem && selectedItem.ItemData.UseItemType == UseItemType.trap)

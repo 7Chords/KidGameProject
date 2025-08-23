@@ -134,7 +134,7 @@ namespace KidGame.Core
                         _ => "未知物品"
                     };
 
-                    UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {itemName}", PlayerController.Instance.gameObject));
+                    UIHelper.Instance.ShowOneTip(new TipInfo($"已选择: {itemName}", PlayerController.Instance.transform.position));
                 }
                 else
                 {
@@ -297,7 +297,7 @@ namespace KidGame.Core
                         break;
                 }
 
-                UIHelper.Instance.ShowOneTip(new TipInfo("道具栏已满，物品已放入背包", PlayerController.Instance.gameObject));
+                UIHelper.Instance.ShowOneTip(new TipInfo("道具栏已满，物品已放入背包", PlayerController.Instance.transform.position));
             }
 
             OnQuickAccessBagUpdated?.Invoke();

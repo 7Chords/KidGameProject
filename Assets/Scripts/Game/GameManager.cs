@@ -91,6 +91,9 @@ namespace KidGame.Core
 
         private void InitGame()
         {
+            SoLoader.Instance.InitialSoResource();
+
+
             MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
             PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
@@ -194,7 +197,7 @@ namespace KidGame.Core
             
             currentLoopScore += totalScore;
             OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
-            UIHelper.Instance.ShowOneSildUIText("+" + score, 0.75f);
+            UIHelper.Instance.ShowOneFixedPosUIText(FixedUIPosType.Left,"+" + score, 0.75f);
         }
         
         private void UpdateRatingProgress()

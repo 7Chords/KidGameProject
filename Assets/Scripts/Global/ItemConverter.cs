@@ -47,10 +47,10 @@ namespace KidGame.Core
                         case "桶":
                             PlayerBag.Instance.DeleteItemInCombineBag(slotInfo.materialData.id, 1);
                             PlayerBag.Instance.AddItemToCombineBag("M003", UseItemType.Material, 1);
-                            UIHelper.Instance.ShowOneTip(new TipInfo("获得了装满水的桶×1", PlayerController.Instance.gameObject));
+                            UIHelper.Instance.ShowOneTip(new TipInfo("获得了装满水的桶×1", PlayerController.Instance.transform.position));
                             break;
                         default:
-                            UIHelper.Instance.ShowOneTip(new TipInfo("似乎啥也没有发生", PlayerController.Instance.gameObject));
+                            UIHelper.Instance.ShowOneTip(new TipInfo("似乎啥也没有发生", PlayerController.Instance.transform.position));
                             break;
                     }
                     break;
