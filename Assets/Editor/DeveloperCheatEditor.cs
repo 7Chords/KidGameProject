@@ -3,6 +3,8 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using KidGame;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 /// <summary>
 /// 开发者作弊面板
@@ -54,7 +56,6 @@ public class DeveloperCheatEditor : EditorWindow
 
         EditorGUILayout.Space();
 
-
         // 道具相关作弊
         showItemCheats = EditorGUILayout.Foldout(showItemCheats, "道具相关作弊", true);
         if (showItemCheats)
@@ -72,16 +73,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("获得陷阱"))
                 {
-                    if (string.IsNullOrEmpty(getTrapIDStr) || string.IsNullOrEmpty(getTrapAmountStr)) return;
-                    try
-                    {
-                        PlayerBag.Instance.AddItemToCombineBag(getTrapIDStr, UseItemType.trap,
-                            int.Parse(getTrapAmountStr));
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    GainItem(getTrapIDStr, getTrapAmountStr, UseItemType.trap);
                 }
 
                 // 简单文本输入框
@@ -96,15 +88,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("删除陷阱"))
                 {
-                    if (string.IsNullOrEmpty(deleteTrapIDStr) || string.IsNullOrEmpty(deleteTrapAmountStr)) return;
-                    try
-                    {
-                        PlayerBag.Instance.DeleteItemInCombineBag(deleteTrapIDStr, int.Parse(deleteTrapAmountStr));
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    DeleteItem(deleteTrapIDStr, deleteTrapAmountStr);
                 }
 
                 deleteTrapIDStr = EditorGUILayout.TextField("陷阱ID", deleteTrapIDStr);
@@ -117,20 +101,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("获得所有陷阱"))
                 {
-                    if (string.IsNullOrEmpty(getAllTrapAmountStr)) return;
-                    try
-                    {
-                        foreach (var data in SoLoader.Instance.GetGameDataConfig().TrapDataList)
-                        {
-                            PlayerBag.Instance.AddItemToCombineBag(data.Id, UseItemType.trap,
-                                int.Parse(getAllTrapAmountStr));
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    GetAllItem(SoLoader.Instance.GetDataList<TrapData>(), UseItemType.trap, getAllTrapAmountStr);
                 }
                 getAllTrapAmountStr = EditorGUILayout.TextField("获得陷阱数量", getAllTrapAmountStr);
                 EditorGUILayout.EndHorizontal();
@@ -154,16 +125,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("获得材料"))
                 {
-                    if (string.IsNullOrEmpty(getMatIDStr) || string.IsNullOrEmpty(getMatAmountStr)) return;
-                    try
-                    {
-                        PlayerBag.Instance.AddItemToCombineBag(getMatIDStr, UseItemType.Material,
-                            int.Parse(getMatAmountStr));
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    GainItem(getMatIDStr, getMatAmountStr, UseItemType.Material);
                 }
 
                 // 简单文本输入框
@@ -178,15 +140,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("删除材料"))
                 {
-                    if (string.IsNullOrEmpty(deleteMatIDStr) || string.IsNullOrEmpty(deleteMatAmountStr)) return;
-                    try
-                    {
-                        PlayerBag.Instance.DeleteItemInCombineBag(deleteMatIDStr, int.Parse(deleteMatAmountStr));
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    DeleteItem(deleteMatIDStr, deleteMatAmountStr);
                 }
 
                 deleteMatIDStr = EditorGUILayout.TextField("材料ID", deleteMatIDStr);
@@ -199,20 +153,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("获得所有材料"))
                 {
-                    if (string.IsNullOrEmpty(getAllMatAmountStr)) return;
-                    try
-                    {
-                        foreach (var data in SoLoader.Instance.GetGameDataConfig().MaterialDataList)
-                        {
-                            PlayerBag.Instance.AddItemToCombineBag(data.Id, UseItemType.Material,
-                                int.Parse(getAllMatAmountStr));
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    GetAllItem(SoLoader.Instance.GetDataList<MaterialData>(), UseItemType.Material, getAllMatAmountStr);
                 }
                 getAllMatAmountStr = EditorGUILayout.TextField("获得材料数量", getAllMatAmountStr);
                 EditorGUILayout.EndHorizontal();
@@ -235,17 +176,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("获得武器"))
                 {
-                    if (string.IsNullOrEmpty(getWeaponIDStr) || string.IsNullOrEmpty(getWeaponAmountStr)) return;
-                    try
-                    {
-                        PlayerBag.Instance.AddItemToCombineBag(getWeaponIDStr, UseItemType.weapon,
-                            int.Parse(getWeaponAmountStr));
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
-
+                    GainItem(getWeaponIDStr, getWeaponAmountStr, UseItemType.weapon);
                 }
 
                 // 简单文本输入框
@@ -260,15 +191,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("删除武器"))
                 {
-                    if (string.IsNullOrEmpty(deleteWeaponIDStr) || string.IsNullOrEmpty(deleteWeaponAmountStr)) return;
-                    try
-                    {
-                        PlayerBag.Instance.DeleteItemInCombineBag(deleteWeaponIDStr, int.Parse(deleteWeaponAmountStr));
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    DeleteItem(deleteWeaponIDStr, deleteWeaponAmountStr);
                 }
 
                 deleteWeaponIDStr = EditorGUILayout.TextField("武器ID", deleteWeaponIDStr);
@@ -281,20 +204,7 @@ public class DeveloperCheatEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("获得所有武器"))
                 {
-                    if (string.IsNullOrEmpty(getAllWeaponAmountStr)) return;
-                    try
-                    {
-                        foreach (var data in SoLoader.Instance.GetGameDataConfig().WeaponDataList)
-                        {
-                            PlayerBag.Instance.AddItemToCombineBag(data.Id, UseItemType.weapon,
-                                int.Parse(getAllWeaponAmountStr));
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError(ex.Message);
-                    }
+                    GetAllItem(SoLoader.Instance.GetDataList<WeaponData>(), UseItemType.weapon, getAllWeaponAmountStr);
                 }
                 getAllWeaponAmountStr = EditorGUILayout.TextField("获得武器数量", getAllWeaponAmountStr);
                 EditorGUILayout.EndHorizontal();
@@ -325,6 +235,59 @@ public class DeveloperCheatEditor : EditorWindow
 
         EditorGUILayout.HelpBox("这些作弊功能只在游戏运行时有效", MessageType.Info);
 
+    }
+
+    // 获得所有物品
+    private void GetAllItem<T>(List<T> dataList,UseItemType itemType,string amountStr) where T : BagItemInfoBase
+    {
+        if (string.IsNullOrEmpty(amountStr))
+        {
+            Debug.LogWarning($"{itemType.ToString()}数量为空");
+            return;
+        }
+
+        try
+        {
+            foreach (var data in dataList)
+            {
+                PlayerBag.Instance.AddItemToCombineBag(data.Id, itemType,
+                    int.Parse(amountStr));
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
+    }
+
+    // 获得物品
+    private void GainItem(string idStr, string amountStr, UseItemType itemType)
+    {
+        if (string.IsNullOrEmpty(idStr) || string.IsNullOrEmpty(amountStr)) return;
+        try
+        {
+            PlayerBag.Instance.AddItemToCombineBag(idStr, itemType,
+                int.Parse(amountStr));
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
+    }
+
+    // 删除物品
+    private void DeleteItem(string _deleteIDStr, string _deleteAmountStr)
+    {
+        if (string.IsNullOrEmpty(_deleteIDStr) || string.IsNullOrEmpty(_deleteAmountStr)) return;
+        try
+        {
+            PlayerBag.Instance.DeleteItemInCombineBag(_deleteIDStr, int.Parse(_deleteAmountStr));
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
     }
 
 }

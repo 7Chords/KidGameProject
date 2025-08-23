@@ -40,7 +40,19 @@ namespace KidGame.Core
         {
             return soDic[SoConst.KID_GAME_DATA_CONFIG] as kidgame_game_data_config;
         }
-        
+
+        // 封装一层 不然 点引用太长了
+        public List<T> GetDataList<T>() where T : BagItemInfoBase
+        {
+            kidgame_game_data_config temp = soDic[SoConst.KID_GAME_DATA_CONFIG] as kidgame_game_data_config;
+            if (temp != null) return temp.GetDataList<T>();
+            else
+            {
+                Debug.LogWarning("kidgame_game_data_config 为空！ 请确定配表是否正常导入");
+                return null;
+            }
+        }
+
         /// <summary>
         /// 通过id  配表名 
         /// </summary>
