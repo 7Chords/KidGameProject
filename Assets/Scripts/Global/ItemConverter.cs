@@ -18,8 +18,12 @@ namespace KidGame.Core
         public static void PlayerBagItemConvertByFurniture(string furnitureName)
         {
             ISlotInfo slotInfo = PlayerBag.Instance.GetSelectedQuickAccessItem();
-            if (slotInfo == null) return;
-            if(slotInfo is TrapSlotInfo)
+            if (slotInfo == null)
+            {
+                UIHelper.Instance.ShowOneTip(new TipInfo("似乎啥也没有发生", PlayerController.Instance.transform.position));
+                return;
+            }
+            if (slotInfo is TrapSlotInfo)
             {
 
             }

@@ -23,6 +23,5 @@ namespace KidGame.Core.Data
         public List<GridPos> posList;
         public GameObject furniturePrefab;
         public Vector2Int gridLayout;
-        public GameObject furnitureContainer;
     }
 }
