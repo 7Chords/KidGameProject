@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// 普通泛型单例基类
+/// 普通泛型单例基类(mono)
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour

@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace KidGame.Core
 {
-    public class SoLoader : SingletonPersistent<SoLoader>
+    public class SoLoader : SingletonNoMono<SoLoader>
     {
         
         public Dictionary<string, ScriptableObject> soDic;
@@ -16,17 +16,17 @@ namespace KidGame.Core
         //装Entity的 id -> Entity 也就是一行数据的字典
         private Dictionary<string, object> entityDic;
 
-        protected override void Awake()
-        {
-            base.Awake();
-            
-            soDic = new Dictionary<string, ScriptableObject>();
-            entityDic = new Dictionary<string, object>();
-            InitialSoResource();
-        }
 
+        public SoLoader()
+        {
+             instance.InitialSoResource();
+        }
         private void InitialSoResource()
         {
+
+            soDic = new Dictionary<string, ScriptableObject>();
+            entityDic = new Dictionary<string, object>();
+
             ScriptableObject[] allSobj = Resources.LoadAll<ScriptableObject>("ScriptObject");
 
             Debug.Log($"共找到 {allSobj.Length} 个 ScriptableObject");
