@@ -4876,7 +4876,7 @@ GameObject:
   - component: {fileID: 19838594}
   - component: {fileID: 19970224}
   m_Layer: 0
-  m_Name: PickUpItem
+  m_Name: Spark_PickUpItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

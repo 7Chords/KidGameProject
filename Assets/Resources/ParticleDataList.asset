@@ -27,8 +27,6 @@ MonoBehaviour:
     effectPath: Particles/Dust_permanently_blue
   - effectName: FireTail
     effectPath: Particles/FireTail
-  - effectName: PickUpItem
-    effectPath: Particles/PickUpItem
   - effectName: Rain Falling
     effectPath: Particles/Rain Falling
   - effectName: Shine_blue
@@ -37,11 +35,17 @@ MonoBehaviour:
     effectPath: Particles/Shine_ellow
   - effectName: Sparkle_ellow
     effectPath: Particles/Sparkle_ellow
-  - effectName: Step
+  - effectName: FootStep
     effectPath: Particles/Step
   - effectName: Water_splash
     effectPath: Particles/Water_splash
-  - effectName: Dizzy_star
+  - effectName: EnemyDizzy
     effectPath: Particles/Dizzy_star
   - effectName: Attention_spark
     effectPath: Particles/Attention_spark
+  - effectName: CommonPickUp
+    effectPath: Particles/PickUpItem
+  - effectName: CommonDead
+    effectPath: Particles/Dust_grey
+  - effectName: CommonInteract
+    effectPath: Particles/Spark_InteractItem

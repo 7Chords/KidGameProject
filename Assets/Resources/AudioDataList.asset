@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AudioDataList
   m_EditorClassIdentifier: 
   audioDataList:
-  - audioName: pick_item
+  - audioName: CommonPickUp
     audioPath: Audios/sfx/DM-CGS-01
-  - audioName: interact_trap
+  - audioName: CommonInteract
     audioPath: Audios/sfx/DM-CGS-05
