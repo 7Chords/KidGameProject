@@ -216,7 +216,7 @@ namespace KidGame.UI
             {
                 if (item.ItemData != null)
                 {
-                    if (PlayerBag.Instance.AddItemToCombineBag(item.ItemData.Id, item.ItemData.UseItemType,
+                    if (!PlayerBag.Instance.AddItemToCombineBag(item.ItemData.Id, item.ItemData.UseItemType,
                             item.Amount))
                     {
                         UIHelper.Instance.ShowOneTip(new TipInfo("背包已满", PlayerController.Instance.transform.position));

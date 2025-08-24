@@ -427,7 +427,8 @@ namespace KidGame.Core
             
             var item = prop.items[selectIndex];
             if(!(item.ItemData is MaterialData))return;
-            BackBag.Add(item);
+            AddItemToCombineBag(item.ItemData.Id, item.ItemData.UseItemType, item.Amount);
+            //BackBag.Add(item);
             prop.originItems.RemoveAt(selectIndex);
             prop.items.RemoveAt(selectIndex);
             

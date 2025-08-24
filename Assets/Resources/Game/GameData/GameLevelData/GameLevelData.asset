@@ -29,11 +29,27 @@ MonoBehaviour:
       randomAmount_min: 5
       randomAmount_max: 10
       spawnChance: 0.2
+    - materialId: M003
+      randomAmount_min: 5
+      randomAmount_max: 10
+      spawnChance: 0.2
   - serialNumber: 995
     gridSpawnMatChance_min: 0.2
     gridSpawnMatChance_max: 0.5
     materialDataList:
     - materialId: M002
+      randomAmount_min: 0
+      randomAmount_max: 10
+      spawnChance: 0.2
+    - materialId: M003
+      randomAmount_min: 0
+      randomAmount_max: 10
+      spawnChance: 0.2
+    - materialId: M004
+      randomAmount_min: 0
+      randomAmount_max: 10
+      spawnChance: 0.2
+    - materialId: M005
       randomAmount_min: 0
       randomAmount_max: 10
       spawnChance: 0.2

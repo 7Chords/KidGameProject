@@ -9,7 +9,7 @@ using UnityEngine;
 namespace KidGame.Core 
 {
     /// <summary>
-    /// 通用的可以拿东西的家具
+    /// ????????????????
     /// </summary>
     public class MapFurniture_CommonContainer : MapFurniture, IInteractive
     {
@@ -19,7 +19,7 @@ namespace KidGame.Core
             if(GameManager.Instance.IsGamePaused)return;
             if (materialHoldList == null || materialHoldList.Count == 0)
             {
-                UIHelper.Instance.ShowOneTip(new TipInfo("空空如也", transform.position));
+                UIHelper.Instance.ShowOneTip(new TipInfo("??????", transform.position));
             }
             else
             {

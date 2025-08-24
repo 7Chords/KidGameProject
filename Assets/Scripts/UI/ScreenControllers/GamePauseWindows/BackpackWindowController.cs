@@ -41,17 +41,9 @@ public class BackpackWindowController : WindowController<BackpackProp>
 
     private List<ISlotInfo> _tempSlotInfos;
     //private List<ISlotInfo> _trapSlotInfos;
-    private GameObject detailPanel;
-    private TextMeshProUGUI detailText;
+    
 
-    protected override void Awake()
-    {
-        base.Awake();
-        detailPanel = transform.Find("DetailPanel").gameObject;
-        detailText = transform.Find("DetailPanel/DetailText").GetComponent<TextMeshProUGUI>();
-        detailPanel.SetActive(false);
-        
-    }
+    
 
     protected override void AddListeners()
     {
@@ -156,15 +148,5 @@ public class BackpackWindowController : WindowController<BackpackProp>
         cellUI.SetUIWithGenericSlot(slot);
     }
 
-    private void OnShowItemDetail(CellUI cellUI)
-    {
-        detailPanel.transform.position = cellUI.detailPoint.position;
-        detailText.text = cellUI.detailText;
-        detailPanel.SetActive(true);
-    }
-
-    private void OnHideItemDetail()
-    {
-        detailPanel.SetActive(false);
-    }
+    
 }
