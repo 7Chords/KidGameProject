@@ -12,7 +12,6 @@ namespace KidGame.Core
             player.ProduceSound(GlobalValue.MIDDLE_RANGE_SOUND_SPREAD);
             //todo
             player.Rb.AddForce(player.transform.forward * 100f, ForceMode.Impulse);
-            // todo.ÏûºÄÌåÁ¦
             player.ConsumeStamina(player.PlayerBaseData.DashStaminaOneTime);
         }
     }

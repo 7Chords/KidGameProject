@@ -99,7 +99,7 @@ namespace KidGame.Core
                 ParticleManager.Instance.PlayEffect(trapData.deadParticleName,
                     transform.position,
                     Quaternion.identity,
-                    transform,
+                    null,
                     true,
                     1f);
             }
@@ -127,7 +127,7 @@ namespace KidGame.Core
                 ParticleManager.Instance.PlayEffect(trapData.interactParticleName,
                     transform.position,
                     Quaternion.identity,
-                    transform,
+                    null,
                     true,
                     1f);
             }
@@ -154,7 +154,7 @@ namespace KidGame.Core
                 ParticleManager.Instance.PlayEffect(trapData.interactParticleName,
                     transform.position,
                     Quaternion.identity,
-                    transform,
+                    null,
                     true,
                     1f);
             }
@@ -168,7 +168,7 @@ namespace KidGame.Core
         {
             RemoveFormPlayerUsingList();
             PlayerUtil.Instance.CallPlayerPickItem(trapData.id,UseItemType.trap);
-            //todo:播放音效和特效
+            //播放音效和特效
             if (!string.IsNullOrEmpty(trapData.pickSoundName))
             {
                 AudioManager.Instance.PlaySfx(trapData.pickSoundName);
@@ -179,7 +179,7 @@ namespace KidGame.Core
                 ParticleManager.Instance.PlayEffect(trapData.pickParticleName,
                     transform.position,
                     Quaternion.identity,
-                    transform,
+                    null,
                     true,
                     1f);
             }
@@ -207,7 +207,7 @@ namespace KidGame.Core
                 ParticleManager.Instance.PlayEffect(trapData.workParticleName,
                     transform.position,
                     Quaternion.identity,
-                    transform,
+                    null,
                     true,
                     1f);
             }

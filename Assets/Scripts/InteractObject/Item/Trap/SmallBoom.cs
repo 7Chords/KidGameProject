@@ -29,7 +29,6 @@ namespace KidGame.Core
 
                     damageable.TakeDamage(new DamageInfo(gameObject, Damage, 
                         new BuffInfo(buffData,coll.gameObject,new object[] { dir * force })));//额外传递一个力的参数
-                    //todo
                     GameManager.Instance.AddScore(trapData.trapScore);
                 }
             }

@@ -44,7 +44,7 @@ MonoBehaviour:
   - effectName: Attention_spark
     effectPath: Particles/Attention_spark
   - effectName: CommonPickUp
-    effectPath: Particles/PickUpItem
+    effectPath: Particles/Spark_PickUpItem
   - effectName: CommonDead
     effectPath: Particles/Dust_grey
   - effectName: CommonInteract

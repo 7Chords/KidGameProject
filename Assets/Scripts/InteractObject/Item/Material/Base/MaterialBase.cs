@@ -38,7 +38,7 @@ namespace KidGame.Core
             }
 
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
-            //todo:播放音效和特效
+            //播放音效和特效
             if (!string.IsNullOrEmpty(materialData.pickSoundName))
             {
                 AudioManager.Instance.PlaySfx(materialData.pickSoundName);
@@ -49,7 +49,7 @@ namespace KidGame.Core
                 ParticleManager.Instance.PlayEffect(materialData.pickParticleName,
                     transform.position,
                     Quaternion.identity,
-                    transform,
+                    null,
                     true,
                     1f);
             }
