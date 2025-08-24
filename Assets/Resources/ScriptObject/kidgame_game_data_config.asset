@@ -29,8 +29,8 @@ MonoBehaviour:
     hasCollider: 1
     interactSoundName: CommonInteract
     pickSoundName: CommonPickUp
-    workSoundName: 
-    deadSoundName: 
+    workSoundName: CommonTrigger
+    deadSoundName: CommonDead
     interactParticleName: CommonInteract
     pickParticleName: CommonPickUp
     workParticleName: 
@@ -52,8 +52,8 @@ MonoBehaviour:
     hasCollider: 1
     interactSoundName: CommonInteract
     pickSoundName: CommonPickUp
-    workSoundName: 
-    deadSoundName: 
+    workSoundName: CommonTrigger
+    deadSoundName: CommonDead
     interactParticleName: CommonInteract
     pickParticleName: CommonPickUp
     workParticleName: 
@@ -75,8 +75,8 @@ MonoBehaviour:
     hasCollider: 1
     interactSoundName: CommonInteract
     pickSoundName: CommonPickUp
-    workSoundName: 
-    deadSoundName: 
+    workSoundName: CommonTrigger
+    deadSoundName: CommonDead
     interactParticleName: CommonInteract
     pickParticleName: CommonPickUp
     workParticleName: 
@@ -90,7 +90,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M002
     materialName: "\u6876"
@@ -99,7 +99,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M003
     materialName: "\u88C5\u6EE1\u6C34\u7684\u6876"
@@ -108,7 +108,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M004
     materialName: "\u5730\u9489"
@@ -117,7 +117,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M005
     materialName: "\u7535\u6C60"
@@ -126,7 +126,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M006
     materialName: "\u94C1\u4E1D"
@@ -135,7 +135,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M007
     materialName: "\u6D17\u8863\u6DB2"
@@ -144,7 +144,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M008
     materialName: "\u6CE1\u6CE1\u6C34"
@@ -153,7 +153,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M009
     materialName: "\u80A5\u7682"
@@ -162,7 +162,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M010
     materialName: "\u5C0F\u8F66"
@@ -171,7 +171,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M011
     materialName: "\u6C99\u53D1\u5750\u57AB"
@@ -180,7 +180,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   - id: M012
     materialName: "\u4E00\u7BA1\u767D\u80F6"
@@ -189,7 +189,7 @@ MonoBehaviour:
     rare: 1
     pickSoundName: CommonPickUp
     pickParticleName: CommonPickUp
-    workSoundName: 
+    workSoundName: CommonUse
     workParticleName: 
   WeaponDataList:
   - id: h001
@@ -300,6 +300,22 @@ MonoBehaviour:
     recipeType: 1
     materialList:
     - materialId: M001
-      materialAmount: 2
-    - materialId: M002
+      materialAmount: 1
+    - materialId: M003
+      materialAmount: 1
+  - id: R002
+    targetId: T002
+    recipeType: 1
+    materialList:
+    - materialId: M001
+      materialAmount: 3
+    - materialId: M003
+      materialAmount: 1
+  - id: R003
+    targetId: T003
+    recipeType: 1
+    materialList:
+    - materialId: M005
+      materialAmount: 1
+    - materialId: M010
       materialAmount: 1

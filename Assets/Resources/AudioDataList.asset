@@ -17,3 +17,9 @@ MonoBehaviour:
     audioPath: Audios/sfx/DM-CGS-01
   - audioName: CommonInteract
     audioPath: Audios/sfx/DM-CGS-05
+  - audioName: CommonTrigger
+    audioPath: Audios/sfx/WHSH_InsJ_Whooshing_Bamboo_01-01.wav
+  - audioName: CommonUse
+    audioPath: Audios/sfx/MECHSwtch_InsJ_Switch_Plastic_Organ-Stops_Multi_01.wav
+  - audioName: CommonDead
+    audioPath: Audios/sfx/MACHOffi_InsJ_Machine-01_Turning-Off_01.wav
