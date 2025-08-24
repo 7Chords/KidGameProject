@@ -9,7 +9,7 @@ namespace KidGame.Core
     {
         None,
         Trap,
-        Equip,
+        Weapon,
         Mix,
     }
 

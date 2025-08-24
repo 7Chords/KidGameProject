@@ -199,6 +199,7 @@ MonoBehaviour:
     weaponType: 1
     damage: 0
     impactForce: 10
+    soundRange: 0
     longOrShortPress: 1
   - id: h002
     name: Telescope
@@ -207,92 +208,22 @@ MonoBehaviour:
     weaponType: 0
     damage: 0
     impactForce: 0
+    soundRange: 0
     longOrShortPress: 0
   - id: h003
-    name: 
+    name: WaterGun
     useType: 0
     maxDistance: 0
     weaponType: 0
     damage: 0
     impactForce: 0
-    longOrShortPress: 0
-  - id: h004
-    name: 
-    useType: 0
-    maxDistance: 0
-    weaponType: 0
-    damage: 0
-    impactForce: 0
-    longOrShortPress: 0
-  - id: h005
-    name: 
-    useType: 0
-    maxDistance: 0
-    weaponType: 0
-    damage: 0
-    impactForce: 0
-    longOrShortPress: 0
-  - id: h006
-    name: 
-    useType: 0
-    maxDistance: 0
-    weaponType: 0
-    damage: 0
-    impactForce: 0
-    longOrShortPress: 0
-  - id: h007
-    name: 
-    useType: 0
-    maxDistance: 0
-    weaponType: 0
-    damage: 0
-    impactForce: 0
-    longOrShortPress: 0
-  - id: h008
-    name: 
-    useType: 0
-    maxDistance: 0
-    weaponType: 0
-    damage: 0
-    impactForce: 0
-    longOrShortPress: 0
-  - id: h009
-    name: 
-    useType: 0
-    maxDistance: 0
-    weaponType: 0
-    damage: 0
-    impactForce: 0
-    longOrShortPress: 0
-  - id: h010
-    name: 
-    useType: 0
-    maxDistance: 0
-    weaponType: 0
-    damage: 0
-    impactForce: 0
+    soundRange: 0
     longOrShortPress: 0
   FoodDataList:
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
-  - id: 
-    foodName: 
+  - id: F001
+    foodName: "\u6C49\u5821"
+  - id: F002
+    foodName: "\u9E21\u8089\u5377"
   FurnitureInfoDataList:
   - id: F001
     furnitureName: "\u6D17\u8863\u673A"
@@ -363,3 +294,12 @@ MonoBehaviour:
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
+  RecipeDataList:
+  - id: R001
+    targetId: T001
+    recipeType: 1
+    materialList:
+    - materialId: M001
+      materialAmount: 2
+    - materialId: M002
+      materialAmount: 1

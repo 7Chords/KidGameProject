@@ -122,6 +122,12 @@ public class ExcelImporter : AssetPostprocessor
     {
         var type = isFormulaEvalute ? cell.CachedFormulaResultType : cell.CellType;
 
+        //自定义类型支持
+        if (fieldInfo.FieldType == typeof(RecipeCell))
+        {
+            return ParseRecipeCell(cell.StringCellValue);
+        }
+        //默认类型
         switch (type)
         {
             case CellType.String:
@@ -176,6 +182,10 @@ public class ExcelImporter : AssetPostprocessor
                         // 尝试通过名称转换枚举
                         elementValue = Enum.Parse(elementType, trimmedValue);
                     }
+                    else if(elementType == typeof(RecipeCell))
+                    {
+                        elementValue = ParseRecipeCell(trimmedValue);
+                    }
                     else
                     {
                         // 普通类型使用Convert.ChangeType
@@ -192,35 +202,6 @@ public class ExcelImporter : AssetPostprocessor
 
         return list;
     }
-
-    /*static object CreateEntityFromRow(IRow row, List<string> columnNames, Type entityType, string sheetName)
-    {
-        var entity = Activator.CreateInstance(entityType);
-
-        for (int i = 0; i < columnNames.Count; i++)
-        {
-            FieldInfo entityField = entityType.GetField(
-                columnNames[i],
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic 
-            );
-            if (entityField == null) continue;
-            if (!entityField.IsPublic && entityField.GetCustomAttributes(typeof(SerializeField), false).Length == 0) continue;
-
-            ICell cell = row.GetCell(i);
-            if (cell == null) continue;
-
-            try
-            {
-                object fieldValue = CellToFieldObject(cell, entityField);
-                entityField.SetValue(entity, fieldValue);
-            }
-            catch
-            {
-                throw new Exception(string.Format("Invalid excel cell type at row {0}, column {1}, {2} sheet.", row.RowNum, cell.ColumnIndex, sheetName));
-            }
-        }
-        return entity;
-    }*/
 
     static object CreateEntityFromRow(IRow row, List<string> columnNames, Type entityType, string sheetName)
     {
@@ -344,5 +325,29 @@ public class ExcelImporter : AssetPostprocessor
 
         EditorUtility.SetDirty(asset);
     }
+
+
+
+    #region Customed 
+
+    // 新增方法：解析RecipeCell
+    static RecipeCell ParseRecipeCell(string value)
+    {
+        // 根据RecipeCell的实际格式来实现解析逻辑
+        // RecipeCell的格式是 "materialId:materiaAmount"
+
+        string[] parts = value.Split(':');
+        if (parts.Length == 2)
+        {
+            string itemId = parts[0].Trim();
+            int count = int.Parse(parts[1].Trim());
+            return new RecipeCell(itemId, count);
+        }
+        else
+        {
+            throw new FormatException($"Invalid RecipeCell format: {value}. Expected format: 'itemId:count'");
+        }
+    }
+    #endregion
 }
 

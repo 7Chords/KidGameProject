@@ -73,7 +73,7 @@ namespace KidGame.UI
                 {
                     trapRecipes.Add(recipe);
                 }
-                else if (recipe.recipeType == RecipeType.Equip)
+                else if (recipe.recipeType == RecipeType.Weapon)
                 {
                     equipRecipes.Add(recipe);
                 }
@@ -89,7 +89,7 @@ namespace KidGame.UI
             recipeNameText.text = recipe.trapData.trapName;
             if (recipe.recipeType == RecipeType.Trap)
                 recipeImage.sprite = Resources.Load<Sprite>(recipe.trapData.trapIconPath);
-            else if (recipe.recipeType == RecipeType.Equip)
+            else if (recipe.recipeType == RecipeType.Weapon)
                 recipeImage.sprite = Resources.Load<Sprite>(recipe.trapData.trapIconPath);//todo
             recipeDescriptionText.text = recipe.trapData.trapDesc;
 

@@ -13,7 +13,7 @@ public class kidgame_game_data_config : ScriptableObject
 	public List<FoodData> FoodDataList; // Replace 'EntityType' to an actual type that is serializable.
 	public List<FurnitureInfoData> FurnitureInfoDataList; // Replace 'EntityType' to an actual type that is serializable.
 	public List<RoomInfoData> RoomInfoDataList; // Replace 'EntityType' to an actual type that is serializable.
-	//public List<EntityType> RecipeDataList; // Replace 'EntityType' to an actual type that is serializable.
+	public List<RecipeData_NoUse> RecipeDataList; // Replace 'EntityType' to an actual type that is serializable.
 	//public List<EntityType> BuffDataList; // Replace 'EntityType' to an actual type that is serializable.
 	//public List<EntityType> EnemyDataList; // Replace 'EntityType' to an actual type that is serializable.
 	//public List<EntityType> EnvironmentDataList; // Replace 'EntityType' to an actual type that is serializable.
@@ -31,7 +31,9 @@ public class kidgame_game_data_config : ScriptableObject
         Add2Dic(typeof(FoodData), FoodDataList);
         Add2Dic(typeof(FurnitureInfoData), FurnitureInfoDataList);
         Add2Dic(typeof(RoomInfoData), RoomInfoDataList);
-    }
+		Add2Dic(typeof(RecipeData_NoUse), RecipeDataList);
+
+	}
 
 	public List<T> GetDataList<T>() where T : BagItemInfoBase
 	{
