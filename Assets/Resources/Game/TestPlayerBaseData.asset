@@ -15,6 +15,8 @@ MonoBehaviour:
   WalkSpeed: 3
   RunSpeed: 5
   Hp: 3
-  Sp: 50
+  Sp: 100
   DashStaminaOneTime: 10
   RunStaminaPerSecond: 5
+  StaminaRecoverRate: 2
+  RecoverThreshold: 0.2

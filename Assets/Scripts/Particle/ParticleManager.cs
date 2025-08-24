@@ -238,7 +238,7 @@ namespace KidGame.Core
 
             if (info.particleSystem != null)
             {
-                Destroy(info.particleSystem.gameObject);
+                Destroy(info.particleSystem.transform.parent.gameObject);
             }
 
             activeParticleEffects.Remove(info);

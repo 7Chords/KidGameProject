@@ -12,4 +12,6 @@ public class PlayerBaseData : ScriptableObject
 
     public float DashStaminaOneTime;
     public float RunStaminaPerSecond;
+    public float StaminaRecoverRate;
+    public float RecoverThreshold;
 }

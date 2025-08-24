@@ -84,10 +84,6 @@ namespace KidGame.Core
         private bool isExhausted = false;
         private bool isRecovering = false;
         
-        // 体力恢复速率
-        private float staminaRecoverRate = 2f;
-        private float recoverThreshold = 0.25f;
-        
         public event Action<float> OnStaminaChanged;
 
         #endregion
@@ -99,6 +95,8 @@ namespace KidGame.Core
         //key:可回收 value:和玩家距离
         private Dictionary<IPickable, float> pickableDict;
 
+        private Vector3 mouseWorldPos;
+        private Vector3 playerBottomPos;
         private Vector3 rotateDir;
         #endregion
 
@@ -116,6 +114,7 @@ namespace KidGame.Core
 
             rb = GetComponent<Rigidbody>();
             currentHealth = PlayerBaseData.Hp;
+            maxStamina = PlayerBaseData.Sp;
             currentStamina = maxStamina;
         }
         
@@ -218,12 +217,12 @@ namespace KidGame.Core
         /// </summary>
         public void Rotate()
         {
-            // 将鼠标屏幕坐标转换为世界坐标（忽略Y轴差异）
-            Vector3 mouseWorldPos = MouseRaycaster.Instance.GetMousePosi();
-            mouseWorldPos.y = transform.position.y;
-
-            // 计算方向向量
-            rotateDir = (mouseWorldPos - transform.position).normalized;
+            //将鼠标屏幕坐标转换为世界坐标
+            mouseWorldPos = MouseRaycaster.Instance.GetMousePosi();
+            //忽略Y轴差异
+            playerBottomPos = new Vector3(transform.position.x, mouseWorldPos.y, transform.position.z);
+            //计算方向向量
+            rotateDir = (mouseWorldPos - playerBottomPos).normalized;
             transform.rotation = Quaternion.LookRotation(rotateDir);
         }
         public void ChangeState(PlayerState playerState, bool reCurrstate = false)
@@ -586,12 +585,12 @@ namespace KidGame.Core
             if (isRecovering)
             {
                 // 恢复体力
-                currentStamina += staminaRecoverRate * Time.deltaTime;
+                currentStamina += PlayerBaseData.StaminaRecoverRate * Time.deltaTime;
                 currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
                 OnStaminaChanged?.Invoke(currentStamina / maxStamina);
                 
                 // 检查是否恢复足够
-                if (currentStamina >= maxStamina * recoverThreshold)
+                if (currentStamina >= maxStamina * PlayerBaseData.RecoverThreshold)
                 {
                     isExhausted = false;
                 }
@@ -616,7 +615,7 @@ namespace KidGame.Core
                 return false;
             }
             OnStaminaChanged?.Invoke(currentStamina / maxStamina);
-            if (currentStamina <= maxStamina * recoverThreshold)
+            if (currentStamina <= maxStamina * PlayerBaseData.RecoverThreshold)
             {
                 isExhausted = true;
             }
