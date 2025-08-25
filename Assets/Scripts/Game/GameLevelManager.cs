@@ -13,11 +13,11 @@ namespace KidGame.Core
         End
     }
     /// <summary>
-    /// һ����Ϸ�ڵ�һ�����ؿ��Ĺ�����
+    /// 游戏关卡管理器
     /// </summary>
     public class GameLevelManager : Singleton<GameLevelManager>
     {
-        #region �ؿ�����
+        #region 关卡状态
 
         private bool _levelStarted;
         public bool levelStarted => _levelStarted;
@@ -39,14 +39,14 @@ namespace KidGame.Core
         private LevelPhase _currentPhase = LevelPhase.Day;
 
         private float _phaseTimer = 0f;
-        private float dayDuration = 10f; // �������ʱ�䣨�룩
-        private float nightDuration = 60f; // ҹ������ʱ�䣨�룩
+        private float dayDuration = 10f; // 白天持续时间
+        private float nightDuration = 60f; // 夜晚持续时间
         private bool _timerRunning = false;
 
         [SerializeField] private Material skyMaterial;
 
-        private int _totalDays = 3; // ������
-        private int _currentDay = 0; // ��ǰ����
+        private int _totalDays = 3; // 总共的天数
+        private int _currentDay = 0; // 当天是第几天
 
         #endregion
 
@@ -137,6 +137,8 @@ namespace KidGame.Core
 
             _levelStarted = true;
             _levelFinished = false;
+
+            MsgCenter.SendMsgAct(MsgConst.ON_LEVEL_START);
         }
 
         public void StartNightPhase()
@@ -156,6 +158,8 @@ namespace KidGame.Core
             _timerRunning = false;
             
             _currentDay++;
+
+            MsgCenter.SendMsgAct(MsgConst.ON_LEVEL_FINISH);
             
             if (_currentDay <= _totalDays)
             {

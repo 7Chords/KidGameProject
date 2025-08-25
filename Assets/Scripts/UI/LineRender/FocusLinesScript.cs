@@ -112,7 +112,7 @@ namespace KidGame.core
         private void OnDestroy()
         {
             // 取消订阅
-            MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE, SetisHoldRelease);
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE, SetisHoldRelease);
 
         }
     }

@@ -141,6 +141,30 @@ namespace KidGame.Core
 
 
 
+
+        /// <summary>
+        /// 反注册事件（回调无参）
+        /// </summary>
+        /// <param name="_msg"></param>
+        /// <param name="_callback"></param>
+        public static void UnregisterMsgAct(int _msg, Action _callback)
+        {
+            Instance.unregisterMsgAct(_msg, _callback);
+        }
+
+        private void unregisterMsgAct(int _msg, Action _callback)
+        {
+            List<Action> broadcast;
+            if (!_m_broadcastActDict.TryGetValue(_msg, out broadcast))
+            {
+                return;
+            }
+
+            broadcast.Remove(_callback);
+        }
+
+
+
         /// <summary>
         /// 反注册事件（回调有参）
         /// </summary>
@@ -164,26 +188,5 @@ namespace KidGame.Core
         }
 
 
-
-        /// <summary>
-        /// 反注册事件（回调无参）
-        /// </summary>
-        /// <param name="_msg"></param>
-        /// <param name="_callback"></param>
-        public static void UnregisterMsgAct(int _msg, Action _callback)
-        {
-            Instance.unregisterMsgAct(_msg, _callback);
-        }
-
-        private void unregisterMsgAct(int _msg, Action _callback)
-        {
-            List<Action> broadcast;
-            if (!_m_broadcastActDict.TryGetValue(_msg, out broadcast))
-            {
-                return;
-            }
-
-            broadcast.Remove(_callback);
-        }
     }
 }
