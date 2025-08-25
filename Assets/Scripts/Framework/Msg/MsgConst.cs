@@ -45,6 +45,13 @@ namespace KidGame.Core
         public const int ON_PHASE_TIME_UPDATE = 30004;//游戏流程 - 昼夜时间变化
         public const int ON_LEVEL_START = 30005;//游戏流程 - 一天开始
         public const int ON_LEVEL_FINISH = 30006;//游戏流程 - 一天结束
+
+        #endregion
+
+        #region 系统相关 99开头
+        public const int ON_CONTROL_MAP_CHG = 99001;//系统 - 输入映射方式切换 Game/UI
+        public const int ON_CONTROL_TYPE_CHG = 99002;//系统 - 输入方式切换 键盘/手柄
+        public const int ON_LANGUAGE_CHG = 99003;//系统 - 语言切换
         #endregion
     }
 }

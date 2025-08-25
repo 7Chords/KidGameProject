@@ -27,6 +27,7 @@ public class DeveloperCheatEditor : EditorWindow
     private bool showFoodCheats = true;
 
     private bool showLevelCheats = false;
+    private bool showSysCheats = false;
 
 
     #region 道具相关
@@ -233,6 +234,14 @@ public class DeveloperCheatEditor : EditorWindow
         // 关卡内相关作弊
         showLevelCheats = EditorGUILayout.Foldout(showLevelCheats, "关卡相关作弊", true);
 
+        showSysCheats = EditorGUILayout.Foldout(showSysCheats, "系统相关作弊", true);
+        if(showSysCheats)
+        {
+            if(GUILayout.Button("输入映射切换（GAME/UI）"))
+            {
+                MsgCenter.SendMsgAct(MsgConst.ON_CONTROL_MAP_CHG);
+            }
+        }
         EditorGUILayout.HelpBox("这些作弊功能只在游戏运行时有效", MessageType.Info);
 
     }

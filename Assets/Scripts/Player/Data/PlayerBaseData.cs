@@ -14,4 +14,7 @@ public class PlayerBaseData : ScriptableObject
     public float RunStaminaPerSecond;
     public float StaminaRecoverRate;
     public float RecoverThreshold;
+
+    public float StruggleAmountOneTime;
+    public float StruggleInvulnerabilityDuration;
 }

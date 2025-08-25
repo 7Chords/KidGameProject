@@ -1,5 +1,10 @@
 ﻿namespace KidGame
 {
+    public enum ControlMap
+    {
+        GameMap = 0,
+        UIMap = 1,
+    }
     public enum ControlType
     {
         Keyborad = 0,

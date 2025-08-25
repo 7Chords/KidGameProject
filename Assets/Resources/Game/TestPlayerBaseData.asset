@@ -20,3 +20,5 @@ MonoBehaviour:
   RunStaminaPerSecond: 5
   StaminaRecoverRate: 2
   RecoverThreshold: 0.2
+  StruggleAmountOneTime: 10
+  StruggleInvulnerabilityDuration: 1

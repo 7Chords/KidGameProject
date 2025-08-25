@@ -2,7 +2,7 @@
     "name": "Player",
     "maps": [
         {
-            "name": "PlayerDefaultMap",
+            "name": "GameMap",
             "id": "900fd7e2-5eb6-4aa0-871c-f33c7c420ec0",
             "actions": [
                 {
@@ -338,6 +338,45 @@
                     "processors": "",
                     "groups": "",
                     "action": "GamePause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UIMap",
+            "id": "fb36fb81-1cca-48c5-9563-d68afd4dce42",
+            "actions": [
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "c1e35a27-856a-4c52-b867-ddc95d671c6a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6ec4e3cd-96f5-46c7-85c1-9c64c86a81eb",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8ca5c42-b08d-4dfb-9276-900e5abd7a9a",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

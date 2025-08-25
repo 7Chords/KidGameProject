@@ -33,6 +33,7 @@ namespace KidGame.Core
 
 
         #region 组件
+
         private InputSettings inputSettings;
         public InputSettings InputSettings => inputSettings;
 
@@ -57,9 +58,10 @@ namespace KidGame.Core
 
         #region 玩家挣扎
         private float struggleDemand = 1f;
-        private float struggleAmountOneTime = 10f;
         private float currentStruggle = 0f;
-        private float struggleInvulnerabilityDuration = 1f; // 挣扎后的无敌时间
+        private float struggleAmountOneTime => PlayerBaseData.StruggleAmountOneTime;
+        // 挣扎后的无敌时间
+        private float struggleInvulnerabilityDuration => PlayerBaseData.StruggleInvulnerabilityDuration;
         #endregion
 
         #region 手持武器相关
@@ -69,13 +71,14 @@ namespace KidGame.Core
 
         #region 玩家基础信息
 
-        private int currentHealth;
         private bool isInvulnerable = false;
-        public int CurrentHealth => currentHealth;
+
+        private int currentHealth;
         public int MaxHealth => PlayerBaseData.Hp;
 
-        private float currentStamina = 100f;
-        private float maxStamina = 100f;
+        private float currentStamina;
+        private float maxStamina => PlayerBaseData.Sp;
+
         private bool isExhausted = false;
         private bool isRecovering = false;
 
@@ -102,8 +105,7 @@ namespace KidGame.Core
             inputSettings = GetComponent<InputSettings>();
 
             rb = GetComponent<Rigidbody>();
-            currentHealth = PlayerBaseData.Hp;
-            maxStamina = PlayerBaseData.Sp;
+            currentHealth = MaxHealth;
             currentStamina = maxStamina;
         }
 
@@ -150,7 +152,6 @@ namespace KidGame.Core
             MsgCenter.RegisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.RegisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-
         }
 
 
@@ -233,6 +234,7 @@ namespace KidGame.Core
                     break;
             }
         }
+
         /// <summary>
         /// 播放动画
         /// </summary>
@@ -256,11 +258,11 @@ namespace KidGame.Core
             if (pickableDict == null || pickableDict.Count == 0) return;
             GetClosestPickable()?.Pick();
         }
+
+
         /// <summary>
-        /// 尝试放陷阱
+        /// 玩家使用物品
         /// </summary>
-
-
         public void PlayerUseItem()
         {
             ISlotInfo currentUseItem = PlayerBag.Instance.GetSelectedQuickAccessItem();
@@ -351,7 +353,7 @@ namespace KidGame.Core
         /// <summary>
         /// 获得最近的可拾取者
         /// </summary>
-        public IPickable GetClosestPickable()
+        private IPickable GetClosestPickable()
         {
             float min = 999;
             IPickable closestIPickable = null;

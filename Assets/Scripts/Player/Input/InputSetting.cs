@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using static UnityEngine.InputSystem.InputBinding;
 
 namespace KidGame.Core
 {
@@ -9,6 +10,8 @@ namespace KidGame.Core
     {
         private PlayerInput playerInput;
         private InputActionAsset inputActionAsset;
+        private ControlMap currentControlMap;
+
         private InputAction interactionAction;
         private InputAction moveAction;
         private InputAction dashAction;
@@ -23,7 +26,16 @@ namespace KidGame.Core
         {
             playerInput = GetComponent<PlayerInput>();
             inputActionAsset = playerInput.actions;
-            
+            currentControlMap = ControlMap.GameMap;
+            playerInput.currentActionMap = inputActionAsset.actionMaps[(int)currentControlMap];
+            Init();
+        }
+        private void OnDestroy()
+        {
+            Discard();
+        }
+        private void Init()
+        {
             moveAction = inputActionAsset.FindAction("Move");
             interactionAction = inputActionAsset.FindAction("Interaction");
             dashAction = inputActionAsset.FindAction("Dash");
@@ -34,27 +46,28 @@ namespace KidGame.Core
             mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
             gamePauseAction = inputActionAsset.FindAction("GamePause");
 
-            
+
             //这个交互键设置成按下开始响应 防止开容器的e和一键拾取的e分不清
             interactionAction.performed += OnInteractActionPerformedWithoutTime;
             interactionAction.performed += OnInteractionActionPerformed;
-            
-            
+
+
             dashAction.performed += OnDashActionPerformed;
             runAction.performed += OnRunActionPerformed;
             runAction.canceled += OnRunActionCanceled;
             useAction.performed += OnUseActionPerformed;
             useAction.canceled += OnUseActionCancled;
 
-            bagAction.performed+= OnBagActionPerformed;
+            bagAction.performed += OnBagActionPerformed;
             pickAction.performed += OnPickActionPerformed;
             mouseWheelAction.performed += OnMouseWheelActionPerformed;
             gamePauseAction.performed += OnGamePauseActionPerformed;
 
             this.OnUpdate(CheckMouseWheelValueChange);
-        }
 
-        private void OnDestroy()
+            MsgCenter.RegisterMsgAct(MsgConst.ON_CONTROL_MAP_CHG, OnInputMapChg);
+        }
+        private void Discard()
         {
             interactionAction.performed -= OnInteractActionPerformedWithoutTime;    
             interactionAction.performed -= OnInteractionActionPerformed;
@@ -69,6 +82,8 @@ namespace KidGame.Core
             gamePauseAction.performed -= OnGamePauseActionPerformed;
 
             this.RemoveUpdate(CheckMouseWheelValueChange);
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_CONTROL_MAP_CHG, OnInputMapChg);
+
 
         }
 
@@ -191,8 +206,21 @@ namespace KidGame.Core
                 Debug.LogError($"Could not find action '{actionType}' in input actions");
                 return string.Empty;
             }
+            //只展示键位 其他信息都不展示
+            return action.bindings[controlTypeIndex].ToDisplayString(DisplayStringOptions.DontIncludeInteractions);
+        }
 
-            return action.bindings[controlTypeIndex].ToDisplayString();
+        #endregion
+
+        #region RegisterCallbacks
+        private void OnInputMapChg()
+        {
+            currentControlMap = currentControlMap == ControlMap.GameMap 
+                ? ControlMap.UIMap 
+                : ControlMap.GameMap;
+            playerInput.currentActionMap = inputActionAsset.actionMaps[(int)currentControlMap];
+            Discard();
+            Init();
         }
 
         #endregion

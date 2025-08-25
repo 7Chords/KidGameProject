@@ -32,12 +32,12 @@ namespace KidGame.Core
         {
             PlayerController.Instance.RemovePickableFromList(this);
             UIHelper.Instance.ShowOneTip(new TipInfo("获得了" + EntityName + "×" + playerGetAmount, transform.position));
+            UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
             for (int i =0;i<playerGetAmount;i++)
             {
                 MsgCenter.SendMsg(MsgConst.ON_PICK_ITEM, _materialData.id, UseItemType.Material);
             }
 
-            UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
             //播放音效和特效
             if (!string.IsNullOrEmpty(materialData.pickSoundName))
             {
