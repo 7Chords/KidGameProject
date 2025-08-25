@@ -167,7 +167,7 @@ namespace KidGame.Core
         public override void Pick()
         {
             RemoveFormPlayerUsingList();
-            PlayerUtil.Instance.CallPlayerPickItem(trapData.id,UseItemType.trap);
+            MsgCenter.SendMsg(MsgConst.ON_PICK_ITEM, trapData.id, UseItemType.trap);
             //播放音效和特效
             if (!string.IsNullOrEmpty(trapData.pickSoundName))
             {

@@ -81,9 +81,13 @@ namespace KidGame.core
         }
 
         //创建这个Prefab的时候 想办法让
-        public void SetisHoldPressOrNot(bool isHold)
+        public void SetisHoldRelease()
         {
-            isHoldPress = isHold;
+            isHoldPress = false;
+        }
+        public void SetisHoldPress()
+        {
+            isHoldPress = true;
         }
 
         private void ChangeBack()
@@ -102,12 +106,14 @@ namespace KidGame.core
             // 初始角度设为最大夹角
             currentAngle = startAngle;
             // 订阅鼠标释放这个消息
-            PlayerController.Instance.OnMouseBtnReleaseAction += SetisHoldPressOrNot;
+            MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE, SetisHoldRelease);
+
         }
         private void OnDestroy()
         {
             // 取消订阅
-            PlayerController.Instance.OnMouseBtnReleaseAction -= SetisHoldPressOrNot;
+            MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE, SetisHoldRelease);
+
         }
     }
 

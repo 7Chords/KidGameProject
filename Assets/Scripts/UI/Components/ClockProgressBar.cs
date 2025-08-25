@@ -11,16 +11,16 @@ namespace KidGame.UI
         [SerializeField] private Sprite dayIcon;             // °×ÌìÍ¼±ê
         [SerializeField] private Sprite nightIcon;           // ºÚÒ¹Í¼±ê
         
-        private GameLevelManager.LevelPhase _currentPhase;
+        private LevelPhase _currentPhase;
         private bool _isFirstUpdate = true;
 
         protected override void Start()
         {
             base.Start();
-            ResetForNewPhase(GameLevelManager.LevelPhase.Day);
+            ResetForNewPhase(LevelPhase.Day);
         }
 
-        public void UpdatePhaseTime(GameLevelManager.LevelPhase phase, float progressPercentage)
+        public void UpdatePhaseTime(LevelPhase phase, float progressPercentage)
         {
             if (_currentPhase != phase || _isFirstUpdate)
             {
@@ -31,7 +31,7 @@ namespace KidGame.UI
             base.SetProgress(progressPercentage);
         }
 
-        private void ResetForNewPhase(GameLevelManager.LevelPhase phase)
+        private void ResetForNewPhase(LevelPhase phase)
         {
             _currentPhase = phase;
             
@@ -42,21 +42,21 @@ namespace KidGame.UI
             PlayPhaseChangeAnimation();
         }
 
-        private void UpdateClockVisuals(GameLevelManager.LevelPhase phase)
+        private void UpdateClockVisuals(LevelPhase phase)
         {
             if (dayNightIcon != null)
             {
-                dayNightIcon.sprite = phase == GameLevelManager.LevelPhase.Day ? dayIcon : nightIcon;
+                dayNightIcon.sprite = phase == LevelPhase.Day ? dayIcon : nightIcon;
             }
             
             UpdateProgressBarColor(phase);
         }
 
-        private void UpdateProgressBarColor(GameLevelManager.LevelPhase phase)
+        private void UpdateProgressBarColor(LevelPhase phase)
         {
             if (fillImage != null)
             {
-                fillImage.color = phase == GameLevelManager.LevelPhase.Day 
+                fillImage.color = phase == LevelPhase.Day 
                     ? Color.yellow 
                     : new Color(0.2f, 0.2f, 0.8f);
             }

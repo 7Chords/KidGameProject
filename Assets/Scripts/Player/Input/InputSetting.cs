@@ -14,27 +14,11 @@ namespace KidGame.Core
         private InputAction dashAction;
         private InputAction runAction;
         private InputAction useAction;
-        //private InputAction throwAction;
         private InputAction bagAction;
         private InputAction pickAction;
         private InputAction mouseWheelAction;
         private InputAction gamePauseAction;
 
-        public event Action OnInteractionPress;
-        public event Action OnInteractionPressWithoutTime;
-        public event Action OnDashPress;
-        public event Action OnRunPress;
-        public event Action OnRunRelease;
-        public event Action OnUsePress;
-        public event Action OnUseLongPress;
-        public event Action OnUseLongPressRelease;
-        //public event Action OnThrowPress;
-        public event Action OnBagPress;
-        public event Action OnPickPress;
-        public event Action OnMouseWheelPress;
-        //鼠标滚轮值变化事件（传递变化值）
-        public event Action<float> OnMouseWheelValueChanged;
-        public event Action OnGamePause;
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
@@ -45,7 +29,6 @@ namespace KidGame.Core
             dashAction = inputActionAsset.FindAction("Dash");
             runAction = inputActionAsset.FindAction("Run");
             useAction = inputActionAsset.FindAction("Use");
-            //throwAction = inputActionAsset.FindAction("Throw");
             bagAction = inputActionAsset.FindAction("Bag");
             pickAction = inputActionAsset.FindAction("Pick");
             mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
@@ -75,14 +58,11 @@ namespace KidGame.Core
         {
             interactionAction.performed -= OnInteractActionPerformedWithoutTime;    
             interactionAction.performed -= OnInteractionActionPerformed;
-            
-            
             dashAction.performed -= OnDashActionPerformed;
             runAction.performed -= OnRunActionPerformed;
             runAction.canceled -= OnRunActionCanceled;
             useAction.performed -= OnUseActionPerformed;
             useAction.canceled -= OnUseActionCancled;
-            //throwAction.performed -= OnThrowActionPerformed;
             bagAction.performed -= OnBagActionPerformed;
             pickAction.performed -= OnPickActionPerformed;
             mouseWheelAction.performed -= OnMouseWheelActionPerformed;
@@ -98,7 +78,7 @@ namespace KidGame.Core
         {
             if (MouseWheelValue() == 0) return;
             float currentValue = MouseWheelValue();
-            OnMouseWheelValueChanged?.Invoke(currentValue);
+            MsgCenter.SendMsg(MsgConst.ON_MOUSEWHEEL_VALUE_CHG, currentValue);
         }
         public Vector2 MoveDir()
         {
@@ -116,7 +96,6 @@ namespace KidGame.Core
         public virtual bool GetIfRun() => runAction.IsPressed();
         public virtual bool GetRunUp() => runAction.WasReleasedThisFrame();
         public virtual bool GetUseDown() => useAction.WasPerformedThisFrame();
-        //public virtual bool GetThrowDown() => throwAction.WasPerformedThisFrame();
         public virtual bool GetBagDown() => bagAction.WasPerformedThisFrame();
         public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
         public virtual bool GetPickDown() => pickAction.WasPerformedThisFrame();
@@ -128,88 +107,70 @@ namespace KidGame.Core
 
         private void OnInteractionActionPerformed(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnInteractionPress?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_INTERACTION_PRESS);
         }
         //无视时间缩放的互动事件
         private void OnInteractActionPerformedWithoutTime(InputAction.CallbackContext context)
         {
             // 只在按压完成时触发一次（需要配合前面设置的"press"交互类型）
-            
-            OnInteractionPressWithoutTime?.Invoke();
-            
+            MsgCenter.SendMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME);
         }
 
         private void OnDashActionPerformed(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnDashPress?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_DASH_PRESS);
         }
 
         private void OnRunActionPerformed(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnRunPress?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_RUN_PRESS);
         }
 
         private void OnRunActionCanceled(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnRunRelease?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_RUN_RELEASE);
         }
 
         private void OnUseActionCancled(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
             if(context.interaction is HoldInteraction)
             {
-                OnUseLongPressRelease?.Invoke();
+                MsgCenter.SendMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE);
             }
         }
         private void OnUseActionPerformed(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-
             //如果是点击
             if(context.interaction is PressInteraction)
             {
-                OnUsePress?.Invoke();
+                MsgCenter.SendMsgAct(MsgConst.ON_USE_PRESS);
             }
             //如果是长按
             if (context.interaction is HoldInteraction)
             {
-                OnUseLongPress?.Invoke();
+                MsgCenter.SendMsgAct(MsgConst.ON_USE_LONG_PRESS);
             }
                 
         }
 
-        //private void OnThrowActionPerformed(InputAction.CallbackContext context)
-        //{
-        //    if (GameManager.Instance.IsGamePaused) return;
-        //    OnThrowPress?.Invoke();
-        //}
-
         private void OnBagActionPerformed(InputAction.CallbackContext context)
         {
-            OnBagPress?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_BAG_PRESS);
         }
 
         private void OnPickActionPerformed(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnPickPress?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_PICK_PRESS);
         }
 
         private void OnMouseWheelActionPerformed(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnMouseWheelPress?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_MOUSEWHEEL_PRESS);
         }
 
         private void OnGamePauseActionPerformed(InputAction.CallbackContext context)
         {
-            if (GameManager.Instance.IsGamePaused) return;
-            OnGamePause?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_GAMEPAUSE_PRESS);
         }
 
         #endregion

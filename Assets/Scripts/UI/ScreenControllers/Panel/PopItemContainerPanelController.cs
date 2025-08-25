@@ -83,8 +83,7 @@ namespace KidGame.UI
             _isPanelActive = true; // 标记面板为激活状态
             //todo
             //一键拾取失效
-            
-            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += HidePopPanel;
+            MsgCenter.RegisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, HidePopPanel);
             
             rectTransform = GetComponent<RectTransform>();
             scrollView = transform.Find("ItemContainer/ScrollView").GetComponent<UICircularScrollView>();
@@ -117,13 +116,14 @@ namespace KidGame.UI
         protected override void WhileHiding()
         {
             _isPanelActive = false;
-            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= HidePopPanel;
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, HidePopPanel);
+
             //GameManager.Instance.GameResume();
-            
+
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// 初始化标题显示
         /// </summary>

@@ -94,13 +94,6 @@ namespace KidGame.Core
 
 
 
-        #region 事件定义
-
-        public event Action OnQuickAccessBagUpdated;//更新道具栏事件
-        public event Action<ISlotInfo> OnSelectItemAction;//道具栏选中了物品的事件
-
-        #endregion
-
 
 
         #region 当前选中道具索引逻辑
@@ -122,8 +115,7 @@ namespace KidGame.Core
                 if(_selectedIndex < QuickAccessBag.Count)
                 {
                     var selectedSlot = QuickAccessBag[_selectedIndex];
-
-                    if (selectedSlot != null) OnSelectItemAction?.Invoke(selectedSlot);
+                    if (selectedSlot != null) MsgCenter.SendMsg(MsgConst.ON_SELECT_ITEM, selectedSlot);
 
                     string itemName = selectedSlot.ItemData switch
                     {
@@ -138,9 +130,9 @@ namespace KidGame.Core
                 }
                 else
                 {
-                    OnSelectItemAction?.Invoke(null);
+                    MsgCenter.SendMsg(MsgConst.ON_SELECT_ITEM, null);
                 }
-                OnQuickAccessBagUpdated?.Invoke();
+                MsgCenter.SendMsgAct(MsgConst.ON_QUICK_BAG_UPDATE);
             }
         }
 
@@ -156,15 +148,14 @@ namespace KidGame.Core
 
         public void Init()
         {
-            PlayerUtil.Instance.RegPlayerPickItem(PlayerGetOneItem);
-
+            MsgCenter.RegisterMsg(MsgConst.ON_PICK_ITEM, PlayerGetOneItem);
             QuickAccessBag = new List<ISlotInfo>(GlobalValue.QUICK_ACCESS_BAG_CAPACITY);
             BackBag = new List<ISlotInfo>();
         }
 
         public void Discard()
         {
-            PlayerUtil.Instance.UnregPlayerPickItem(PlayerGetOneItem);
+            MsgCenter.UnregisterMsg(MsgConst.ON_PICK_ITEM, PlayerGetOneItem);
         }
 
         #endregion
@@ -179,7 +170,7 @@ namespace KidGame.Core
         {
             // _trapBag = trapSlots ?? new List<TrapSlotInfo>();
             // _materialBag = materialSlots ?? new List<MaterialSlotInfo>();
-            OnQuickAccessBagUpdated?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_QUICK_BAG_UPDATE);
         }
 
 
@@ -211,11 +202,11 @@ namespace KidGame.Core
                     QuickAccessBag.Remove(slotInfo);
                     if(SelectedIndex >= QuickAccessBag.Count)
                     {
-                        OnSelectItemAction?.Invoke(null);
+                        MsgCenter.SendMsg(MsgConst.ON_SELECT_ITEM, null);
                     }
                 }
             }
-            OnQuickAccessBagUpdated?.Invoke();
+            MsgCenter.SendMsgAct(MsgConst.ON_QUICK_BAG_UPDATE);
             return true;
         }
 
@@ -275,7 +266,7 @@ namespace KidGame.Core
                 //当前选中的物品栏从无到有 马上刷新
                 if(QuickAccessBag.Count == SelectedIndex + 1)
                 {
-                    OnSelectItemAction(QuickAccessBag[SelectedIndex]);
+                    MsgCenter.SendMsg(MsgConst.ON_SELECT_ITEM, QuickAccessBag[SelectedIndex]);
                 }
             }
             else if(BackBag.Count<GlobalValue.BACKPACK_CAPACITY)
@@ -301,9 +292,8 @@ namespace KidGame.Core
             {
                 return false;
             }
-                
-        
-            OnQuickAccessBagUpdated?.Invoke();
+
+            MsgCenter.SendMsgAct(MsgConst.ON_QUICK_BAG_UPDATE);
             return true;
         }
 
@@ -311,8 +301,13 @@ namespace KidGame.Core
 
         #region 拾取与使用物品逻辑
 
-        private void PlayerGetOneItem(string itemId,UseItemType itemType)
+        private void PlayerGetOneItem(params object[] objs)
         {
+            if (objs == null || objs.Length == 0) return;
+
+            string itemId = objs[0] as string;
+            UseItemType itemType = (UseItemType)objs[1];
+
             if (string.IsNullOrEmpty(itemId)) return;
 
             switch (itemType)
@@ -387,8 +382,8 @@ namespace KidGame.Core
             var item = BackBag[selectIndex];
             BackBag.RemoveAt(selectIndex);
             QuickAccessBag.Add(item);
+            MsgCenter.SendMsgAct(MsgConst.ON_QUICK_BAG_UPDATE);
 
-            OnQuickAccessBagUpdated?.Invoke();
         }
 
         public void MoveItemToBackBag(int selectIndex)
@@ -399,12 +394,12 @@ namespace KidGame.Core
             var item = QuickAccessBag[selectIndex];
             QuickAccessBag.RemoveAt(selectIndex);
             BackBag.Add(item);
+            MsgCenter.SendMsgAct(MsgConst.ON_QUICK_BAG_UPDATE);
 
-            OnQuickAccessBagUpdated?.Invoke();
         }
-        
+
         #endregion
-        
+
         #region 道具栏与家具容器互换位置
 
         public void MoveItemToItemContainer(int selectIndex,PopItemContainerProp prop)

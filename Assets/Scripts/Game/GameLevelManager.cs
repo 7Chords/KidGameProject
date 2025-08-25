@@ -5,6 +5,13 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+
+    public enum LevelPhase
+    {
+        Day,
+        Night,
+        End
+    }
     /// <summary>
     /// һ����Ϸ�ڵ�һ�����ؿ��Ĺ�����
     /// </summary>
@@ -28,12 +35,6 @@ namespace KidGame.Core
 
         #region ��ҹ״̬
 
-        public enum LevelPhase
-        {
-            Day,
-            Night,
-            End
-        }
 
         private LevelPhase _currentPhase = LevelPhase.Day;
 
@@ -46,8 +47,6 @@ namespace KidGame.Core
 
         private int _totalDays = 3; // ������
         private int _currentDay = 0; // ��ǰ����
-        
-        public event Action<LevelPhase, float> OnPhaseTimeUpdated;
 
         #endregion
 
@@ -72,8 +71,7 @@ namespace KidGame.Core
             _phaseTimer -= Time.deltaTime;
 
             float t = Mathf.Clamp01(1f - _phaseTimer / _phaseDuration);
-            OnPhaseTimeUpdated?.Invoke(_currentPhase, t);
-            
+            MsgCenter.SendMsg(MsgConst.ON_PHASE_TIME_UPDATE, _currentPhase, t);
             float lerpValue = _currentPhase switch
             {
                 LevelPhase.Day => Mathf.Lerp(1f, 0f, t),
@@ -131,14 +129,7 @@ namespace KidGame.Core
         #region ��ҹѭ��
 
         public void StartDayPhase()
-        {
-            if (_currentDay > _totalDays)
-            {
-                // �������������
-                GameManager.Instance.FinishGame();
-                return;
-            }
-  
+        {  
             _currentPhase = LevelPhase.Day;
             _phaseDuration = dayDuration;
             _phaseTimer = dayDuration;
@@ -174,8 +165,8 @@ namespace KidGame.Core
             }
             else
             {
-                // �����������
-                GameManager.Instance.FinishGame();
+ 
+                GameManager.Instance.GameFinish(true);
             }
         }
         

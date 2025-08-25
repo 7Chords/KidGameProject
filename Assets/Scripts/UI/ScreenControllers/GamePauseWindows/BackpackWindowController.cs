@@ -69,7 +69,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
 
     private void AddCloseAction()
     {
-        PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += UI_Close;
+        MsgCenter.RegisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, UI_Close);
     }
     protected override void OnPropertiesSet()
     {
@@ -90,8 +90,8 @@ public class BackpackWindowController : WindowController<BackpackProp>
     
     protected override void WhileHiding()
     {
-        
-        PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= UI_Close;
+
+        MsgCenter.UnregisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, UI_Close);
     }
 
     private void OnBagCellClick(GameObject cell, int index)

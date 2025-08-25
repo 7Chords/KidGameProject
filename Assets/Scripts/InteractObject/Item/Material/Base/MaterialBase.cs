@@ -34,7 +34,7 @@ namespace KidGame.Core
             UIHelper.Instance.ShowOneTip(new TipInfo("ªÒµ√¡À" + EntityName + "°¡" + playerGetAmount, transform.position));
             for (int i =0;i<playerGetAmount;i++)
             {
-                PlayerUtil.Instance.CallPlayerPickItem(_materialData.id, UseItemType.Material);
+                MsgCenter.SendMsg(MsgConst.ON_PICK_ITEM, _materialData.id, UseItemType.Material);
             }
 
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);

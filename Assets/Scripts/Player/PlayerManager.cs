@@ -20,14 +20,12 @@ namespace KidGame.Core
             playerGO.transform.RotateAround(new Vector3(GameManager.Instance.GameGeneratePoint.position.x, playerSpawnPos.y, GameManager.Instance.GameGeneratePoint.position.z),
                 Vector3.up, 
                 GameManager.Instance.GameGeneratePoint.rotation.eulerAngles.y);
-            PlayerUtil.Instance.Init();
             PlayerController.Instance.Init();
             PlayerBag.Instance.Init();
         }
 
         public void Discard()
         {
-            PlayerUtil.Instance.Discard();
             PlayerController.Instance.Discard();
             PlayerBag.Instance.Discard();
         }

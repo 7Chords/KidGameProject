@@ -1,9 +1,8 @@
-using UnityEngine;
 using KidGame.Core.Data;
 using KidGame.UI;
-using Utils;
-using System;
 using System.Collections.Generic;
+using UnityEngine;
+using Utils;
 
 namespace KidGame.Core
 {
@@ -11,24 +10,18 @@ namespace KidGame.Core
     {
         public GameData GameData;
         
-        private bool gameStarted; // �ܵ���Ϸ��ʼ
-        private bool gameFinished; // �ܵ���Ϸ����
+        private bool gameStarted;
+        private bool gameFinished;
 
-        private int levelIndex;
-
-        // ��Ϸ��ͣ
         private bool isGamePuased;
         public bool IsGamePaused => isGamePuased;
 
         public Transform GameGeneratePoint;
 
-        #region ��������
+        #region 分数
 
         private int currentLoopScore;
 
-        public Action<int> OnCurrentLoopScoreChanged;
-
-        // �÷�����
         public enum ScoreRating
         {
             D,
@@ -39,7 +32,7 @@ namespace KidGame.Core
         }
 
         private ScoreRating currentRating = ScoreRating.D;
-        private float ratingProgress = 0f; // ��������
+        private float ratingProgress = 0f;
         private float lastScoreTime = 0f;
 
         private readonly Dictionary<ScoreRating, float> ratingMultipliers = new Dictionary<ScoreRating, float>
@@ -49,7 +42,7 @@ namespace KidGame.Core
             { ScoreRating.B, 20f },
             { ScoreRating.A, 15f },
             { ScoreRating.S, 10f }
-        }; // ��ͬ�����ķ�������
+        };
 
         private readonly Dictionary<ScoreRating, float> ratingDecayRates = new Dictionary<ScoreRating, float>
         {
@@ -58,26 +51,24 @@ namespace KidGame.Core
             { ScoreRating.B, 4f },
             { ScoreRating.A, 5f },
             { ScoreRating.S, 7f }
-        };// ��ͬ�����ķ����˼��ٶ�
+        };
 
         // Combo
         private int currentCombo = 0;
         private float comboWindowTimer = 0f;
-        private const float ComboWindowDuration = 3f; // 3������
+        private const float ComboWindowDuration = 3f;
 
         #endregion
 
-        public Action OnGameStarted;
-        public Action OnGameFinished;
-        public Action OnGameOver;
 
         public MapData mapData;
-        public bool TestMode; // ����ģʽ
+        [Header("测试模式 需要打开才能直接启动")]
+        public bool TestMode;
 
         private void Start()
         {
             InitGame();
-            if (TestMode) StartGame();
+            if (TestMode) GameStart();
         }
 
         private void Update()
@@ -122,41 +113,30 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ��ʼ��Ϸ
+        /// 游戏开始
         /// </summary>
-        public void StartGame()
+        public void GameStart()
         {
             if (gameStarted) return;
-
             gameStarted = true;
             GameLevelManager.Instance.InitFirstLevel();
-            
-            OnGameStarted?.Invoke();
+
+            MsgCenter.SendMsgAct(MsgConst.ON_GAME_START);
 
 
         }
 
         /// <summary>
-        /// ������Ϸ
+        /// 游戏结束
         /// </summary>
-        public void FinishGame()
+        /// <param name="isWin">是否获胜</param>
+        public void GameFinish(bool isWin)
         {
             if (gameFinished) return;
-
             gameFinished = true;
-            OnGameFinished?.Invoke();
-        }
-
-        /// <summary>
-        /// ��Ϸʧ��
-        /// </summary>
-        public void GameOver()
-        {
-            if (gameFinished) return;
-
-            gameFinished = true;
-            OnGameOver?.Invoke();
-            Signals.Get<GameFailSignal>().Dispatch(); // ������ʾUI
+            MsgCenter.SendMsg(MsgConst.ON_GAME_FINISH, isWin);
+            if (!isWin)
+                Signals.Get<GameFailSignal>().Dispatch();
         }
 
         #endregion
@@ -196,7 +176,7 @@ namespace KidGame.Core
             int totalScore = (int)(score * ratingMultipliers[currentRating]) + comboScore;
             
             currentLoopScore += totalScore;
-            OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
+            MsgCenter.SendMsg(MsgConst.ON_CUR_LOOP_SCORE_CHG, currentLoopScore);
             UIHelper.Instance.ShowOneFixedPosUIText(FixedUIPosType.Left,"+" + score, 0.75f);
         }
         
@@ -222,8 +202,8 @@ namespace KidGame.Core
         {
             int deduction = (int)(currentLoopScore * 0.05f);
             currentLoopScore = Mathf.Max(0, currentLoopScore - deduction);
-            OnCurrentLoopScoreChanged?.Invoke(currentLoopScore);
-            
+            MsgCenter.SendMsg(MsgConst.ON_CUR_LOOP_SCORE_CHG, currentLoopScore);
+
             ResetCombo();
         }
         
@@ -234,7 +214,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ��Ϸ��ͣ
+        #region 暂停游戏相关
 
         public void GamePause()
         {

@@ -216,7 +216,7 @@ namespace KidGame.Core
         public override void Pick()
         {
             PlayerController.Instance.RemovePickableFromList(this);
-            PlayerUtil.Instance.CallPlayerPickItem(weaponData.id, UseItemType.weapon);
+            MsgCenter.SendMsg(MsgConst.ON_PICK_ITEM, weaponData.id, UseItemType.weapon);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
             UIHelper.Instance.ShowOneTip(new TipInfo("ªÒµ√¡À" + EntityName + "°¡1", transform.position));
             Destroy(gameObject);

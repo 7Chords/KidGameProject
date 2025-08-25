@@ -171,7 +171,7 @@ namespace KidGame.UI
             {
                 for (int i = 0; i < tmpBubbleInfo.actionTypeList.Count; i++)
                 {
-                    keyStr += PlayerUtil.Instance.GetSettingKey(tmpBubbleInfo.actionTypeList[i], tmpBubbleInfo.controlType);
+                    keyStr += PlayerController.Instance.GetSettingKey(tmpBubbleInfo.actionTypeList[i], tmpBubbleInfo.controlType);
                     if (i < tmpBubbleInfo.actionTypeList.Count - 1) keyStr += "/";
                 }
                 bubbleItem.Init(tmpBubbleInfo, keyStr);

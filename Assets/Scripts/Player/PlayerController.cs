@@ -12,9 +12,8 @@ namespace KidGame.Core
     /// <summary>
     /// 玩家控制器
     /// </summary>
-    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner, IDamageable,ISoundable
+    public class PlayerController : Singleton<PlayerController>, IStateMachineOwner, IDamageable, ISoundable
     {
-        #region 玩家受伤
 
         [SerializeField] private List<string> randomDamgeSfxList;
 
@@ -26,22 +25,20 @@ namespace KidGame.Core
 
         [SerializeField] private ParticleSystem damagePartical;
 
-        #endregion
-
-        #region 组件
-        
         public ParticleSystem DamagePartical
         {
             get => damagePartical;
             set { damagePartical = value; }
         }
-        
+
+
+        #region 组件
         private InputSettings inputSettings;
         public InputSettings InputSettings => inputSettings;
 
         private Rigidbody rb;
         public Rigidbody Rb => rb;
-        
+
         public PlayerAnimator PlayerAnimator;
         public PlayerBaseData PlayerBaseData;
 
@@ -64,27 +61,23 @@ namespace KidGame.Core
         private float currentStruggle = 0f;
         private float struggleInvulnerabilityDuration = 1f; // 挣扎后的无敌时间
         #endregion
-        
-        #region 玩家生命值
+
+        #region 手持武器相关
+        private WeaponData currentWeaponData = null;
+        private GameObject currentWeapon = null;
+        #endregion
+
+        #region 玩家基础信息
 
         private int currentHealth;
         private bool isInvulnerable = false;
         public int CurrentHealth => currentHealth;
         public int MaxHealth => PlayerBaseData.Hp;
 
-        public event Action<int> OnHealthChanged;
-        public event Action OnPlayerDeath;
-
-        #endregion
-        
-        #region 玩家体力值
-
         private float currentStamina = 100f;
         private float maxStamina = 100f;
         private bool isExhausted = false;
         private bool isRecovering = false;
-        
-        public event Action<float> OnStaminaChanged;
 
         #endregion
 
@@ -100,10 +93,6 @@ namespace KidGame.Core
         private Vector3 rotateDir;
         #endregion
 
-        #region 事件
-        public event Action<float> OnMouseWheelValueChanged;
-        public event Action<bool> OnMouseBtnReleaseAction;
-        #endregion
 
         #region 生命周期
 
@@ -117,7 +106,7 @@ namespace KidGame.Core
             maxStamina = PlayerBaseData.Sp;
             currentStamina = maxStamina;
         }
-        
+
 
         public void Init()
         {
@@ -146,10 +135,6 @@ namespace KidGame.Core
 
         #endregion
 
-        #region 手持武器相关
-        private WeaponData currentWeaponData = null;
-        private GameObject currentWeapon = null;
-        #endregion
 
         #region 事件相关
 
@@ -159,20 +144,16 @@ namespace KidGame.Core
         private void RegActions()
         {
             #region 一次订阅
-            inputSettings.OnInteractionPress += PlayerInteraction;
-            inputSettings.OnPickPress += PlayerPick;
-            inputSettings.OnUsePress += TryPlaceTrap;
-            inputSettings.OnBagPress += ControlBag;
-            inputSettings.OnGamePause += GamePause;
-            inputSettings.OnUseLongPress += TryUseWeaponUseLongPress;
-            PlayerBag.Instance.OnSelectItemAction += OnItemSelected;
+            MsgCenter.RegisterMsgAct(MsgConst.ON_INTERACTION_PRESS, PlayerInteraction);
+            MsgCenter.RegisterMsgAct(MsgConst.ON_PICK_PRESS, PlayerPick);
+            MsgCenter.RegisterMsgAct(MsgConst.ON_USE_PRESS, PlayerUseItem);
+            MsgCenter.RegisterMsgAct(MsgConst.ON_BAG_PRESS, ControlBag);
+            MsgCenter.RegisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
+            MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
+            MsgCenter.RegisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
+
             #endregion
 
-            #region 二次转发
-            //Relay 意为转发 Relay XXX 意味着函数内部做了转发回调信息的作用
-            inputSettings.OnMouseWheelValueChanged += RelaySwitchSelectItem;
-            inputSettings.OnUseLongPressRelease += RelayMouseBtnRelease;
-            #endregion
         }
 
 
@@ -181,22 +162,19 @@ namespace KidGame.Core
         /// </summary>
         private void UnregActions()
         {
-            inputSettings.OnInteractionPress -= PlayerInteraction;
-            inputSettings.OnPickPress -= PlayerPick;
-            inputSettings.OnUsePress -= TryPlaceTrap;
-            inputSettings.OnBagPress -= ControlBag;
-            inputSettings.OnGamePause -= GamePause;
-            inputSettings.OnMouseWheelValueChanged -= RelaySwitchSelectItem;
-            inputSettings.OnUseLongPress -= TryUseWeaponUseLongPress;
-            inputSettings.OnUseLongPressRelease -= RelayMouseBtnRelease;
-            PlayerBag.Instance.OnSelectItemAction -= OnItemSelected;
-
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_INTERACTION_PRESS, PlayerInteraction);
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_PICK_PRESS, PlayerPick);
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_PRESS, PlayerUseItem);
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_BAG_PRESS, ControlBag);
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
+            MsgCenter.UnregisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
         }
 
         #endregion
 
         #region 功能
-        
+
 
         public bool IsPlayerState(PlayerState state)
         {
@@ -284,9 +262,9 @@ namespace KidGame.Core
         /// <summary>
         /// 尝试放陷阱
         /// </summary>
-        
 
-        public void TryPlaceTrap()
+
+        public void PlayerUseItem()
         {
             ISlotInfo currentUseItem = PlayerBag.Instance.GetSelectedQuickAccessItem();
             if (currentUseItem == null) return;
@@ -297,7 +275,7 @@ namespace KidGame.Core
                 UIHelper.Instance.ShowOneTip(new TipInfo("当前状态不可布置陷阱", transform.position));
                 return;
             }
-            if(currentUseItem is WeaponSlotInfo weaponItem)
+            if (currentUseItem is WeaponSlotInfo weaponItem)
             {
                 //不是短按类型的武器 我直接拦截
                 if (weaponItem.weaponData.longOrShortPress == 0) return;
@@ -309,11 +287,6 @@ namespace KidGame.Core
             //Logic
         }
 
-        public void RelayMouseBtnRelease()
-        {
-            //当鼠标释放
-            OnMouseBtnReleaseAction?.Invoke(false);
-        }
 
         /// <summary>
         /// 添加到可交互列表
@@ -406,7 +379,7 @@ namespace KidGame.Core
             Collider[] colls = Physics.OverlapSphere(transform.position, range);
             if (colls.Length == 0) return;
             ISoundable soundable = null;
-            foreach(var coll in colls)
+            foreach (var coll in colls)
             {
                 soundable = coll.GetComponent<ISoundable>();
                 if (soundable == null) continue;
@@ -421,18 +394,15 @@ namespace KidGame.Core
         public void ReceiveSound(GameObject creator) { }
 
 
-        /// <summary>
-        /// 切换选择的物品
-        /// </summary>
-        /// <param name="scrollValue">鼠标滚轮值</param>
-        public void RelaySwitchSelectItem(float scrollValue)
+        private void OnItemSelected(params object[] objs)
         {
-            OnMouseWheelValueChanged?.Invoke(scrollValue);
-        }
+            ISlotInfo slotInfo;
+            if (objs == null)
+                slotInfo = null;
+            else
+                slotInfo = objs[0] as ISlotInfo;
 
-        private void OnItemSelected(ISlotInfo slotInfo)
-        {
-            if(slotInfo == null)
+            if (slotInfo == null || slotInfo.ItemData is MaterialData || slotInfo.ItemData is FoodData)
             {
                 DestoryCurrentTrapPreview();
                 DiscardWeapon();
@@ -453,6 +423,7 @@ namespace KidGame.Core
                     );
                 
             }
+            
         }
 
         public void DiscardWeapon()
@@ -489,12 +460,12 @@ namespace KidGame.Core
         public GameObject SpawnWeaponOnHand(WeaponData weaponData, Quaternion rotation)
         {
 
-            if (PlayerController.Instance.SpawnAndUseThrowWeaponPoint == null) return null;
+            if (SpawnAndUseThrowWeaponPoint == null) return null;
 
 
             GameObject newWeapon = WeaponFactory.CreateEntity(
                 weaponData
-                , PlayerController.Instance.SpawnAndUseThrowWeaponPoint.position
+                , SpawnAndUseThrowWeaponPoint.position
                 , this.transform);
             if (newWeapon != null)
             {
@@ -518,8 +489,8 @@ namespace KidGame.Core
     
             currentHealth -= (int)damageInfo.damage;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
-            
-            OnHealthChanged?.Invoke(currentHealth);
+
+            MsgCenter.SendMsg(MsgConst.ON_HEALTH_CHG, currentHealth);
     
             if (currentHealth <= 0)
             {
@@ -570,13 +541,14 @@ namespace KidGame.Core
         {
             currentHealth += (int)healAmount;
             currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
-            OnHealthChanged?.Invoke(currentHealth);
+            MsgCenter.SendMsg(MsgConst.ON_HEALTH_CHG, currentHealth);
         }
 
         public void Dead()
         {
             //TODO:临时测试
-            GameManager.Instance.GameOver();
+            MsgCenter.SendMsgAct(MsgConst.ON_PLAYER_DEAD);
+            GameManager.Instance.GameFinish(false);
             Destroy(gameObject);
         }
         
@@ -587,7 +559,7 @@ namespace KidGame.Core
                 // 恢复体力
                 currentStamina += PlayerBaseData.StaminaRecoverRate * Time.deltaTime;
                 currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-                OnStaminaChanged?.Invoke(currentStamina / maxStamina);
+                MsgCenter.SendMsg(MsgConst.ON_STAMINA_CHG, currentStamina / maxStamina);
                 
                 // 检查是否恢复足够
                 if (currentStamina >= maxStamina * PlayerBaseData.RecoverThreshold)
@@ -614,7 +586,7 @@ namespace KidGame.Core
                 currentStamina = 0;
                 return false;
             }
-            OnStaminaChanged?.Invoke(currentStamina / maxStamina);
+            MsgCenter.SendMsg(MsgConst.ON_STAMINA_CHG, currentStamina / maxStamina);
             if (currentStamina <= maxStamina * PlayerBaseData.RecoverThreshold)
             {
                 isExhausted = true;
@@ -636,6 +608,9 @@ namespace KidGame.Core
             return curPreviewGO.GetComponentInParent<TrapBase>().CanPlaceTrap;
         }
 
-
+        public string GetSettingKey(InputActionType actionType, ControlType controlType)
+        {
+            return inputSettings.GetSettingKey(actionType, (int)controlType);
+        }
     }
 }

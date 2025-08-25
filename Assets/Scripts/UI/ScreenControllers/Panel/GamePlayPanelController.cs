@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using KidGame.UI;
-using UnityEngine;
-using Utils;
-using KidGame.Core;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 using KidGame;
+using KidGame.Core;
+using KidGame.UI;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePlayPanelController : Singleton<GamePlayPanelController>
 {
@@ -54,41 +51,24 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     private void RegisterEvents()
     {
-        if (PlayerController.Instance != null)
-        {
-            PlayerController.Instance.OnHealthChanged += UpdateHealthBar;
-            PlayerController.Instance.OnStaminaChanged += UpdateStaminaBar;
-            PlayerController.Instance.OnMouseWheelValueChanged += UpdateSelectItem;
-        }
 
-        if (GameLevelManager.Instance != null)
-        {
-            GameLevelManager.Instance.OnPhaseTimeUpdated += UpdateTimeClock;
-        }
-
-        PlayerBag.Instance.OnQuickAccessBagUpdated += UpdateQuickAccessHud;
-        GameManager.Instance.OnCurrentLoopScoreChanged += CurrentLoopScoreChanged;
+        MsgCenter.RegisterMsg(MsgConst.ON_HEALTH_CHG, UpdateHealthBar);
+        MsgCenter.RegisterMsg(MsgConst.ON_STAMINA_CHG, UpdateStaminaBar);
+        MsgCenter.RegisterMsg(MsgConst.ON_MOUSEWHEEL_VALUE_CHG, UpdateSelectItem);
+        MsgCenter.RegisterMsg(MsgConst.ON_PHASE_TIME_UPDATE, UpdateTimeClock);
+        MsgCenter.RegisterMsgAct(MsgConst.ON_QUICK_BAG_UPDATE, UpdateQuickAccessHud);
+        MsgCenter.RegisterMsg(MsgConst.ON_CUR_LOOP_SCORE_CHG, CurrentLoopScoreChanged);
     }
 
 
     private void UnregisterAllEvents()
     {
-        if (PlayerController.Instance != null)
-        {
-            PlayerController.Instance.OnHealthChanged -= UpdateHealthBar;
-            PlayerController.Instance.OnStaminaChanged -= UpdateStaminaBar;
-            PlayerController.Instance.OnMouseWheelValueChanged -= UpdateSelectItem;
-        }
-
-        if (GameLevelManager.Instance != null)
-        {
-            GameLevelManager.Instance.OnPhaseTimeUpdated -= UpdateTimeClock;
-        }
-        
-        if (PlayerBag.Instance != null)
-        {
-            PlayerBag.Instance.OnQuickAccessBagUpdated -= UpdateQuickAccessHud;
-        }
+        MsgCenter.UnregisterMsg(MsgConst.ON_HEALTH_CHG, UpdateHealthBar);
+        MsgCenter.UnregisterMsg(MsgConst.ON_STAMINA_CHG, UpdateStaminaBar);
+        MsgCenter.UnregisterMsg(MsgConst.ON_MOUSEWHEEL_VALUE_CHG, UpdateSelectItem);
+        MsgCenter.UnregisterMsg(MsgConst.ON_PHASE_TIME_UPDATE, UpdateTimeClock);
+        MsgCenter.UnregisterMsgAct(MsgConst.ON_QUICK_BAG_UPDATE, UpdateQuickAccessHud);
+        MsgCenter.UnregisterMsg(MsgConst.ON_CUR_LOOP_SCORE_CHG, CurrentLoopScoreChanged);
     }
 
     #endregion
@@ -110,9 +90,10 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         }
     }
 
-    private void UpdateHealthBar(int currentHealth)
+    private void UpdateHealthBar(params object[] objs)
     {
-        
+        if (objs == null || objs.Length == 0) return;
+        int currentHealth = (int)objs[0];
         if (healthHudContainer == null || healthIconPrefab == null || lostHealthIconPrefab == null) 
             return;
 
@@ -141,8 +122,10 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 体力UI
 
-    private void UpdateStaminaBar(float staminaPercentage)
+    private void UpdateStaminaBar(params object[] objs)
     {
+        if (objs == null || objs.Length == 0) return;
+        float staminaPercentage = (float)objs[0];
         if (energyProgressBar != null)
         {
             energyProgressBar.SetProgress(staminaPercentage);
@@ -153,9 +136,11 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 选择陷阱
 
-    
-    private void UpdateSelectItem(float scrollValue)
+
+    private void UpdateSelectItem(params object[] objs)
     {
+        if (objs == null || objs.Length == 0) return;
+        float scrollValue = (float)objs[0];
         if (scrollValue != 0)
         {
             int direction = scrollValue > 0 ? 1 : -1;
@@ -220,8 +205,10 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 分数UI
 
-    private void CurrentLoopScoreChanged(int score)
+    private void CurrentLoopScoreChanged(params object[] objs)
     {
+        if (objs == null || objs.Length == 0) return;
+        int score = (int)objs[0];
         ScoreText.text = score.ToString();
     }
 
@@ -229,8 +216,11 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 时间UI
 
-    private void UpdateTimeClock(GameLevelManager.LevelPhase phase, float timePercentage)
+    private void UpdateTimeClock(params object[] objs)
     {
+        if (objs == null || objs.Length == 0) return;
+        LevelPhase phase = (LevelPhase)objs[0];
+        float timePercentage = (float)objs[1];
         if (clockBar != null)
         {
             clockBar.UpdatePhaseTime(phase, timePercentage);
