@@ -310,21 +310,7 @@ namespace KidGame.Core
 
             if (string.IsNullOrEmpty(itemId)) return;
 
-            switch (itemType)
-            {
-                case UseItemType.trap:
-                    AddItemToCombineBag(itemId, itemType,1);
-                    break;
-                case UseItemType.Material:
-                    AddItemToCombineBag(itemId, itemType,1);
-                    break;
-                case UseItemType.weapon:
-                    AddItemToCombineBag(itemId, itemType,1);
-                    break;
-                //todo:food
-                default:
-                    break;
-            }
+            AddItemToCombineBag(itemId, itemType, 1);
         }
 
         /// <summary>

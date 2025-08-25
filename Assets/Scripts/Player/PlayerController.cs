@@ -143,7 +143,6 @@ namespace KidGame.Core
         /// </summary>
         private void RegActions()
         {
-            #region 一次订阅
             MsgCenter.RegisterMsgAct(MsgConst.ON_INTERACTION_PRESS, PlayerInteraction);
             MsgCenter.RegisterMsgAct(MsgConst.ON_PICK_PRESS, PlayerPick);
             MsgCenter.RegisterMsgAct(MsgConst.ON_USE_PRESS, PlayerUseItem);
@@ -151,8 +150,6 @@ namespace KidGame.Core
             MsgCenter.RegisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.RegisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-
-            #endregion
 
         }
 
