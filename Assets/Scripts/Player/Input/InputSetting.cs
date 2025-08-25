@@ -51,9 +51,12 @@ namespace KidGame.Core
             mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
             gamePauseAction = inputActionAsset.FindAction("GamePause");
 
+            
+            //这个交互键设置成按下开始响应 防止开容器的e和一键拾取的e分不清
+            interactionAction.performed += OnInteractActionPerformedWithoutTime;
             interactionAction.performed += OnInteractionActionPerformed;
-            //interactionAction.performed += OnInteractActionPerformedWithoutTime;
-            interactionAction.started += OnInteractActionPerformedWithoutTime;
+            
+            
             dashAction.performed += OnDashActionPerformed;
             runAction.performed += OnRunActionPerformed;
             runAction.canceled += OnRunActionCanceled;
@@ -70,9 +73,10 @@ namespace KidGame.Core
 
         private void OnDestroy()
         {
+            interactionAction.performed -= OnInteractActionPerformedWithoutTime;    
             interactionAction.performed -= OnInteractionActionPerformed;
             
-            interactionAction.started -= OnInteractActionPerformedWithoutTime;
+            
             dashAction.performed -= OnDashActionPerformed;
             runAction.performed -= OnRunActionPerformed;
             runAction.canceled -= OnRunActionCanceled;
@@ -130,7 +134,10 @@ namespace KidGame.Core
         //无视时间缩放的互动事件
         private void OnInteractActionPerformedWithoutTime(InputAction.CallbackContext context)
         {
+            // 只在按压完成时触发一次（需要配合前面设置的"press"交互类型）
+            
             OnInteractionPressWithoutTime?.Invoke();
+            
         }
 
         private void OnDashActionPerformed(InputAction.CallbackContext context)

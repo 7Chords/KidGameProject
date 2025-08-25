@@ -27,7 +27,7 @@ public class TransitionPanelController : PanelController
     }
 
     /// <summary>
-    /// 执行完整的场景转场逻辑
+    /// 鎵ц瀹屾暣鐨勫満鏅浆鍦洪�昏緫
     /// </summary>
     public void BeginTransitionAndLoadScene(string sceneName)
     {

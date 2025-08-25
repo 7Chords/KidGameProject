@@ -57,16 +57,19 @@ namespace KidGame.UI
         private Button btn_getAll;
         public float xspacing = 800f;
         public float yspacing = 800f;
-        
-        
 
+
+        // 添加状态变量
+        private bool _isPanelActive = false;
         protected override void AddListeners()
         {
+            //base.AddListeners();
             
         }
 
         protected override void RemoveListeners()
         {
+            //PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= HidePopPanel;
             
         }
         
@@ -74,9 +77,15 @@ namespace KidGame.UI
         
         protected override void OnPropertiesSet()
         {
-            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += HidePopPanel;
+            
             base.OnPropertiesSet();
-            //GameManager.Instance.GamePause();
+            
+            _isPanelActive = true; // 标记面板为激活状态
+            //todo
+            //一键拾取失效
+            
+            PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime += HidePopPanel;
+            
             rectTransform = GetComponent<RectTransform>();
             scrollView = transform.Find("ItemContainer/ScrollView").GetComponent<UICircularScrollView>();
             scrollViewRectTransform = scrollView.GetComponent<RectTransform>();
@@ -96,19 +105,24 @@ namespace KidGame.UI
             
         }
 
+        
+
         public void HidePopPanel()
         {
+            if (!_isPanelActive) return; // 状态校验
             UIController.Instance.HidePanel(ScreenIds.PopItemContainerPanel);
-            Signals.Get<CloseBackpackWindowSignal>().Dispatch();
+            //Signals.Get<CloseBackpackWindowSignal>().Dispatch();
         }
         
         protected override void WhileHiding()
         {
-            
+            _isPanelActive = false;
             PlayerController.Instance.InputSettings.OnInteractionPressWithoutTime -= HidePopPanel;
             //GameManager.Instance.GameResume();
             
         }
+        
+        
         
         /// <summary>
         /// 初始化标题显示
@@ -211,6 +225,7 @@ namespace KidGame.UI
         /// </summary>
         public void UI_OnGetAllClick()
         {
+            bool isGetAll = true;
             // 将容器中所有物品移动到背包
             foreach (var item in Properties.items)
             {
@@ -220,14 +235,20 @@ namespace KidGame.UI
                             item.Amount))
                     {
                         UIHelper.Instance.ShowOneTip(new TipInfo("背包已满", PlayerController.Instance.transform.position));
+                        isGetAll = false;
                         break;
                     }
                 }
             }
+
+            if (isGetAll)
+            {
+                // 清空容器
+                Properties.items.Clear();
+                Properties.originItems.Clear();
+                UIController.Instance.HidePanel(ScreenIds.PopItemContainerPanel);
+            }
             
-            // 清空容器
-            Properties.items.Clear();
-            Properties.originItems.Clear();
             RefreshContainer();
             
             // 通知背包UI刷新
