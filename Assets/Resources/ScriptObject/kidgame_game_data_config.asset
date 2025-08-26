@@ -23,7 +23,7 @@ MonoBehaviour:
     triggerType: 0
     validType: 0
     validTime: -1
-    deadTypeList: 00000000
+    deadTypeList: 0100000002000000
     deadDelayTime: 1
     placeTime: 3
     hasCollider: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
     triggerType: 1
     validType: 0
     validTime: -1
-    deadTypeList: 00000000
+    deadTypeList: 0100000002000000
     deadDelayTime: 1
     placeTime: 4
     hasCollider: 1
@@ -69,9 +69,32 @@ MonoBehaviour:
     triggerType: 0
     validType: 0
     validTime: -1
-    deadTypeList: 0000000002000000
+    deadTypeList: 02000000
     deadDelayTime: 1
     placeTime: 1
+    hasCollider: 1
+    interactSoundName: CommonInteract
+    pickSoundName: CommonPickUp
+    workSoundName: CommonTrigger
+    deadSoundName: CommonDead
+    interactParticleName: CommonInteract
+    pickParticleName: CommonPickUp
+    workParticleName: 
+    deadParticleName: CommonDead
+    soundRange: 5
+  - id: T004
+    trapName: "\u9508\u94C1\u6355\u4EBA\u5939"
+    trapDesc: "\u4F7F\u786C\u76F4\u4E00\u79D2\uFF0C\u6263\u9664x\u70B9\u7CBE\u795E\u503C\uFF0C\u4F7F\u654C\u4EBA\u589E\u52A0\u6D41\u8840\u6548\u679C"
+    trapIconPath: 
+    trapLevel: 1
+    trapDamage: 40
+    trapScore: 40
+    triggerType: 1
+    validType: 0
+    validTime: -1
+    deadTypeList: 0100000002000000
+    deadDelayTime: 1
+    placeTime: 2
     hasCollider: 1
     interactSoundName: CommonInteract
     pickSoundName: CommonPickUp
@@ -184,6 +207,33 @@ MonoBehaviour:
     workParticleName: 
   - id: M012
     materialName: "\u4E00\u7BA1\u767D\u80F6"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: CommonPickUp
+    pickParticleName: CommonPickUp
+    workSoundName: CommonUse
+    workParticleName: 
+  - id: M013
+    materialName: "\u6355\u9F20\u5939"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: CommonPickUp
+    pickParticleName: CommonPickUp
+    workSoundName: CommonUse
+    workParticleName: 
+  - id: M014
+    materialName: "\u96D5\u50CF"
+    materialDesc: 
+    materialIconPath: 
+    rare: 1
+    pickSoundName: CommonPickUp
+    pickParticleName: CommonPickUp
+    workSoundName: CommonUse
+    workParticleName: 
+  - id: M015
+    materialName: "\u9508\u94C1\u4E1D"
     materialDesc: 
     materialIconPath: 
     rare: 1
@@ -319,3 +369,11 @@ MonoBehaviour:
       materialAmount: 1
     - materialId: M010
       materialAmount: 1
+  - id: R004
+    targetId: T004
+    recipeType: 1
+    materialList:
+    - materialId: M013
+      materialAmount: 1
+    - materialId: M015
+      materialAmount: 2
