@@ -145,11 +145,11 @@ namespace KidGame.Core
         [SerializeField] protected Rigidbody rb; // 物理组件（需在Inspector赋值）
         protected float checkRadius = 3f;         // 检测敌人的半径
         protected bool isEnemyHere = false;
-        protected bool isStartCoroutine = false;
         protected Collider enemyCollider = null;
         protected bool isSimulateEnd = false;     // 是否到达终点区域
         protected LineRenderer lineRenderer;
         protected LineRenderScript lineRenderScript;
+        protected bool isCheckCondition = false;
         // 物理参数（可在Inspector调整）
         [SerializeField] protected float baseHorizontalSpeed = 10f; // 水平基准速度
 
@@ -195,11 +195,8 @@ namespace KidGame.Core
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
-            // 发射后检测是否到达终点
-            else if (!isOnHand && !isSimulateEnd)
-            {
-                CheckIfReachEnd();
-            }
+            // 是否应当停止判断
+            CheckIfReachCondition();
         }
 
         public override void SetOnHandOrNot(bool onHand)
@@ -209,16 +206,15 @@ namespace KidGame.Core
             if (!onHand && lineRenderer != null)
                 lineRenderer.enabled = false;
         }
-        // 检测是否到达终点区域
-        protected void CheckIfReachEnd()
+        // 检测是否达成某个条件
+        protected void CheckIfReachCondition()
         {
-            if (lineRenderScript == null) return;
+            _CheckIfReachCondition();
+        }
 
-            float distanceToEnd = Vector3.Distance(transform.position, lineRenderScript.endPoint);
-            if (distanceToEnd <= 0.5f) // 终点区域半径（可调整）
-            {
-                isSimulateEnd = true;
-            }
+        protected virtual void _CheckIfReachCondition()
+        {
+
         }
 
         // 计算并应用物理初速度（核心逻辑）

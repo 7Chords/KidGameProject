@@ -142,6 +142,8 @@ namespace KidGame.Core
 {
     public class GlowBall : ThrowWeaponBase
     {
+
+        private Vector3 hitPosi = Vector3.zero;
         protected override void Awake()
         {
             base.Awake();
@@ -159,59 +161,96 @@ namespace KidGame.Core
         public override void _WeaponUseLogic()
         {
             if (isOnHand) return; // 仅在发射后执行
-
             // 刚发射时：启用物理并应用初速度
             if (!isSimulateEnd && rb != null && rb.isKinematic)
             {
                 rb.isKinematic = false; // 启用物理
                 CalculateAndApplyInitialVelocity();
             }
-            // 到达终点后：执行敌人检测逻辑
-            else if (isSimulateEnd)
-            {
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, checkRadius);
-                isEnemyHere = false;
-                enemyCollider = null;
-
-                foreach (Collider collider in hitColliders)
-                {
-                    if (collider.CompareTag("Enemy"))
-                    {
-                        isEnemyHere = true;
-                        enemyCollider = collider;
-                        break;
-                    }
-                }
-
-                // 无敌人则销毁，有敌人则吸附
-                if (!isEnemyHere || enemyCollider == null)
-                {
-                    Destroy(gameObject, 0.5f); // 延迟销毁，留缓冲
-                }
-                else if (!isStartCoroutine)
-                {
-                    StartCoroutine(AttachAndDestroySelf());
-                }
+            if(!isCheckCondition && isSimulateEnd)
+            {   //只执行一次结束模拟函数
+                EndSimulateAction(Physics.OverlapSphere(transform.position, checkRadius));
             }
         }
 
+        protected void EndSimulateAction(Collider[] hitColliders)
+        {
+            Collider[] temphitColliders = hitColliders;
+            isCheckCondition = true;// 检测过终止条件了
+            isEnemyHere = false; // 初始化
+            enemyCollider = null; // 初始化
+            foreach (Collider collider in temphitColliders)
+            {
+                if (collider.CompareTag("Enemy"))
+                {
+                    isEnemyHere = true;
+                    enemyCollider = collider;
+                    hitPosi = GetHitPosition(collider);
+                    break;
+                }
+            }
+            // 无敌人则销毁，有敌人则吸附
+            if (!isEnemyHere || enemyCollider == null)
+            {
+                Destroy(gameObject, 0f); // 延迟销毁，留缓冲
+            }
+            else StartCoroutine(AttachAndDestroySelf());
+
+        }
+
+        // 如果直接撞到了
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                isSimulateEnd = true; // 不再需要执行主逻辑
+                hitPosi = GetHitPosition(other);
+                EndSimulateAction(Physics.OverlapSphere(transform.position, checkRadius));
+            }
+        }
+
+        protected override void _CheckIfReachCondition()
+        {
+            if (lineRenderScript == null) return;
+            if (rb.velocity.magnitude <= 0.05f)
+            {
+                // 不再需要执行主逻辑
+                isSimulateEnd = true;
+            }
+        }
         // 吸附到敌人并延迟销毁
         IEnumerator AttachAndDestroySelf()
         {
-            isStartCoroutine = true;
+
             if (enemyCollider != null)
             {
                 // 吸附到敌人（无相对位置偏移）
-                transform.SetParent(enemyCollider.transform, false);
+                transform.position = hitPosi;
+                transform.SetParent(enemyCollider.transform, true);
                 // 禁用物理，避免持续受力
                 if (rb != null)
                 {
                     rb.isKinematic = true;
                 }
             }
-
             yield return new WaitForSeconds(10f); // 持续10秒（可调整）
             Destroy(gameObject);
+        }
+
+        // 获取碰撞点
+        private Vector3 GetHitPosition(Collider other)
+        {
+            Ray ray = new Ray(transform.position, (other.transform.position - transform.position).normalized);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.6f))
+            {
+                return hitInfo.point;
+            }
+            else
+            {
+                // 射线未命中时 返回对方碰撞器的中心点
+                return Vector3.zero;
+            }
         }
     }
 }

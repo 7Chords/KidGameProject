@@ -275,72 +275,52 @@ MonoBehaviour:
   - id: F002
     foodName: "\u9E21\u8089\u5377"
   FurnitureInfoDataList:
-  - id: F001
+  - id: J001
     furnitureName: "\u6D17\u8863\u673A"
     furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53\uFF0C\u6216\u8005\u6D17\u6389\u8863\u670D\u4E0A\u7684\u75D5\u8FF9"
     materialIdList: []
-  - id: F002
+  - id: J002
     furnitureName: "\u6447\u6447\u6728\u9A6C"
     furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53"
     materialIdList: []
-  - id: F003
+  - id: J003
     furnitureName: "\u79CB\u5343"
     furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53"
     materialIdList: []
-  - id: F004
+  - id: J004
     furnitureName: "\u8DF7\u8DF7\u677F"
     furnitureDesc: "\u53EF\u4F5C\u4E3A\u9677\u9631\u88C5\u7F6E\u7684\u8F7D\u4F53"
     materialIdList: []
-  - id: F005
+  - id: J005
     furnitureName: "\u706F\u7684\u5F00\u5173"
     furnitureDesc: "\u4E0E\u5F00\u5173\u4E92\u52A8\u63A7\u5236\u623F\u95F4\u7684\u660E\u6697"
     materialIdList: []
-  - id: F006
-    furnitureName: 
-    furnitureDesc: 
-    materialIdList: []
-  - id: F007
-    furnitureName: 
-    furnitureDesc: 
-    materialIdList: []
-  - id: F008
-    furnitureName: 
-    furnitureDesc: 
-    materialIdList: []
-  - id: F009
-    furnitureName: 
-    furnitureDesc: 
-    materialIdList: []
-  - id: F010
-    furnitureName: 
-    furnitureDesc: 
-    materialIdList: []
   RoomInfoDataList:
-  - id: R001
+  - id: B001
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
-  - id: R002
+  - id: B002
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
-  - id: R003
+  - id: B003
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
-  - id: R004
+  - id: B004
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
-  - id: R005
+  - id: B005
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
-  - id: R006
+  - id: B006
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
-  - id: R007
+  - id: B007
     roomTyppe: 0
     furnitureIdList: []
     materialIdList: []
