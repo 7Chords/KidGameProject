@@ -301,7 +301,7 @@ namespace KidGame.Core
 
         #region 拾取与使用物品逻辑
 
-        private void PlayerGetOneItem(params object[] objs)
+        private void PlayerGetOneItem(object[] objs)
         {
             if (objs == null || objs.Length == 0) return;
 

@@ -39,6 +39,7 @@ namespace KidGame.Core
         }
         private void Init()
         {
+            //gamemap
             moveAction = inputActionAsset.FindAction("Move");
             interactionAction = inputActionAsset.FindAction("Interaction");
             dashAction = inputActionAsset.FindAction("Dash");
@@ -49,7 +50,7 @@ namespace KidGame.Core
             mouseWheelAction = inputActionAsset.FindAction("MouseWheel");
             gamePauseAction = inputActionAsset.FindAction("GamePause");
 
-
+            //uimap
             UI_bagAction = inputActionAsset.FindAction("UI_Bag");
             UI_interactionAction = inputActionAsset.FindAction("UI_Interaction");
             
@@ -73,7 +74,7 @@ namespace KidGame.Core
 
             this.OnUpdate(CheckMouseWheelValueChange);
 
-            MsgCenter.RegisterMsgAct(MsgConst.ON_CONTROL_MAP_CHG, OnInputMapChg);
+            MsgCenter.RegisterMsg(MsgConst.ON_CONTROL_MAP_CHG, OnInputMapChg);
         }
         private void Discard()
         {
@@ -93,7 +94,7 @@ namespace KidGame.Core
             UI_bagAction.performed -= OnUIBagActionPerformed;
             
             this.RemoveUpdate(CheckMouseWheelValueChange);
-            MsgCenter.UnregisterMsgAct(MsgConst.ON_CONTROL_MAP_CHG, OnInputMapChg);
+            MsgCenter.UnregisterMsg(MsgConst.ON_CONTROL_MAP_CHG, OnInputMapChg);
 
 
         }
@@ -239,11 +240,10 @@ namespace KidGame.Core
         #endregion
 
         #region RegisterCallbacks
-        private void OnInputMapChg()
+        private void OnInputMapChg(object[] objs)
         {
-            currentControlMap = currentControlMap == ControlMap.GameMap 
-                ? ControlMap.UIMap 
-                : ControlMap.GameMap;
+            if (objs == null || objs.Length == 0) return;
+            currentControlMap = (ControlMap)objs[0];
             playerInput.currentActionMap = inputActionAsset.actionMaps[(int)currentControlMap];
             Discard();
             Init();

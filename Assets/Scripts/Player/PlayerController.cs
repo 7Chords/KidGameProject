@@ -405,7 +405,7 @@ namespace KidGame.Core
         public void ReceiveSound(GameObject creator) { }
 
 
-        private void OnItemSelected(params object[] objs)
+        private void OnItemSelected(object[] objs)
         {
             ISlotInfo slotInfo;
             if (objs == null)

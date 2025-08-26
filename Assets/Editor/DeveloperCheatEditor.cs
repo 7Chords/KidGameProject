@@ -237,9 +237,13 @@ public class DeveloperCheatEditor : EditorWindow
         showSysCheats = EditorGUILayout.Foldout(showSysCheats, "系统相关作弊", true);
         if(showSysCheats)
         {
-            if(GUILayout.Button("输入映射切换（GAME/UI）"))
+            if(GUILayout.Button("输入映射切换为GameMap）"))
             {
-                MsgCenter.SendMsgAct(MsgConst.ON_CONTROL_MAP_CHG);
+                MsgCenter.SendMsg(MsgConst.ON_CONTROL_MAP_CHG, ControlMap.GameMap);
+            }
+            if (GUILayout.Button("输入映射切换为UIMap）"))
+            {
+                MsgCenter.SendMsg(MsgConst.ON_CONTROL_MAP_CHG, ControlMap.UIMap);
             }
         }
         EditorGUILayout.HelpBox("这些作弊功能只在游戏运行时有效", MessageType.Info);

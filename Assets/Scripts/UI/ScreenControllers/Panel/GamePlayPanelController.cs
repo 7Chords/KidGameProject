@@ -90,7 +90,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         }
     }
 
-    private void UpdateHealthBar(params object[] objs)
+    private void UpdateHealthBar(object[] objs)
     {
         if (objs == null || objs.Length == 0) return;
         int currentHealth = (int)objs[0];
@@ -122,7 +122,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 体力UI
 
-    private void UpdateStaminaBar(params object[] objs)
+    private void UpdateStaminaBar(object[] objs)
     {
         if (objs == null || objs.Length == 0) return;
         float staminaPercentage = (float)objs[0];
@@ -137,7 +137,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
     #region 选择陷阱
 
 
-    private void UpdateSelectItem(params object[] objs)
+    private void UpdateSelectItem(object[] objs)
     {
         if (objs == null || objs.Length == 0) return;
         float scrollValue = (float)objs[0];
@@ -205,7 +205,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 分数UI
 
-    private void CurrentLoopScoreChanged(params object[] objs)
+    private void CurrentLoopScoreChanged(object[] objs)
     {
         if (objs == null || objs.Length == 0) return;
         int score = (int)objs[0];
@@ -216,7 +216,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
 
     #region 时间UI
 
-    private void UpdateTimeClock(params object[] objs)
+    private void UpdateTimeClock(object[] objs)
     {
         if (objs == null || objs.Length == 0) return;
         LevelPhase phase = (LevelPhase)objs[0];
