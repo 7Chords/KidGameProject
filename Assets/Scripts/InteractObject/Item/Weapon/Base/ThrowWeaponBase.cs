@@ -140,78 +140,151 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-    public class GlowBall : ThrowWeaponBase
+    public class ThrowWeaponBase : WeaponBase
     {
+        [SerializeField] protected Rigidbody rb; // 物理组件（需在Inspector赋值）
+        protected float checkRadius = 3f;         // 检测敌人的半径
+        protected bool isEnemyHere = false;
+        protected bool isStartCoroutine = false;
+        protected Collider enemyCollider = null;
+        protected bool isSimulateEnd = false;     // 是否到达终点区域
+        protected LineRenderer lineRenderer;
+        protected LineRenderScript lineRenderScript;
+        // 物理参数（可在Inspector调整）
+        [SerializeField] protected float baseHorizontalSpeed = 10f; // 水平基准速度
+
         protected override void Awake()
         {
             base.Awake();
+            // 初始化物理组件
+            if (rb == null)
+                rb = GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.isKinematic = true;    // 初始禁用物理（手持状态）
+                rb.useGravity = true;     // 备用：发射时启用
+                rb.drag = 0;              // 无阻力
+                rb.angularDrag = 0;       // 无旋转阻力
+            }
         }
 
         protected override void Start()
         {
             base.Start();
+            InitLineRender();
+            // 手持时强制禁用物理
+            if (isOnHand && rb != null)
+            {
+                rb.isKinematic = true;
+            }
         }
 
         protected override void Update()
         {
-            base.Update();
+            if (!isOnHand) WeaponUseLogic();
+            else
+            {
+                SetStartPoint();
+                SetEndPoint();
+            }
+            // 手持时保持物理禁用
+            if (isOnHand && rb != null && !rb.isKinematic)
+            {
+                rb.isKinematic = true;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            // 发射后检测是否到达终点
+            else if (!isOnHand && !isSimulateEnd)
+            {
+                CheckIfReachEnd();
+            }
         }
-        public override void _WeaponUseLogic()
+
+        public override void SetOnHandOrNot(bool onHand)
         {
-            if (isOnHand) return; // 仅在发射后执行
-
-            // 刚发射时：启用物理并应用初速度
-            if (!isSimulateEnd && rb != null && rb.isKinematic)
-            {
-                rb.isKinematic = false; // 启用物理
-                CalculateAndApplyInitialVelocity();
-            }
-            // 到达终点后：执行敌人检测逻辑
-            else if (isSimulateEnd)
-            {
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, checkRadius);
-                isEnemyHere = false;
-                enemyCollider = null;
-
-                foreach (Collider collider in hitColliders)
-                {
-                    if (collider.CompareTag("Enemy"))
-                    {
-                        isEnemyHere = true;
-                        enemyCollider = collider;
-                        break;
-                    }
-                }
-
-                // 无敌人则销毁，有敌人则吸附
-                if (!isEnemyHere || enemyCollider == null)
-                {
-                    Destroy(gameObject, 0.5f); // 延迟销毁，留缓冲
-                }
-                else if (!isStartCoroutine)
-                {
-                    StartCoroutine(AttachAndDestroySelf());
-                }
-            }
+            base.SetOnHandOrNot(onHand);
+            // 发射后隐藏轨迹预览
+            if (!onHand && lineRenderer != null)
+                lineRenderer.enabled = false;
         }
-
-        // 吸附到敌人并延迟销毁
-        IEnumerator AttachAndDestroySelf()
+        // 检测是否到达终点区域
+        protected void CheckIfReachEnd()
         {
-            isStartCoroutine = true;
-            if (enemyCollider != null)
-            {
-                // 吸附到敌人（无相对位置偏移）
-                transform.SetParent(enemyCollider.transform, false);
-                // 禁用物理，避免持续受力
-                if (rb != null)
-                {
-                    rb.isKinematic = true;
-                }
-            }
+            if (lineRenderScript == null) return;
 
-            yield return new WaitForSeconds(10f); // 持续10秒（可调整）
-            Destroy(gameObject);
+            float distanceToEnd = Vector3.Distance(transform.position, lineRenderScript.endPoint);
+            if (distanceToEnd <= 0.5f) // 终点区域半径（可调整）
+            {
+                isSimulateEnd = true;
+            }
         }
+
+        // 计算并应用物理初速度（核心逻辑）
+        protected void CalculateAndApplyInitialVelocity()
+        {
+            if (lineRenderScript == null || rb == null) return;
+
+            Vector3 start = lineRenderScript.startPoint;
+            Vector3 end = lineRenderScript.endPoint;
+
+            // 1. 计算水平方向（XZ平面）
+            Vector3 horizontalStart = new Vector3(start.x, 0, start.z);
+            Vector3 horizontalEnd = new Vector3(end.x, 0, end.z);
+            Vector3 horizontalDir = (horizontalEnd - horizontalStart).normalized;
+            float horizontalDistance = Vector3.Distance(horizontalStart, horizontalEnd);
+
+            // 2. 计算运动总时间（基于水平距离和基准速度）
+            float T = horizontalDistance / baseHorizontalSpeed;
+            T = Mathf.Max(T, 0.1f); // 避免时间过短导致速度异常
+
+            // 3. 计算垂直方向初速度（基于物理公式）
+            float verticalDisplacement = end.y - start.y;
+            float gravity = Physics.gravity.y; // 重力加速度（Unity默认-9.81）
+            float verticalVelocity = (verticalDisplacement - 0.5f * gravity * T * T) / T;
+
+            // 4. 应用最终初速度
+            Vector3 initialVelocity = horizontalDir * baseHorizontalSpeed;
+            initialVelocity.y = verticalVelocity;
+            rb.velocity = initialVelocity;
+        }
+
+        protected void InitLineRender()
+        {
+            lineRenderer = GetComponent<LineRenderer>();
+            lineRenderScript = GetComponent<LineRenderScript>();
+            if (lineRenderScript != null && lineRenderer != null)
+                lineRenderScript.lineRenderer = lineRenderer;
+
+            // 初始化起点和终点
+            if (PlayerController.Instance != null)
+                lineRenderScript.startPoint = PlayerController.Instance.PlaceTrapPoint.position;
+            lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
+        }
+
+        protected void SetEndPoint()
+        {
+            if (lineRenderScript != null)
+            {
+                Vector3 mousePos = MouseRaycaster.Instance.GetMousePosi();
+                if (mousePos != Vector3.zero)
+                    lineRenderScript.endPoint = mousePos;
+            }
+        }
+
+        // 设置抛物线起点（武器位置）
+        protected void SetStartPoint()
+        {
+            if (lineRenderScript != null)
+            {
+                if (PlayerController.Instance != null)
+                    lineRenderScript.startPoint = PlayerController.Instance.PlaceTrapPoint.position;
+                else
+                    lineRenderScript.startPoint = transform.position;
+            }
+        }
+
+        public override void _WeaponUseLogic() { }
     }
 }

@@ -151,9 +151,6 @@ namespace KidGame.Core
         protected bool isOnHand = true;
         protected WeaponData _weaponData;
         protected GameObject self;
-        protected LineRenderer lineRenderer;
-        protected LineRenderScript lineRenderScript;
-
         public override string EntityName { get => _weaponData.name; }
         public WeaponData weaponData => _weaponData;
 
@@ -162,54 +159,15 @@ namespace KidGame.Core
         protected virtual void Start()
         {
             self = gameObject;
-            InitLineRender();
-            //if(_weaponData != null && _weaponData.weaponType == 1) InitLineRender(); // 如果是远程道具才需要 初始化曲线渲染
         }
 
         protected virtual void Update()
         {
             WeaponUseLogic();
         }
-
-        // 设置抛物线终点（鼠标位置）
-        protected void SetEndPoint()
-        {
-            if (lineRenderScript != null)
-            {
-                Vector3 mousePos = MouseRaycaster.Instance.GetMousePosi();
-                if (mousePos != Vector3.zero)
-                    lineRenderScript.endPoint = mousePos;
-            }
-        }
-
-        // 设置抛物线起点（武器位置）
-        protected void SetStartPoint()
-        {
-            if (lineRenderScript != null)
-            {
-                if (PlayerController.Instance != null)
-                    lineRenderScript.startPoint = PlayerController.Instance.PlaceTrapPoint.position;
-                else
-                    lineRenderScript.startPoint = transform.position;
-            }
-        }
-
         public virtual void InitWeaponData(WeaponData weaponData)
         {
             _weaponData = weaponData;
-        }
-
-        protected virtual void InitLineRender()
-        {
-            lineRenderer = GetComponent<LineRenderer>();
-            lineRenderScript = GetComponent<LineRenderScript>();
-            if (lineRenderScript != null && lineRenderer != null)
-                lineRenderScript.lineRenderer = lineRenderer;
-
-            // 初始化起点和终点
-            if (PlayerController.Instance != null)
-                lineRenderScript.startPoint = PlayerController.Instance.PlaceTrapPoint.position;
-            lineRenderScript.endPoint = MouseRaycaster.Instance.GetMousePosi();
         }
 
         // 捡起武器逻辑
@@ -222,12 +180,9 @@ namespace KidGame.Core
             Destroy(gameObject);
         }
 
-        public void SetOnHandOrNot(bool onHand)
+        public virtual void SetOnHandOrNot(bool onHand)
         {
             isOnHand = onHand;
-            // 发射后隐藏轨迹预览
-            if (!onHand && lineRenderer != null)
-                lineRenderer.enabled = false;
         }
 
         public bool GetOnHandOrNot() => isOnHand;
@@ -235,6 +190,10 @@ namespace KidGame.Core
         public virtual void InteractPositive(GameObject interactor) { }
         public virtual void InteractNegative(GameObject interactor) { }
 
-        public abstract void WeaponUseLogic();
+        public virtual void WeaponUseLogic()
+        {
+            _WeaponUseLogic();
+        }
+        public abstract void _WeaponUseLogic();
     }
 }
