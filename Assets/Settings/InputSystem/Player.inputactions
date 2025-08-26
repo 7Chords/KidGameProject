@@ -348,9 +348,18 @@
             "id": "fb36fb81-1cca-48c5-9563-d68afd4dce42",
             "actions": [
                 {
-                    "name": "Interaction",
+                    "name": "UI_Interaction",
                     "type": "Button",
                     "id": "c1e35a27-856a-4c52-b867-ddc95d671c6a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UI_Bag",
+                    "type": "Button",
+                    "id": "43308227-1c04-48c6-99e2-413a3bb805e3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -365,7 +374,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Interaction",
+                    "action": "UI_Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -376,7 +385,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Interaction",
+                    "action": "UI_Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da6151f5-8ce4-4bec-877a-969ece185626",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UI_Bag",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -220,12 +220,14 @@ namespace KidGame.Core
         {
             isGamePuased = true;
             Time.timeScale = 0;
+            MsgCenter.SendMsgAct(MsgConst.ON_CONTROL_MAP_CHG);
         }
 
         public void GameResume()
         {
             isGamePuased = false;
             Time.timeScale = 1;
+            MsgCenter.SendMsgAct(MsgConst.ON_CONTROL_MAP_CHG);
         }
 
         #endregion

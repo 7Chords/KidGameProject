@@ -8,6 +8,7 @@ namespace KidGame.Core
 
         #region 输入相关 10开头
 
+        //游戏内操作 100开头
         public const int ON_INTERACTION_PRESS = 10001;//输入 - 交互键按下
         public const int ON_DASH_PRESS = 10002;//输入 - 冲刺键按下
         public const int ON_RUN_PRESS = 10003;//输入 - 奔跑键按下
@@ -21,8 +22,11 @@ namespace KidGame.Core
         public const int ON_GAMEPAUSE_PRESS = 10011;//输入 - 暂停键按下
         public const int ON_MOUSEWHEEL_PRESS = 10012;//输入 - 鼠标滚轮键按下
         public const int ON_INTERACTION_PRESS_WITHOUT_TIME = 10013;//输入 - 交互键按下不知道干嘛用
-
-
+        
+        //UI操作 101开头
+        public const int ON_UI_INTERACTION_PRESS = 10101;//输入 - 交互键按下
+        public const int ON_UI_BAG_PRESS = 10102;//输入 - 背包键按下
+        
         #endregion
 
 

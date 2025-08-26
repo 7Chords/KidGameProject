@@ -10,6 +10,12 @@ using Utils;
 
 namespace KidGame.UI
 {
+
+    public class PopItemPanelCloseSignal : ASignal
+    {
+        
+    }
+    
     /// <summary>
     /// PlayerWindow属性类
     /// </summary>
@@ -83,8 +89,8 @@ namespace KidGame.UI
             _isPanelActive = true; // 标记面板为激活状态
             //todo
             //一键拾取失效
-            MsgCenter.RegisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, HidePopPanel);
-            
+            MsgCenter.RegisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, UI_OnGetAllClick);
+            Signals.Get<PopItemPanelCloseSignal>().AddListener(HidePopPanel);
             rectTransform = GetComponent<RectTransform>();
             scrollView = transform.Find("ItemContainer/ScrollView").GetComponent<UICircularScrollView>();
             scrollViewRectTransform = scrollView.GetComponent<RectTransform>();
@@ -116,8 +122,8 @@ namespace KidGame.UI
         protected override void WhileHiding()
         {
             _isPanelActive = false;
-            MsgCenter.UnregisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, HidePopPanel);
-
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, UI_OnGetAllClick);
+            Signals.Get<PopItemPanelCloseSignal>().RemoveListener(HidePopPanel);
             //GameManager.Instance.GameResume();
 
         }
@@ -225,9 +231,49 @@ namespace KidGame.UI
         /// </summary>
         public void UI_OnGetAllClick()
         {
+            if(Properties.items.Count == 0) return;
             bool isGetAll = true;
+            List<int> deleteIndices = new List<int>();
+            for (int i = 0; i < Properties.items.Count; i++)
+            {
+                ISlotInfo slotInfo = Properties.items[i];
+                if (slotInfo.ItemData != null)
+                {
+                    if (!PlayerBag.Instance.AddItemToCombineBag(slotInfo.ItemData.Id, slotInfo.ItemData.UseItemType,
+                            slotInfo.Amount))
+                    {
+                        UIHelper.Instance.ShowOneTip(new TipInfo("背包已满", PlayerController.Instance.transform.position));
+                        isGetAll = false;
+                        break;
+                    }
+                    else
+                    {
+                        deleteIndices.Add(i);
+                    }
+                }
+            }
+
+            // 第二遍：按倒序删除已拿取的物品，避免索引错误
+            if (deleteIndices.Count > 0)
+            {
+                // 按索引倒序排序，确保删除时不影响后续元素索引
+                deleteIndices.Sort((a, b) => b.CompareTo(a));
+        
+                foreach (int index in deleteIndices)
+                {
+                    if (index >= 0 && index < Properties.items.Count)
+                    {
+                        Properties.items.RemoveAt(index);
+                    }
+            
+                    if (index >= 0 && index < Properties.originItems.Count)
+                    {
+                        Properties.originItems.RemoveAt(index);
+                    }
+                }
+            }
             // 将容器中所有物品移动到背包
-            foreach (var item in Properties.items)
+            /*foreach (var item in Properties.items)
             {
                 if (item.ItemData != null)
                 {
@@ -247,7 +293,7 @@ namespace KidGame.UI
                 Properties.items.Clear();
                 Properties.originItems.Clear();
                 UIController.Instance.HidePanel(ScreenIds.PopItemContainerPanel);
-            }
+            }*/
             
             RefreshContainer();
             

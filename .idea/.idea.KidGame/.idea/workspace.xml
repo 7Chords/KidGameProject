@@ -5,28 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="676a01e3-15e8-4337-a6f3-0d98d749ae8b" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Window/PopItemContainerWindow.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Window/PopItemContainerWindow.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Window/PopItemContainerWindowController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Window/PopItemContainerWindowController.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Window/BackpackWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Window/BackpackWindow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/UI/UIFrame.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/UI/UIFrame.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Art/Fonts/Uranus_Pixel_11Px SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Fonts/Uranus_Pixel_11Px SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Art/Materials/Skybox/Day1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Materials/Skybox/Day1.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptObject/kidgame_game_data_config.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptObject/kidgame_game_data_config.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/UISettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/UISettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Demo/7CHORDS/sRSTz.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Demo/7CHORDS/sRSTz.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/Skills/Active/DashSkillNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/Skill/Skills/Active/DashSkillNode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InteractObject/Item/Furniture/Common/MapFurniture_CommonContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InteractObject/Item/Furniture/Common/MapFurniture_CommonContainer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/Data/FurnitureData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/Data/FurnitureData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Helper/UIHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Helper/UIHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Msg/MsgConst.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Msg/MsgConst.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/GamePauseWindows/BackpackWindowController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/GamePauseWindows/BackpackWindowController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenIds.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenIds.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/BackpackPanelController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/BackpackPanelController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/PopItemContainerPanelController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/PopItemContainerPanelController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/UIController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/UIController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/InputSystem/Player.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/InputSystem/Player.inputactions" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,10 +32,36 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/467a840a914a47078e4ae9b0b1e8779e46ac00/cc/20a57e35/Stack`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/58623c9461324266a5b7839460bb9d261c800/ca/c91ce684/Action.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/58623c9461324266a5b7839460bb9d261c800/f1/9b9bee07/Task.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f04748c410b64492ab0e2dbbe8d84e17175e00/a5/d644ef1b/Transform.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f04748c410b64492ab0e2dbbe8d84e17175e00/b1/09bd7c80/UnitySynchronizationContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Components/PanelDragController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f04748c410b64492ab0e2dbbe8d84e17175e00/d6/3849f364/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -57,7 +75,8 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "dev__Slime",
+    "XThreadsFramesViewSplitterKey": "0.41460234",
+    "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -83,10 +102,10 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="168660">
+    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="98144">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="168660" />
+      <option name="pid" value="98144" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -124,6 +143,15 @@
       <workItem from="1753839731526" duration="10379000" />
       <workItem from="1754100915768" duration="180000" />
       <workItem from="1754101266464" duration="9796000" />
+      <workItem from="1755508874277" duration="5807000" />
+      <workItem from="1755567111379" duration="4934000" />
+      <workItem from="1755950662247" duration="9679000" />
+      <workItem from="1756022728074" duration="5427000" />
+      <workItem from="1756035688780" duration="4646000" />
+      <workItem from="1756053866656" duration="1355000" />
+      <workItem from="1756113012421" duration="6532000" />
+      <workItem from="1756172016188" duration="3613000" />
+      <workItem from="1756175994549" duration="12526000" />
     </task>
     <servers />
   </component>
@@ -143,18 +171,70 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerBag.cs</url>
-          <line>307</line>
-          <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\Player\PlayerBag.cs" containingFunctionPresentation="方法 'MoveItemToQuickAccessBag'">
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/SoLoader/SoLoader.cs</url>
+          <line>65</line>
+          <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\SoLoader\SoLoader.cs" containingFunctionPresentation="方法 'GetDataById'">
             <startOffsets>
-              <option value="11712" />
+              <option value="2025" />
             </startOffsets>
             <endOffsets>
-              <option value="11829" />
+              <option value="2026" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="7" />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/SoLoader/SoLoader.cs</url>
+          <line>58</line>
+          <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\SoLoader\SoLoader.cs" containingFunctionPresentation="方法 'GetDataById'">
+            <startOffsets>
+              <option value="1781" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1844" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Game/LevelResManager.cs</url>
+          <line>76</line>
+          <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\Game\LevelResManager.cs" containingFunctionPresentation="方法 'InitializeFurnitureMaterials'">
+            <startOffsets>
+              <option value="2604" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2911" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/PopItemContainerPanelController.cs</url>
+          <line>117</line>
+          <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\UI\ScreenControllers\Panel\PopItemContainerPanelController.cs" containingFunctionPresentation="方法 'HidePopPanel'">
+            <startOffsets>
+              <option value="3708" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3773" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs</url>
+          <line>141</line>
+          <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\Player\Input\InputSetting.cs" containingFunctionPresentation="方法 'OnInteractionActionPerformed'">
+            <startOffsets>
+              <option value="5675" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5730" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

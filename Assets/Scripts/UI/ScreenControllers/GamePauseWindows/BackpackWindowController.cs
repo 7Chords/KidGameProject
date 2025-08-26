@@ -63,20 +63,18 @@ public class BackpackWindowController : WindowController<BackpackProp>
 
     public override void UI_Close()
     {
+        //MsgCenter.SendMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME);
         base.UI_Close();
-        GameManager.Instance.GameResume();
+        
     }
 
-    private void AddCloseAction()
-    {
-        MsgCenter.RegisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, UI_Close);
-    }
+
     protected override void OnPropertiesSet()
     {
-        GameManager.Instance.GamePause();
+        
         scrollView = transform.Find("BackPag/ScrollView").GetComponent<UICircularScrollView>();
         pocketScrollView = transform.Find("PlayerPocket/ScrollView").GetComponent<UICircularScrollView>();
-
+        
         _tempSlotInfos = PlayerBag.Instance.GetQuickAccessBag();
         _materialSlotInfos = PlayerBag.Instance.BackBag.Where(x => x.ItemData.UseItemType == KidGame.UseItemType.Material)
             .Cast<MaterialSlotInfo>().ToList();
@@ -88,11 +86,7 @@ public class BackpackWindowController : WindowController<BackpackProp>
     }
     
     
-    protected override void WhileHiding()
-    {
-
-        MsgCenter.UnregisterMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME, UI_Close);
-    }
+    
 
     private void OnBagCellClick(GameObject cell, int index)
     {

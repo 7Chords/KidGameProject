@@ -53,6 +53,8 @@ public class BackpackPanelController : PanelController
         if (UIController.Instance.GetCurrentWindowScreenId() == ScreenIds.BackpackWindow&&!gameObject.activeInHierarchy)
         {
             Signals.Get<CloseBackpackWindowSignal>().Dispatch();
+            Signals.Get<PopItemPanelCloseSignal>().Dispatch();
+            GameManager.Instance.GameResume();
             return;
         }
         if (gameObject.activeInHierarchy)

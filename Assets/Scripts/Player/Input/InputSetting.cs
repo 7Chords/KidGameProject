@@ -21,6 +21,9 @@ namespace KidGame.Core
         private InputAction pickAction;
         private InputAction mouseWheelAction;
         private InputAction gamePauseAction;
+        
+        private InputAction UI_bagAction;
+        private InputAction UI_interactionAction;
 
         private void Awake()
         {
@@ -47,10 +50,15 @@ namespace KidGame.Core
             gamePauseAction = inputActionAsset.FindAction("GamePause");
 
 
+            UI_bagAction = inputActionAsset.FindAction("UI_Bag");
+            UI_interactionAction = inputActionAsset.FindAction("UI_Interaction");
+            
             //这个交互键设置成按下开始响应 防止开容器的e和一键拾取的e分不清
-            interactionAction.performed += OnInteractActionPerformedWithoutTime;
+            
             interactionAction.performed += OnInteractionActionPerformed;
 
+            UI_interactionAction.performed += OnInteractActionPerformedWithoutTime;
+            UI_bagAction.performed += OnUIBagActionPerformed;
 
             dashAction.performed += OnDashActionPerformed;
             runAction.performed += OnRunActionPerformed;
@@ -69,7 +77,7 @@ namespace KidGame.Core
         }
         private void Discard()
         {
-            interactionAction.performed -= OnInteractActionPerformedWithoutTime;    
+             
             interactionAction.performed -= OnInteractionActionPerformed;
             dashAction.performed -= OnDashActionPerformed;
             runAction.performed -= OnRunActionPerformed;
@@ -81,6 +89,9 @@ namespace KidGame.Core
             mouseWheelAction.performed -= OnMouseWheelActionPerformed;
             gamePauseAction.performed -= OnGamePauseActionPerformed;
 
+            UI_interactionAction.performed -= OnInteractActionPerformedWithoutTime;
+            UI_bagAction.performed -= OnUIBagActionPerformed;
+            
             this.RemoveUpdate(CheckMouseWheelValueChange);
             MsgCenter.UnregisterMsgAct(MsgConst.ON_CONTROL_MAP_CHG, OnInputMapChg);
 
@@ -122,9 +133,17 @@ namespace KidGame.Core
 
         private void OnInteractionActionPerformed(InputAction.CallbackContext context)
         {
-            MsgCenter.SendMsgAct(MsgConst.ON_INTERACTION_PRESS);
+            if (currentControlMap == ControlMap.GameMap)
+            {
+                MsgCenter.SendMsgAct(MsgConst.ON_INTERACTION_PRESS);
+            }
+            else
+            {
+                MsgCenter.SendMsgAct(MsgConst.ON_UI_INTERACTION_PRESS);
+            }
+            
         }
-        //无视时间缩放的互动事件
+        //在UImap状态下的互动事件
         private void OnInteractActionPerformedWithoutTime(InputAction.CallbackContext context)
         {
             // 只在按压完成时触发一次（需要配合前面设置的"press"交互类型）
@@ -172,7 +191,14 @@ namespace KidGame.Core
         {
             MsgCenter.SendMsgAct(MsgConst.ON_BAG_PRESS);
         }
+        
+        private void OnUIBagActionPerformed(InputAction.CallbackContext context)
+        {
+            MsgCenter.SendMsgAct(MsgConst.ON_BAG_PRESS);
+        }
 
+        
+        
         private void OnPickActionPerformed(InputAction.CallbackContext context)
         {
             MsgCenter.SendMsgAct(MsgConst.ON_PICK_PRESS);

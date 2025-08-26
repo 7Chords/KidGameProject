@@ -125,6 +125,7 @@ namespace KidGame.UI.Game
             popItemContainerProp.column = columnCount;
             uiFrame.OpenWindow(ScreenIds.BackpackWindow,new BackpackProp(popItemContainerProp.items));
             uiFrame.ShowPanel(ScreenIds.PopItemContainerPanel,popItemContainerProp);
+            GameManager.Instance.GamePause();
         }
         
         #endregion
