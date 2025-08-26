@@ -11,6 +11,11 @@ namespace KidGame.core
         {
             
         }
+
+        public override void _WeaponUseLogic()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 }
