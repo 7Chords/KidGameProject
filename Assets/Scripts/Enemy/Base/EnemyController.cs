@@ -124,7 +124,14 @@ namespace KidGame.Core
         {
             enemyBaseData = enemyData;
             curSanity = enemyBaseData.MaxSanity;
-            
+
+            playerController = FindObjectOfType<PlayerController>();
+
+            player = playerController.gameObject.transform;
+
+            enemyBuffHandler = new BuffHandler();
+            enemyBuffHandler.Init();
+
             // 获取或创建hud控制器
             enemyHUDController = FindObjectOfType<EnemyHUDController>();
             if (enemyHUDController == null)
@@ -136,15 +143,6 @@ namespace KidGame.Core
             // 注册到hud
             enemyHUDController.RegisterEnemy(this);
             
-            //stateMachine = PoolManager.Instance.GetObject<StateMachine>();
-            //stateMachine.Init(this);
-            //ChangeState(EnemyState.Idle); // 初始状态
-            playerController = FindObjectOfType<PlayerController>();
-
-            player = playerController.gameObject.transform;
-
-            enemyBuffHandler = new BuffHandler();
-            enemyBuffHandler.Init();
 
             List<RoomInfo> allRoomInfos = MapManager.Instance.GetAllRooms();
             _roomsToCheck = allRoomInfos

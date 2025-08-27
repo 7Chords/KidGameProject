@@ -6,8 +6,8 @@ namespace KidGame.Core
 {
     public class ElectricTrolley : TrapBase
     {
-        public float Power;
-        public float PowerCostPerSecond;
+        //public float Power;
+        //public float PowerCostPerSecond;
         public float Speed;
         public float Damage;
         public Vector3 HalfDamageArea;
@@ -25,7 +25,7 @@ namespace KidGame.Core
         public override void Trigger()
         {
             base.Trigger();
-            trapData.deadDelayTime = Power / PowerCostPerSecond;
+            //trapData.deadDelayTime = Power / PowerCostPerSecond;
             Vector3 noFixDir = (transform.position - interactor.transform.position).normalized;
             dir = new Vector3(noFixDir.x, 0, noFixDir.z);
             transform.rotation = Quaternion.LookRotation(dir);
