@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using KidGame.UI;
@@ -15,9 +16,26 @@ namespace KidGame.Core
         public Image cooldownOverlay;
         public Text stackCountText;
         
-        private BuffInfo currentBuffInfo;
-        private Coroutine tooltipCoroutine;
+        [Header("测试Buff数据")]
+        public Sprite testIcon;
+        public string buffName = "测试Buff";
+        public string buffDescription = "这是一个测试Buff的描述信息，用于验证Tooltip功能是否正常工作";
         
+        private BuffInfo currentBuffInfo;
+        private BuffData testBuffData;
+        private bool isShowingTooltip = false;
+
+        private void Start()
+        {
+            testBuffData = ScriptableObject.CreateInstance<BuffData>();
+            testBuffData.id = "test_buff";
+            testBuffData.buffName = buffName;
+            testBuffData.description = buffDescription;
+            testBuffData.icon = testIcon;
+            testBuffData.maxStack = 3;
+            testBuffData.isForever = true;
+        }
+
         public void Initialize(BuffInfo buffInfo, bool showStack, bool showDur)
         {
             currentBuffInfo = buffInfo;
@@ -62,54 +80,54 @@ namespace KidGame.Core
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("OnPointerEnter");
-            if (tooltipCoroutine != null)
+            if (!isShowingTooltip)
             {
-                StopCoroutine(tooltipCoroutine);
+                ShowTooltip();
             }
-            tooltipCoroutine = StartCoroutine(ShowTooltipAfterDelay(0.5f));
         }
         
         public void OnPointerExit(PointerEventData eventData)
         {
-            Debug.Log("OnPointerExit");
-            if (tooltipCoroutine != null)
-            {
-                StopCoroutine(tooltipCoroutine);
-            }
             HideTooltip();
-        }
-        
-        private IEnumerator ShowTooltipAfterDelay(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            ShowTooltip();
         }
         
         private void ShowTooltip()
         {
+            if (UIHelper.Instance == null) return;
+            
+            isShowingTooltip = true;
+            
             if (currentBuffInfo != null && currentBuffInfo.buffData != null)
             {
-                var tempCell = new GameObject("TempBuffCell").AddComponent<CellUI>();
-                tempCell.detailPoint = this.transform as RectTransform;
-                tempCell.detailText = $"<b>{currentBuffInfo.buffData.buffName}</b>\n{currentBuffInfo.buffData.description}";
-                
-                UIHelper.Instance.ShowItemDetail(tempCell);
+                UIHelper.Instance.ShowBuffDetail(
+                    this.transform,
+                    currentBuffInfo.buffData.buffName,
+                    currentBuffInfo.buffData.description
+                );
+            }
+            else
+            {
+                // 使用测试数据
+                UIHelper.Instance.ShowBuffDetail(
+                    this.transform,
+                    buffName,
+                    buffDescription
+                );
             }
         }
         
         private void HideTooltip()
         {
-            UIHelper.Instance.HideItemDetail();
+            if (UIHelper.Instance != null && isShowingTooltip)
+            {
+                UIHelper.Instance.HideBuffDetail();
+                isShowingTooltip = false;
+            }
         }
         
         private void OnDestroy()
         {
             HideTooltip();
-            if (tooltipCoroutine != null)
-            {
-                StopCoroutine(tooltipCoroutine);
-            }
         }
 
         #endregion

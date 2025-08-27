@@ -6,6 +6,7 @@ using DG.Tweening;
 using KidGame.UI.Game;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace KidGame.UI
@@ -337,6 +338,51 @@ namespace KidGame.UI
             detailPanel.SetActive(false);
         }
         
+        #endregion
+        
+        #region Buff Tooltip
+
+        [Header("Buff Tooltip")]
+        public GameObject buffTooltipPrefab;
+        private GameObject currentBuffTooltip;
+        
+        /// <summary>
+        /// 显示Buff详情
+        /// </summary>
+        public void ShowBuffDetail(Transform position, string buffName, string description)
+        {
+            HideBuffDetail();
+
+            currentBuffTooltip = Instantiate(buffTooltipPrefab, transform);
+            currentBuffTooltip.transform.SetAsLastSibling();
+            
+            currentBuffTooltip.transform.position = position.position;
+
+            Text detailText = currentBuffTooltip.GetComponentInChildren<Text>();
+            if (detailText != null)
+            {
+                detailText.text = $"<b>{buffName}</b>\n{description}";
+            }
+    
+            currentBuffTooltip.SetActive(true);
+
+            currentBuffTooltip.transform.localScale = Vector3.zero;
+            currentBuffTooltip.transform.DOScale(Vector3.one, 0.2f);
+        }
+
+        /// <summary>
+        /// 隐藏Buff详情
+        /// </summary>
+        public void HideBuffDetail()
+        {
+            if (currentBuffTooltip != null)
+            {
+                currentBuffTooltip.transform.DOScale(Vector3.zero, 0.2f)
+                    .OnComplete(() => Destroy(currentBuffTooltip));
+                currentBuffTooltip = null;
+            }
+        }
+
         #endregion
 
         #region Progress

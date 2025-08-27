@@ -268,6 +268,8 @@ MonoBehaviour:
   CenterShowPos: {fileID: 0}
   CircleProgressPrefab: {fileID: 4911077471963055430, guid: c4565201eaffcf84d9cc33c69b5a7259,
     type: 3}
+  buffTooltipPrefab: {fileID: 3433352824515074510, guid: 1c67410ac16174fb0884aa1720ef0dd9,
+    type: 3}
 --- !u!114 &52961981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -523,7 +525,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1185822830}
+      objectReference: {fileID: 1200894617}
     - target: {fileID: 9205371885998440386, guid: e96cffa9d00b6b545adfeb26165952cc,
         type: 3}
       propertyPath: orthographic size
@@ -820,7 +822,7 @@ Transform:
   - {fileID: 1418076736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1185822830
+--- !u!84 &1200894617
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1931,8 +1933,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 52961979}
   - {fileID: 1446369692}
+  - {fileID: 52961979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
