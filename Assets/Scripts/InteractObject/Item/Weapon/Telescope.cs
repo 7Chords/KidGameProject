@@ -8,10 +8,5 @@ namespace KidGame.core
         {
             throw new System.NotImplementedException();
         }
-
-        public override void _WeaponUseLogic()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
