@@ -21,7 +21,6 @@ namespace KidGame.Core
         public const int ON_MOUSEWHEEL_VALUE_CHG = 10010;//输入 - 鼠标滚轮值改变
         public const int ON_GAMEPAUSE_PRESS = 10011;//输入 - 暂停键按下
         public const int ON_MOUSEWHEEL_PRESS = 10012;//输入 - 鼠标滚轮键按下
-        public const int ON_INTERACTION_PRESS_WITHOUT_TIME = 10013;//输入 - 交互键按下不知道干嘛用
         
         //UI操作 101开头
         public const int ON_UI_INTERACTION_PRESS = 10101;//输入 - 交互键按下

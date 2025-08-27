@@ -58,7 +58,7 @@ namespace KidGame.Core
             
             interactionAction.performed += OnInteractionActionPerformed;
 
-            UI_interactionAction.performed += OnInteractActionPerformedWithoutTime;
+            UI_interactionAction.performed += OnInteractionActionPerformed;
             UI_bagAction.performed += OnUIBagActionPerformed;
 
             dashAction.performed += OnDashActionPerformed;
@@ -90,7 +90,7 @@ namespace KidGame.Core
             mouseWheelAction.performed -= OnMouseWheelActionPerformed;
             gamePauseAction.performed -= OnGamePauseActionPerformed;
 
-            UI_interactionAction.performed -= OnInteractActionPerformedWithoutTime;
+            UI_interactionAction.performed -= OnInteractionActionPerformed;
             UI_bagAction.performed -= OnUIBagActionPerformed;
             
             this.RemoveUpdate(CheckMouseWheelValueChange);
@@ -140,15 +140,10 @@ namespace KidGame.Core
             }
             else
             {
+                Debug.Log("<<<UI MAP-->send ON_UI_INTERACTION_PRESS");
                 MsgCenter.SendMsgAct(MsgConst.ON_UI_INTERACTION_PRESS);
             }
             
-        }
-        //在UImap状态下的互动事件
-        private void OnInteractActionPerformedWithoutTime(InputAction.CallbackContext context)
-        {
-            // 只在按压完成时触发一次（需要配合前面设置的"press"交互类型）
-            MsgCenter.SendMsgAct(MsgConst.ON_INTERACTION_PRESS_WITHOUT_TIME);
         }
 
         private void OnDashActionPerformed(InputAction.CallbackContext context)

@@ -152,8 +152,6 @@ namespace KidGame.Core
             MsgCenter.RegisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.RegisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-            
-            MsgCenter.RegisterMsgAct(MsgConst.ON_UI_INTERACTION_PRESS, UIInteraction);
            
         }
 
@@ -170,8 +168,7 @@ namespace KidGame.Core
             MsgCenter.UnregisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.UnregisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-            
-            MsgCenter.UnregisterMsgAct(MsgConst.ON_UI_INTERACTION_PRESS, UIInteraction);
+           
         }
 
         #endregion
@@ -289,14 +286,6 @@ namespace KidGame.Core
         public void TryUseWeaponUseLongPress()
         {
             //Logic
-        }
-        
-        /// <summary>
-        /// 玩家UI交互
-        /// </summary>
-        public void UIInteraction()
-        {
-            
         }
         
         /// <summary>
