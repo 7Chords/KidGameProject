@@ -415,17 +415,35 @@ namespace KidGame.Core
             else if(slotInfo.ItemData is WeaponData weaponData)
             {
                 if (currentWeaponData != null && weaponData.id == currentWeaponData.id) return;
-                // 如果不是重复的 销毁现在的 取得新的
-                DiscardWeapon();
-                currentWeapon = SpawnWeaponOnHand(
-                    weaponData,
-                    this.transform.rotation
-                    );
-                
+                // 消耗品  远程
+                if (weaponData.useType == 0 && weaponData.weaponType == 1)
+                {
+
+                    // 如果不是重复的 销毁现在的 取得新的
+                    DiscardWeapon();
+                    currentWeapon = SpawnThrowWeapon(
+                        weaponData,
+                        this.transform.rotation
+                        );
+                }
+                //可多次使用   近战
+                else if(weaponData.useType == 1 && weaponData.weaponType == 0)
+                {
+                    DiscardWeapon();
+                    currentWeapon = SpawnOnHandWeapon(
+                        weaponData,
+                        this.transform.rotation
+                        );
+                }
+ 
             }
             
         }
 
+        public  GameObject GetCurWeapon()
+        {
+            return currentWeapon;
+        }
         public void DiscardWeapon()
         {
             if(currentWeapon!=null)
@@ -457,7 +475,26 @@ namespace KidGame.Core
         }
 
         //生成在手上的武器 但是不执行逻辑
-        public GameObject SpawnWeaponOnHand(WeaponData weaponData, Quaternion rotation)
+        public GameObject SpawnThrowWeapon(WeaponData weaponData, Quaternion rotation)
+        {
+
+            if (SpawnAndUseThrowWeaponPoint == null) return null;
+
+            GameObject newWeapon = WeaponFactory.CreateEntity(
+                weaponData
+                , SpawnAndUseThrowWeaponPoint.position
+                , this.transform);
+
+            if (newWeapon != null)
+            {
+                newWeapon.transform.rotation = rotation;
+            }
+            // 在手上的话 启用渲染
+            LineRenderer lineRenderer = newWeapon.GetComponent<LineRenderer>();
+            if(lineRenderer != null) { lineRenderer.enabled = true; }
+            return newWeapon;
+        }
+        public GameObject SpawnOnHandWeapon(WeaponData weaponData, Quaternion rotation)
         {
 
             if (SpawnAndUseThrowWeaponPoint == null) return null;
@@ -467,12 +504,12 @@ namespace KidGame.Core
                 weaponData
                 , SpawnAndUseThrowWeaponPoint.position
                 , this.transform);
+
             if (newWeapon != null)
             {
                 newWeapon.transform.rotation = rotation;
             }
-            // 在手上的话 启用渲染
-            newWeapon.GetComponent<LineRenderer>().enabled = true;
+
             return newWeapon;
         }
 

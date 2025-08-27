@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using KidGame.Core;
 using KidGame.UI;
@@ -13,7 +13,7 @@ namespace KidGame.Core
             GameObject weaponPrefab = Resources.Load<GameObject>("Weapon/" + weaponData.name);
             if (weaponPrefab == null)
             {
-                Debug.LogWarning($"ÕÒ²»µ½ÎäÆ÷Ô¤ÖÆÌå: {weaponData.name}");
+                Debug.LogWarning($"æ‰¾ä¸åˆ°æ­¦å™¨é¢„åˆ¶ä½“: {weaponData.name}");
                 return null;
             }
             WeaponBase weapon = null;
@@ -21,19 +21,19 @@ namespace KidGame.Core
                 , position
                 , Quaternion.identity
                 , parent);
+
             if (weaponObj != null)
                 weapon = weaponObj.GetComponent<WeaponBase>();
             else Debug.LogError("weaponObj == NULL!!!");
 
             if (weapon == null)
             {
-                Debug.LogWarning($"Ô¤ÖÆÌå {weaponData.id} Ã»ÓĞTrapBase×é¼ş");
+                Debug.LogWarning($"é¢„åˆ¶ä½“ {weaponData.id} æ²¡æœ‰TrapBaseç»„ä»¶");
                 Object.Destroy(weaponObj);
                 return null;
             }
-            weapon.InitWeaponData(weaponData);
-            weapon.GetComponent<LineRenderer>().enabled = false;
-            weapon.SetOnHandOrNot(true);
+            weapon.InitWeaponData(weaponData);// åˆå§‹åŒ–è¯»é…è¡¨æ•°æ®
+            weapon.SetIsNotUse(true); // åˆå§‹åŒ–ä¸ºè¿˜æœªä½¿ç”¨
             return weaponObj;
         }
 

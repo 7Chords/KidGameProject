@@ -148,7 +148,7 @@ namespace KidGame.Core
 {
     public abstract class WeaponBase : MapItem, IInteractive
     {
-        protected bool isOnHand = true;
+        protected bool isNotUse = true;
         protected WeaponData _weaponData;
         protected GameObject self;
         public override string EntityName { get => _weaponData.name; }
@@ -163,7 +163,6 @@ namespace KidGame.Core
 
         protected virtual void Update()
         {
-            WeaponUseLogic();
         }
         public virtual void InitWeaponData(WeaponData weaponData)
         {
@@ -180,12 +179,12 @@ namespace KidGame.Core
             Destroy(gameObject);
         }
 
-        public virtual void SetOnHandOrNot(bool onHand)
+        public virtual void SetIsNotUse(bool _isNotUse)
         {
-            isOnHand = onHand;
+            isNotUse = _isNotUse;
         }
 
-        public bool GetOnHandOrNot() => isOnHand;
+        public bool GetIsNotUse() => isNotUse;
 
         public virtual void InteractPositive(GameObject interactor) { }
         public virtual void InteractNegative(GameObject interactor) { }

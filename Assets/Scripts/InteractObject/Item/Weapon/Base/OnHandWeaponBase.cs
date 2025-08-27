@@ -6,10 +6,12 @@ namespace KidGame.Core
 {
     public class OnHandWeaponBase : WeaponBase
     {
-        public override void _WeaponUseLogic()
+        protected override void Update()
         {
-            
+            WeaponUseLogic();
         }
+
+        public override void _WeaponUseLogic() { }
 
     }
 }

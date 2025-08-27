@@ -44,11 +44,11 @@ namespace KidGame.Core
                     //如果是长按使用类型的
                     if (weaponItem.weaponData.longOrShortPress == 0)
                     {
-                        //Logic
+                        canUseItem = PlayerBag.Instance.UseWeaponPress(selectedItem);
                     }
                     else
                     {
-                        canUseItem = PlayerBag.Instance.UseWeapon(selectedItem
+                        canUseItem = PlayerBag.Instance.UseWeaponShortClick(selectedItem
                             , PlayerController.Instance.SpawnAndUseThrowWeaponPoint.position
                             , rotation);
                     }

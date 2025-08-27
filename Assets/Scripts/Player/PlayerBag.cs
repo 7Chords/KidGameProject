@@ -1,4 +1,4 @@
-using KidGame.UI;
+ï»¿using KidGame.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ namespace KidGame.Core
 {
 
     /// <summary>
-    /// ±³°üÎïÆ·»ùÀà½Ó¿Ú£¬ÓÃÓÚÍ³Ò»²»Í¬ÀàĞÍµÄÎïÆ·Êı¾İ
+    /// èƒŒåŒ…ç‰©å“åŸºç±»æ¥å£ï¼Œç”¨äºç»Ÿä¸€ä¸åŒç±»å‹çš„ç‰©å“æ•°æ®
     /// </summary>
     public interface BagItemInfoBase
     {
@@ -17,7 +17,7 @@ namespace KidGame.Core
     }
 
     /// <summary>
-    /// ±³°ü²ÛÎ»ĞÅÏ¢½Ó¿Ú
+    /// èƒŒåŒ…æ§½ä½ä¿¡æ¯æ¥å£
     /// </summary>
     public interface ISlotInfo
     {
@@ -25,7 +25,7 @@ namespace KidGame.Core
         int Amount { get; set; }
     }
 
-    #region ¸÷ÀàÎïÆ·²ÛÎ»ĞÅÏ¢
+    #region å„ç±»ç‰©å“æ§½ä½ä¿¡æ¯
 
     [Serializable]
     public class TrapSlotInfo : ISlotInfo
@@ -78,17 +78,17 @@ namespace KidGame.Core
     #endregion
 
     /// <summary>
-    /// Íæ¼Ò±³°üºËĞÄÀà£¨µ¥ÀıÄ£Ê½£©
+    /// ç©å®¶èƒŒåŒ…æ ¸å¿ƒç±»ï¼ˆå•ä¾‹æ¨¡å¼ï¼‰
     /// </summary>
     public class PlayerBag : Singleton<PlayerBag>
     {
-        #region ±³°ü½á¹¹
+        #region èƒŒåŒ…ç»“æ„
 
-        public List<ISlotInfo> QuickAccessBag;//µÀ¾ßÀ¸£¬×î¶à4¸ö
-        public List<ISlotInfo> BackBag;//¿â´æ±³°ü
+        public List<ISlotInfo> QuickAccessBag;//é“å…·æ ï¼Œæœ€å¤š4ä¸ª
+        public List<ISlotInfo> BackBag;//åº“å­˜èƒŒåŒ…
 
-        //TIPS:Èç¹ûÔÚ·½·¨ÃûÖĞ¿´µ½combineBagµÄÃû³Æ ¾ÍÊÇÉÏÃæÁ½¸öÁĞ±í¶¼»áÈ¥²éÕÒ
-        //±ÈÈçÒªÉ¾³ıÄ³¸öidµÄµÀ¾ß¾ÍÊÇÒªÁ½¸ö¶¼È¥ÕÒ ¼ÓÈëÏÈ¼ÓµÀ¾ßÀ¸ÔÙ¼Ó±³°ü
+        //TIPS:å¦‚æœåœ¨æ–¹æ³•åä¸­çœ‹åˆ°combineBagçš„åç§° å°±æ˜¯ä¸Šé¢ä¸¤ä¸ªåˆ—è¡¨éƒ½ä¼šå»æŸ¥æ‰¾
+        //æ¯”å¦‚è¦åˆ é™¤æŸä¸ªidçš„é“å…·å°±æ˜¯è¦ä¸¤ä¸ªéƒ½å»æ‰¾ åŠ å…¥å…ˆåŠ é“å…·æ å†åŠ èƒŒåŒ…
 
         #endregion
 
@@ -96,12 +96,12 @@ namespace KidGame.Core
 
 
 
-        #region µ±Ç°Ñ¡ÖĞµÀ¾ßË÷ÒıÂß¼­
+        #region å½“å‰é€‰ä¸­é“å…·ç´¢å¼•é€»è¾‘
 
 
         private int _selectedIndex = 0;
 
-        //SelectedIndexÓÀÔ¶Ö»»á±»Êó±ê¹öÂÖ½øĞĞÉèÖÃ ÔÚGamePlayPanelControllerÖĞ½øĞĞÉèÖÃ
+        //SelectedIndexæ°¸è¿œåªä¼šè¢«é¼ æ ‡æ»šè½®è¿›è¡Œè®¾ç½® åœ¨GamePlayPanelControllerä¸­è¿›è¡Œè®¾ç½®
         public int SelectedIndex
         {
             get => _selectedIndex;
@@ -123,10 +123,10 @@ namespace KidGame.Core
                         WeaponData weapon => weapon.name,
                         FoodData food => food.foodName,
                         MaterialData mat => mat.materialName,
-                        _ => "Î´ÖªÎïÆ·"
+                        _ => "æœªçŸ¥ç‰©å“"
                     };
 
-                    UIHelper.Instance.ShowOneTip(new TipInfo($"ÒÑÑ¡Ôñ: {itemName}", PlayerController.Instance.transform.position));
+                    UIHelper.Instance.ShowOneTip(new TipInfo($"å·²é€‰æ‹©: {itemName}", PlayerController.Instance.transform.position));
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace KidGame.Core
         #endregion
 
 
-        #region ×¢²áÓë·´×¢²á
+        #region æ³¨å†Œä¸åæ³¨å†Œ
 
         public void Init()
         {
@@ -160,11 +160,11 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ¹«¹²·½·¨½Ó¿Ú
+        #region å…¬å…±æ–¹æ³•æ¥å£
         public List<ISlotInfo> GetQuickAccessBag() => QuickAccessBag;
 
         /// <summary>
-        /// ¼ÓÔØ´æµµÖĞµÄ±³°üÊı¾İ todo:guihuala
+        /// åŠ è½½å­˜æ¡£ä¸­çš„èƒŒåŒ…æ•°æ® todo:guihuala
         /// </summary>
         public void LoadBagData(List<TrapSlotInfo> trapSlots, List<MaterialSlotInfo> materialSlots)
         {
@@ -177,11 +177,11 @@ namespace KidGame.Core
 
 
         /// <summary>
-        /// ³¢ÊÔ´Ó±³°ü(°üÀ¨¿â´æºÍµÀ¾ßÀ¸)ÖĞÉ¾³ıÖ¸¶¨¸öÊıµÄµÀ¾ß
+        /// å°è¯•ä»èƒŒåŒ…(åŒ…æ‹¬åº“å­˜å’Œé“å…·æ )ä¸­åˆ é™¤æŒ‡å®šä¸ªæ•°çš„é“å…·
         /// </summary>
-        /// <param name="itemId">µÀ¾ßid</param>
-        /// <param name="delAmount">ÒªÉ¾³ıµÄÊıÁ¿</param>
-        /// <returns>ÊÇ·ñÒÆ³ı³É¹¦</returns>
+        /// <param name="itemId">é“å…·id</param>
+        /// <param name="delAmount">è¦åˆ é™¤çš„æ•°é‡</param>
+        /// <returns>æ˜¯å¦ç§»é™¤æˆåŠŸ</returns>
         public bool DeleteItemInCombineBag(string itemId, int delAmount)
         {
             if (string.IsNullOrEmpty(itemId) || delAmount <= 0) return false;
@@ -211,7 +211,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ¼ì²é±³°üÊÇ·ñÓĞÒ»¶¨ÊıÁ¿µÄÄ³¸öÎïÆ·
+        /// æ£€æŸ¥èƒŒåŒ…æ˜¯å¦æœ‰ä¸€å®šæ•°é‡çš„æŸä¸ªç‰©å“
         /// </summary>
         /// <param name="itemId"></param>
         /// <param name="delAmount"></param>
@@ -230,7 +230,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// Ìí¼ÓÎïÆ·µ½±³°ü£¨ÏÈ¼Óµ½µÀ¾ßÀ¸ ÂúÁË²Åµ½±³°ü£©
+        /// æ·»åŠ ç‰©å“åˆ°èƒŒåŒ…ï¼ˆå…ˆåŠ åˆ°é“å…·æ  æ»¡äº†æ‰åˆ°èƒŒåŒ…ï¼‰
         /// </summary>
         /// <param name="itemId"></param>
         /// <param name="itemType"></param>
@@ -263,7 +263,7 @@ namespace KidGame.Core
                     default:
                         break;
                 }
-                //µ±Ç°Ñ¡ÖĞµÄÎïÆ·À¸´ÓÎŞµ½ÓĞ ÂíÉÏË¢ĞÂ
+                //å½“å‰é€‰ä¸­çš„ç‰©å“æ ä»æ— åˆ°æœ‰ é©¬ä¸Šåˆ·æ–°
                 if(QuickAccessBag.Count == SelectedIndex + 1)
                 {
                     MsgCenter.SendMsg(MsgConst.ON_SELECT_ITEM, QuickAccessBag[SelectedIndex]);
@@ -271,7 +271,7 @@ namespace KidGame.Core
             }
             else if(BackBag.Count<GlobalValue.BACKPACK_CAPACITY)
             {
-                // µÀ¾ßÀ¸ÒÑÂú£¬×ªÒÆÖÁ±³°ü
+                // é“å…·æ å·²æ»¡ï¼Œè½¬ç§»è‡³èƒŒåŒ…
                 switch (itemType)
                 {
                     case UseItemType.trap:
@@ -299,7 +299,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region Ê°È¡ÓëÊ¹ÓÃÎïÆ·Âß¼­
+        #region æ‹¾å–ä¸ä½¿ç”¨ç‰©å“é€»è¾‘
 
         private void PlayerGetOneItem(object[] objs)
         {
@@ -314,42 +314,58 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// Ê¹ÓÃÏİÚå
+        /// ä½¿ç”¨é™·é˜±
         /// </summary>
         //public bool UseTrap(ISlotInfo slot, Vector3 position, Quaternion rotation)
         //{
         //    if (!PlayerController.Instance.GetCanPlaceTrap())
         //    {
-        //        UIHelper.Instance.ShowOneTip(new TipInfo("ÕâÀïÎŞ·¨·ÅÖÃÏİÚå", PlayerController.Instance.gameObject));
+        //        UIHelper.Instance.ShowOneTip(new TipInfo("è¿™é‡Œæ— æ³•æ”¾ç½®é™·é˜±", PlayerController.Instance.gameObject));
         //        return false;
         //    }
         //    return true;
         //}
 
-        public bool UseWeapon(ISlotInfo slot, Vector3 position, Quaternion rotation)
+        public bool UseWeaponShortClick(ISlotInfo slot, Vector3 position, Quaternion rotation)
         {
+            // æŠ•æ·ç‰©ä½¿ç”¨çš„æ—¶å€™éœ€è¦ç”¨ç‰¹æ®Šçš„é€»è¾‘ å…¶ä»–ç‰©å“
             if (slot is WeaponSlotInfo weaponSlot)
             {
-                // Ïú»ÙÏÖÔÚµÄÊÖ³ÖÎäÆ÷ ²¢ÇÒ°ÑplayerÀïµÄÄÇ¸öÒıÓÃÖ¸Ïò¿Õ
-                PlayerController.Instance.DiscardWeapon();
-
-                GameObject newWeapon = WeaponFactory.CreateEntity(weaponSlot.weaponData, position, this.gameObject.transform);
-                WeaponBase curWeaponScript = newWeapon.GetComponent<WeaponBase>();
-                // Èç¹ûÊÇÔ¶³ÌµÄÏûºÄĞÔÎïÆ·:
-                if (newWeapon != null
-                    && curWeaponScript.weaponData.weaponType == 1
-                    && curWeaponScript.weaponData.useType == 0)
+                GameObject curWeapon = PlayerController.Instance.GetCurWeapon();
+                WeaponBase curWeaponScript = curWeapon.GetComponent<WeaponBase>();
+                if (curWeaponScript.weaponData.weaponType == 1 && curWeaponScript.weaponData.useType == 0)
                 {
-                    // ²»ÔÚÊÖÉÏ Çø±ğÓÚÑ¡ÔñÎïÆ·µÄÊ±ºò °ÑÕâ¸öÉú³ÉµÄÎäÆ÷Ö±½Ó¿ªÊ¼Ö÷ÒªÂß¼­
-                    newWeapon.transform.SetParent(null);
-                    newWeapon.transform.rotation = rotation;
-                    DeleteItemInCombineBag(slot.ItemData.Id, 1);
-                    curWeaponScript.SetOnHandOrNot(false);
-                    return true;
+                    // é”€æ¯ç°åœ¨çš„æ‰‹æŒæ­¦å™¨ å¹¶ä¸”æŠŠplayeré‡Œçš„é‚£ä¸ªå¼•ç”¨æŒ‡å‘ç©º
+                    PlayerController.Instance.DiscardWeapon();
+
+                    GameObject newWeapon = WeaponFactory.CreateEntity(weaponSlot.weaponData, position, this.gameObject.transform);
+                    WeaponBase newWeaponScript = newWeapon.GetComponent<WeaponBase>();
+                    // å¦‚æœæ˜¯è¿œç¨‹çš„æ¶ˆè€—æ€§ç‰©å“:
+                    if (newWeapon != null
+                        && newWeaponScript.weaponData.weaponType == 1
+                        && newWeaponScript.weaponData.useType == 0)
+                    {
+                        // ä¸åœ¨æ‰‹ä¸Š åŒºåˆ«äºé€‰æ‹©ç‰©å“çš„æ—¶å€™ æŠŠè¿™ä¸ªç”Ÿæˆçš„æ­¦å™¨ç›´æ¥å¼€å§‹ä¸»è¦é€»è¾‘
+                        newWeapon.transform.SetParent(null);
+                        newWeapon.transform.rotation = rotation;
+                        newWeaponScript.SetIsNotUse(false);
+                        DeleteItemInCombineBag(slot.ItemData.Id, 1);
+                        return true;
+                    }
                 }
             }
             return false;
         }
+
+        public bool UseWeaponPress(ISlotInfo slot)
+        {
+            if (slot != null && slot is WeaponSlotInfo)
+            {
+                // å‘é€ä¸€ä¸ªé•¿æŒ‰å¼€å§‹çš„è®¯å· æ­¦å™¨å†…éƒ¨é€»è¾‘è®¢é˜…è¿™ä¸ªä¿¡æ¯
+            }
+                return false;
+        }
+
         public bool UseFood(ISlotInfo slot, PlayerController player) => false;
         public bool UseMaterial(ISlotInfo slot, PlayerController player) => false;
 
@@ -358,7 +374,7 @@ namespace KidGame.Core
 
 
 
-        #region µÀ¾ßÀ¸Óë±³°ü»¥»»Î»ÖÃ
+        #region é“å…·æ ä¸èƒŒåŒ…äº’æ¢ä½ç½®
 
         public void MoveItemToQuickAccessBag(int selectIndex)
         {
@@ -386,7 +402,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region µÀ¾ßÀ¸Óë¼Ò¾ßÈİÆ÷»¥»»Î»ÖÃ
+        #region é“å…·æ ä¸å®¶å…·å®¹å™¨äº’æ¢ä½ç½®
 
         public void MoveItemToItemContainer(int selectIndex,PopItemContainerProp prop)
         {

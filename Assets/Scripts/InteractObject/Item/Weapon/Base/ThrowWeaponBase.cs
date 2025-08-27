@@ -174,7 +174,7 @@ namespace KidGame.Core
             base.Start();
             InitLineRender();
             // 手持时强制禁用物理
-            if (isOnHand && rb != null)
+            if (isNotUse && rb != null)
             {
                 rb.isKinematic = true;
             }
@@ -182,14 +182,14 @@ namespace KidGame.Core
 
         protected override void Update()
         {
-            if (!isOnHand) WeaponUseLogic();
+            if (!isNotUse) WeaponUseLogic();
             else
             {
                 SetStartPoint();
                 SetEndPoint();
             }
             // 手持时保持物理禁用
-            if (isOnHand && rb != null && !rb.isKinematic)
+            if (isNotUse && rb != null && !rb.isKinematic)
             {
                 rb.isKinematic = true;
                 rb.velocity = Vector3.zero;
@@ -199,9 +199,9 @@ namespace KidGame.Core
             CheckIfReachCondition();
         }
 
-        public override void SetOnHandOrNot(bool onHand)
+        public override void SetIsNotUse(bool onHand)
         {
-            base.SetOnHandOrNot(onHand);
+            base.SetIsNotUse(onHand);
             // 发射后隐藏轨迹预览
             if (!onHand && lineRenderer != null)
                 lineRenderer.enabled = false;

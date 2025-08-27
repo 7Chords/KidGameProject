@@ -1,4 +1,4 @@
-/*using System.Collections;
+ï»¿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,16 +12,16 @@ namespace KidGame.Core
         private Collider enemyCollider = null;
 
 
-        #region ±´Èû¶ûÇúÏßÏà¹Ø±äÁ¿
-        private Vector3[] bezierPoints; // ±´Èû¶ûÇúÏßµã¼¯ºÏ
+        #region è´å¡å°”æ›²çº¿ç›¸å…³å˜é‡
+        private Vector3[] bezierPoints; // è´å¡å°”æ›²çº¿ç‚¹é›†åˆ
         private int currentPointIndex = 0;
         private bool isFollowingBezier = true;
-        private float bezierSpeed = 10f; // ±´Èû¶ûÇúÏßÒÆ¶¯ËÙ¶È
+        private float bezierSpeed = 10f; // è´å¡å°”æ›²çº¿ç§»åŠ¨é€Ÿåº¦
         private bool isSimulateEnd = false;
         #endregion
         protected override void Awake()
         {
-            // ³õÊ¼»¯±´Èû¶ûÇúÏß
+            // åˆå§‹åŒ–è´å¡å°”æ›²çº¿
             this.InitLineRender();
         }
 
@@ -34,7 +34,7 @@ namespace KidGame.Core
                 isFollowingBezier = bezierPoints.Length > 1;
                 if (isFollowingBezier)
                 {
-                    transform.position = bezierPoints[0]; // ÉèÖÃ³õÊ¼Î»ÖÃÎªµÚ1¸öµã
+                    transform.position = bezierPoints[0]; // è®¾ç½®åˆå§‹ä½ç½®ä¸ºç¬¬1ä¸ªç‚¹
                 }
                 for (int i = 1; i < bezierPoints.Length; i++)
                     Debug.Log(bezierPoints[i]);
@@ -43,12 +43,12 @@ namespace KidGame.Core
         protected override void Update()
         {
             base.Update();
-            // Èç¹ûÔÚÊÖÉÏ¾Í³ÖĞø¸üĞÂ±´Èû¶ûÇúÏßµÄµã¼¯
-            // ·ñÔò¿ªÊ¼ÒÆ¶¯
+            // å¦‚æœåœ¨æ‰‹ä¸Šå°±æŒç»­æ›´æ–°è´å¡å°”æ›²çº¿çš„ç‚¹é›†
+            // å¦åˆ™å¼€å§‹ç§»åŠ¨
             if(isOnHand) SetbezierPoints(bezierPoints);
             else
             {
-                // ½øÈëÁËÕâÀï
+                // è¿›å…¥äº†è¿™é‡Œ
                 if (isFollowingBezier && bezierPoints != null && currentPointIndex < bezierPoints.Length)
                 {
                     FollowBezierPath();
@@ -62,12 +62,12 @@ namespace KidGame.Core
         }
         public override void WeaponUseLogic()
         {
-            // Èç¹û»¹Ã»µ½´ïÖÕµã ²»ÒªÖ´ĞĞÕâ¶Î´úÂë
+            // å¦‚æœè¿˜æ²¡åˆ°è¾¾ç»ˆç‚¹ ä¸è¦æ‰§è¡Œè¿™æ®µä»£ç 
             if (!isSimulateEnd) return;
-            // Èç¹ûµ½´ïÄ¿µÄµØÁË 
+            // å¦‚æœåˆ°è¾¾ç›®çš„åœ°äº† 
             if (Vector3.Distance(transform.position, lineRenderScript.endPoint) <= 0.05f)
             {
-                // °ë¾¶ÄÚµÄËùÓĞÅö×²Ìå ÊÇ·ñÓĞµĞÈË
+                // åŠå¾„å†…çš„æ‰€æœ‰ç¢°æ’ä½“ æ˜¯å¦æœ‰æ•Œäºº
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, checkRadius);
 
                 foreach (Collider collider in hitColliders)
@@ -80,8 +80,8 @@ namespace KidGame.Core
                         break;
                     }
                 }
-                // Èç¹û¸½½üÃ»Ä¿±ê Ö±½ÓÏûÊ§ Ò²ĞíÓ¦¸ÃÑÓÊ±£¿
-                // ·ñÔòÎü¸½ÉÏÈ¥ ³ÖĞø XÃë Ğ­³Ì¼ÆÊ±
+                // å¦‚æœé™„è¿‘æ²¡ç›®æ ‡ ç›´æ¥æ¶ˆå¤± ä¹Ÿè®¸åº”è¯¥å»¶æ—¶ï¼Ÿ
+                // å¦åˆ™å¸é™„ä¸Šå» æŒç»­ Xç§’ åç¨‹è®¡æ—¶
                 if (!isEnemyHere || enemyCollider == null)
                 {
                     Destroy(gameObject);
@@ -96,24 +96,24 @@ namespace KidGame.Core
 
         IEnumerator AttachAndDestroySelf()
         {
-            // µÚ¶ş¸ö²ÎÊı°Ñ ×Ó¸¸ÎïÌåµÄÏà¶ÔÎ»ÖÃÉèÖÃÎª0 Ö±½Ó´©Ä£
+            // ç¬¬äºŒä¸ªå‚æ•°æŠŠ å­çˆ¶ç‰©ä½“çš„ç›¸å¯¹ä½ç½®è®¾ç½®ä¸º0 ç›´æ¥ç©¿æ¨¡
             if(enemyCollider != null) this.gameObject.transform.SetParent(enemyCollider.transform, false);
             isStartCoroutine = true;
-            yield return new WaitForSeconds(10f); // ğ¤×¡µÄÊ±¼ä
+            yield return new WaitForSeconds(10f); // é»ä½çš„æ—¶é—´
             Destroy(gameObject);
         }
         private void FollowBezierPath()
         {
             Vector3 targetPoint = bezierPoints[currentPointIndex];
 
-            // ¼ÆËã¾àÀë²¢ÅĞ¶ÏÊÇ·ñÒÑµ½´ï
+            // è®¡ç®—è·ç¦»å¹¶åˆ¤æ–­æ˜¯å¦å·²åˆ°è¾¾
             float distance = Vector3.Distance(transform.position, targetPoint);
             if (distance <= 0.05f)
             {
-                // Ö±½ÓÉèÖÃµ½Ä¿±êµã£¬±ÜÃâ¸¡µãÊıÎó²î»ıÀÛ
+                // ç›´æ¥è®¾ç½®åˆ°ç›®æ ‡ç‚¹ï¼Œé¿å…æµ®ç‚¹æ•°è¯¯å·®ç§¯ç´¯
                 transform.position = targetPoint;
                 currentPointIndex++;
-                // Èç¹û ÒÑ¾­³¬³öÊı×é´óĞ¡ ÄÇÃ´ÏÂÒ»´Î²»ÔÙÄ£Äâ ×ª¶ø´¦Àíµ½´ïÄ¿±êµãµÄÂß¼­
+                // å¦‚æœ å·²ç»è¶…å‡ºæ•°ç»„å¤§å° é‚£ä¹ˆä¸‹ä¸€æ¬¡ä¸å†æ¨¡æ‹Ÿ è½¬è€Œå¤„ç†åˆ°è¾¾ç›®æ ‡ç‚¹çš„é€»è¾‘
                 if (currentPointIndex >= bezierPoints.Length)
                 {
                     isFollowingBezier = false;
@@ -122,7 +122,7 @@ namespace KidGame.Core
             }
             else
             {
-                // Õı³£ÒÆ¶¯
+                // æ­£å¸¸ç§»åŠ¨
                 transform.position = Vector3.MoveTowards(
                     transform.position,
                     targetPoint,
@@ -161,15 +161,15 @@ namespace KidGame.Core
         
         public override void _WeaponUseLogic()
         {
-            if (isOnHand) return; // ½öÔÚ·¢ÉäºóÖ´ĞĞ
-            // ¸Õ·¢ÉäÊ±£ºÆôÓÃÎïÀí²¢Ó¦ÓÃ³õËÙ¶È
+            if (isNotUse) return; // ä»…åœ¨å‘å°„åæ‰§è¡Œ
+            // åˆšå‘å°„æ—¶ï¼šå¯ç”¨ç‰©ç†å¹¶åº”ç”¨åˆé€Ÿåº¦
             if (!isSimulateEnd && rb != null && rb.isKinematic)
             {
-                rb.isKinematic = false; // ÆôÓÃÎïÀí
+                rb.isKinematic = false; // å¯ç”¨ç‰©ç† 
                 CalculateAndApplyInitialVelocity();
             }
             if(!isCheckCondition && isSimulateEnd)
-            {   //Ö»Ö´ĞĞÒ»´Î½áÊøÄ£Äâº¯Êı
+            {   //åªæ‰§è¡Œä¸€æ¬¡ç»“æŸæ¨¡æ‹Ÿå‡½æ•°
                 EndSimulateAction(Physics.OverlapSphere(transform.position, checkRadius));
             }
         }
@@ -177,9 +177,9 @@ namespace KidGame.Core
         protected void EndSimulateAction(Collider[] hitColliders)
         {
             Collider[] temphitColliders = hitColliders;
-            isCheckCondition = true;// ¼ì²â¹ıÖÕÖ¹Ìõ¼şÁË
-            isEnemyHere = false; // ³õÊ¼»¯
-            enemyCollider = null; // ³õÊ¼»¯
+            isCheckCondition = true;// æ£€æµ‹è¿‡ç»ˆæ­¢æ¡ä»¶äº†
+            isEnemyHere = false; // åˆå§‹åŒ–
+            enemyCollider = null; // åˆå§‹åŒ–
             foreach (Collider collider in temphitColliders)
             {
                 if (collider.CompareTag("Enemy"))
@@ -190,22 +190,22 @@ namespace KidGame.Core
                     break;
                 }
             }
-            // ÎŞµĞÈËÔòÏú»Ù£¬ÓĞµĞÈËÔòÎü¸½
+            // æ— æ•Œäººåˆ™é”€æ¯ï¼Œæœ‰æ•Œäººåˆ™å¸é™„
             if (!isEnemyHere || enemyCollider == null)
             {
-                Destroy(gameObject, 0f); // ÑÓ³ÙÏú»Ù£¬Áô»º³å
+                Destroy(gameObject, 0f); // å»¶è¿Ÿé”€æ¯ï¼Œç•™ç¼“å†²
             }
             else StartCoroutine(AttachAndDestroySelf());
 
         }
 
-        // Èç¹ûÖ±½Ó×²µ½ÁË
+        // å¦‚æœç›´æ¥æ’åˆ°äº†
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Enemy"))
             {
-                isSimulateEnd = true; // ²»ÔÙĞèÒªÖ´ĞĞÖ÷Âß¼­
+                isSimulateEnd = true; // ä¸å†éœ€è¦æ‰§è¡Œä¸»é€»è¾‘
                 hitPosi = GetHitPosition(other);
                 EndSimulateAction(Physics.OverlapSphere(transform.position, checkRadius));
             }
@@ -216,30 +216,30 @@ namespace KidGame.Core
             if (lineRenderScript == null) return;
             if (rb.velocity.magnitude <= 0.05f)
             {
-                // ²»ÔÙĞèÒªÖ´ĞĞÖ÷Âß¼­
+                // ä¸å†éœ€è¦æ‰§è¡Œä¸»é€»è¾‘
                 isSimulateEnd = true;
             }
         }
-        // Îü¸½µ½µĞÈË²¢ÑÓ³ÙÏú»Ù
+        // å¸é™„åˆ°æ•Œäººå¹¶å»¶è¿Ÿé”€æ¯
         IEnumerator AttachAndDestroySelf()
         {
 
             if (enemyCollider != null)
             {
-                // Îü¸½µ½µĞÈË£¨ÎŞÏà¶ÔÎ»ÖÃÆ«ÒÆ£©
+                // å¸é™„åˆ°æ•Œäººï¼ˆæ— ç›¸å¯¹ä½ç½®åç§»ï¼‰
                 transform.position = hitPosi;
                 transform.SetParent(enemyCollider.transform, true);
-                // ½ûÓÃÎïÀí£¬±ÜÃâ³ÖĞøÊÜÁ¦
+                // ç¦ç”¨ç‰©ç†ï¼Œé¿å…æŒç»­å—åŠ›
                 if (rb != null)
                 {
                     rb.isKinematic = true;
                 }
             }
-            yield return new WaitForSeconds(10f); // ³ÖĞø10Ãë£¨¿Éµ÷Õû£©
+            yield return new WaitForSeconds(10f); // æŒç»­10ç§’ï¼ˆå¯è°ƒæ•´ï¼‰
             Destroy(gameObject);
         }
 
-        // »ñÈ¡Åö×²µã
+        // è·å–ç¢°æ’ç‚¹
         private Vector3 GetHitPosition(Collider other)
         {
             Ray ray = new Ray(transform.position, (other.transform.position - transform.position).normalized);
@@ -249,7 +249,7 @@ namespace KidGame.Core
             }
             else
             {
-                // ÉäÏßÎ´ÃüÖĞÊ± ·µ»Ø¶Ô·½Åö×²Æ÷µÄÖĞĞÄµã
+                // å°„çº¿æœªå‘½ä¸­æ—¶ è¿”å›å¯¹æ–¹ç¢°æ’å™¨çš„ä¸­å¿ƒç‚¹
                 return Vector3.zero;
             }
         }
