@@ -54,7 +54,6 @@ namespace KidGame.Core
             UI_bagAction = inputActionAsset.FindAction("UI_Bag");
             UI_interactionAction = inputActionAsset.FindAction("UI_Interaction");
             
-            //这个交互键设置成按下开始响应 防止开容器的e和一键拾取的e分不清
             
             interactionAction.performed += OnInteractionActionPerformed;
 
@@ -140,7 +139,6 @@ namespace KidGame.Core
             }
             else
             {
-                Debug.Log("<<<UI MAP-->send ON_UI_INTERACTION_PRESS");
                 MsgCenter.SendMsgAct(MsgConst.ON_UI_INTERACTION_PRESS);
             }
             

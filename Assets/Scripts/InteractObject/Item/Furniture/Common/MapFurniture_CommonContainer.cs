@@ -19,7 +19,7 @@ namespace KidGame.Core
             if(GameManager.Instance.IsGamePaused)return;
             if (materialHoldList == null || materialHoldList.Count == 0)
             {
-                UIHelper.Instance.ShowOneTip(new TipInfo("??????", transform.position));
+                UIHelper.Instance.ShowOneTip(new TipInfo("ø’ø’»Á“≤", transform.position));
             }
             else
             {
