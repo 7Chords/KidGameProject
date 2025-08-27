@@ -158,6 +158,7 @@ namespace KidGame.Core
         {
             base.Update();
         }
+        
         public override void _WeaponUseLogic()
         {
             if (isOnHand) return; // 仅在发射后执行

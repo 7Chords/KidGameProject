@@ -6,11 +6,6 @@ namespace KidGame.UI
 {
     public class ClockProgressBar : ProgressBar
     {
-        [Header("Clock Settings")]
-        [SerializeField] private Image dayNightIcon;          // °×Ìì/ºÚÒ¹Í¼±ê
-        [SerializeField] private Sprite dayIcon;             // °×ÌìÍ¼±ê
-        [SerializeField] private Sprite nightIcon;           // ºÚÒ¹Í¼±ê
-        
         private LevelPhase _currentPhase;
         private bool _isFirstUpdate = true;
 
@@ -44,10 +39,7 @@ namespace KidGame.UI
 
         private void UpdateClockVisuals(LevelPhase phase)
         {
-            if (dayNightIcon != null)
-            {
-                dayNightIcon.sprite = phase == LevelPhase.Day ? dayIcon : nightIcon;
-            }
+            // 
             
             UpdateProgressBarColor(phase);
         }

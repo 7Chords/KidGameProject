@@ -10,10 +10,13 @@ using UnityEngine;
 
 namespace KidGame.UI
 {
-
     public enum FixedUIPosType
     {
-        Left,Right,Top,Bottom,Center
+        Left,
+        Right,
+        Top,
+        Bottom,
+        Center
     }
 
     /// <summary>
@@ -141,12 +144,12 @@ namespace KidGame.UI
 
             this.OnUpdate(SortBubbleQueueByDist);
         }
+
         public void Discard()
         {
             bubbleInfoList.Clear();
             bubbleInfoList = null;
             this.RemoveUpdate(SortBubbleQueueByDist);
-
         }
 
         #region Bubble
@@ -357,6 +360,7 @@ namespace KidGame.UI
         #endregion
 
         #region Util
+
         public Vector2 ScreenPointToUIPoint(RectTransform rt, Vector2 screenPoint)
         {
             Vector2 localPoint;
@@ -370,6 +374,5 @@ namespace KidGame.UI
         }
 
         #endregion
-        
     }
 }
