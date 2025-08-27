@@ -44,6 +44,8 @@ namespace KidGame.Core
         private BuffHandler enemyBuffHandler;
 
         private BehaviorTree behaviorTree;
+        
+        private EnemyHUDController enemyHUDController; // 敌人的hud
 
         #endregion
 
@@ -52,7 +54,6 @@ namespace KidGame.Core
         public float testTime;
 
         #endregion
-
 
         [SerializeField] private EnemyBaseData enemyBaseData;
         public EnemyBaseData EnemyBaseData => enemyBaseData;
@@ -77,7 +78,7 @@ namespace KidGame.Core
         public Color NoSeePlayerColor;
         public Color SeePlayerColor;
 
-        private float curSanity;
+        private float curSanity; // 敌人的理智
         public bool IsDizzying;
 
         private GameObject hearingGO;
@@ -85,12 +86,6 @@ namespace KidGame.Core
         #region 有目的搜索
 
         public string _currentTargetItemId;
-
-        #endregion
-
-        #region 理智变量
-
-        private int _currentHealth;
 
         #endregion
 
@@ -115,12 +110,32 @@ namespace KidGame.Core
         private void Update()
         {
             UpdateCurrentRoomType();
+    
+            // 更新hud
+            // todo.使用事件通知
+            if (enemyHUDController != null)
+            {
+                enemyHUDController.UpdateEnemySanity(this, curSanity, enemyBaseData.MaxSanity);
+                enemyHUDController.UpdateEnemyBuffs(this);
+            }
         }
 
         public void Init(EnemyBaseData enemyData)
         {
             enemyBaseData = enemyData;
             curSanity = enemyBaseData.MaxSanity;
+            
+            // 获取或创建hud控制器
+            enemyHUDController = FindObjectOfType<EnemyHUDController>();
+            if (enemyHUDController == null)
+            {
+                GameObject hudControllerObj = new GameObject("EnemyHUDController");
+                enemyHUDController = hudControllerObj.AddComponent<EnemyHUDController>();
+            }
+    
+            // 注册到hud
+            enemyHUDController.RegisterEnemy(this);
+            
             //stateMachine = PoolManager.Instance.GetObject<StateMachine>();
             //stateMachine.Init(this);
             //ChangeState(EnemyState.Idle); // 初始状态
@@ -149,6 +164,11 @@ namespace KidGame.Core
 
         public void Discard()
         {
+            if (enemyHUDController != null)
+            {
+                enemyHUDController.UnregisterEnemy(this);
+            }
+            
             enemyBuffHandler.Discard();
 
             behaviorTree.DisableBehavior();

@@ -14,13 +14,12 @@ namespace KidGame.Core
         public bool showDuration = true;
         
         private Dictionary<string, BuffIconUI> activeBuffIcons = new Dictionary<string, BuffIconUI>();
-        private BuffHandler targetBuffHandler;
+        private List<BuffInfo> targetBuffHandler;
         
-        public void Initialize(BuffHandler buffHandler)
+        public void Initialize(List<BuffInfo> buffHandlerlist)
         {
-            targetBuffHandler = buffHandler;
+            targetBuffHandler = buffHandlerlist;
             ClearAllIcons();
-            
         }
         
         private void UpdateDisplay()
@@ -29,7 +28,7 @@ namespace KidGame.Core
             foreach (var buffId in activeBuffIcons.Keys)
             {
                 bool found = false;
-                foreach (var buffInfo in targetBuffHandler.buffList)
+                foreach (var buffInfo in targetBuffHandler)
                 {
                     if (buffInfo.buffData.id == buffId)
                     {
@@ -50,7 +49,7 @@ namespace KidGame.Core
             }
             
             // 添加或更新现有buff
-            foreach (var buffInfo in targetBuffHandler.buffList)
+            foreach (var buffInfo in targetBuffHandler)
             {
                 if (activeBuffIcons.ContainsKey(buffInfo.buffData.id))
                 {
