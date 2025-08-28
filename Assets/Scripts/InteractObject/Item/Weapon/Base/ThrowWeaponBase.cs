@@ -281,6 +281,9 @@ namespace KidGame.Core
             }
         }
 
+        protected virtual void OnDestroy()
+        {
+        }
         public override void _WeaponUseLogic() { }
     }
 }

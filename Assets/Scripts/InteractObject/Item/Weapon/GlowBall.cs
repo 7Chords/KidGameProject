@@ -214,7 +214,7 @@ namespace KidGame.Core
         protected override void _CheckIfReachCondition()
         {
             if (lineRenderScript == null) return;
-            if (rb.velocity.magnitude <= 0.05f)
+            if (rb.velocity.magnitude <= 0.05f && !isNotUse)
             {
                 // 不再需要执行主逻辑
                 isSimulateEnd = true;

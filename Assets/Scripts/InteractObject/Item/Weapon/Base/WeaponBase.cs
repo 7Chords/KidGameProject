@@ -1,4 +1,4 @@
-/*using KidGame.Interface;
+ï»¿/*using KidGame.Interface;
 using KidGame.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,15 +11,15 @@ namespace KidGame.Core
     public abstract class WeaponBase : MapItem, IInteractive
     {
         protected bool isOnHand = true;
-        // Êı¾İ¶¼È¥Åä±íÄÃ°É
+        // æ•°æ®éƒ½å»é…è¡¨æ‹¿å§
         private WeaponData _weaponData;
-        // ×Ô¼ºµÄÒıÓÃ
+        // è‡ªå·±çš„å¼•ç”¨
         protected GameObject self;
         
-        // ÇúÏßÒıÓÃ
+        // æ›²çº¿å¼•ç”¨
         protected LineRenderer lineRenderer;
 
-        // ½Å±¾ ÓÃÓÚ¸³Öµ
+        // è„šæœ¬ ç”¨äºèµ‹å€¼
         protected LineRenderScript lineRenderScript;
 
         public override string EntityName { get => _weaponData.name;}
@@ -37,7 +37,7 @@ namespace KidGame.Core
 
         protected virtual void Start()
         {
-            // Éú³É²»ÔÚÕâÀï×ö ÕâÀïÖ»×öÂß¼­
+            // ç”Ÿæˆä¸åœ¨è¿™é‡Œåš è¿™é‡Œåªåšé€»è¾‘
             self = this.gameObject;
         }
 
@@ -51,7 +51,7 @@ namespace KidGame.Core
             }
         }
 
-        // ÉèÖÃÅ×ÎïÏßÖÕµã
+        // è®¾ç½®æŠ›ç‰©çº¿ç»ˆç‚¹
         private void SetEndPoint()
         {
             if(lineRenderScript != null)
@@ -63,7 +63,7 @@ namespace KidGame.Core
                 }
             }
         }
-        // ÉèÖÃÅ×ÎïÏßÆğµã
+        // è®¾ç½®æŠ›ç‰©çº¿èµ·ç‚¹
         private void SetStartPoint()
         {
             if (lineRenderScript != null)
@@ -77,9 +77,9 @@ namespace KidGame.Core
         }
         protected virtual void InitLineRender()
         {
-            // °ÑÇúÏß½Å±¾¹ÒÉÏ
+            // æŠŠæ›²çº¿è„šæœ¬æŒ‚ä¸Š
             lineRenderer = GetComponent<LineRenderer>();
-            // °Ñ¿ØÖÆÇúÏßµÄ½Å±¾¹ÒÉÏ
+            // æŠŠæ§åˆ¶æ›²çº¿çš„è„šæœ¬æŒ‚ä¸Š
             lineRenderScript = GetComponent<LineRenderScript>();
             lineRenderScript.lineRenderer = lineRenderer;
             *//*lineRenderScript.startPoint = 
@@ -93,21 +93,21 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ¼ñÆğÎïÌåµÄÊ±ºòµ÷ÓÃ
+        /// æ¡èµ·ç‰©ä½“çš„æ—¶å€™è°ƒç”¨
         /// </summary>
         public override void Pick()
         {
-            //ËûÊÇÍ¨¹ıTriggerÀàĞÍColiderÀ´Ôö¼ÓÎïÌåµÄ
-            //Èç¹û¼ñÆğÀ´µÄÊ±ºò¾ÍÒÆ³ı
+            //ä»–æ˜¯é€šè¿‡Triggerç±»å‹Colideræ¥å¢åŠ ç‰©ä½“çš„
+            //å¦‚æœæ¡èµ·æ¥çš„æ—¶å€™å°±ç§»é™¤
             PlayerController.Instance.RemovePickableFromList(this);
-            //Ä¿Ç°Õâ¸ö»Øµ÷Ö»×¢²áÁËÒ»¸öÌí¼ÓÎïÆ·µ½±³°üµÄº¯Êı
+            //ç›®å‰è¿™ä¸ªå›è°ƒåªæ³¨å†Œäº†ä¸€ä¸ªæ·»åŠ ç‰©å“åˆ°èƒŒåŒ…çš„å‡½æ•°
             PlayerUtil.Instance.CallPlayerPickItem(weaponData.id,UseItemType.weapon);
-            //Õâ¸öÆøÅİÒ²ÔÚÉÏÃæÕâ¸ö»Øµ÷¼Óµ½ÁĞ±íÀïÁË   ÔÚÕâ¸öµØ·½ÒÆ³ı
+            //è¿™ä¸ªæ°”æ³¡ä¹Ÿåœ¨ä¸Šé¢è¿™ä¸ªå›è°ƒåŠ åˆ°åˆ—è¡¨é‡Œäº†   åœ¨è¿™ä¸ªåœ°æ–¹ç§»é™¤
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
 
-            //TODO:ÎäÆ÷¼ñÆğÀ´¿ÉÄÜ»¹ÓĞÊ²Ã´Òª´¥·¢µÄ¶«Î÷ ´ı¶¨
+            //TODO:æ­¦å™¨æ¡èµ·æ¥å¯èƒ½è¿˜æœ‰ä»€ä¹ˆè¦è§¦å‘çš„ä¸œè¥¿ å¾…å®š
 
-            UIHelper.Instance.ShowOneTip(new TipInfo("»ñµÃÁË" + EntityName + "¡Á1", gameObject));
+            UIHelper.Instance.ShowOneTip(new TipInfo("è·å¾—äº†" + EntityName + "Ã—1", gameObject));
 
             Destroy(gameObject);
         }
@@ -122,7 +122,7 @@ namespace KidGame.Core
         }
         public virtual void InteractPositive(GameObject interactor)
         {
-            //To Do:ÎäÆ÷¿ÉÄÜ»á±»ÓÃÀ´¸½Ä§
+            //To Do:æ­¦å™¨å¯èƒ½ä¼šè¢«ç”¨æ¥é™„é­”
         }
  
         public virtual void InteractNegative(GameObject interactor)
@@ -169,16 +169,20 @@ namespace KidGame.Core
             _weaponData = weaponData;
         }
 
-        // ¼ñÆğÎäÆ÷Âß¼­
+        // æ¡èµ·æ­¦å™¨é€»è¾‘
         public override void Pick()
         {
             PlayerController.Instance.RemovePickableFromList(this);
             MsgCenter.SendMsg(MsgConst.ON_PICK_ITEM, weaponData.id, UseItemType.weapon);
             UIHelper.Instance.RemoveBubbleInfoFromList(gameObject);
-            UIHelper.Instance.ShowOneTip(new TipInfo("»ñµÃÁË" + EntityName + "¡Á1", transform.position));
+            UIHelper.Instance.ShowOneTip(new TipInfo("è·å¾—äº†" + EntityName + "Ã—1", transform.position));
             Destroy(gameObject);
         }
 
+        /// <summary>
+        /// æ˜¯å¦è¿˜æœªä½¿ç”¨
+        /// </summary>
+        /// <param name="_isNotUse"></param>
         public virtual void SetIsNotUse(bool _isNotUse)
         {
             isNotUse = _isNotUse;
