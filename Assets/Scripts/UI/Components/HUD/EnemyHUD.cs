@@ -22,17 +22,7 @@ namespace KidGame.Core
         {
             enemyController = enemy;
             
-            if (enemyNameText != null && enemy.EnemyBaseData != null)
-            {
-                enemyNameText.text = enemy.EnemyBaseData.EnemyName;
-            }
-            
-            // 初始化理智
-            if (sanityProgressBar != null)
-            {
-                sanityProgressBar.Initialize();
-                UpdateSanity(enemy.EnemyBaseData.MaxSanity / enemy.EnemyBaseData.MaxSanity); // 初始满值
-            }
+            UpdateEnemyInfo();
             
             // 初始化buff hud
             if (buffHUDController != null)

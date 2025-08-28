@@ -106,18 +106,15 @@ namespace KidGame.Core
             behaviorTree = GetComponent<BehaviorTree>();
         }
 
-
         private void Update()
         {
             UpdateCurrentRoomType();
-    
-            // 更新hud
-            // todo.使用事件通知
-            if (enemyHUDController != null)
-            {
-                enemyHUDController.UpdateEnemySanity(this, curSanity, enemyBaseData.MaxSanity);
-                enemyHUDController.UpdateEnemyBuffs(this);
-            }
+            
+            // if (enemyHUDController != null)
+            // {
+            //     enemyHUDController.UpdateEnemySanity(this, curSanity, enemyBaseData.MaxSanity);
+            //     enemyHUDController.UpdateEnemyBuffs(this);
+            // }
         }
 
         public void Init(EnemyBaseData enemyData)
@@ -232,6 +229,11 @@ namespace KidGame.Core
         {
             curSanity = Mathf.Clamp(curSanity - damageInfo.damage, 0, enemyBaseData.MaxSanity);
             enemyBuffHandler.AddBuff(damageInfo.buffInfo);
+
+            // 通知hud更新
+            MsgCenter.SendMsg(MsgConst.ON_ENEMY_SANITY_CHG, this, curSanity, enemyBaseData.MaxSanity);
+            MsgCenter.SendMsg(MsgConst.ON_ENEMY_BUFF_CHG, this);
+
             if (curSanity == 0)
             {
                 SetDizzyState(true);
@@ -245,7 +247,11 @@ namespace KidGame.Core
             {
                 curSanity = enemyBaseData.MaxSanity;
             }
+
+            // 广播眩晕状态
+            MsgCenter.SendMsg(MsgConst.ON_ENEMY_DIZZY, this, IsDizzying);
         }
+
 
         public bool CheckDizzyState()
         {
@@ -366,7 +372,6 @@ namespace KidGame.Core
             Agent.speed = enemyBaseData.MoveSpeed;
             Agent.SetDestination(targetPos);
         }
-
 
         private void SetVisionIndicator(bool seePlayer)
         {

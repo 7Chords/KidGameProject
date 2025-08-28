@@ -184,9 +184,6 @@ namespace KidGame.Core
             }
 
             broadcast.Remove(_callback);
-
         }
-
-
     }
 }

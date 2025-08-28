@@ -14,28 +14,16 @@ namespace KidGame.Core
         public Transform hudContainer;     // HUD容器
         
         [Header("Settings")]
-        public Vector3 worldOffset = new Vector3(0, 2f, 0); // 世界坐标偏移
         public bool showBuffIcons = true;
         
         private Dictionary<EnemyController, EnemyHUD> activeEnemyHUDs = new Dictionary<EnemyController, EnemyHUD>();
-        private Camera mainCamera;
         
         private void Start()
         {
-            mainCamera = Camera.main;
+            MsgCenter.RegisterMsg(MsgConst.ON_ENEMY_SANITY_CHG, OnEnemySanityChanged);
+            MsgCenter.RegisterMsg(MsgConst.ON_ENEMY_BUFF_CHG, OnEnemyBuffChanged);
         }
-        
-        private void Update()
-        {
-            foreach (var hudPair in activeEnemyHUDs)
-            {
-                if (hudPair.Key != null && hudPair.Value != null)
-                {
-                    UpdateHUDPosition(hudPair.Key.transform, hudPair.Value.transform);
-                }
-            }
-        }
-        
+
         public void RegisterEnemy(EnemyController enemy)
         {
             if (enemy == null || activeEnemyHUDs.ContainsKey(enemy)) return;
@@ -47,8 +35,6 @@ namespace KidGame.Core
             {
                 enemyHUD.Initialize(enemy);
                 activeEnemyHUDs.Add(enemy, enemyHUD);
-                
-                UpdateHUDPosition(enemy.transform, hudObj.transform);
                 
                 // 注册Buff更新
                 if (showBuffIcons)
@@ -71,39 +57,37 @@ namespace KidGame.Core
             }
         }
         
-        private void UpdateHUDPosition(Transform enemyTransform, Transform hudTransform)
+        private void OnEnemySanityChanged(params object[] args)
         {
-            if (mainCamera == null) return;
-            
-            Vector3 worldPosition = enemyTransform.position + worldOffset;
-            Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+            EnemyController enemy = args[0] as EnemyController;
+            float curSanity = (float)args[1];
+            float maxSanity = (float)args[2];
 
-            hudTransform.position = screenPosition;
-        }
-        
-        public void UpdateEnemySanity(EnemyController enemy, float sanity, float maxSanity)
-        {
             if (enemy != null && activeEnemyHUDs.TryGetValue(enemy, out EnemyHUD hud))
             {
-                hud.UpdateSanity(sanity / maxSanity);
+                hud.UpdateSanity(curSanity / maxSanity);
             }
         }
-        
-        public void UpdateEnemyBuffs(EnemyController enemy)
+
+        private void OnEnemyBuffChanged(params object[] args)
         {
+            EnemyController enemy = args[0] as EnemyController;
+
             if (enemy != null && activeEnemyHUDs.TryGetValue(enemy, out EnemyHUD hud))
             {
                 var buffHUD = hud.GetComponentInChildren<BuffHUDController>();
                 if (buffHUD != null)
                 {
-                    // todo. 更新Buff
+                    buffHUD.Initialize(enemy.GetBuffList());
                 }
             }
         }
-        
+
         private void OnDestroy()
         {
-            // 清理所有HUD
+            MsgCenter.UnregisterMsg(MsgConst.ON_ENEMY_SANITY_CHG, OnEnemySanityChanged);
+            MsgCenter.UnregisterMsg(MsgConst.ON_ENEMY_BUFF_CHG, OnEnemyBuffChanged);
+
             foreach (var hud in activeEnemyHUDs.Values)
             {
                 if (hud != null)
@@ -111,6 +95,7 @@ namespace KidGame.Core
                     Destroy(hud.gameObject);
                 }
             }
+
             activeEnemyHUDs.Clear();
         }
     }
