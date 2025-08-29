@@ -70,3 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# customed
+/[Aa]ssets/Art/Materials/Skybox/Day1.mat
+/[Aa]ssets/Art/Fonts/Uranus_Pixel_11Px SDF.asset
