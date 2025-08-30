@@ -469,7 +469,7 @@ namespace KidGame.Core
             if (playerState == PlayerState.Use)
             {
                 ChangeState(PlayerState.Idle);
-                UIHelper.Instance.DestoryCurrentCircleProgress();
+                UIHelper.Instance.DestoryCircleProgress(GlobalValue.CIRCLE_PROGRESS_PLACE_TRAP);
             }
             if (curPreviewGO) Destroy(curPreviewGO);
         }
@@ -548,9 +548,9 @@ namespace KidGame.Core
 
         public void Struggle()
         {
-           currentStruggle += Time.deltaTime * struggleAmountOneTime;
-           Debug.Log(currentStruggle);
-           
+            currentStruggle += Time.deltaTime * struggleAmountOneTime;
+            Debug.Log("<<<<<挣扎进度:"+currentStruggle);
+            MsgCenter.SendMsg(MsgConst.ON_MANUAL_CIRCLE_PROGRESS_CHG, GlobalValue.CIRCLE_PROGRESS_STRUGGLE, currentStruggle / struggleDemand);
             // 挣扎完成
             if (currentStruggle >= struggleDemand)
             {

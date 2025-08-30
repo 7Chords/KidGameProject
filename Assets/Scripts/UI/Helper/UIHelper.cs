@@ -20,6 +20,12 @@ namespace KidGame.UI
         Center
     }
 
+    public enum CircleProgressType
+    {
+        Auto,
+        Manual,
+    }
+
     /// <summary>
     /// 气泡信息类
     /// </summary>
@@ -90,7 +96,7 @@ namespace KidGame.UI
 
 
     /// <summary>
-    /// 管理一些小的独立的小UI
+    /// 管理一些小的独立的小UI(局内的，染色体UI界面用不了!!!)
     /// </summary>
     public class UIHelper : Singleton<UIHelper>
     {
@@ -127,8 +133,7 @@ namespace KidGame.UI
         [Header("Progress")]
         //圆形进度条相关字段
         public GameObject CircleProgressPrefab;
-        private GameObject currentProgressGO;
-
+        private Dictionary<string, GameObject> cicleProgressDict;
         private void Start()
         {
             //todo
@@ -138,7 +143,8 @@ namespace KidGame.UI
         {
             bubbleInfoList = new List<BubbleInfo>();
             TipQueue = new Queue<TipInfo>();
-            
+            cicleProgressDict = new Dictionary<string, GameObject>();
+
             detailPanel = UIController.Instance.uiCanvas.transform.Find("PriorityPanelLayer/DetailPanel").gameObject;
             detailText = detailPanel.transform.Find("DetailText").GetComponent<TextMeshProUGUI>();
             detailPanel.SetActive(false);
@@ -217,7 +223,7 @@ namespace KidGame.UI
             if (bubbleInfoList == null || bubbleInfoList.Count == 0) return;
             BubbleInfo oldNearestBubble = bubbleInfoList[0];
             bubbleInfoList.Sort();
-            if(oldNearestBubble != bubbleInfoList[0])
+            if (oldNearestBubble != bubbleInfoList[0])
             {
                 RefreshBubble();
             }
@@ -260,7 +266,7 @@ namespace KidGame.UI
         {
             //isShowingTip = true;
             TipInfo tmpInfo = null;
-            while(TipQueue.Count > 0)
+            while (TipQueue.Count > 0)
             {
                 tmpInfo = TipQueue.Dequeue();
                 lastTipShowTime = Time.time;
@@ -271,7 +277,7 @@ namespace KidGame.UI
             }
             //isShowingTip = false;
         }
-        
+
         //public void ShowOneTipWithParent(TipInfo tipInfo,Transform parent)
         //{
         //    GameObject tipGO = Instantiate(TipPrefab);
@@ -285,7 +291,7 @@ namespace KidGame.UI
         //    });
         //}
 
-        
+
         #endregion
 
         #region Sign
@@ -307,18 +313,18 @@ namespace KidGame.UI
         /// <summary>
         /// 展示一个屏幕侧边的UI文本（用于分数等）
         /// </summary>
-        public void ShowOneFixedPosUIText(FixedUIPosType posType,string content,float showTime)
+        public void ShowOneFixedPosUIText(FixedUIPosType posType, string content, float showTime)
         {
             GameObject fixedPosTextGO = Instantiate(FixedPosTextPrefab);
             fixedPosTextGO.transform.SetParent(transform);
-            fixedPosTextGO.GetComponent<UIFixedPosTextItem>().Init(posType,content);
+            fixedPosTextGO.GetComponent<UIFixedPosTextItem>().Init(posType, content);
             Destroy(fixedPosTextGO, showTime);
         }
 
         #endregion
 
         #region Detail
-        
+
         private GameObject detailPanel;
         private TextMeshProUGUI detailText;
         /// <summary>
@@ -332,20 +338,20 @@ namespace KidGame.UI
             detailText.text = cellUI.detailText;
             detailPanel.SetActive(true);
         }
-        
+
         public void HideItemDetail()
         {
             detailPanel.SetActive(false);
         }
-        
+
         #endregion
-        
+
         #region Buff Tooltip
 
         [Header("Buff Tooltip")]
         public GameObject buffTooltipPrefab;
         private GameObject currentBuffTooltip;
-        
+
         /// <summary>
         /// 显示Buff详情
         /// </summary>
@@ -355,7 +361,7 @@ namespace KidGame.UI
 
             currentBuffTooltip = Instantiate(buffTooltipPrefab, transform);
             currentBuffTooltip.transform.SetAsLastSibling();
-            
+
             currentBuffTooltip.transform.position = position.position;
 
             Text detailText = currentBuffTooltip.GetComponentInChildren<Text>();
@@ -363,7 +369,7 @@ namespace KidGame.UI
             {
                 detailText.text = $"<b>{buffName}</b>\n{description}";
             }
-    
+
             currentBuffTooltip.SetActive(true);
 
             currentBuffTooltip.transform.localScale = Vector3.zero;
@@ -386,22 +392,42 @@ namespace KidGame.UI
         #endregion
 
         #region Progress
-        public void ShowCircleProgress(GameObject creator,float duration)
+
+
+        /// <summary>
+        /// 展示圆形进度条
+        /// </summary>
+        /// <param name="circleProgressKey">进度条key</param>
+        /// <param name="progressType">自动还是手动更新进度</param>
+        /// <param name="creator"></param>
+        /// <param name="duration">自动的话总时间多长</param>
+        public void ShowCircleProgress(string circleProgressKey, CircleProgressType progressType, GameObject creator, float duration = 0)
         {
             GameObject circleProgressGO = Instantiate(CircleProgressPrefab);
             circleProgressGO.transform.SetParent(transform);
-            circleProgressGO.GetComponent<UICommonProgressItem>().Init(creator,duration);
-            currentProgressGO = circleProgressGO;
-            Destroy(currentProgressGO, duration);
+            circleProgressGO.GetComponent<UICommonProgressItem>().Init(circleProgressKey,progressType, creator, duration, () =>
+            {
+                  cicleProgressDict.Remove(circleProgressKey);
+            });
+            if (cicleProgressDict != null)
+                cicleProgressDict.Add(circleProgressKey, circleProgressGO);
         }
 
-        public void DestoryCurrentCircleProgress()
+        /// <summary>
+        /// 销毁进度条
+        /// </summary>
+        /// <param name="circleProgressKey">进度条key</param>
+        public void DestoryCircleProgress(string circleProgressKey)
         {
-            if(currentProgressGO != null)//todo：和destory延迟销毁存在冲突问题？
+            if (cicleProgressDict == null || cicleProgressDict.Count == 0) return;
+            if (cicleProgressDict.ContainsKey(circleProgressKey))
             {
-                Destroy(currentProgressGO);
+                Destroy(cicleProgressDict[circleProgressKey]);
+                cicleProgressDict.Remove(circleProgressKey);
             }
         }
+
+       
 
         #endregion
 

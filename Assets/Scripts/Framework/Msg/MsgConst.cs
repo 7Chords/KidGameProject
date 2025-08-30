@@ -36,6 +36,7 @@ namespace KidGame.Core
         public const int ON_HEALTH_CHG = 20004; //玩家 - 生命改变
         public const int ON_PLAYER_DEAD = 20005; //玩家 - 玩家死亡
         public const int ON_PICK_ITEM = 20006; //玩家 - 回收物品
+        public const int ON_MANUAL_CIRCLE_PROGRESS_CHG = 20007;//玩家 - 手动的圆形进度条进度改变
 
         #endregion
 

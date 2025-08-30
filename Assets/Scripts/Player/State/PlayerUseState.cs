@@ -71,7 +71,8 @@ namespace KidGame.Core
             }
             else if( canUseItem && selectedItem.ItemData.UseItemType == UseItemType.trap)
             {
-                UIHelper.Instance.ShowCircleProgress(player.gameObject, (selectedItem.ItemData as TrapData).placeTime);
+                UIHelper.Instance.ShowCircleProgress(GlobalValue.CIRCLE_PROGRESS_PLACE_TRAP,
+                    CircleProgressType.Auto,player.gameObject, (selectedItem.ItemData as TrapData).placeTime);
             }
         }
 
@@ -113,7 +114,7 @@ namespace KidGame.Core
         public override void Exit()
         {
             base.Exit();
-            UIHelper.Instance.DestoryCurrentCircleProgress();
+            UIHelper.Instance.DestoryCircleProgress(GlobalValue.CIRCLE_PROGRESS_PLACE_TRAP);
         }
     }
 }
