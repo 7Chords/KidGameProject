@@ -54,6 +54,9 @@ namespace KidGame.Core
 
         private StateMachine stateMachine;
         private PlayerState playerState; // 玩家的当前状态        
+
+        private bool isPlayerUnderDesk;
+        public bool IsPlayerUnderDesk => IsPlayerUnderDesk;
         #endregion
 
         #region 玩家挣扎
@@ -96,7 +99,6 @@ namespace KidGame.Core
         private Vector3 rotateDir;
         #endregion
 
-
         #region 生命周期
 
         protected override void Awake()
@@ -137,7 +139,6 @@ namespace KidGame.Core
 
         #endregion
 
-
         #region 事件相关
 
         /// <summary>
@@ -152,7 +153,7 @@ namespace KidGame.Core
             MsgCenter.RegisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.RegisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-           
+            MsgCenter.RegisterMsg(MsgConst.ON_PLAYER_UNDER_TABLE_CHG, OnPlayerUnderTableChg);
         }
 
 
@@ -168,7 +169,8 @@ namespace KidGame.Core
             MsgCenter.UnregisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.UnregisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-           
+            MsgCenter.UnregisterMsg(MsgConst.ON_PLAYER_UNDER_TABLE_CHG, OnPlayerUnderTableChg);
+
         }
 
         #endregion
@@ -267,6 +269,8 @@ namespace KidGame.Core
         /// </summary>
         public void PlayerUseItem()
         {
+            if (!CanPlayerUseItem()) return;
+
             ISlotInfo currentUseItem = PlayerBag.Instance.GetSelectedQuickAccessItem();
             if (currentUseItem == null) return;
             UseItemType itemType = currentUseItem.ItemData.UseItemType;
@@ -283,6 +287,16 @@ namespace KidGame.Core
             }
             ChangeState(PlayerState.Use);
         }
+
+        private bool CanPlayerUseItem()
+        {
+            if(isPlayerUnderDesk)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public void TryUseWeaponUseLongPress()
         {
             //Logic
@@ -513,6 +527,12 @@ namespace KidGame.Core
             return newWeapon;
         }
 
+        private void OnPlayerUnderTableChg(object[] objs)
+        {
+            if (objs == null || objs.Length == 0) return;
+            isPlayerUnderDesk = (bool)objs[0];
+        }
+
         #endregion
 
         #region 体力与生命
@@ -548,7 +568,7 @@ namespace KidGame.Core
 
         public void Struggle()
         {
-            currentStruggle += Time.deltaTime * struggleAmountOneTime;
+            currentStruggle += struggleAmountOneTime;
             Debug.Log("<<<<<挣扎进度:"+currentStruggle);
             MsgCenter.SendMsg(MsgConst.ON_MANUAL_CIRCLE_PROGRESS_CHG, GlobalValue.CIRCLE_PROGRESS_STRUGGLE, currentStruggle / struggleDemand);
             // 挣扎完成
@@ -594,7 +614,7 @@ namespace KidGame.Core
             if (isRecovering)
             {
                 // 恢复体力
-                currentStamina += PlayerBaseData.StaminaRecoverRate * Time.deltaTime;
+                currentStamina += PlayerBaseData.StaminaRecoverPerSecond * Time.deltaTime;
                 currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
                 MsgCenter.SendMsg(MsgConst.ON_STAMINA_CHG, currentStamina / maxStamina);
                 

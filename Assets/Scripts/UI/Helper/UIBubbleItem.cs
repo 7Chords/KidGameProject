@@ -38,6 +38,11 @@ namespace KidGame.UI
             transform.DOScale(Vector3.one, 0.2f);
         }
 
+        public void UpdateContent(string content)
+        {
+            ContentText.text = content;
+        }
+
         private void FixedUpdate()
         {
             if (creator)

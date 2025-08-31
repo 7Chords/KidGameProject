@@ -188,7 +188,7 @@ namespace KidGame.UI
             }
         }
 
-        public void DestroyBubble()
+        private void DestroyBubble()
         {
             if (currentBubble)
             {
@@ -216,6 +216,15 @@ namespace KidGame.UI
                 DestroyBubble();
             }
             RefreshBubble();
+        }
+
+        public void UpdateBubbleContent(GameObject creator,string content)
+        {
+            if (bubbleInfoList == null) return;
+            BubbleInfo tmpInfo = bubbleInfoList.Find(x => x.creator == creator);
+            if (tmpInfo == null) return;
+            tmpInfo.content = content;
+            currentBubble.GetComponent<UIBubbleItem>().UpdateContent(content);
         }
 
         public void SortBubbleQueueByDist()

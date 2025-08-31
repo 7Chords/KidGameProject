@@ -18,7 +18,7 @@ MonoBehaviour:
   Sp: 100
   DashStaminaOneTime: 10
   RunStaminaPerSecond: 5
-  StaminaRecoverRate: 2
+  StaminaRecoverPerSecond: 2
   RecoverThreshold: 0.2
-  StruggleAmountOneTime: 10
+  StruggleAmountOneTime: 0.2
   StruggleInvulnerabilityDuration: 1
