@@ -3,23 +3,23 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
+    /// <summary>
+    /// 存档记录有关，UI层控制器
+    /// </summary>
     public class RecordData : SingletonPersistent<RecordData>
     {
-        public const int recordNum = 3; //档位数
-        public const string NAME = "RecordData"; //存档列表名
+        public const int recordNum = 3;
+        public const string NAME = "RecordData";
         
-        public string[] recordName = new string[recordNum]; //存档文件名
-        public int lastID; //最新存档序号(用于重启时自动读档)
-        
-        // 游戏外数据字段
-        public List<string> unlockedItems = new List<string>(); // 已解锁物品
+        public string[] recordName = new string[recordNum];
+        public int lastID;
+        public List<string> unlockedItems = new List<string>();
 
+        [System.Serializable]
         class SaveData
         {
             public string[] recordName = new string[recordNum];
             public int lastID;
-            
-            // 游戏外数据
             public List<string> unlockedItems;
         }
 
@@ -29,50 +29,64 @@ namespace KidGame.Core
 
             for (int i = 0; i < recordNum; i++)
             {
-                savedata.recordName[i] = recordName[i];
+                savedata.recordName[i] = recordName[i] ?? string.Empty;
             }
 
             savedata.lastID = lastID;
-            
-            // 游戏外数据保存
-            savedata.unlockedItems = unlockedItems;
+            savedata.unlockedItems = unlockedItems ?? new List<string>();
 
             return savedata;
         }
 
         void ForLoad(SaveData savedata)
         {
+            if (savedata == null) return;
+
             lastID = savedata.lastID;
             for (int i = 0; i < recordNum; i++)
             {
-                recordName[i] = savedata.recordName[i];
+                recordName[i] = savedata.recordName[i] ?? $"Save_{i}";
             }
             
-            // 游戏外数据加载
             unlockedItems = savedata.unlockedItems ?? new List<string>();
         }
 
-        public void Save()
+        public void Save(bool encrypt = true)
         {
-            SAVE.PlayerPrefsSave(NAME, ForSave());
-        }
-
-        public void Load()
-        {
-            //有存档才读
-            if (PlayerPrefs.HasKey(NAME))
+            try
             {
-                string json = SAVE.PlayerPrefsLoad(NAME);
-                SaveData saveData = JsonUtility.FromJson<SaveData>(json);
-                ForLoad(saveData);
+                SAVE.PlayerPrefsSave(NAME, ForSave(), encrypt);
+                Debug.Log($"全局数据保存成功 - 加密: {encrypt}");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"RecordData Save failed: {ex.Message}");
             }
         }
 
-        // 更新游戏外数据
-        public void UpdateGlobalData()
+        public void Load(bool encrypted = true)
         {
-            // 自动保存
-            Save();
+            try
+            {
+                if (PlayerPrefs.HasKey(NAME))
+                {
+                    var saveData = SAVE.PlayerPrefsLoad<SaveData>(NAME, encrypted);
+                    if (saveData != null)
+                    {
+                        ForLoad(saveData);
+                        Debug.Log($"全局数据载入成功 - 加密: {encrypted}");
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"RecordData Load failed: {ex.Message}");
+            }
+        }
+
+        public void UpdateGlobalData(bool encrypt = true)
+        {
+            Save(encrypt);
         }
     }
 }

@@ -1,85 +1,143 @@
 using System.IO;
 using UnityEngine;
+using System.Security.Cryptography;
+using System;
 
 namespace KidGame.Core
 {
     public static class SAVE
     {
-        //截图保存路径
-        public static string shotPath = $"{Application.persistentDataPath}/Shot";
-
         static string GetPath(string fileName)
         {
             return Path.Combine(Application.persistentDataPath, fileName);
         }
 
-        #region  PlayerPrefs
-        public static void PlayerPrefsSave(string key, object data)
+        #region 加密相关
+        private static readonly string EncryptionKey = "KidGame765"; // 密钥
+        private static readonly byte[] Salt = new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 };
+
+        public static string Encrypt(string plainText)
         {
-            //将各种类型数据转为字符串存储
+            if (string.IsNullOrEmpty(plainText)) return plainText;
+
+            using (Aes aesAlg = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, Salt);
+                aesAlg.Key = pdb.GetBytes(32);
+                aesAlg.IV = pdb.GetBytes(16);
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(plainText);
+                        }
+                    }
+                    return Convert.ToBase64String(msEncrypt.ToArray());
+                }
+            }
+        }
+
+        public static string Decrypt(string cipherText)
+        {
+            if (string.IsNullOrEmpty(cipherText)) return cipherText;
+
+            try
+            {
+                using (Aes aesAlg = Aes.Create())
+                {
+                    Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, Salt);
+                    aesAlg.Key = pdb.GetBytes(32);
+                    aesAlg.IV = pdb.GetBytes(16);
+
+                    ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                    using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                    {
+                        using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                return srDecrypt.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                Debug.LogWarning("解密失败，可能数据未加密或密钥不匹配");
+                return cipherText; // 返回原始数据，可能是未加密的旧存档
+            }
+        }
+        #endregion
+
+        #region  PlayerPrefs
+        public static void PlayerPrefsSave(string key, object data, bool encrypt = true)
+        {
             string json = JsonUtility.ToJson(data);
-            PlayerPrefs.SetString(key, json);
+            string dataToSave = encrypt ? Encrypt(json) : json;
+            PlayerPrefs.SetString(key, dataToSave);
             PlayerPrefs.Save();
         }
 
-        public static string PlayerPrefsLoad(string key)
+        public static T PlayerPrefsLoad<T>(string key, bool encrypted = true) where T : new()
         {
-            //参数2是没有数据时的默认值（不一定要null）
-            return PlayerPrefs.GetString(key, null);
+            string data = PlayerPrefs.GetString(key, null);
+            if (string.IsNullOrEmpty(data)) return new T();
+
+            try
+            {
+                string json = encrypted ? Decrypt(data) : data;
+                return JsonUtility.FromJson<T>(json);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"PlayerPrefsLoad failed: {ex.Message}");
+                return new T();
+            }
         }
-   
         #endregion
 
         #region JSON
-        public static void JsonSave(string fileName, object data)
+        public static void JsonSave(string fileName, object data, bool encrypt = true)
         {
             string json = JsonUtility.ToJson(data);
+            string dataToSave = encrypt ? Encrypt(json) : json;
 
-            File.WriteAllText(GetPath(fileName), json);
+            File.WriteAllText(GetPath(fileName), dataToSave);
             Debug.Log($"已保存{GetPath(fileName)}");
-    
         }
 
-        public static T JsonLoad<T>(string fileName)
+        public static T JsonLoad<T>(string fileName, bool encrypted = true) where T : new()
         {
             string path = GetPath(fileName);
-            //文件存在就读取
             if (File.Exists(path))
             {
-                string json = File.ReadAllText(GetPath(fileName));
-                var data = JsonUtility.FromJson<T>(json);
-                Debug.Log($"读取{path}");
-                return data;
+                try
+                {
+                    string fileData = File.ReadAllText(path);
+                    string json = encrypted ? Decrypt(fileData) : fileData;
+                    var data = JsonUtility.FromJson<T>(json);
+                    Debug.Log($"读取{path}");
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"JsonLoad failed: {ex.Message}");
+                    return new T();
+                }
             }
-            else
-            {
-                //对于引用类型会返回null，对于数值类型会返回0
-                return default;
-            }
+            return new T();
         }
 
         public static void JsonDelete(string fileName)
         {
             File.Delete(GetPath(fileName));
-        }
-
-        public static string FindAuto()
-        {
-            //确认路径存在
-            if (Directory.Exists(Application.persistentDataPath))
-            {
-                //获取所有存档文件
-                FileInfo[] fileInfos = new DirectoryInfo(Application.persistentDataPath).GetFiles("*");
-                for (int i = 0; i < fileInfos.Length; i++)
-                {
-                    //找自动存档
-                    if (fileInfos[i].Name.EndsWith(".auto"))
-                    {
-                        return fileInfos[i].Name;
-                    }
-                }
-            }
-            return "";
         }
         
         public static void ResetGlobalData()
@@ -87,104 +145,18 @@ namespace KidGame.Core
             RecordData.Instance.unlockedItems.Clear();
             RecordData.Instance.Save();
         }
-        
-        #endregion
-
-        #region 截图
-        /*方法一：全屏、带UI   
-    不写路径的话默认保存到项目文件夹下（与Asset同级）
-    如果已存在会直接覆盖
-    ScreenCapture.CaptureScreenshot(path);
-    */
-
-        /*方法二：指定相机的指定范围
-    */
-        public static void CameraCapture(int i, Camera camera, Rect rect)
-        {
-            //不存在文件夹就新建
-            if (!Directory.Exists(SAVE.shotPath))
-                Directory.CreateDirectory(SAVE.shotPath);
-            string path = Path.Combine(SAVE.shotPath, $"{i}.png");
-
-            int w = (int)rect.width;
-            int h = (int)rect.height;
-
-            RenderTexture rt = new RenderTexture(w, h, 0);
-            //将相机渲染的内容存到指定的RenderTexture
-            camera.targetTexture = rt;
-            camera.Render();
-
-            ////多相机测试
-            //Camera c2 = camera.GetUniversalAdditionalCameraData().cameraStack[0];
-            //c2.targetTexture=rt;
-            //c2.Render();
-
-
-            //激活指定RenderTexture
-            RenderTexture.active = rt;
-
-            //参数4：mipChain多级渐远纹理
-            Texture2D t2D = new Texture2D(w, h, TextureFormat.RGB24, true);
-
-            //防止截黑屏,但可能会导致截错(?)
-            //yield return new WaitForEndOfFrame();
-            //把RenderTexture的像素读到Texture2D
-            t2D.ReadPixels(rect, 0, 0);
-            t2D.Apply();
-
-            //存成PNG
-            byte[] bytes = t2D.EncodeToPNG();
-            File.WriteAllBytes(path, bytes);
-
-            //用完重置、销毁    
-            camera.targetTexture = null;
-            //c2.targetTexture = null;
-            RenderTexture.active = null;
-            GameObject.Destroy(rt);
-        }
-
-
-        public static Sprite LoadShot(int i)
-        {
-            var path = Path.Combine(shotPath, $"{i}.png");
-
-            Texture2D t = new Texture2D(640, 360);
-            t.LoadImage(GetImgByte(path));
-            return Sprite.Create(t, new Rect(0, 0, t.width, t.height), new Vector2(0.5f, 0.5f));
-        }
-
-
-        static byte[] GetImgByte(string path)
-        {
-            FileStream s = new FileStream(path, FileMode.Open);
-            byte[] imgByte = new byte[s.Length];
-            s.Read(imgByte, 0, imgByte.Length);
-            s.Close();
-            return imgByte;
-        }
-
-        public static void DeleteShot(int i)
-        {
-            var path = Path.Combine(shotPath, $"{i}.png");
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-                Debug.Log($"删除截图{i}");
-            }
-        }
-
         #endregion
 
         #region 清空
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Delete/Records List")]
+        [UnityEditor.MenuItem("Tools/Delete/Records List")]
         public static void DeleteRecord()
         {
-            UnityEngine.PlayerPrefs.DeleteAll();
+            PlayerPrefs.DeleteAll();
             Debug.Log("已清空存档列表");
         }
 
-        [UnityEditor.MenuItem("Delete/Player Data")]
+        [UnityEditor.MenuItem("Tools/Delete/Player Data")]
         public static void DeletePlayerData()
         {
             ClearDirectory(Application.persistentDataPath);
@@ -195,39 +167,41 @@ namespace KidGame.Core
         {
             if (Directory.Exists(path))
             {
-                FileInfo[] f = new DirectoryInfo(path).GetFiles("*");
-                for (int i = 0; i < f.Length; i++)
+                foreach (FileInfo file in new DirectoryInfo(path).GetFiles())
                 {
-                    Debug.Log($"删除{f[i].Name}");
-                    File.Delete(f[i].FullName);
+                    File.Delete(file.FullName);
                 }
             }
         }
 
-        [UnityEditor.MenuItem("Delete/Shot")]
-        public static void DeleteScreenShot()
-        {
-            ClearDirectory(shotPath);
-            Debug.Log("已清空截图");
-        }
-        
-        [UnityEditor.MenuItem("Delete/Global Data")]
+        [UnityEditor.MenuItem("Tools/Delete/Global Data")]
         public static void DeleteGlobalData()
         {
             ResetGlobalData();
             Debug.Log("已清空全局数据");
         }
 
-        [UnityEditor.MenuItem("Delete/All")]
+        [UnityEditor.MenuItem("Tools/Delete/All")]
         public static void DeleteAll()
         {
             DeletePlayerData();
             DeleteRecord();
-            DeleteScreenShot();
             DeleteGlobalData();
+        }
+
+        [UnityEditor.MenuItem("Tools/Encryption/Test Encryption")]
+        public static void TestEncryption()
+        {
+            string testData = "Hello, World!";
+            string encrypted = Encrypt(testData);
+            string decrypted = Decrypt(encrypted);
+            
+            Debug.Log($"Original: {testData}");
+            Debug.Log($"Encrypted: {encrypted}");
+            Debug.Log($"Decrypted: {decrypted}");
+            Debug.Log($"Test Result: {testData == decrypted}");
         }
 #endif
         #endregion
-
     }
 }

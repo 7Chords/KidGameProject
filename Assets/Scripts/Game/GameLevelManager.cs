@@ -96,8 +96,7 @@ namespace KidGame.Core
         }
 
         #region �ؿ�ѭ��
-
-        // ��ʼ��һ��
+        
         public void InitFirstLevel()
         {
             _currentDay = 1;
@@ -105,7 +104,6 @@ namespace KidGame.Core
             StartDayPhase();
         }
 
-        // ��ʼ����һ�ؿ��������ﱣ����ȣ�����Ҷ���
         public void InitNextLevel()
         {
             levelIndex++;
