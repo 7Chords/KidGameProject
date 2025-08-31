@@ -348,21 +348,20 @@ namespace KidGame.Core
                         return true;
                     }
                 }
-
-
-
-                }
-                return false;
+            }
+            return false;
         }
 
-        public bool UseWeaponPress(ISlotInfo slot)
+        // 我发现长按的道具好像不需要在use state做逻辑
+        public bool UseWeaponLongPress(ISlotInfo slot)
         {
             if (slot != null && slot is WeaponSlotInfo)
             {
 
-                // 发送一个长按开始的讯号 武器内部逻辑订阅这个信息
+                
+                return true;
             }
-                return false;
+            return false;
         }
 
         public bool UseFood(ISlotInfo slot, PlayerController player) => false;

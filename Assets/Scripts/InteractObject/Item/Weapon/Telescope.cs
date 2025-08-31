@@ -1,12 +1,12 @@
-using KidGame.Core;
-using UnityEngine.UIElements;
+ï»¿using KidGame.Core;
+using System;
+using UnityEngine;
 
 namespace KidGame.core
 {
     public class Telescope : OnHandWeaponBase
     {
-
-        private FocusLinesScript _m_focusLinesScript;// ¾Û½¹Ïß½Å±¾ÒıÓÃ
+        [SerializeField] private FocusLinesScript _m_focusLinesScript;// èšç„¦çº¿è„šæœ¬å¼•ç”¨
 
         protected override void Update()
         {

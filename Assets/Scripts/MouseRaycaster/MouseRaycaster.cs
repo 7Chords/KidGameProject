@@ -1,4 +1,4 @@
-using KidGame.UI.Game;
+ï»¿using KidGame.UI.Game;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,6 +10,8 @@ namespace KidGame.Core
     {
         public float raycastMaxDistance = 100f;
         private Vector3 _m_vMousePosition;
+        int layerIndex;
+        int layerMask;
         //public Vector3 _mousePosition
         //{
         //    get 
@@ -23,7 +25,9 @@ namespace KidGame.Core
         private Ray ray;
         private void Start()
         {
-            //Ö÷ÉãÏñ»ú  Èç¹ûºóĞø»áÓÃµ½¶à¸öÏà»úÇĞ»» Çë¸æÖªÎÒ
+            layerIndex = LayerMask.NameToLayer("Ground");
+            layerMask = 1 << layerIndex;
+            //ä¸»æ‘„åƒæœº  å¦‚æœåç»­ä¼šç”¨åˆ°å¤šä¸ªç›¸æœºåˆ‡æ¢ è¯·å‘ŠçŸ¥æˆ‘
             mainCamera = GetComponent<Camera>();
         }
         //void Update()
@@ -35,11 +39,11 @@ namespace KidGame.Core
         {
             ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-            // ·¢ÉäÉäÏß ¼ì²âÅö×²
-            if (Physics.Raycast(ray, out hitInfo, raycastMaxDistance))
+            // å‘å°„å°„çº¿ æ£€æµ‹ç¢°æ’
+            if (Physics.Raycast(ray, out hitInfo, raycastMaxDistance, layerMask))
             {
                 Debug.DrawLine(this.transform.position,hitInfo.point);
-                // ÉäÏßÅö×²µ½ÁËÎïÌå »ñÈ¡Åö×²µ½µÄ½»µã
+                // å°„çº¿ç¢°æ’åˆ°äº†ç‰©ä½“ è·å–ç¢°æ’åˆ°çš„äº¤ç‚¹
                 return hitInfo.point;
             }
             else return Vector3.zero;

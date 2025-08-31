@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -24,6 +24,13 @@ namespace KidGame.Core
         
         private InputAction UI_bagAction;
         private InputAction UI_interactionAction;
+        private ClickType _m_EclickType = ClickType.Null;
+        private enum ClickType
+        { 
+            LongPress,
+            ShortPress,
+            Null,
+        }
 
         private void Awake()
         {
@@ -99,7 +106,7 @@ namespace KidGame.Core
         }
 
 
-        //������ֵ�仯�ĺ��ķ���
+        //检测滚轮值变化的核心方法
         private void CheckMouseWheelValueChange()
         {
             if (MouseWheelValue() == 0) return;
@@ -126,7 +133,7 @@ namespace KidGame.Core
         public virtual bool GetInteractDown() => interactionAction.WasPerformedThisFrame();
         public virtual bool GetPickDown() => pickAction.WasPerformedThisFrame();
         public virtual bool GetGamePauseDown() => gamePauseAction.WasPerformedThisFrame();
-        //ֻҪ���������һ���ƶ����������ǰ���һ������
+        //只要按了任意的一个移动键，就算是按了一次挣扎
         public virtual bool GetStruggleDown() => moveAction.WasPressedThisFrame();
 
         #region Input Action Callbacks
@@ -161,21 +168,31 @@ namespace KidGame.Core
 
         private void OnUseActionCancled(InputAction.CallbackContext context)
         {
-            if(context.interaction is HoldInteraction)
+            // 只有当长按交互被取消且动作确实执行过
+            // Unity系统没法分辨是否是长按取消还是短按 得判断这个动作是否真的被Performed过
+            // 改了一下发现不行 这里就用枚举判断了
+            if (context.interaction is PressInteraction && _m_EclickType == ClickType.ShortPress)
+            {
+                MsgCenter.SendMsgAct(MsgConst.ON_USE_SHORT_PRESS_RELEASE);
+            }
+            else if (context.interaction is HoldInteraction && _m_EclickType == ClickType.LongPress)
             {
                 MsgCenter.SendMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE);
             }
+            _m_EclickType = ClickType.Null;
         }
         private void OnUseActionPerformed(InputAction.CallbackContext context)
         {
-            //����ǵ��
+            //如果是点击
             if(context.interaction is PressInteraction)
             {
+                _m_EclickType = ClickType.ShortPress;
                 MsgCenter.SendMsgAct(MsgConst.ON_USE_PRESS);
             }
-            //����ǳ���
+            //如果是长按
             if (context.interaction is HoldInteraction)
             {
+                _m_EclickType = ClickType.LongPress;
                 MsgCenter.SendMsgAct(MsgConst.ON_USE_LONG_PRESS);
             }
                 
@@ -190,9 +207,6 @@ namespace KidGame.Core
         {
             MsgCenter.SendMsgAct(MsgConst.ON_BAG_PRESS);
         }
-
-        
-        
         private void OnPickActionPerformed(InputAction.CallbackContext context)
         {
             MsgCenter.SendMsgAct(MsgConst.ON_PICK_PRESS);
@@ -226,7 +240,7 @@ namespace KidGame.Core
                 Debug.LogError($"Could not find action '{actionType}' in input actions");
                 return string.Empty;
             }
-            //ֻչʾ��λ ������Ϣ����չʾ
+            //只展示键位 其他信息都不展示
             return action.bindings[controlTypeIndex].ToDisplayString(DisplayStringOptions.DontIncludeInteractions);
         }
 

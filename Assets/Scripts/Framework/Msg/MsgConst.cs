@@ -1,68 +1,68 @@
-namespace KidGame.Core
+ï»¿namespace KidGame.Core
 {
     /// <summary>
-    /// ÏûÏ¢³£Á¿Àà id²»ÒªÖØ¸´£¡£¡£¡
+    /// æ¶ˆæ¯å¸¸é‡ç±» idä¸è¦é‡å¤ï¼ï¼ï¼
     /// </summary>
     public class MsgConst
     {
 
-        #region ÊäÈëÏà¹Ø 10¿ªÍ·
+        #region è¾“å…¥ç›¸å…³ 10å¼€å¤´
 
-        //ÓÎÏ·ÄÚ²Ù×÷ 100¿ªÍ·
-        public const int ON_INTERACTION_PRESS = 10001; //ÊäÈë - ½»»¥¼ü°´ÏÂ
-        public const int ON_DASH_PRESS = 10002; //ÊäÈë - ³å´Ì¼ü°´ÏÂ
-        public const int ON_RUN_PRESS = 10003; //ÊäÈë - ±¼ÅÜ¼ü°´ÏÂ
-        public const int ON_RUN_RELEASE = 10004; //ÊäÈë - ±¼ÅÜ¼üÌ§Æğ
-        public const int ON_USE_PRESS = 10005; //ÊäÈë - Ê¹ÓÃ¼ü°´ÏÂ
-        public const int ON_USE_LONG_PRESS = 10006; //ÊäÈë - Ê¹ÓÃ¼ü³¤°´
-        public const int ON_USE_LONG_PRESS_RELEASE = 10007; //ÊäÈë - Ê¹ÓÃ¼ü³¤°´Ì§Æğ
-        public const int ON_BAG_PRESS = 10008; //ÊäÈë - ±³°ü¼ü°´ÏÂ
-        public const int ON_PICK_PRESS = 10009; //ÊäÈë - »ØÊÕ¼ü°´ÏÂ
-        public const int ON_MOUSEWHEEL_VALUE_CHG = 10010; //ÊäÈë - Êó±ê¹öÂÖÖµ¸Ä±ä
-        public const int ON_GAMEPAUSE_PRESS = 10011; //ÊäÈë - ÔİÍ£¼ü°´ÏÂ
-        public const int ON_MOUSEWHEEL_PRESS = 10012; //ÊäÈë - Êó±ê¹öÂÖ¼ü°´ÏÂ
-
-        //UI²Ù×÷ 101¿ªÍ·
-        public const int ON_UI_INTERACTION_PRESS = 10101; //ÊäÈë - ½»»¥¼ü°´ÏÂ
-        public const int ON_UI_BAG_PRESS = 10102; //ÊäÈë - ±³°ü¼ü°´ÏÂ
-
-        #endregion
-        
-        #region Íæ¼Ò¹¦ÄÜÏà¹Ø 20¿ªÍ·
-
-        public const int ON_SELECT_ITEM = 20001; //Íæ¼Ò - Ñ¡ÔñµÀ¾ßÀ¸ÎïÆ·
-        public const int ON_QUICK_BAG_UPDATE = 20002; //Íæ¼Ò - µÀ¾ßÀ¸Ë¢ĞÂ
-        public const int ON_STAMINA_CHG = 20003; //Íæ¼Ò - ÌåÁ¦¸Ä±ä
-        public const int ON_HEALTH_CHG = 20004; //Íæ¼Ò - ÉúÃü¸Ä±ä
-        public const int ON_PLAYER_DEAD = 20005; //Íæ¼Ò - Íæ¼ÒËÀÍö
-        public const int ON_PICK_ITEM = 20006; //Íæ¼Ò - »ØÊÕÎïÆ·
-        public const int ON_MANUAL_CIRCLE_PROGRESS_CHG = 20007;//Íæ¼Ò - ÊÖ¶¯µÄÔ²ĞÎ½ø¶ÈÌõ½ø¶È¸Ä±ä
-        public const int ON_PLAYER_UNDER_TABLE_CHG = 20008;//Íæ¼Ò - ÊÇ·ñÔÚ×À×Óµ×ÏÂ×´Ì¬¸Ä±ä
-        #endregion
-
-        #region ÓÎÏ·Á÷³ÌÏà¹Ø 30¿ªÍ·
-
-        public const int ON_GAME_START = 30001;//ÓÎÏ·Á÷³Ì - ×ÜµÄÓÎÏ·¿ªÊ¼
-        public const int ON_GAME_FINISH = 30002;//ÓÎÏ·Á÷³Ì - ×ÜµÄÓÎÏ·½áÊø
-        public const int ON_CUR_LOOP_SCORE_CHG = 30003;//ÓÎÏ·Á÷³Ì - µ±ÌìµÄ·ÖÊı¸Ä±ä
-        public const int ON_PHASE_TIME_UPDATE = 30004;//ÓÎÏ·Á÷³Ì - ÖçÒ¹Ê±¼ä±ä»¯
-        public const int ON_LEVEL_START = 30005;//ÓÎÏ·Á÷³Ì - Ò»Ìì¿ªÊ¼
-        public const int ON_LEVEL_FINISH = 30006;//ÓÎÏ·Á÷³Ì - Ò»Ìì½áÊø
+        //æ¸¸æˆå†…æ“ä½œ 100å¼€å¤´
+        public const int ON_INTERACTION_PRESS = 10001; //è¾“å…¥ - äº¤äº’é”®æŒ‰ä¸‹
+        public const int ON_DASH_PRESS = 10002; //è¾“å…¥ - å†²åˆºé”®æŒ‰ä¸‹
+        public const int ON_RUN_PRESS = 10003; //è¾“å…¥ - å¥”è·‘é”®æŒ‰ä¸‹
+        public const int ON_RUN_RELEASE = 10004; //è¾“å…¥ - å¥”è·‘é”®æŠ¬èµ·
+        public const int ON_USE_PRESS = 10005; //è¾“å…¥ - ä½¿ç”¨é”®æŒ‰ä¸‹
+        public const int ON_USE_LONG_PRESS = 10006; //è¾“å…¥ - ä½¿ç”¨é”®é•¿æŒ‰
+        public const int ON_USE_LONG_PRESS_RELEASE = 10007; //è¾“å…¥ - ä½¿ç”¨é”®é•¿æŒ‰æŠ¬èµ·
+        public const int ON_BAG_PRESS = 10008; //è¾“å…¥ - èƒŒåŒ…é”®æŒ‰ä¸‹
+        public const int ON_PICK_PRESS = 10009; //è¾“å…¥ - å›æ”¶é”®æŒ‰ä¸‹
+        public const int ON_MOUSEWHEEL_VALUE_CHG = 10010; //è¾“å…¥ - é¼ æ ‡æ»šè½®å€¼æ”¹å˜
+        public const int ON_GAMEPAUSE_PRESS = 10011; //è¾“å…¥ - æš‚åœé”®æŒ‰ä¸‹
+        public const int ON_MOUSEWHEEL_PRESS = 10012; //è¾“å…¥ - é¼ æ ‡æ»šè½®é”®æŒ‰ä¸‹
+        public const int ON_USE_SHORT_PRESS_RELEASE = 10013; // è¾“å…¥ - é¼ æ ‡çŸ­æŒ‰æŠ¬èµ·
+        //UIæ“ä½œ 101å¼€å¤´
+        public const int ON_UI_INTERACTION_PRESS = 10101; //è¾“å…¥ - äº¤äº’é”®æŒ‰ä¸‹
+        public const int ON_UI_BAG_PRESS = 10102; //è¾“å…¥ - èƒŒåŒ…é”®æŒ‰ä¸‹
 
         #endregion
         
-        #region µĞÈËÏà¹Ø 40¿ªÍ·
+        #region ç©å®¶åŠŸèƒ½ç›¸å…³ 20å¼€å¤´
 
-        public const int ON_ENEMY_SANITY_CHG = 40001;    // µĞÈË - ÀíÖÇÖµ±ä»¯
-        public const int ON_ENEMY_BUFF_CHG   = 40002;    // µĞÈË - Buff±ä»¯
-        public const int ON_ENEMY_DIZZY      = 40003;    // µĞÈË - Ñ£ÔÎ×´Ì¬
+        public const int ON_SELECT_ITEM = 20001; //ç©å®¶ - é€‰æ‹©é“å…·æ ç‰©å“
+        public const int ON_QUICK_BAG_UPDATE = 20002; //ç©å®¶ - é“å…·æ åˆ·æ–°
+        public const int ON_STAMINA_CHG = 20003; //ç©å®¶ - ä½“åŠ›æ”¹å˜
+        public const int ON_HEALTH_CHG = 20004; //ç©å®¶ - ç”Ÿå‘½æ”¹å˜
+        public const int ON_PLAYER_DEAD = 20005; //ç©å®¶ - ç©å®¶æ­»äº¡
+        public const int ON_PICK_ITEM = 20006; //ç©å®¶ - å›æ”¶ç‰©å“
+        public const int ON_MANUAL_CIRCLE_PROGRESS_CHG = 20007;//ç©å®¶ - æ‰‹åŠ¨çš„åœ†å½¢è¿›åº¦æ¡è¿›åº¦æ”¹å˜
+        public const int ON_PLAYER_UNDER_TABLE_CHG = 20008;//ç©å®¶ - æ˜¯å¦åœ¨æ¡Œå­åº•ä¸‹çŠ¶æ€æ”¹å˜
+        #endregion
+
+        #region æ¸¸æˆæµç¨‹ç›¸å…³ 30å¼€å¤´
+
+        public const int ON_GAME_START = 30001;//æ¸¸æˆæµç¨‹ - æ€»çš„æ¸¸æˆå¼€å§‹
+        public const int ON_GAME_FINISH = 30002;//æ¸¸æˆæµç¨‹ - æ€»çš„æ¸¸æˆç»“æŸ
+        public const int ON_CUR_LOOP_SCORE_CHG = 30003;//æ¸¸æˆæµç¨‹ - å½“å¤©çš„åˆ†æ•°æ”¹å˜
+        public const int ON_PHASE_TIME_UPDATE = 30004;//æ¸¸æˆæµç¨‹ - æ˜¼å¤œæ—¶é—´å˜åŒ–
+        public const int ON_LEVEL_START = 30005;//æ¸¸æˆæµç¨‹ - ä¸€å¤©å¼€å§‹
+        public const int ON_LEVEL_FINISH = 30006;//æ¸¸æˆæµç¨‹ - ä¸€å¤©ç»“æŸ
+
+        #endregion
+        
+        #region æ•Œäººç›¸å…³ 40å¼€å¤´
+
+        public const int ON_ENEMY_SANITY_CHG = 40001;    // æ•Œäºº - ç†æ™ºå€¼å˜åŒ–
+        public const int ON_ENEMY_BUFF_CHG   = 40002;    // æ•Œäºº - Buffå˜åŒ–
+        public const int ON_ENEMY_DIZZY      = 40003;    // æ•Œäºº - çœ©æ™•çŠ¶æ€
 
         #endregion
 
-        #region ÏµÍ³Ïà¹Ø 99¿ªÍ·
-        public const int ON_CONTROL_MAP_CHG = 99001;//ÏµÍ³ - ÊäÈëÓ³Éä·½Ê½ÇĞ»» Game/UI
-        public const int ON_CONTROL_TYPE_CHG = 99002;//ÏµÍ³ - ÊäÈë·½Ê½ÇĞ»» ¼üÅÌ/ÊÖ±ú
-        public const int ON_LANGUAGE_CHG = 99003;//ÏµÍ³ - ÓïÑÔÇĞ»»
+        #region ç³»ç»Ÿç›¸å…³ 99å¼€å¤´
+        public const int ON_CONTROL_MAP_CHG = 99001;//ç³»ç»Ÿ - è¾“å…¥æ˜ å°„æ–¹å¼åˆ‡æ¢ Game/UI
+        public const int ON_CONTROL_TYPE_CHG = 99002;//ç³»ç»Ÿ - è¾“å…¥æ–¹å¼åˆ‡æ¢ é”®ç›˜/æ‰‹æŸ„
+        public const int ON_LANGUAGE_CHG = 99003;//ç³»ç»Ÿ - è¯­è¨€åˆ‡æ¢
         #endregion
     }
 }

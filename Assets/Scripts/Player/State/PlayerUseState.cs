@@ -44,7 +44,7 @@ namespace KidGame.Core
                     //如果是长按使用类型的
                     if (weaponItem.weaponData.longOrShortPress == 0)
                     {
-                        canUseItem = PlayerBag.Instance.UseWeaponPress(selectedItem);
+                        canUseItem = PlayerBag.Instance.UseWeaponLongPress(selectedItem);
                     }
                     else
                     {

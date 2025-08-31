@@ -253,8 +253,8 @@ MonoBehaviour:
     longOrShortPress: 1
   - id: h002
     name: Telescope
-    useType: 0
-    maxDistance: 0
+    useType: 1
+    maxDistance: 25
     weaponType: 0
     damage: 0
     impactForce: 0

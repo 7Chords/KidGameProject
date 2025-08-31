@@ -47,6 +47,7 @@ namespace KidGame.Core
 
         public Transform PlaceTrapPoint;
         public Transform SpawnAndUseThrowWeaponPoint;
+        public Transform SpawnAndUseOnHandWeaponPoint;
         private GameObject curPreviewGO;
         #endregion
 
@@ -441,13 +442,13 @@ namespace KidGame.Core
                         this.transform.rotation
                         );
                 }
-                //可多次使用   近战
+                //可多次使用  近战
                 else if(weaponData.useType == 1 && weaponData.weaponType == 0)
                 {
                     DiscardWeaponAndWeaponData();
                     currentWeapon = SpawnOnHandWeapon(
                         weaponData,
-                        this.transform.rotation
+                        SpawnAndUseOnHandWeaponPoint.rotation
                         );
                 }
  
@@ -526,7 +527,6 @@ namespace KidGame.Core
         {
 
             if (SpawnAndUseThrowWeaponPoint == null) return null;
-
 
             GameObject newWeapon = WeaponFactory.CreateEntity(
                 weaponData

@@ -279,7 +279,7 @@
                     "name": "",
                     "id": "8c99b2fc-5f7f-44ea-90a1-9584a8b80971",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Hold,Press",
+                    "interactions": "Hold(duration=0.2),Press",
                     "processors": "",
                     "groups": "",
                     "action": "Use",
