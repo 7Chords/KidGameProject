@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace KidGame.Core
 {
-
     public enum LevelPhase
     {
         Day,
         Night,
         End
     }
+    
     /// <summary>
     /// 游戏关卡管理器
     /// </summary>
@@ -27,14 +27,13 @@ namespace KidGame.Core
 
         #endregion
 
-        private float _phaseDuration = 0f; // ��ǰ�׶���ʱ��
+        private float _phaseDuration = 0f; // 当前阶段剩余时间
 
         private List<GameLevelData> _levelDataList;
 
         private int levelIndex;
 
-        #region ��ҹ״̬
-
+        #region 昼夜状态
 
         private LevelPhase _currentPhase = LevelPhase.Day;
 
@@ -72,6 +71,7 @@ namespace KidGame.Core
 
             float t = Mathf.Clamp01(1f - _phaseTimer / _phaseDuration);
             MsgCenter.SendMsg(MsgConst.ON_PHASE_TIME_UPDATE, _currentPhase, t);
+            
             float lerpValue = _currentPhase switch
             {
                 LevelPhase.Day => Mathf.Lerp(1f, 0f, t),
@@ -95,12 +95,12 @@ namespace KidGame.Core
             }
         }
 
-        #region �ؿ�ѭ��
+        #region 关卡循环
         
         public void InitFirstLevel()
         {
             _currentDay = 1;
-            LevelResManager.Instance.InitLevelRes(_levelDataList[0].f2MMappingList,_levelDataList[0].r2MMappingList);
+            LevelResManager.Instance.InitLevelRes(_levelDataList[0].f2MMappingList, _levelDataList[0].r2MMappingList);
             StartDayPhase();
         }
 
@@ -113,7 +113,7 @@ namespace KidGame.Core
             }
             
             PlayerSaveData.Instance.AutoSave();
-            LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].f2MMappingList,_levelDataList[levelIndex].r2MMappingList);
+            LevelResManager.Instance.InitLevelRes(_levelDataList[levelIndex].f2MMappingList, _levelDataList[levelIndex].r2MMappingList);
         }
 
         public void DiscardCurrentLevel()
@@ -124,7 +124,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ��ҹѭ��
+        #region 昼夜循环
 
         public void StartDayPhase()
         {  
@@ -167,7 +167,6 @@ namespace KidGame.Core
             }
             else
             {
- 
                 GameManager.Instance.GameFinish(true);
             }
         }
@@ -180,6 +179,72 @@ namespace KidGame.Core
         public int GetCurrentDay()
         {
             return _currentDay;
+        }
+
+        #endregion
+
+        #region 新增方法 - 用于存档系统集成
+
+        /// <summary>
+        /// 获取当前阶段剩余时间
+        /// </summary>
+        public float GetPhaseRemainingTime()
+        {
+            return _phaseTimer;
+        }
+
+        /// <summary>
+        /// 获取当前阶段总时长
+        /// </summary>
+        public float GetPhaseTotalDuration()
+        {
+            return _phaseDuration;
+        }
+
+        /// <summary>
+        /// 获取当前阶段进度（0-1）
+        /// </summary>
+        public float GetPhaseProgress()
+        {
+            return 1f - (_phaseTimer / _phaseDuration);
+        }
+
+        /// <summary>
+        /// 暂停昼夜计时器
+        /// </summary>
+        public void PausePhaseTimer()
+        {
+            _timerRunning = false;
+        }
+
+        /// <summary>
+        /// 恢复昼夜计时器
+        /// </summary>
+        public void ResumePhaseTimer()
+        {
+            _timerRunning = true;
+        }
+
+        /// <summary>
+        /// 设置昼夜持续时间（用于难度调整）
+        /// </summary>
+        public void SetDurations(float dayTime, float nightTime)
+        {
+            dayDuration = dayTime;
+            nightDuration = nightTime;
+        }
+
+        /// <summary>
+        /// 获取当前阶段名称（用于UI显示）
+        /// </summary>
+        public string GetCurrentPhaseName()
+        {
+            return _currentPhase switch
+            {
+                LevelPhase.Day => "白天",
+                LevelPhase.Night => "夜晚",
+                LevelPhase.End => "结束",
+            };
         }
 
         #endregion
