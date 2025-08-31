@@ -329,7 +329,7 @@ namespace KidGame.Core
         public bool UseWeaponShortClick(ISlotInfo slot, Vector3 position, Quaternion rotation)
         {
             // 投掷物使用的时候需要用特殊的逻辑 其他物品
-            if (slot is WeaponSlotInfo weaponSlot)
+            if (slot is WeaponSlotInfo)
             {
                 GameObject curWeapon = PlayerController.Instance.GetCurWeapon();
                 WeaponBase curWeaponScript = curWeapon.GetComponent<WeaponBase>();
@@ -343,17 +343,23 @@ namespace KidGame.Core
                         curWeapon.transform.rotation = rotation;
                         curWeaponScript.SetIsNotUse(false);
                         DeleteItemInCombineBag(slot.ItemData.Id, 1);
+                        // 如果是投掷类的需要使用后持续存在的 那么去掉这个引用
+                        PlayerController.Instance.SetWeaponAndWeaponDataReference2Null();
                         return true;
                     }
                 }
-            }
-            return false;
+
+
+
+                }
+                return false;
         }
 
         public bool UseWeaponPress(ISlotInfo slot)
         {
             if (slot != null && slot is WeaponSlotInfo)
             {
+
                 // 发送一个长按开始的讯号 武器内部逻辑订阅这个信息
             }
                 return false;

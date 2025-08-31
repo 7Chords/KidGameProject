@@ -419,7 +419,7 @@ namespace KidGame.Core
             if (slotInfo == null || slotInfo.ItemData is MaterialData || slotInfo.ItemData is FoodData)
             {
                 DestoryCurrentTrapPreview();
-                DiscardWeapon();
+                DiscardWeaponAndWeaponData();
                 return;
             }
             if(slotInfo.ItemData is TrapData trapData)
@@ -434,7 +434,8 @@ namespace KidGame.Core
                 {
 
                     // 如果不是重复的 销毁现在的 取得新的
-                    DiscardWeapon();
+                    // 不销毁 只让引用为空 销毁在逻辑里做了 否则会有一些问题
+                    DiscardWeaponAndWeaponData();
                     currentWeapon = SpawnThrowWeapon(
                         weaponData,
                         this.transform.rotation
@@ -443,7 +444,7 @@ namespace KidGame.Core
                 //可多次使用   近战
                 else if(weaponData.useType == 1 && weaponData.weaponType == 0)
                 {
-                    DiscardWeapon();
+                    DiscardWeaponAndWeaponData();
                     currentWeapon = SpawnOnHandWeapon(
                         weaponData,
                         this.transform.rotation
@@ -454,18 +455,31 @@ namespace KidGame.Core
             
         }
 
+        public void SetCurrentWeaponData(WeaponData _weaponData)
+        {
+            currentWeaponData = _weaponData;
+        }
         public  GameObject GetCurWeapon()
         {
             return currentWeapon;
         }
-        public void DiscardWeapon()
+
+        public void SetWeaponAndWeaponDataReference2Null()
         {
-            if(currentWeapon!=null)
+            Debug.Log("YES");
+            currentWeapon = null;
+            currentWeaponData = null;
+        }
+        public void DiscardWeaponAndWeaponData()
+        {
+            if(currentWeapon != null && currentWeaponData != null)
             {
                 Destroy(currentWeapon);
-                currentWeapon = null;
             }
+            currentWeapon = null;
+            currentWeaponData = null;
         }
+
 
         /// <summary>
         /// 生成预览的陷阱

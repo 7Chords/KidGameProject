@@ -32,6 +32,7 @@ namespace KidGame.Core
                 Object.Destroy(weaponObj);
                 return null;
             }
+            PlayerController.Instance.SetCurrentWeaponData(weaponData);
             weapon.InitWeaponData(weaponData);// 初始化读配表数据
             weapon.SetIsNotUse(true); // 初始化为还未使用
             return weaponObj;
