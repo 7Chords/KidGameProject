@@ -14,21 +14,6 @@ namespace KidGame.Core
     [RequireComponent(typeof(Rigidbody))]
     public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable, ISoundable
     {
-        [SerializeField] private List<string> randomDamgeSfxList;
-
-        public List<string> RandomDamgeSfxList
-        {
-            get => randomDamgeSfxList;
-            set { randomDamgeSfxList = value; }
-        }
-
-        [SerializeField] private ParticleSystem damagePartical;
-
-        public ParticleSystem DamagePartical
-        {
-            get => damagePartical;
-            set { damagePartical = value; }
-        }
 
         #region Comp
 

@@ -19,5 +19,11 @@ namespace KidGame.Core
         public float HearingRange = 4f;
 
         public float AttackRange = 0.5f;
+
+        [Header("受伤随机音效列表")]
+        public List<string> RandomDamgeSfxList;
+
+        [Header("受伤粒子特效")]
+        public ParticleSystem DamagePartical;
     }
 }

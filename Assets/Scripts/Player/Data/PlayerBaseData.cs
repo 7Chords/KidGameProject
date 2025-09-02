@@ -35,4 +35,10 @@ public class PlayerBaseData : ScriptableObject
 
     [Header("挣扎过后的无敌时间")]
     public float StruggleInvulnerabilityDuration;
+
+    [Header("受伤随机音效列表")]
+    public List<string> RandomDamgeSfxList;
+
+    [Header("受伤粒子特效")]
+    public ParticleSystem DamagePartical;
 }
