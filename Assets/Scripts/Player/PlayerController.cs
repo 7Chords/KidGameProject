@@ -24,7 +24,6 @@ namespace KidGame.Core
         public Rigidbody Rb => rb;
 
         public PlayerAnimator PlayerAnimator;
-        public PlayerBaseData PlayerBaseData;
 
         private BuffHandler playerBuffHandler;
 
@@ -44,6 +43,7 @@ namespace KidGame.Core
         #endregion
 
         #region 玩家挣扎
+        public PlayerBaseData PlayerBaseData;
         private float struggleDemand = 1f;
         private float currentStruggle = 0f;
         private float struggleAmountOneTime => PlayerBaseData.StruggleAmountOneTime;

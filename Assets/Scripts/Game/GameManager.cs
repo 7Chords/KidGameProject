@@ -1,3 +1,4 @@
+using KidGame.core;
 using KidGame.Core.Data;
 using KidGame.UI;
 using System.Collections.Generic;
@@ -64,6 +65,12 @@ namespace KidGame.Core
         public MapData mapData;
         [Header("测试模式 需要打开才能直接启动")]
         public bool TestMode;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            InitAllGameInfo();
+        }
 
         private void Start()
         {
@@ -140,6 +147,14 @@ namespace KidGame.Core
         }
 
         #endregion
+
+        private void InitAllGameInfo()
+        {
+
+            KGmodel.Instance.InitialPlayerInfo(new PlayerInfo());
+            KGmodel.Instance.InitialGameLevelInfo(new GameLevelInfo());
+            KGmodel.Instance.InitialPlayerBagInfo(new PlayerBagInfo());
+        }
 
         #region ����ͳ��
 
