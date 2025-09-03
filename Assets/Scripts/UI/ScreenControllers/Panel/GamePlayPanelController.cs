@@ -83,7 +83,7 @@ public class GamePlayPanelController : Singleton<GamePlayPanelController>
         }
         healthIcons.Clear();
         
-        for (int i = 0; i < PlayerController.Instance.MaxHealth; i++)
+        for (int i = 0; i < GameModel.Instance.PlayerInfo.MaxHealth; i++)
         {
             var icon = Instantiate(healthIconPrefab, healthHudContainer);
             healthIcons.Add(icon);

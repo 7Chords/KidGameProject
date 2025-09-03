@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using KidGame.Interface;
+﻿using KidGame.Interface;
+using KidGame.UI;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
-using System;
-using Unity.VisualScripting;
-using KidGame.UI;
 
 namespace KidGame.Core
 {
@@ -15,8 +14,6 @@ namespace KidGame.Core
     public class PlayerController : Singleton<PlayerController>, IStateMachineOwner, IDamageable, ISoundable
     {
 
-        #region 组件
-
         private InputSettings inputSettings;
         public InputSettings InputSettings => inputSettings;
 
@@ -24,94 +21,40 @@ namespace KidGame.Core
         public Rigidbody Rb => rb;
 
         public PlayerAnimator PlayerAnimator;
-
         private BuffHandler playerBuffHandler;
+        private StateMachine stateMachine;
 
         public Transform PlaceTrapPoint;
         public Transform SpawnAndUseThrowWeaponPoint;
         public Transform SpawnAndUseOnHandWeaponPoint;
-        private GameObject curPreviewGO;
-        #endregion
 
-        #region 状态机
+        private PlayerInfo playerInfo;
 
-        private StateMachine stateMachine;
-        private PlayerState playerState; // 玩家的当前状态        
-
-        private bool isPlayerUnderDesk;
-        public bool IsPlayerUnderDesk => IsPlayerUnderDesk;
-        #endregion
-
-        #region 玩家挣扎
-        public PlayerBaseData PlayerBaseData;
-        private float struggleDemand = 1f;
-        private float currentStruggle = 0f;
-        private float struggleAmountOneTime => PlayerBaseData.StruggleAmountOneTime;
-        // 挣扎后的无敌时间
-        private float struggleInvulnerabilityDuration => PlayerBaseData.StruggleInvulnerabilityDuration;
-        #endregion
-
-        #region 手持武器相关
-        private WeaponData currentWeaponData = null;
-        private GameObject currentWeapon = null;
-        #endregion
-
-        #region 玩家基础信息
-
-        private bool isInvulnerable = false;
-
-        private int currentHealth;
-        public int MaxHealth => PlayerBaseData.Hp;
-
-        private float currentStamina;
-        private float maxStamina => PlayerBaseData.Sp;
-
-        private bool isExhausted = false;
-        private bool isRecovering = false;
-
-        #endregion
-
-        #region 玩家交互
-
-        //key:可交互 value:和玩家距离
-        private Dictionary<IInteractive, float> interactiveDict;
-        //key:可回收 value:和玩家距离
-        private Dictionary<IPickable, float> pickableDict;
-
-        private Vector3 mouseWorldPos;
-        private Vector3 playerBottomPos;
-        private Vector3 rotateDir;
-        #endregion
-
-        #region 生命周期
 
         protected override void Awake()
         {
             base.Awake();
             inputSettings = GetComponent<InputSettings>();
-
             rb = GetComponent<Rigidbody>();
-            currentHealth = MaxHealth;
-            currentStamina = maxStamina;
         }
 
 
         public void Init()
         {
+            playerInfo = GameModel.Instance.PlayerInfo;
+
+            //初始化状态机
             stateMachine = PoolManager.Instance.GetObject<StateMachine>();
             stateMachine.Init(this);
-            //初始化为Idle状态
-            ChangeState(PlayerState.Idle);
             //初始化buff处理器
             playerBuffHandler = new BuffHandler();
             playerBuffHandler.Init();
+            //初始化为Idle状态
+            ChangeState(PlayerState.Idle);
 
             //注册一些事件
             RegActions();
 
-            //初始化字典
-            interactiveDict = new Dictionary<IInteractive, float>();
-            pickableDict = new Dictionary<IPickable, float>();
         }
 
         public void Discard()
@@ -121,7 +64,6 @@ namespace KidGame.Core
             UnregActions();
         }
 
-        #endregion
 
         #region 事件相关
 
@@ -164,7 +106,7 @@ namespace KidGame.Core
 
         public bool IsPlayerState(PlayerState state)
         {
-            return state == playerState;
+            return state == playerInfo.PlayerState;
         }
 
         private void GamePause()
@@ -182,22 +124,22 @@ namespace KidGame.Core
         public void Rotate()
         {
             //将鼠标屏幕坐标转换为世界坐标
-            mouseWorldPos = MouseRaycaster.Instance.GetMousePosi();
+            playerInfo.MouseWorldPos = MouseRaycaster.Instance.GetMousePosi();
             //忽略Y轴差异
-            playerBottomPos = new Vector3(transform.position.x, mouseWorldPos.y, transform.position.z);
+            playerInfo.PlayerBottomPos = new Vector3(transform.position.x, playerInfo.MouseWorldPos.y, transform.position.z);
             //计算方向向量
-            rotateDir = (mouseWorldPos - playerBottomPos).normalized;
-            transform.rotation = Quaternion.LookRotation(rotateDir);
+            playerInfo.RotateDir = (playerInfo.MouseWorldPos - playerInfo.PlayerBottomPos).normalized;
+            transform.rotation = Quaternion.LookRotation(playerInfo.RotateDir);
         }
         public void ChangeState(PlayerState playerState, bool reCurrstate = false)
         {
             // 如果处于体力耗尽状态只能进入Idle状态
-            if (isExhausted && (playerState == PlayerState.Move || playerState == PlayerState.Dash))
+            if (playerInfo.IsExhausted && (playerState == PlayerState.Move || playerState == PlayerState.Dash))
             {
                 playerState = PlayerState.Idle;
             }
 
-            this.playerState = playerState;
+            playerInfo.PlayerState = playerState;
             switch (playerState)
             {
                 case PlayerState.Idle:
@@ -237,13 +179,13 @@ namespace KidGame.Core
         /// </summary>
         public void PlayerInteraction()
         {
-            if (interactiveDict == null || interactiveDict.Count == 0) return;
+            if (playerInfo.InteractiveDict == null || playerInfo.InteractiveDict.Count == 0) return;
             GetClosestInteractive()?.InteractPositive(gameObject);
         }
 
         public void PlayerPick()
         {
-            if (pickableDict == null || pickableDict.Count == 0) return;
+            if (playerInfo.PickableDict == null || playerInfo.PickableDict.Count == 0) return;
             GetClosestPickable()?.Pick();
         }
 
@@ -259,7 +201,7 @@ namespace KidGame.Core
             if (currentUseItem == null) return;
             UseItemType itemType = currentUseItem.ItemData.UseItemType;
             //允许变走边使用武器
-            if (playerState != PlayerState.Idle && itemType != UseItemType.weapon)
+            if (playerInfo.PlayerState != PlayerState.Idle && itemType != UseItemType.weapon)
             {
                 UIHelper.Instance.ShowOneTip(new TipInfo("当前状态不可布置陷阱", transform.position));
                 return;
@@ -274,7 +216,7 @@ namespace KidGame.Core
 
         private bool CanPlayerUseItem()
         {
-            if(isPlayerUnderDesk)
+            if(playerInfo.IsPlayerUnderDesk)
             {
                 return false;
             }
@@ -292,9 +234,9 @@ namespace KidGame.Core
         /// <param name="interactive"></param>
         public void AddInteractiveToList(IInteractive interactive, float distance)
         {
-            if (interactiveDict == null) return;
-            if (interactiveDict.ContainsKey(interactive)) return;
-            interactiveDict.Add(interactive, distance);
+            if (playerInfo.InteractiveDict == null) return;
+            if (playerInfo.InteractiveDict.ContainsKey(interactive)) return;
+            playerInfo.InteractiveDict.Add(interactive, distance);
         }
 
         /// <summary>
@@ -303,9 +245,9 @@ namespace KidGame.Core
         /// <param name="interactive"></param>
         public void RemoveInteractiveFromList(IInteractive interactive)
         {
-            if (interactiveDict == null) return;
-            if (!interactiveDict.ContainsKey(interactive)) return;
-            interactiveDict.Remove(interactive);
+            if (playerInfo.InteractiveDict == null) return;
+            if (!playerInfo.InteractiveDict.ContainsKey(interactive)) return;
+            playerInfo.InteractiveDict.Remove(interactive);
         }
 
         /// <summary>
@@ -315,7 +257,7 @@ namespace KidGame.Core
         {
             float min = 999;
             IInteractive closestInteractive = null;
-            foreach (var pair in interactiveDict)
+            foreach (var pair in playerInfo.InteractiveDict)
             {
                 if (pair.Value < min)
                 {
@@ -333,9 +275,9 @@ namespace KidGame.Core
         /// <param name="interactive"></param>
         public void AddPickableToList(IPickable pickable, float distance)
         {
-            if (pickableDict == null) return;
-            if (pickableDict.ContainsKey(pickable)) return;
-            pickableDict.Add(pickable, distance);
+            if (playerInfo.PickableDict == null) return;
+            if (playerInfo.PickableDict.ContainsKey(pickable)) return;
+            playerInfo.PickableDict.Add(pickable, distance);
         }
 
         /// <summary>
@@ -344,9 +286,9 @@ namespace KidGame.Core
         /// <param name="interactive"></param>
         public void RemovePickableFromList(IPickable pickable)
         {
-            if (pickableDict == null) return;
-            if (!pickableDict.ContainsKey(pickable)) return;
-            pickableDict.Remove(pickable);
+            if (playerInfo.PickableDict == null) return;
+            if (!playerInfo.PickableDict.ContainsKey(pickable)) return;
+            playerInfo.PickableDict.Remove(pickable);
         }
 
         /// <summary>
@@ -356,7 +298,7 @@ namespace KidGame.Core
         {
             float min = 999;
             IPickable closestIPickable = null;
-            foreach (var pair in pickableDict)
+            foreach (var pair in playerInfo.PickableDict)
             {
                 if (pair.Value < min)
                 {
@@ -412,7 +354,7 @@ namespace KidGame.Core
             }
             else if(slotInfo.ItemData is WeaponData weaponData)
             {
-                if (currentWeaponData != null && weaponData.id == currentWeaponData.id) return;
+                if (playerInfo.CurrentWeaponData != null && weaponData.id == playerInfo.CurrentWeaponData.id) return;
                 // 消耗品  远程
                 if (weaponData.useType == 0 && weaponData.weaponType == 1)
                 {
@@ -420,7 +362,7 @@ namespace KidGame.Core
                     // 如果不是重复的 销毁现在的 取得新的
                     // 不销毁 只让引用为空 销毁在逻辑里做了 否则会有一些问题
                     DiscardWeaponAndWeaponData();
-                    currentWeapon = SpawnThrowWeapon(
+                    playerInfo.CurWeaponGO = SpawnThrowWeapon(
                         weaponData,
                         this.transform.rotation
                         );
@@ -429,7 +371,7 @@ namespace KidGame.Core
                 else if(weaponData.useType == 1 && weaponData.weaponType == 0)
                 {
                     DiscardWeaponAndWeaponData();
-                    currentWeapon = SpawnOnHandWeapon(
+                    playerInfo.CurWeaponGO = SpawnOnHandWeapon(
                         weaponData,
                         SpawnAndUseOnHandWeaponPoint.rotation
                         );
@@ -441,27 +383,27 @@ namespace KidGame.Core
 
         public void SetCurrentWeaponData(WeaponData _weaponData)
         {
-            currentWeaponData = _weaponData;
+            playerInfo.CurrentWeaponData = _weaponData;
         }
         public  GameObject GetCurWeapon()
         {
-            return currentWeapon;
+            return playerInfo.CurWeaponGO;
         }
 
         public void SetWeaponAndWeaponDataReference2Null()
         {
             Debug.Log("YES");
-            currentWeapon = null;
-            currentWeaponData = null;
+            playerInfo.CurWeaponGO = null;
+            playerInfo.CurrentWeaponData = null;
         }
         public void DiscardWeaponAndWeaponData()
         {
-            if(currentWeapon != null && currentWeaponData != null)
+            if(playerInfo.CurWeaponGO != null && playerInfo.CurrentWeaponData != null)
             {
-                Destroy(currentWeapon);
+                Destroy(playerInfo.CurWeaponGO);
             }
-            currentWeapon = null;
-            currentWeaponData = null;
+            playerInfo.CurWeaponGO = null;
+            playerInfo.CurrentWeaponData = null;
         }
 
 
@@ -472,18 +414,18 @@ namespace KidGame.Core
         private void SpawnSelectTrapPreview(TrapData trapData)
         {
             DestoryCurrentTrapPreview();
-            curPreviewGO = TrapFactory.CreatePreview(trapData, PlaceTrapPoint.position, transform);
+            playerInfo.CurPreviewTrapGO = TrapFactory.CreatePreview(trapData, PlaceTrapPoint.position, transform);
         }
 
         private void DestoryCurrentTrapPreview()
         {
             //在放置陷阱时切换 立刻结束放置状态
-            if (playerState == PlayerState.Use)
+            if (playerInfo.PlayerState == PlayerState.Use)
             {
                 ChangeState(PlayerState.Idle);
                 UIHelper.Instance.DestoryCircleProgress(GlobalValue.CIRCLE_PROGRESS_PLACE_TRAP);
             }
-            if (curPreviewGO) Destroy(curPreviewGO);
+            if (playerInfo.CurPreviewTrapGO) Destroy(playerInfo.CurPreviewTrapGO);
         }
 
         //生成在手上的武器 但是不执行逻辑
@@ -527,7 +469,7 @@ namespace KidGame.Core
         private void OnPlayerUnderTableChg(object[] objs)
         {
             if (objs == null || objs.Length == 0) return;
-            isPlayerUnderDesk = (bool)objs[0];
+            playerInfo.IsPlayerUnderDesk = (bool)objs[0];
         }
 
         #endregion
@@ -539,14 +481,14 @@ namespace KidGame.Core
         /// </summary>
         public void TakeDamage(DamageInfo damageInfo)
         {
-            if (isInvulnerable) return;
-    
-            currentHealth -= (int)damageInfo.damage;
-            currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
+            if (playerInfo.IsInvulnerable) return;
 
-            MsgCenter.SendMsg(MsgConst.ON_HEALTH_CHG, currentHealth);
+            playerInfo.CurrentHealth -= (int)damageInfo.damage;
+            playerInfo.CurrentHealth = Mathf.Clamp(playerInfo.CurrentHealth, 0, playerInfo.MaxHealth);
+
+            MsgCenter.SendMsg(MsgConst.ON_HEALTH_CHG, playerInfo.CurrentHealth);
     
-            if (currentHealth <= 0)
+            if (playerInfo.CurrentHealth <= 0)
             {
                 ChangeState(PlayerState.Dead);
             }
@@ -559,17 +501,17 @@ namespace KidGame.Core
         private void StartStruggle()
         {
             ChangeState(PlayerState.Struggle);
-            isInvulnerable = true;
-            currentStruggle = 0f;
+            playerInfo.IsInvulnerable = true;
+            playerInfo.CurrentStruggle = 0f;
         }
 
         public void Struggle()
         {
-            currentStruggle += struggleAmountOneTime;
-            Debug.Log("<<<<<挣扎进度:"+currentStruggle);
-            MsgCenter.SendMsg(MsgConst.ON_MANUAL_CIRCLE_PROGRESS_CHG, GlobalValue.CIRCLE_PROGRESS_STRUGGLE, currentStruggle / struggleDemand);
+            playerInfo.CurrentStruggle += playerInfo.StruggleAmountOneTime;
+            Debug.Log("<<<<<挣扎进度:" + playerInfo.CurrentStruggle);
+            MsgCenter.SendMsg(MsgConst.ON_MANUAL_CIRCLE_PROGRESS_CHG, GlobalValue.CIRCLE_PROGRESS_STRUGGLE, playerInfo.CurrentStruggle / playerInfo.StruggleDemand);
             // 挣扎完成
-            if (currentStruggle >= struggleDemand)
+            if (playerInfo.CurrentStruggle >= playerInfo.StruggleDemand)
             {
                 EndStruggle();
             }
@@ -578,13 +520,13 @@ namespace KidGame.Core
         private void EndStruggle()
         {
             ChangeState(PlayerState.Idle);
-            StartCoroutine(EndInvulnerabilityAfterTime(struggleInvulnerabilityDuration));
+            StartCoroutine(EndInvulnerabilityAfterTime(playerInfo.StruggleInvulnerabilityDuration));
         }
 
         private IEnumerator EndInvulnerabilityAfterTime(float time)
         {
             yield return new WaitForSeconds(time);
-            isInvulnerable = false;
+            playerInfo.IsInvulnerable = false;
         }
         
         /// <summary>
@@ -593,9 +535,9 @@ namespace KidGame.Core
         /// <param name="healAmount">恢复值</param>
         public void Heal(float healAmount)
         {
-            currentHealth += (int)healAmount;
-            currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
-            MsgCenter.SendMsg(MsgConst.ON_HEALTH_CHG, currentHealth);
+            playerInfo.CurrentHealth += (int)healAmount;
+            playerInfo.CurrentHealth = Mathf.Clamp(playerInfo.CurrentHealth, 0, playerInfo.MaxHealth);
+            MsgCenter.SendMsg(MsgConst.ON_HEALTH_CHG, playerInfo.CurrentHealth);
         }
 
         public void Dead()
@@ -608,47 +550,46 @@ namespace KidGame.Core
         
         public void UpdateStamina()
         {
-            if (isRecovering)
+            if (playerInfo.IsRecovering)
             {
                 // 恢复体力
-                currentStamina += PlayerBaseData.StaminaRecoverPerSecond * Time.deltaTime;
-                currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-                MsgCenter.SendMsg(MsgConst.ON_STAMINA_CHG, currentStamina / maxStamina);
+                playerInfo.CurrentStamina += playerInfo.StaminaRecoverPerSecond * Time.deltaTime;
+                playerInfo.CurrentStamina = Mathf.Clamp(playerInfo.CurrentStamina, 0, playerInfo.MaxStamina);
+                MsgCenter.SendMsg(MsgConst.ON_STAMINA_CHG, playerInfo.CurrentStamina / playerInfo.MaxStamina);
                 
                 // 检查是否恢复足够
-                if (currentStamina >= maxStamina * PlayerBaseData.RecoverThreshold)
+                if (playerInfo.CurrentStamina >= playerInfo.MaxStamina * playerInfo.RecoverThreshold)
                 {
-                    isExhausted = false;
+                    playerInfo.IsExhausted = false;
                 }
 
-                if (currentStamina >= maxStamina)
+                if (playerInfo.CurrentStamina >= playerInfo.MaxStamina)
                 {
-                    currentStamina = maxStamina;
-                    isRecovering = false;
+                    playerInfo.CurrentStamina = playerInfo.MaxStamina;
+                    playerInfo.IsRecovering = false;
                 }
             }
         }
-        
         public bool ConsumeStamina(float amount)
         {
-            if (isExhausted) return false;
+            if (playerInfo.IsExhausted) return false;
+
+            playerInfo.CurrentStamina -= amount;
             
-            currentStamina -= amount;
-            
-            if (currentStamina <= 0)
+            if (playerInfo.CurrentStamina <= 0)
             {
-                currentStamina = 0;
+                playerInfo.CurrentStamina = 0;
                 return false;
             }
-            MsgCenter.SendMsg(MsgConst.ON_STAMINA_CHG, currentStamina / maxStamina);
-            if (currentStamina <= maxStamina * PlayerBaseData.RecoverThreshold)
+            MsgCenter.SendMsg(MsgConst.ON_STAMINA_CHG, playerInfo.CurrentStamina / playerInfo.MaxStamina);
+            if (playerInfo.CurrentStamina <= playerInfo.MaxStamina * playerInfo.RecoverThreshold)
             {
-                isExhausted = true;
+                playerInfo.IsExhausted = true;
             }
 
-            if (currentStamina <= maxStamina)
+            if (playerInfo.CurrentStamina <= playerInfo.MaxStamina)
             {
-                isRecovering = true;
+                playerInfo.IsRecovering = true;
             }
             
             return true;
@@ -658,8 +599,8 @@ namespace KidGame.Core
 
         public bool GetCanPlaceTrap()
         {
-            if (curPreviewGO == null) return false;
-            return curPreviewGO.GetComponentInParent<TrapBase>().CanPlaceTrap;
+            if (playerInfo.CurPreviewTrapGO == null) return false;
+            return playerInfo.CurPreviewTrapGO.GetComponentInParent<TrapBase>().CanPlaceTrap;
         }
 
         public string GetSettingKey(InputActionType actionType, ControlType controlType)

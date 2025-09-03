@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KidGame.core
+namespace KidGame.Core
 {
     public class PlayerBagInfo
     {
@@ -26,6 +26,10 @@ namespace KidGame.core
         {
             get => _selectedIndex;
             set => _selectedIndex = value;
+        }
+
+        public void Init()
+        { 
         }
     }
 

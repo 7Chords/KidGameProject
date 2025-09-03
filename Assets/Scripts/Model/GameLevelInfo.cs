@@ -111,6 +111,11 @@ namespace KidGame.Core
         }
         #endregion
 
+        public void Init()
+        {
+
+        }
+
     }
 
 }

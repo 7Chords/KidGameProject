@@ -69,7 +69,6 @@ namespace KidGame.Core
         protected override void Awake()
         {
             base.Awake();
-            InitAllGameInfo();
         }
 
         private void Start()
@@ -89,8 +88,8 @@ namespace KidGame.Core
 
         private void InitGame()
         {
-            SoLoader.Instance.InitialSoResource();
-
+            SoLoader.Instance.Init();
+            GameModel.Instance.Init();
 
             MapManager.Instance.Init(mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
@@ -115,8 +114,6 @@ namespace KidGame.Core
 
             GamePlayPanelController.Instance.Discard();
             CameraController.Instance.Discard();
-
-
         }
 
         /// <summary>
@@ -147,14 +144,6 @@ namespace KidGame.Core
         }
 
         #endregion
-
-        private void InitAllGameInfo()
-        {
-
-            KGmodel.Instance.InitialPlayerInfo(new PlayerInfo());
-            KGmodel.Instance.InitialGameLevelInfo(new GameLevelInfo());
-            KGmodel.Instance.InitialPlayerBagInfo(new PlayerBagInfo());
-        }
 
         #region ����ͳ��
 

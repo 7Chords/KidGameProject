@@ -39,7 +39,7 @@ namespace KidGame.Core
             }
             if(isRunning)
             {
-                player.ConsumeStamina(player.PlayerBaseData.RunStaminaPerSecond * Time.deltaTime);
+                player.ConsumeStamina(GameModel.Instance.PlayerInfo.RunStaminaPerSecond * Time.deltaTime);
             }
             Vector2 inputVal = player.InputSettings.MoveDir();
             if (inputVal == Vector2.zero)
@@ -55,7 +55,7 @@ namespace KidGame.Core
 
         private void UpdateSpeed()
         {
-            speed = isRunning ? player.PlayerBaseData.RunSpeed : player.PlayerBaseData.WalkSpeed;
+            speed = isRunning ? GameModel.Instance.PlayerInfo.RunSpeed : GameModel.Instance.PlayerInfo.WalkSpeed;
         }
 
         public override void FixedUpdate()
