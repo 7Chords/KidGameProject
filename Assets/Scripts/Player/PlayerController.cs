@@ -79,7 +79,7 @@ namespace KidGame.Core
             MsgCenter.RegisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.RegisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-            MsgCenter.RegisterMsg(MsgConst.ON_PLAYER_UNDER_TABLE_CHG, OnPlayerUnderTableChg);
+            MsgCenter.RegisterMsg(MsgConst.ON_PLAYER_HIDE_CHG, OnPlayerUnderTableChg);
         }
 
 
@@ -95,7 +95,7 @@ namespace KidGame.Core
             MsgCenter.UnregisterMsgAct(MsgConst.ON_GAMEPAUSE_PRESS, GamePause);
             MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.UnregisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
-            MsgCenter.UnregisterMsg(MsgConst.ON_PLAYER_UNDER_TABLE_CHG, OnPlayerUnderTableChg);
+            MsgCenter.UnregisterMsg(MsgConst.ON_PLAYER_HIDE_CHG, OnPlayerUnderTableChg);
 
         }
 
@@ -216,7 +216,7 @@ namespace KidGame.Core
 
         private bool CanPlayerUseItem()
         {
-            if(playerInfo.IsPlayerUnderDesk)
+            if(playerInfo.IsHide)
             {
                 return false;
             }
@@ -469,7 +469,7 @@ namespace KidGame.Core
         private void OnPlayerUnderTableChg(object[] objs)
         {
             if (objs == null || objs.Length == 0) return;
-            playerInfo.IsPlayerUnderDesk = (bool)objs[0];
+            playerInfo.IsHide = (bool)objs[0];
         }
 
         #endregion

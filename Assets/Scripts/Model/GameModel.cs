@@ -1,5 +1,5 @@
 ﻿using KidGame.Core;
-
+using KidGame.Core.Data;
 
 namespace KidGame.Core
 {
@@ -17,10 +17,10 @@ namespace KidGame.Core
 
         #region 初始化方法
         
-        public void Init()
+        public void Init(PlayerBaseData playerData)
         {
             playerInfo = new PlayerInfo();
-            playerInfo.Init();
+            playerInfo.Init(playerData);
 
             gameLevelInfo = new GameLevelInfo();
             gameLevelInfo.Init();

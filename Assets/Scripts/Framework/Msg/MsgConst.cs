@@ -37,7 +37,7 @@
         public const int ON_PLAYER_DEAD = 20005; //玩家 - 玩家死亡
         public const int ON_PICK_ITEM = 20006; //玩家 - 回收物品
         public const int ON_MANUAL_CIRCLE_PROGRESS_CHG = 20007;//玩家 - 手动的圆形进度条进度改变
-        public const int ON_PLAYER_UNDER_TABLE_CHG = 20008;//玩家 - 是否在桌子底下状态改变
+        public const int ON_PLAYER_HIDE_CHG = 20008;//玩家 - 是否隐藏状态改变
         #endregion
 
         #region 游戏流程相关 30开头

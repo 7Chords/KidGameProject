@@ -61,8 +61,6 @@ namespace KidGame.Core
 
         #endregion
 
-
-        public MapData mapData;
         [Header("测试模式 需要打开才能直接启动")]
         public bool TestMode;
 
@@ -89,13 +87,14 @@ namespace KidGame.Core
         private void InitGame()
         {
             SoLoader.Instance.Init();
-            GameModel.Instance.Init();
+            GameModel.Instance.Init(GameData.playerData);
 
-            MapManager.Instance.Init(mapData);
+            MapManager.Instance.Init(GameData.mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
             PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
 
-            // UI ��ʼ��
+
+
             GamePlayPanelController.Instance.Init();
             CameraController.Instance.Init();
 

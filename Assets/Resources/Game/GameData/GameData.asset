@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelDataList:
   - {fileID: 11400000, guid: 8ef36d87b7ee9bb4183629ccd14a8cf6, type: 2}
+  mapData: {fileID: 11400000, guid: 7bc200724a03a15459ddf605391cf50e, type: 2}
+  playerData: {fileID: 11400000, guid: b484f4bb0295fec4b9010f370afb8004, type: 2}

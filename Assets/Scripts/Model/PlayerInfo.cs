@@ -1,4 +1,5 @@
-﻿using KidGame.Interface;
+﻿using KidGame.Core.Data;
+using KidGame.Interface;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace KidGame.Core
 
         private bool isRecovering;
 
-        private bool isPlayerUnderDesk;
+        private bool isHide;
 
         private PlayerState playerState;
 
@@ -133,10 +134,10 @@ namespace KidGame.Core
             get => mouseWorldPos;
             set => mouseWorldPos = value;
         }
-        public bool IsPlayerUnderDesk
+        public bool IsHide
         {
-            get => isPlayerUnderDesk;
-            set => isPlayerUnderDesk = value;
+            get => isHide;
+            set => isHide = value;
         }
 
         public Vector3 PlayerBottomPos
@@ -184,10 +185,9 @@ namespace KidGame.Core
 
 
         #region --数据方法--
-        public void Init()
+        public void Init(PlayerBaseData playerData)
         {
-            // todo:7Chords 改
-            playerBaseData = Resources.Load<PlayerBaseData>("Game/TestPlayerBaseData");
+            playerBaseData = playerData;
 
             // 挣扎系统相关
             struggleDemand = 1f;
@@ -215,7 +215,7 @@ namespace KidGame.Core
             isRecovering = false;
 
             // 躲藏状态
-            isPlayerUnderDesk = false;
+            isHide = false;
 
             // 玩家状态
             playerState = PlayerState.Idle;

@@ -55,7 +55,7 @@ namespace KidGame.Core
 
             isPlayerUnderTable = !isPlayerUnderTable;
 
-            MsgCenter.SendMsg(MsgConst.ON_PLAYER_UNDER_TABLE_CHG, isPlayerUnderTable);
+            MsgCenter.SendMsg(MsgConst.ON_PLAYER_HIDE_CHG, isPlayerUnderTable);
 
             if(isPlayerUnderTable)
                 UIHelper.Instance.UpdateBubbleContent(gameObject,"×ê³ö");
