@@ -10,7 +10,7 @@ namespace KidGame.core
         [SerializeField] private FocusLinesScript _m_focusLinesScript;// 聚焦线脚本引用
         private float distanceR = 15f;// 距离 通过配表配置
         private int layerIndex;
-        private float halfMinAngel = 0; // 最大能超过的距离
+        private float halfMinAngel = 0; // 最大能超过的角度
         private float onceFoucsAddTime = 0.05f; // 单次照射增加的值
         protected override void Awake()
         {

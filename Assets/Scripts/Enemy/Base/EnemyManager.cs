@@ -42,13 +42,6 @@ namespace KidGame.Core
             // 初始化完敌人信息
 
         }
-
-        public List<EnemyController> GetAllEnemyController()
-        {
-            if(enemyList != null) return enemyList;
-
-            return null;
-        }
         public void DiscardEnemy()
         {
             foreach (var enemy in enemyList)
