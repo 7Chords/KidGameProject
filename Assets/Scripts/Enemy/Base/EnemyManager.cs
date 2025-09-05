@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 namespace KidGame.Core
@@ -6,19 +6,19 @@ namespace KidGame.Core
     public class EnemyManager : Singleton<EnemyManager>
     {
         [SerializeField] private List<EnemyController> enemyList;
-
-        //²âÊÔ
+        //æµ‹è¯•
         public GameObject enemyPrefab;
 
         public void Init()
         {
-            enemyList = new List<EnemyController>();
+            if(enemyList == null) enemyList = new List<EnemyController>();
         }
 
         public void Discard()
         {
 
         }
+
         public void InitEnemy(List<EnemySpawnCfg> enemySpawnCfgList)
         {
             for (int i = 0; i < enemySpawnCfgList.Count; i++)
@@ -28,7 +28,7 @@ namespace KidGame.Core
                     enemySpawnCfgList[i].enemySpawnPos.y,
                     -enemySpawnCfgList[i].enemySpawnPos.z) + GameManager.Instance.GameGeneratePoint.position;
 
-                //µØÍ¼Ðý×ªµ¼ÖÂµÄÎ»ÖÃÐÞÕý
+                //åœ°å›¾æ—‹è½¬å¯¼è‡´çš„ä½ç½®ä¿®æ­£
                 enemy.transform.RotateAround(new Vector3(GameManager.Instance.GameGeneratePoint.position.x, 
                     enemy.transform.position.y, 
                     GameManager.Instance.GameGeneratePoint.position.z),
@@ -39,14 +39,24 @@ namespace KidGame.Core
                 enemyList.Add(enemyCtl);
                 enemyCtl.Init(enemySpawnCfgList[i].enemyData);
             }
+            // åˆå§‹åŒ–å®Œæ•Œäººä¿¡æ¯
+
         }
 
+        public List<EnemyController> GetAllEnemyController()
+        {
+            if(enemyList != null) return enemyList;
+
+            return null;
+        }
         public void DiscardEnemy()
         {
             foreach (var enemy in enemyList)
             {
                 enemy.Discard();
             }
+            // åº”è¯¥æŠŠåˆ—è¡¨ç½®ç©ºï¼Ÿ
+            enemyList.Clear();
         }
     }
 }

@@ -246,7 +246,14 @@ namespace KidGame.Core
                 LevelPhase.End => "结束",
             };
         }
-
+        /// <summary>
+        /// 获取当前阶段
+        /// </summary>
+        /// <returns></returns>
+        public LevelPhase GetCurrentPhase()
+        {
+            return _currentPhase;
+        }
         #endregion
     }
 }

@@ -22,6 +22,9 @@ namespace KidGame.core
         private float currentRotation = 0f; // 当前旋转角度
         private float currentAngle; // 当前夹角
         public float lineWidth;
+        private float minAngle = 10f;
+        private Vector3 middleLine;
+        private bool isTimeToCheckEnemy = false;
         void Start()
         {
             Initialized();
@@ -54,9 +57,14 @@ namespace KidGame.core
 
             // 持续更新起始位置
             updateCurrentStartPosi();
-            // 角度逐渐减小（最小到10）
-            currentAngle = Mathf.Max(10, currentAngle - focusSpeed * Time.deltaTime);
-
+            // 角度逐渐减小
+            currentAngle = Mathf.Max(minAngle, currentAngle - focusSpeed * Time.deltaTime);
+            
+            if(currentAngle == minAngle)
+            {
+                isTimeToCheckEnemy = true;
+            }
+            else isTimeToCheckEnemy = false;
             // 玩家位置作为起点
             Vector3 origin = startPosi.position;
             origin.y = 0.1f;
@@ -81,7 +89,12 @@ namespace KidGame.core
                 0.1f, // 俯视理论上要高于地面否则会被遮挡
                 Mathf.Cos(rotationRad - halfAngle)
             ).normalized;
-
+            // 更新对称轴的位置
+            middleLine = new Vector3(
+                Mathf.Sin(rotationRad),
+                0, 
+                Mathf.Cos(rotationRad)
+            ).normalized;
             Vector3 rightEnd = origin + rightDir * lineLength;
 
             // 更新线段位置 0这个点为玩家位置 1为线段终点位置
@@ -92,6 +105,10 @@ namespace KidGame.core
             rightLine.SetPosition(1, rightEnd);
         }
 
+        public bool GetIsTimeToCheck()
+        {
+            return isTimeToCheckEnemy;
+        }
         //创建这个Prefab的时候 想办法让
         public void SetIsHoldRelease()
         {
@@ -102,6 +119,10 @@ namespace KidGame.core
             isHoldPress = true;
         }
 
+        public float GetHalfMinAngle()
+        {
+            return minAngle / 2;
+        }
         private void ChangeBackAngle()
         {
             currentAngle = startAngle;
@@ -164,6 +185,11 @@ namespace KidGame.core
             // 取消订阅
             MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE, SetIsHoldRelease);
             MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS, SetIsHoldPress);
+        }
+
+        public Vector3 GetMiddleLine()
+        {
+            return middleLine;
         }
     }
 

@@ -45,6 +45,8 @@ namespace KidGame.Core
 
         private PlayerController playerController;
 
+        private float beExposedTime = 0;
+
         private Transform player;
 
         public Transform Player
@@ -94,7 +96,7 @@ namespace KidGame.Core
         private void Update()
         {
             UpdateCurrentRoomType();
-            
+
             // if (enemyHUDController != null)
             // {
             //     enemyHUDController.UpdateEnemySanity(this, curSanity, enemyBaseData.MaxSanity);
@@ -387,6 +389,15 @@ namespace KidGame.Core
             return enemyBuffHandler.buffList;
         }
 
+        public float GetBeExposeTime()
+        {
+            return beExposedTime;
+        }
+
+        public void AddBeExposeTime(float _addTime)
+        {
+            beExposedTime += _addTime;
+        }
         #region Gizoms
 
         private void OnDrawGizmos()
