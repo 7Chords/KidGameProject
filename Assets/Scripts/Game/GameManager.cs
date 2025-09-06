@@ -19,47 +19,6 @@ namespace KidGame.Core
 
         public Transform GameGeneratePoint;
 
-        #region 分数
-
-        private int currentLoopScore;
-
-        public enum ScoreRating
-        {
-            D,
-            C,
-            B,
-            A,
-            S
-        }
-
-        private ScoreRating currentRating = ScoreRating.D;
-        private float ratingProgress = 0f;
-        private float lastScoreTime = 0f;
-
-        private readonly Dictionary<ScoreRating, float> ratingMultipliers = new Dictionary<ScoreRating, float>
-        {
-            { ScoreRating.D, 30f },
-            { ScoreRating.C, 25f },
-            { ScoreRating.B, 20f },
-            { ScoreRating.A, 15f },
-            { ScoreRating.S, 10f }
-        };
-
-        private readonly Dictionary<ScoreRating, float> ratingDecayRates = new Dictionary<ScoreRating, float>
-        {
-            { ScoreRating.D, 1f },
-            { ScoreRating.C, 2f },
-            { ScoreRating.B, 4f },
-            { ScoreRating.A, 5f },
-            { ScoreRating.S, 7f }
-        };
-
-        // Combo
-        private int currentCombo = 0;
-        private float comboWindowTimer = 0f;
-        private const float ComboWindowDuration = 3f;
-
-        #endregion
 
         [Header("测试模式 需要打开才能直接启动")]
         public bool TestMode;
@@ -75,14 +34,8 @@ namespace KidGame.Core
             if (TestMode) GameStart();
         }
 
-        private void Update()
-        {
-            if (isGamePuased) return;
 
-            UpdateRatingProgress();
-        }
-
-        #region ��Ϸѭ��
+        #region 生命周期
 
         private void InitGame()
         {
@@ -92,15 +45,11 @@ namespace KidGame.Core
             MapManager.Instance.Init(GameData.mapData);
             GameLevelManager.Instance.Init(GameData.levelDataList);
             PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
-
+            ScoreManager.Instance.Init();
 
 
             GamePlayPanelController.Instance.Init();
             CameraController.Instance.Init();
-
-            currentRating = ScoreRating.D;
-            ratingProgress = 0f;
-            currentCombo = 0;
 
             GameObject.Find("Map").transform.rotation = GameGeneratePoint.transform.rotation;
         }
@@ -110,6 +59,7 @@ namespace KidGame.Core
             PlayerManager.Instance.Discard();
             MapManager.Instance.Discard();
             GameLevelManager.Instance.Discard();
+            ScoreManager.Instance.Discard();
 
             GamePlayPanelController.Instance.Discard();
             CameraController.Instance.Discard();
@@ -140,79 +90,6 @@ namespace KidGame.Core
             MsgCenter.SendMsg(MsgConst.ON_GAME_FINISH, isWin);
             if (!isWin)
                 Signals.Get<GameFailSignal>().Dispatch();
-        }
-
-        #endregion
-
-        #region ����ͳ��
-
-        public void AddScore(int score)
-        {
-            lastScoreTime = Time.time;
-
-            currentCombo++;
-            comboWindowTimer = ComboWindowDuration;
-            
-            // ������������
-            float progressIncrease = currentRating switch
-            {
-                ScoreRating.D => 30f,
-                ScoreRating.C => 25f,
-                ScoreRating.B => 20f,
-                ScoreRating.A => 15f,
-                ScoreRating.S => 10f,
-                _ => 0f
-            };
-            // todo.������ֳֵ���
-            
-            ratingProgress = Mathf.Min(100f, ratingProgress + progressIncrease);
-            
-            if (ratingProgress >= 100f && currentRating < ScoreRating.S)
-            {
-                currentRating++;
-                ratingProgress = 0f;
-            }
-            
-            // ������/�ֳֵ��ߵ÷�*�÷��������� + combo���� *��1+0.1*combo������* 10 + �ر���ϵ÷֣�*��1+ �ֻű��ʣ�
-            // todo.���ӿֻű��ʵķ���Ӱ��
-            int comboScore = (int)(currentCombo * (1 + 0.1f * currentCombo) * 10);
-            int totalScore = (int)(score * ratingMultipliers[currentRating]) + comboScore;
-            
-            currentLoopScore += totalScore;
-            MsgCenter.SendMsg(MsgConst.ON_CUR_LOOP_SCORE_CHG, currentLoopScore);
-            UIHelper.Instance.ShowOneFixedPosUIText(FixedUIPosType.Left,"+" + score, 0.75f);
-        }
-        
-        private void UpdateRatingProgress()
-        {
-            // ��һ��ʱ����û�д��������ʹ���ֳֵ��ߣ����ڽ��Ⱦͻ��½�
-            if (Time.time - lastScoreTime > 1f)
-            {
-                ratingProgress = Mathf.Max(0, ratingProgress - ratingDecayRates[currentRating] * Time.deltaTime);
-                
-                if (ratingProgress <= 0 && currentRating > ScoreRating.D)
-                {
-                    currentRating--;
-                    ratingProgress = 99f;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// ������ץסʱ�۷�
-        /// </summary>
-        public void DeductScore()
-        {
-            int deduction = (int)(currentLoopScore * 0.05f);
-            currentLoopScore = Mathf.Max(0, currentLoopScore - deduction);
-            MsgCenter.SendMsg(MsgConst.ON_CUR_LOOP_SCORE_CHG, currentLoopScore);
-
-            ResetCombo();
-        }
-        
-        private void ResetCombo()
-        {
-            currentCombo = 0;
         }
 
         #endregion

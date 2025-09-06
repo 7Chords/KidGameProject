@@ -50,7 +50,7 @@ namespace KidGame.Core
                         hasHurtEnemyList.Add(coll.gameObject);
                         coll.GetComponent<EnemyController>().TakeDamage(
                             new DamageInfo(gameObject, Damage, Buff ? new BuffInfo(Buff, coll.gameObject) : null));
-                        GameManager.Instance.AddScore(trapData.trapScore);
+                        ScoreManager.Instance.AddScore(trapData.trapScore);
                     }
                 }
             }
