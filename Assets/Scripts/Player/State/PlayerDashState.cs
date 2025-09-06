@@ -9,7 +9,7 @@ namespace KidGame.Core
         public override void Enter()
         {
             player.PlayAnimation("Dash");
-            player.ProduceSound(GlobalValue.MIDDLE_RANGE_SOUND_SPREAD);
+            player.ProduceSound(GameModel.Instance.PlayerInfo.DashSoundRange);
             //todo
             player.Rb.AddForce(player.transform.forward * 100f, ForceMode.Impulse);
             player.ConsumeStamina(GameModel.Instance.PlayerInfo.DashStaminaOneTime);

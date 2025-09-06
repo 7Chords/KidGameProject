@@ -22,7 +22,7 @@ namespace KidGame.Core
         {
             base.Update();
             //发出逻辑上的声音
-            player.ProduceSound(GlobalValue.SMALL_RANGE_SOUND_SPREAD);
+            player.ProduceSound(GameModel.Instance.PlayerInfo.RunSoundRange);
             // 冲刺
             if (player.InputSettings.GetDashDown())
             {

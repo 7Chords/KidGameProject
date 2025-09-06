@@ -73,17 +73,6 @@ namespace KidGame.Core
             get => currentStruggle;
             set => currentStruggle = value;
         }
-        // 单次挣扎增加解脱值数 struggleInvulnerabilityDuration
-        public float StruggleAmountOneTime => playerBaseData.StruggleAmountOneTime;
-
-        // 挣扎后的无敌时间
-        public float StruggleInvulnerabilityDuration => playerBaseData.StruggleInvulnerabilityDuration;
-
-        public float StaminaRecoverPerSecond => playerBaseData.StaminaRecoverPerSecond;
-
-        public float RecoverThreshold => playerBaseData.RecoverThreshold;
-        public float DashStaminaOneTime => playerBaseData.DashStaminaOneTime;
-        public float RunStaminaPerSecond => playerBaseData.RunStaminaPerSecond;
 
         public float RunSpeed => playerBaseData.RunSpeed;
 
@@ -114,9 +103,6 @@ namespace KidGame.Core
             get => currentHealth;
             set => currentHealth = value;
         }
-        public int MaxHealth => playerBaseData.Hp;
-        public float MaxStamina => playerBaseData.Sp;
-
         public float CurrentStamina
         {
             get => currentStamina;
@@ -179,6 +165,22 @@ namespace KidGame.Core
             get => curWeaponGO;
             set => curWeaponGO = value;
         }
+
+        // 单次挣扎增加解脱值数 struggleInvulnerabilityDuration
+        public float StruggleAmountOneTime => playerBaseData.StruggleAmountOneTime;
+
+        // 挣扎后的无敌时间
+        public float StruggleInvulnerabilityDuration => playerBaseData.StruggleInvulnerabilityDuration;
+        public float StaminaRecoverPerSecond => playerBaseData.StaminaRecoverPerSecond;
+
+        public float RecoverThreshold => playerBaseData.RecoverThreshold;
+        public float DashStaminaOneTime => playerBaseData.DashStaminaOneTime;
+        public float RunStaminaPerSecond => playerBaseData.RunStaminaPerSecond;
+        public int MaxHealth => playerBaseData.Hp;
+        public float MaxStamina => playerBaseData.Sp;
+        public float RunSoundRange => playerBaseData.RunSoundRange;
+        public float DashSoundRange => playerBaseData.DashSoundRange;
+
         #endregion
 
 

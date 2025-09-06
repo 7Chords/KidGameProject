@@ -22,3 +22,7 @@ MonoBehaviour:
   RecoverThreshold: 0.2
   StruggleAmountOneTime: 0.2
   StruggleInvulnerabilityDuration: 1
+  RandomDamgeSfxList: []
+  DamagePartical: {fileID: 0}
+  RunSoundRange: 2
+  DashSoundRange: 5

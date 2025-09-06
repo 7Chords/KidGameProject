@@ -42,5 +42,11 @@ namespace KidGame.Core.Data
 
         [Header("受伤粒子特效")]
         public ParticleSystem DamagePartical;
+
+        [Header("奔跑产生的声音范围")]
+        public float RunSoundRange;
+
+        [Header("冲刺产生的声音范围")]
+        public float DashSoundRange;
     }
 }
