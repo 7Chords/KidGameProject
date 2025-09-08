@@ -57,7 +57,7 @@ namespace KidGame.Core
         private bool canPlaceTrap = true;
         public bool CanPlaceTrap => canPlaceTrap;
 
-
+        private bool hasInited;
 
         private void Awake()
         {
@@ -83,6 +83,7 @@ namespace KidGame.Core
             //¿ªÆô½»»¥´¥·¢Æ÷
             coll.enabled = true;
             model.SetActive(true);
+            hasInited = true;
         }
 
         public virtual void Discard()
@@ -270,10 +271,12 @@ namespace KidGame.Core
         /// </summary>
         public void ShowDetail()
         {
+            if (!hasInited) return;
             DetailGO.SetActive(true);
         }
         public void HideDetail()
         {
+            if (!hasInited) return;
             DetailGO.SetActive(false);
         }
 
