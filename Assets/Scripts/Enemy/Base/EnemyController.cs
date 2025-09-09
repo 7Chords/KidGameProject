@@ -70,6 +70,9 @@ namespace KidGame.Core
 
         private GameObject hearingGO;
 
+        public float ReceiveSoundRange => enemyBaseData.HearingRange;
+        public GameObject SoundGameObject => gameObject;
+
         #region 有目的搜索
 
         public string _currentTargetItemId;
@@ -142,6 +145,8 @@ namespace KidGame.Core
 
             behaviorTree.Start();
             agent.enabled = true;
+            LogicSoundManager.Instance.RegSoundable(this);
+
         }
 
         public void Discard()
@@ -160,6 +165,7 @@ namespace KidGame.Core
             _roomsToCheck = null;
             roomSearchStateDic.Clear();
             roomSearchStateDic = null;
+            LogicSoundManager.Instance.UnregSoundable(this);
 
             Destroy(gameObject);
         }
@@ -195,17 +201,20 @@ namespace KidGame.Core
 
         public bool PlayerInHearing()
         {
-            if (player == null) return false;
-            // 目前好像还没声音系统，暂时这么写
-            if ((player.position - transform.position).magnitude <=
-                enemyBaseData.HearingRange && (playerController.IsPlayerState(PlayerState.Dash) ||
-                                               playerController.InputSettings.GetIfRun()))
-            {
-                targetPos = player.position;
-                return true;
-            }
+            //if (player == null) return false;
+            //// 目前好像还没声音系统，暂时这么写
+            //if ((player.position - transform.position).magnitude <=
+            //    enemyBaseData.HearingRange && (playerController.IsPlayerState(PlayerState.Dash) ||
+            //                                   playerController.InputSettings.GetIfRun()))
+            //{
+            //    targetPos = player.position;
+            //    return true;
+            //}
 
-            return false;
+            //return false;
+
+            //hearingGO通过接收声音方法进行赋值 ReceiveSound
+            return hearingGO;
         }
 
         #endregion
@@ -356,8 +365,8 @@ namespace KidGame.Core
 
         public void GoCheckHearPoint()
         {
-            Agent.speed = enemyBaseData.MoveSpeed;
-            Agent.SetDestination(targetPos);
+            targetPos = hearingGO.transform.position;
+            SetMoveTarget(targetPos);
         }
 
         private void SetVisionIndicator(bool seePlayer)

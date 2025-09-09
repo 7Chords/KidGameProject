@@ -46,7 +46,7 @@ namespace KidGame.Core
             GameLevelManager.Instance.Init(GameData.levelDataList);
             PlayerManager.Instance.Init(GameData.levelDataList[0].playerSpawnPos);
             ScoreManager.Instance.Init();
-
+            LogicSoundManager.Instance.Init();
 
             GamePlayPanelController.Instance.Init();
             CameraController.Instance.Init();
@@ -60,6 +60,7 @@ namespace KidGame.Core
             MapManager.Instance.Discard();
             GameLevelManager.Instance.Discard();
             ScoreManager.Instance.Discard();
+            LogicSoundManager.Instance.Discard();
 
             GamePlayPanelController.Instance.Discard();
             CameraController.Instance.Discard();

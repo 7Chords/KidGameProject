@@ -20,6 +20,9 @@ namespace KidGame.Core
         private Rigidbody rb;
         public Rigidbody Rb => rb;
 
+        public float ReceiveSoundRange => 0;//玩家不存在听声范围的概念
+        public GameObject SoundGameObject => gameObject;
+
         public PlayerAnimator PlayerAnimator;
         private BuffHandler playerBuffHandler;
         private StateMachine stateMachine;
@@ -51,7 +54,7 @@ namespace KidGame.Core
             playerBuffHandler.Init();
             //初始化为Idle状态
             ChangeState(PlayerState.Idle);
-
+            LogicSoundManager.Instance.RegSoundable(this);
             //注册一些事件
             RegActions();
 
@@ -61,6 +64,7 @@ namespace KidGame.Core
         {
             stateMachine.ObjectPushPool();
             playerBuffHandler.Discard();
+            LogicSoundManager.Instance.UnregSoundable(this);
             UnregActions();
         }
 
@@ -104,10 +108,10 @@ namespace KidGame.Core
         #region 功能
 
 
-        public bool IsPlayerState(PlayerState state)
-        {
-            return state == playerInfo.PlayerState;
-        }
+        //public bool IsPlayerState(PlayerState state)
+        //{
+        //    return state == playerInfo.PlayerState;
+        //}
 
         private void GamePause()
         {
@@ -316,13 +320,10 @@ namespace KidGame.Core
         /// </summary>
         public void ProduceSound(float range)
         {
-            Collider[] colls = Physics.OverlapSphere(transform.position, range);
-            if (colls.Length == 0) return;
-            ISoundable soundable = null;
-            foreach (var coll in colls)
+            List<ISoundable> receiverList = LogicSoundManager.Instance.GetAllReceiver(this, range);
+            if (receiverList == null || receiverList.Count == 0) return;
+            foreach(var soundable in receiverList)
             {
-                soundable = coll.GetComponent<ISoundable>();
-                if (soundable == null) continue;
                 soundable.ReceiveSound(gameObject);
             }
         }

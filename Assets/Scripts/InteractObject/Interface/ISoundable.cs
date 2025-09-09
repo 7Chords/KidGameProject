@@ -14,6 +14,16 @@ namespace KidGame.Interface
 
         //接收声音(逻辑层面的）
         public abstract void ReceiveSound(GameObject creator);
+
+        /// <summary>
+        /// 接收声音的范围
+        /// </summary>
+        public abstract float ReceiveSoundRange { get; }
+
+        /// <summary>
+        /// 获得该物体
+        /// </summary>
+        public abstract GameObject SoundGameObject { get; }
     }
 
 }
