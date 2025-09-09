@@ -184,8 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c0e85d96656f4bf683e02dafd13c5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomDamgeSfxList: []
-  damagePartical: {fileID: 0}
   testTime: 0
   enemyBaseData: {fileID: 11400000, guid: 2d9933c2cbffa47c188e018bb8e950ac, type: 2}
   VisionIndicatorRenderer: {fileID: 8433906064588749655}

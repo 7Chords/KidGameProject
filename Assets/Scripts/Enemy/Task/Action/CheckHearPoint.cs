@@ -41,6 +41,13 @@ namespace KidGame.Core
 
         public override TaskStatus OnUpdate()
         {
+            if (enemy.PlayerInHearing())
+            {
+                ParticleManager.Instance.PlayEffect("Attention_spark", enemy.transform.position + Vector3.up,
+                    Quaternion.identity, enemy.transform, true, 0.5f);
+                enemy.GoCheckHearPoint();
+            }
+            
             // 直接返回当前状态（由协程更新）
             return currentStatus;
         }

@@ -21,8 +21,7 @@ namespace KidGame.Core
         public override void Update()
         {
             base.Update();
-            //发出逻辑上的声音
-            player.ProduceSound(GameModel.Instance.PlayerInfo.RunSoundRange);
+            
             // 冲刺
             if (player.InputSettings.GetDashDown())
             {
@@ -40,6 +39,8 @@ namespace KidGame.Core
             if(isRunning)
             {
                 player.ConsumeStamina(GameModel.Instance.PlayerInfo.RunStaminaPerSecond * Time.deltaTime);
+                //发出逻辑上的声音
+                player.ProduceSound(GameModel.Instance.PlayerInfo.RunSoundRange);
             }
             Vector2 inputVal = player.InputSettings.MoveDir();
             if (inputVal == Vector2.zero)
