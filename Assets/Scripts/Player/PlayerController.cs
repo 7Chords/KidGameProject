@@ -212,8 +212,7 @@ namespace KidGame.Core
             }
             if (currentUseItem is WeaponSlotInfo weaponItem)
             {
-                //不是短按类型的武器 我直接拦截
-                if (weaponItem.weaponData.longOrShortPress == 0) return;
+                
             }
             ChangeState(PlayerState.Use);
         }

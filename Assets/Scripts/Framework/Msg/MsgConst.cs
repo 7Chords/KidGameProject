@@ -56,7 +56,7 @@
         public const int ON_ENEMY_SANITY_CHG = 40001;    // 敌人 - 理智值变化
         public const int ON_ENEMY_BUFF_CHG   = 40002;    // 敌人 - Buff变化
         public const int ON_ENEMY_DIZZY      = 40003;    // 敌人 - 眩晕状态
-
+        public const int ON_ENEMY_FULL_EXPOSED = 40004; // 敌人 - 照射值已满
         #endregion
 
         #region 系统相关 99开头

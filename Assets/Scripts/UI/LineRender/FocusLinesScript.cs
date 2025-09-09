@@ -119,6 +119,11 @@ namespace KidGame.core
             isHoldPress = true;
         }
 
+        public bool GetIsHoldPress()
+        {
+            return isHoldPress;
+        }   
+
         public float GetHalfMinAngle()
         {
             return minAngle / 2;

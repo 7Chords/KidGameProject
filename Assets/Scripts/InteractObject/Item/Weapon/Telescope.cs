@@ -1,4 +1,4 @@
-﻿using KidGame.Core;
+using KidGame.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +12,7 @@ namespace KidGame.core
         private int layerIndex;
         private float halfMinAngel = 0; // 最大能超过的角度
         private float onceFoucsAddTime = 0.05f; // 单次照射增加的值
+        private bool isHoldOrNot = false;
         protected override void Awake()
         {
             layerIndex = LayerMask.NameToLayer("NeedShadow_Enemy");
@@ -20,7 +21,8 @@ namespace KidGame.core
         protected override void Update()
         {
             // 如果聚焦到最小了 才开始判断是否有敌人被照射
-            base.Update();
+            isHoldOrNot = _m_focusLinesScript.GetIsHoldPress();
+            if(isHoldOrNot) base.Update();
         }
         // 准备阶段逻辑 白天
         public override void _WeaponUseLogic()
@@ -37,9 +39,17 @@ namespace KidGame.core
            
         }
 
+        private void OnLongPressRelease()
+        {
+            CameraController.Instance.ResetCamaraOffset();
+            CameraController.Instance.ResetCamaraSmoothSpeed();
+        }
         private void DoInNight()
         {
-
+            // 解耦解一半 这一块
+            Vector3 useDir = MouseRaycaster.Instance.GetDirFromMouseToPosi(this.transform.position);
+            CameraController.Instance.SetCamaraOffset(useDir, 3);
+            CameraController.Instance.SetSmoothSpeed(5f);
         }
         private void DoInDay()
         {
@@ -57,8 +67,6 @@ namespace KidGame.core
                     if (isEnemyInFocusArea(i.transform.position))
                     {
                         controller.AddBeExposeTime(onceFoucsAddTime);
-                        // 这里还需要交流一下怎么处理比较合适
-                        //if(controller.GetBeExposeTime() > )
                     }
                 }
 
@@ -80,8 +88,13 @@ namespace KidGame.core
             return false;
         }
 
+        private void OnDestroy()
+        {
+            MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE, OnLongPressRelease);
+        }
         private void Init()
         {
+            MsgCenter.RegisterMsgAct(MsgConst.ON_USE_LONG_PRESS_RELEASE, OnLongPressRelease);
             halfMinAngel = _m_focusLinesScript.GetHalfMinAngle();
         }
     }

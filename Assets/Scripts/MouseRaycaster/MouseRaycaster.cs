@@ -1,4 +1,4 @@
-﻿using KidGame.UI.Game;
+using KidGame.UI.Game;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -47,6 +47,17 @@ namespace KidGame.Core
                 return hitInfo.point;
             }
             else return Vector3.zero;
+        }
+
+        // 为了降低耦合 这里使用依赖注入
+        // 返回从鼠标 指向 posi位置的方向向量 y分量为0
+        public Vector3 GetDirFromMouseToPosi(Vector3 posi)
+        {
+            Vector3 mousePosi = GetMousePosi();
+            if (Vector3.Distance(posi, mousePosi) <= 5f) return Vector3.zero;
+            Vector3 dir = (mousePosi - posi).normalized;
+            dir.y = 0;
+            return dir;
         }
 
     }

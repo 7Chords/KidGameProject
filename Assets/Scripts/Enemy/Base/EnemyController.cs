@@ -9,7 +9,7 @@ using System.Linq;
 namespace KidGame.Core
 {
     /// <summary>
-    /// ·â×°µĞÈËÏà¹Ø±äÁ¿Óë·½·¨
+    /// å°è£…æ•Œäººç›¸å…³å˜é‡ä¸æ–¹æ³•
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class EnemyController : MonoBehaviour, IStateMachineOwner, IDamageable, ISoundable
@@ -30,11 +30,11 @@ namespace KidGame.Core
 
         private BehaviorTree behaviorTree;
         
-        private EnemyHUDController enemyHUDController; // µĞÈËµÄhud
+        private EnemyHUDController enemyHUDController; // æ•Œäººçš„hud
 
         #endregion
 
-        #region ĞĞÎªÊ÷ËùÓÃ²ÎÊı
+        #region è¡Œä¸ºæ ‘æ‰€ç”¨å‚æ•°
 
         public float testTime;
 
@@ -47,6 +47,8 @@ namespace KidGame.Core
 
         private float beExposedTime = 0;
 
+        private bool couldBeExposed = true;
+
         private Transform player;
 
         public Transform Player
@@ -54,7 +56,7 @@ namespace KidGame.Core
             get { return player; }
         }
 
-        private Dictionary<RoomType, bool> roomSearchStateDic; //·¿¼äËÑË÷Çé¿ö×Öµä
+        private Dictionary<RoomType, bool> roomSearchStateDic; //æˆ¿é—´æœç´¢æƒ…å†µå­—å…¸
 
         private List<RoomInfo> _roomsToCheck = new List<RoomInfo>();
 
@@ -65,28 +67,27 @@ namespace KidGame.Core
         public Color NoSeePlayerColor;
         public Color SeePlayerColor;
 
-        private float curSanity; // µĞÈËµÄÀíÖÇ
+        private float curSanity; // æ•Œäººçš„ç†æ™º
         public bool IsDizzying;
-
         private GameObject hearingGO;
 
         public float ReceiveSoundRange => enemyBaseData.HearingRange;
         public GameObject SoundGameObject => gameObject;
 
-        #region ÓĞÄ¿µÄËÑË÷
+        #region æœ‰ç›®çš„æœç´¢
 
         public string _currentTargetItemId;
 
         #endregion
 
-        #region ËùÔÚ·¿¼ä
+        #region æ‰€åœ¨æˆ¿é—´
 
         private RoomType _currentRoomType;
         public RoomType CurrentRoomType => _currentRoomType;
 
         #endregion
 
-        #region ÉúÃüÖÜÆÚ
+        #region ç”Ÿå‘½å‘¨æœŸ
 
         private void Awake()
         {
@@ -119,7 +120,7 @@ namespace KidGame.Core
             enemyBuffHandler = new BuffHandler();
             enemyBuffHandler.Init();
 
-            // »ñÈ¡»ò´´½¨hud¿ØÖÆÆ÷
+            // è·å–æˆ–åˆ›å»ºhudæ§åˆ¶å™¨
             enemyHUDController = FindObjectOfType<EnemyHUDController>();
             if (enemyHUDController == null)
             {
@@ -127,7 +128,7 @@ namespace KidGame.Core
                 enemyHUDController = hudControllerObj.AddComponent<EnemyHUDController>();
             }
     
-            // ×¢²áµ½hud
+            // æ³¨å†Œåˆ°hud
             enemyHUDController.RegisterEnemy(this);
             
 
@@ -172,13 +173,13 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ¸ĞÖªÅĞ¶Ï
+        #region æ„ŸçŸ¥åˆ¤æ–­
 
         public bool PlayerInSight()
         {
             if (player == null) return false;
 
-            // ¾àÀë¼ì²é
+            // è·ç¦»æ£€æŸ¥
             Vector3 dirToPlayer = player.position - transform.position;
             float distanceToPlayer = dirToPlayer.magnitude;
             if (distanceToPlayer > enemyBaseData.VisionRange)
@@ -187,7 +188,7 @@ namespace KidGame.Core
                 return false;
             }
 
-            // ÉÈĞÎ½Ç¶È¼ì²é
+            // æ‰‡å½¢è§’åº¦æ£€æŸ¥
             float angleToPlayer = Vector3.Angle(transform.forward, dirToPlayer);
             if (angleToPlayer > enemyBaseData.VisionAngle / 2f)
             {
@@ -202,7 +203,7 @@ namespace KidGame.Core
         public bool PlayerInHearing()
         {
             //if (player == null) return false;
-            //// Ä¿Ç°ºÃÏñ»¹Ã»ÉùÒôÏµÍ³£¬ÔİÊ±ÕâÃ´Ğ´
+            //// ç›®å‰å¥½åƒè¿˜æ²¡å£°éŸ³ç³»ç»Ÿï¼Œæš‚æ—¶è¿™ä¹ˆå†™
             //if ((player.position - transform.position).magnitude <=
             //    enemyBaseData.HearingRange && (playerController.IsPlayerState(PlayerState.Dash) ||
             //                                   playerController.InputSettings.GetIfRun()))
@@ -213,20 +214,20 @@ namespace KidGame.Core
 
             //return false;
 
-            //hearingGOÍ¨¹ı½ÓÊÕÉùÒô·½·¨½øĞĞ¸³Öµ ReceiveSound
+            //hearingGOé€šè¿‡æ¥æ”¶å£°éŸ³æ–¹æ³•è¿›è¡Œèµ‹å€¼ ReceiveSound
             return hearingGO;
         }
 
         #endregion
 
-        #region ÊÜ»÷
+        #region å—å‡»
 
         public void TakeDamage(DamageInfo damageInfo)
         {
             curSanity = Mathf.Clamp(curSanity - damageInfo.damage, 0, enemyBaseData.MaxSanity);
             enemyBuffHandler.AddBuff(damageInfo.buffInfo);
 
-            // Í¨Öªhud¸üĞÂ
+            // é€šçŸ¥hudæ›´æ–°
             MsgCenter.SendMsg(MsgConst.ON_ENEMY_SANITY_CHG, this, curSanity, enemyBaseData.MaxSanity);
             MsgCenter.SendMsg(MsgConst.ON_ENEMY_BUFF_CHG, this);
 
@@ -244,7 +245,7 @@ namespace KidGame.Core
                 curSanity = enemyBaseData.MaxSanity;
             }
 
-            // ¹ã²¥Ñ£ÔÎ×´Ì¬
+            // å¹¿æ’­çœ©æ™•çŠ¶æ€
             MsgCenter.SendMsg(MsgConst.ON_ENEMY_DIZZY, this, IsDizzying);
         }
 
@@ -256,7 +257,7 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ·¿¼ä
+        #region æˆ¿é—´
 
         private void UpdateCurrentRoomType()
         {
@@ -268,10 +269,10 @@ namespace KidGame.Core
 
         #endregion
 
-        #region ĞĞÎªÊ÷·â×°·½·¨
+        #region è¡Œä¸ºæ ‘å°è£…æ–¹æ³•
 
         /// <summary>
-        /// ×·»÷Íæ¼Ò
+        /// è¿½å‡»ç©å®¶
         /// </summary>
         public void ChasePlayer()
         {
@@ -281,7 +282,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// ÉèÖÃÄ¿±êµ½Ä³¸öµã
+        /// è®¾ç½®ç›®æ ‡åˆ°æŸä¸ªç‚¹
         /// </summary>
         public void SetMoveTarget(Vector3 position)
         {
@@ -293,7 +294,7 @@ namespace KidGame.Core
         #endregion
 
         /// <summary>
-        /// ÊÇ·ñ¼ì²éÁËËùÓĞµÄ·¿¼ä
+        /// æ˜¯å¦æ£€æŸ¥äº†æ‰€æœ‰çš„æˆ¿é—´
         /// </summary>
         /// <returns></returns>
         public bool CheckAllRooms()
@@ -307,7 +308,7 @@ namespace KidGame.Core
         }
 
         /// <summary>
-        /// È¥¼ì²é×î½üµÄÎ´¼ì²é¹ıµÄ·¿¼ä
+        /// å»æ£€æŸ¥æœ€è¿‘çš„æœªæ£€æŸ¥è¿‡çš„æˆ¿é—´
         /// </summary>
         public RoomType GoNearestUnCheckRoom()
         {
@@ -335,10 +336,10 @@ namespace KidGame.Core
         public void ResetAllRoomsCheckState()
         {
             var roomTypeList = new List<RoomType>(roomSearchStateDic.Keys);
-            for (int i = 0; i < roomTypeList.Count; i++) //²»ÒªforeachÀïÃæĞŞ¸Ä »á±¨´í
+            for (int i = 0; i < roomTypeList.Count; i++) //ä¸è¦foreaché‡Œé¢ä¿®æ”¹ ä¼šæŠ¥é”™
             {
                 var roomType = roomTypeList[i];
-                // ÏÖÔÚ¿ÉÒÔ°²È«µØĞŞ¸ÄroomCheckStates¼¯ºÏ
+                // ç°åœ¨å¯ä»¥å®‰å…¨åœ°ä¿®æ”¹roomCheckStatesé›†åˆ
                 SetRoomCheckState(roomType, false);
             }
         }
@@ -407,7 +408,24 @@ namespace KidGame.Core
         public void AddBeExposeTime(float _addTime)
         {
             beExposedTime += _addTime;
+            // è¿™é‡Œ1fæ˜¯ç…§å°„åˆ°æŸä¸ªé˜ˆå€¼çš„æ•°å€¼
+            if (beExposedTime >= 1f && couldBeExposed)
+            {
+                MsgCenter.SendMsg(MsgConst.ON_ENEMY_FULL_EXPOSED, this);// é€šçŸ¥å…¨å±€è®¢é˜…è€… æŸä¸ªæ•Œäººç…§å°„æ—¶é—´å·²æ»¡
+                couldBeExposed = false;// å†·å´æ—¶é—´
+                StartCoroutine(ResetBeExposeTime());
+            }
+               
         }
+
+
+        IEnumerator ResetBeExposeTime()
+        {
+            yield return new WaitForSeconds(3f);// 3ç§’åå¯ä»¥å†æ¬¡è¢«ç…§å°„
+            couldBeExposed = true;
+            beExposedTime = 0;
+        }
+
         #region Gizoms
 
         private void OnDrawGizmos()
