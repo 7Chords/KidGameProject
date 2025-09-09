@@ -366,6 +366,7 @@ namespace KidGame.Core
         public void GoCheckHearPoint()
         {
             targetPos = hearingGO.transform.position;
+            hearingGO = null;
             SetMoveTarget(targetPos);
         }
 
