@@ -19,9 +19,10 @@ public class CellUI : MonoBehaviour
     public TextMeshProUGUI count;
     public string detailText;
     public Transform detailPoint;
+    public Transform moveItemPanelPoint;
 
     private float timer = 0f;
-    private const float delay = 0.4f; // ÐüÍ£Ê±¼äãÐÖµ
+    private const float delay = 0.4f; // ï¿½ï¿½Í£Ê±ï¿½ï¿½ï¿½ï¿½Öµ
 
     private void Awake()
     {
@@ -32,26 +33,26 @@ public class CellUI : MonoBehaviour
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        timer = 0f; // ÖØÖÃ¼ÆÊ±Æ÷
-        StartCoroutine(ShowDetailPanel()); // ¿ªÊ¼¼ÆÊ±
+        timer = 0f; // ï¿½ï¿½ï¿½Ã¼ï¿½Ê±ï¿½ï¿½
+        StartCoroutine(ShowDetailPanel()); // ï¿½ï¿½Ê¼ï¿½ï¿½Ê±
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        StopAllCoroutines(); // Í£Ö¹ËùÓÐÐ­³Ì
-        timer = 0f; // ÖØÖÃ¼ÆÊ±Æ÷
+        StopAllCoroutines(); // Í£Ö¹ï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½
+        timer = 0f; // ï¿½ï¿½ï¿½Ã¼ï¿½Ê±ï¿½ï¿½
         
         UIHelper.Instance.HideItemDetail();
         //Signals.Get<HideItemDetailSignal>().Dispatch();
     }
 
     private IEnumerator ShowDetailPanel() {
-        timer = 0f;  // È·±£¼ÆÊ±Æ÷´Ó0¿ªÊ¼
+        timer = 0f;  // È·ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Ê¼
         while (timer < delay) {
-            timer += Time.unscaledDeltaTime;  // Ê¹ÓÃ·ÇËõ·ÅÔöÁ¿Ê±¼ä
-            yield return null;  // ¼´Ê¹timeScale=0£¬ÈÔ»áµÈ´ýÏÂÒ»Ö¡
+            timer += Time.unscaledDeltaTime;  // Ê¹ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+            yield return null;  // ï¿½ï¿½Ê¹timeScale=0ï¿½ï¿½ï¿½Ô»ï¿½È´ï¿½ï¿½ï¿½Ò»Ö¡
         }
-        // ¼ÆÊ±½áÊø£¬ÏÔÊ¾ÏêÇéÃæ°å
+        // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         
         UIHelper.Instance.ShowItemDetail(this);
         //Signals.Get<ShowItemDetailSignal>().Dispatch(this);

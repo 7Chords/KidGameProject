@@ -123,6 +123,7 @@ namespace KidGame.UI.Game
             popItemContainerProp.originItems = materialHoldList;
             popItemContainerProp.row = rowCount;
             popItemContainerProp.column = columnCount;
+            PlayerBag.Instance.TargetList = popItemContainerProp.items;
             uiFrame.OpenWindow(ScreenIds.BackpackWindow,new BackpackProp(popItemContainerProp.items));
             uiFrame.ShowPanel(ScreenIds.PopItemContainerPanel,popItemContainerProp);
             GameManager.Instance.GamePause();

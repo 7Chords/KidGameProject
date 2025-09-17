@@ -83,19 +83,20 @@ namespace KidGame.Core
     public class PlayerBag : Singleton<PlayerBag>
     {
         #region 背包结构
-
+        //TIPS:如果在方法名中看到combineBag的名称 就是上面两个列表都会去查找
+        //比如要删除某个id的道具就是要两个都去找 加入先加道具栏再加背包
         public List<ISlotInfo> QuickAccessBag;//道具栏，最多4个
         public List<ISlotInfo> BackBag;//库存背包
 
-        //TIPS:如果在方法名中看到combineBag的名称 就是上面两个列表都会去查找
-        //比如要删除某个id的道具就是要两个都去找 加入先加道具栏再加背包
+        //当同时开启背包和其他容器时，点击物品会出现小菜单栏，可选择到底移动到哪个容器，
+        //这个引用就是用来存储其他容器的那个list的引用
+        private List<ISlotInfo> targetList = null;
+        
+        public List<ISlotInfo> TargetList{ get => targetList; set => targetList = value; } 
+        
 
         #endregion
-
-
-
-
-
+        
         #region 当前选中道具索引逻辑
 
 
@@ -162,6 +163,8 @@ namespace KidGame.Core
 
         #region 公共方法接口
         public List<ISlotInfo> GetQuickAccessBag() => QuickAccessBag;
+        
+        
 
         /// <summary>
         /// 加载存档中的背包数据 todo:guihuala
@@ -408,10 +411,10 @@ namespace KidGame.Core
                 return;
             
             var item = BackBag[selectIndex];
-            if(!(item.ItemData is MaterialData))return;
+            //if(!(item.ItemData is MaterialData))return;
             BackBag.RemoveAt(selectIndex);
             prop.originItems.Add(new MaterialItem(item.ItemData as MaterialData,item.Amount));
-
+            targetList.Add(item);
             //OnQuickAccessBagUpdated?.Invoke();
         }
 
@@ -421,7 +424,7 @@ namespace KidGame.Core
                 return;
             
             var item = prop.items[selectIndex];
-            if(!(item.ItemData is MaterialData))return;
+            //if(!(item.ItemData is MaterialData))return;
             AddItemToCombineBag(item.ItemData.Id, item.ItemData.UseItemType, item.Amount);
             //BackBag.Add(item);
             prop.originItems.RemoveAt(selectIndex);

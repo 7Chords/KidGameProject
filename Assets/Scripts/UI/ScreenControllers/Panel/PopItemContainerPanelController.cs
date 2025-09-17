@@ -116,6 +116,7 @@ namespace KidGame.UI
         {
             if (!_isPanelActive) return; // 状态校验
             UIController.Instance.HidePanel(ScreenIds.PopItemContainerPanel);
+            PlayerBag.Instance.TargetList = null;
             //Signals.Get<CloseBackpackWindowSignal>().Dispatch();
         }
         

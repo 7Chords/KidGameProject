@@ -5,20 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="676a01e3-15e8-4337-a6f3-0d98d749ae8b" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KidGame/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Art/Fonts/Uranus_Pixel_11Px SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Fonts/Uranus_Pixel_11Px SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Art/Materials/Skybox/Day1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Materials/Skybox/Day1.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/ScriptObject/kidgame_game_data_config.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/ScriptObject/kidgame_game_data_config.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Msg/MsgConst.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Msg/MsgConst.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Game/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Game/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/Input/InputSetting.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Widgets/Cell.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Widgets/Cell.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Window/BackpackWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/UI/Screens/Window/BackpackWindow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/UI/UIFrame.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/UI/UIFrame.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerBag.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerBag.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Helper/UIHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Helper/UIHelper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/GamePauseWindows/BackpackWindowController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/GamePauseWindows/BackpackWindowController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/BackpackPanelController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/BackpackPanelController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/PopItemContainerPanelController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ScreenControllers/Panel/PopItemContainerPanelController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/UIController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/UIController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/InputSystem/Player.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/InputSystem/Player.inputactions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Widgets/CellUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Widgets/CellUI.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,20 +67,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.41460234",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true",
-    "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.41460234&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;附加到 Unity 编辑器.附加到 Unity 编辑器.executor&quot;: &quot;Debug&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="附加到 Unity 编辑器.附加到 Unity 编辑器">
     <configuration name="启动 Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Unity\Hub\Editor\2022.3.30f1c1\Editor\Unity.exe" />
@@ -102,15 +98,13 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="98144">
+    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="98144" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list>
-          <MonoRuntime />
-        </list>
+        <list />
       </option>
       <option name="selectedOptions">
         <list />
@@ -152,6 +146,7 @@
       <workItem from="1756113012421" duration="6532000" />
       <workItem from="1756172016188" duration="3613000" />
       <workItem from="1756175994549" duration="12526000" />
+      <workItem from="1758105213235" duration="5753000" />
     </task>
     <servers />
   </component>
@@ -215,10 +210,10 @@
           <line>117</line>
           <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\UI\ScreenControllers\Panel\PopItemContainerPanelController.cs" containingFunctionPresentation="方法 'HidePopPanel'">
             <startOffsets>
-              <option value="3708" />
+              <option value="3698" />
             </startOffsets>
             <endOffsets>
-              <option value="3773" />
+              <option value="3763" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="18" />
@@ -228,10 +223,10 @@
           <line>141</line>
           <properties documentPath="D:\unityLearn\KidGame\Assets\Scripts\Player\Input\InputSetting.cs" containingFunctionPresentation="方法 'OnInteractionActionPerformed'">
             <startOffsets>
-              <option value="5675" />
+              <option value="5619" />
             </startOffsets>
             <endOffsets>
-              <option value="5730" />
+              <option value="5620" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="19" />

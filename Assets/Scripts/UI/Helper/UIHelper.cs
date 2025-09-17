@@ -6,7 +6,9 @@ using DG.Tweening;
 using KidGame.UI.Game;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using Utils;
 
 
 namespace KidGame.UI
@@ -148,7 +150,12 @@ namespace KidGame.UI
             detailPanel = UIController.Instance.uiCanvas.transform.Find("PriorityPanelLayer/DetailPanel").gameObject;
             detailText = detailPanel.transform.Find("DetailText").GetComponent<TextMeshProUGUI>();
             detailPanel.SetActive(false);
-
+            
+            moveItemPanel = UIController.Instance.uiCanvas.transform.Find("PriorityPanelLayer/MoveItemPanel").gameObject;
+            moveItemPanel.SetActive(false);
+            firstBtn = moveItemPanel.transform.Find("FirstBtn").GetComponent<Button>();
+            secondBtn = moveItemPanel.transform.Find("SecondBtn").GetComponent<Button>();
+            firstText = firstBtn.GetComponentInChildren<TextMeshProUGUI>();
             this.OnUpdate(SortBubbleQueueByDist);
         }
 
@@ -335,7 +342,12 @@ namespace KidGame.UI
         #region Detail
 
         private GameObject detailPanel;
+        private GameObject moveItemPanel;
         private TextMeshProUGUI detailText;
+
+        private Button firstBtn;
+        private TextMeshProUGUI firstText;
+        private Button secondBtn;
         /// <summary>
         /// 展示物品详情
         /// </summary>
@@ -346,6 +358,43 @@ namespace KidGame.UI
             detailPanel.transform.position = cellUI.detailPoint.position;
             detailText.text = cellUI.detailText;
             detailPanel.SetActive(true);
+        }
+
+        public void ShowMoveItemPanel(CellUI cellUI,bool isTargetBag, int index)
+        {
+            moveItemPanel.transform.SetAsLastSibling();
+            moveItemPanel.transform.position = cellUI.moveItemPanelPoint.position;
+            moveItemPanel.SetActive(true);
+            if (isTargetBag)
+            {
+                firstText.text = "背包";
+                firstBtn.onClick.RemoveAllListeners();
+                firstBtn.onClick.AddListener((() =>
+                {
+                    PlayerBag.Instance.MoveItemToBackBag(index);
+                    Signals.Get<RefreshBackpackSignal>().Dispatch();
+                    HideMoveItemPanel();
+                }));
+                
+            }
+            else
+            {
+                firstText.text = "口袋";
+                firstBtn.onClick.RemoveAllListeners();
+                firstBtn.onClick.AddListener((() =>
+                {
+                    PlayerBag.Instance.MoveItemToQuickAccessBag(index);
+                    Signals.Get<RefreshBackpackSignal>().Dispatch();
+                    HideMoveItemPanel();
+                }));
+            }
+            
+            
+        }
+
+        public void HideMoveItemPanel()
+        {
+            moveItemPanel.SetActive(false);
         }
 
         public void HideItemDetail()

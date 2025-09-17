@@ -91,8 +91,10 @@ public class BackpackWindowController : WindowController<BackpackProp>
     private void OnBagCellClick(GameObject cell, int index)
     {
         int cellIndex = index - 1;
-        // 原本的道具栏与背包互换代码移动到了playerBag.cs
-        PlayerBag.Instance.MoveItemToQuickAccessBag(cellIndex);
+        //todo 
+        //改成弹出小界面
+        UIHelper.Instance.ShowMoveItemPanel(cell.GetComponent<CellUI>(),false,cellIndex);
+       
         RefreshLists();
         UIHelper.Instance.HideItemDetail();
     }
@@ -100,8 +102,11 @@ public class BackpackWindowController : WindowController<BackpackProp>
     private void OnPocketCellClick(GameObject cell, int index)
     {
         int cellIndex = index - 1;
+        //todo 
+        //改成弹出小界面
+        UIHelper.Instance.ShowMoveItemPanel(cell.GetComponent<CellUI>(),true,cellIndex);
         // 原本的道具栏与背包互换代码移动到了playerBag.cs
-        PlayerBag.Instance.MoveItemToBackBag(cellIndex);
+        
         RefreshLists();
         UIHelper.Instance.HideItemDetail();
     }
