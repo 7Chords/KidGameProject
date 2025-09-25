@@ -4,6 +4,8 @@ using KidGame.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utils;
+
 
 namespace KidGame.UI
 {
@@ -19,13 +21,15 @@ namespace KidGame.UI
         private void Start()
         {
             InitializeSaveSlots();
-            
+
             SaveCell.OnLeftClick += OnSaveCellClicked;
+            SaveCell.OnDeleteClick += OnSaveCellDeleteClicked;
         }
 
         private void OnDestroy()
         {
             SaveCell.OnLeftClick -= OnSaveCellClicked;
+            SaveCell.OnDeleteClick -= OnSaveCellDeleteClicked;
         }
 
         private void InitializeSaveSlots()
@@ -35,6 +39,7 @@ namespace KidGame.UI
             {
                 Destroy(child.gameObject);
             }
+
             saveCells.Clear();
 
             // 生成指定数量存档槽位
@@ -42,7 +47,7 @@ namespace KidGame.UI
             {
                 GameObject obj = Instantiate(recordPrefab, grid);
                 obj.name = $"SaveSlot_{i}";
-                
+
                 SaveCell cell = obj.GetComponent<SaveCell>();
                 if (cell != null)
                 {
@@ -56,6 +61,50 @@ namespace KidGame.UI
         {
             LoadRecord(slotIndex);
         }
+        
+        private void OnSaveCellDeleteClicked(int slotIndex)
+        {
+            if (string.IsNullOrEmpty(RecordData.Instance.recordName[slotIndex]))
+            {
+                if (slotIndex >= 0 && slotIndex < saveCells.Count) saveCells[slotIndex].RefreshDisplay();
+                return;
+            }
+
+            // 1) 删文件
+            PlayerSaveData.Instance.Delete(slotIndex);
+
+            // 2) 清空记录名，修正 lastID
+            if (RecordData.Instance.lastID == slotIndex)
+            {
+                RecordData.Instance.lastID = FindAnyExistingSaveSlotOrMinusOne(slotIndex);
+            }
+            RecordData.Instance.recordName[slotIndex] = null;
+            RecordData.Instance.Save();
+
+            // 3) 刷新该格显示
+            if (slotIndex >= 0 && slotIndex < saveCells.Count)
+            {
+                saveCells[slotIndex].Initialize(slotIndex);
+            }
+            
+            Debug.Log($"已删除存档槽 {slotIndex}");
+        }
+        
+        private int FindAnyExistingSaveSlotOrMinusOne(int preferExclude)
+        {
+            for (int i = 0; i < RecordData.recordNum; i++)
+            {
+                if (i == preferExclude) continue;
+                var name = RecordData.Instance.recordName[i];
+                if (!string.IsNullOrEmpty(name))
+                {
+                    // 进一步确认文件真的存在
+                    var preview = PlayerSaveData.Instance.ReadForShow(i);
+                    if (preview != null) return i;
+                }
+            }
+            return -1;
+        }
 
         private void LoadRecord(int slotIndex)
         {
@@ -67,19 +116,40 @@ namespace KidGame.UI
 
             ShowLoadingPanel($"正在加载存档 {slotIndex + 1}...");
 
-            // 检查存档是否存在
+            // 1) 槽位名为空，新建存档
             if (string.IsNullOrEmpty(RecordData.Instance.recordName[slotIndex]))
             {
-                Debug.LogWarning($"存档槽位 {slotIndex} 没有存档数据");
                 HideLoadingPanel();
-                
-                // 没有的话创建新存档
                 CreateNewGame(slotIndex);
                 return;
             }
 
-            // 使用协程加载，避免卡顿
+            // 2) 有名字但文件可能不存在或坏档
+            var preview = PlayerSaveData.Instance.ReadForShow(slotIndex);
+            if (preview == null)
+            {
+                HideLoadingPanel();
+                CreateNewGame(slotIndex);
+                return;
+            }
+
+            // 正常读取
             StartCoroutine(LoadRecordCoroutine(slotIndex));
+        }
+
+        private void CreateNewGame(int slotIndex)
+        {
+            Debug.Log($"在槽位 {slotIndex} 创建新游戏");
+            
+            string saveName = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            RecordData.Instance.recordName[slotIndex] = saveName;
+            RecordData.Instance.lastID = slotIndex;
+            RecordData.Instance.Save();
+
+            PlayerSaveData.Instance.InitializeNewGame(slotIndex, "GameScene");
+            PlayerSaveData.Instance.Save(slotIndex);
+            
+            SceneManager.LoadScene("GameScene");
         }
 
         private IEnumerator LoadRecordCoroutine(int slotIndex)
@@ -98,7 +168,7 @@ namespace KidGame.UI
                     RecordData.Instance.lastID = slotIndex;
                     RecordData.Instance.Save();
                 }
-                
+
                 PlayerSaveData.Instance.currentSaveSlot = slotIndex;
 
                 UpdateLoadingText("载入场景...");
@@ -122,27 +192,13 @@ namespace KidGame.UI
             }
         }
 
-        // 创建新游戏
-        private void CreateNewGame(int slotIndex)
-        {
-            Debug.Log($"在槽位 {slotIndex} 创建新游戏");
-            
-            // 初始化新游戏数据
-            // PlayerSaveData.Instance.InitializeNewGame(slotIndex);
-            // RecordData.Instance.recordName[slotIndex] = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            // RecordData.Instance.Save();
-            
-            // 加载游戏
-            // LoadRecord(slotIndex);
-        }
-
         private void ShowLoadingPanel(string message = "加载中...")
         {
             if (loadingPanel != null)
             {
                 loadingPanel.SetActive(true);
             }
-            
+
             if (loadingText != null)
             {
                 loadingText.text = message;

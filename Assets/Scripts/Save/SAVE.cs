@@ -84,11 +84,11 @@ namespace KidGame.Core
             PlayerPrefs.SetString(key, dataToSave);
             PlayerPrefs.Save();
         }
-
+        
         public static T PlayerPrefsLoad<T>(string key, bool encrypted = true) where T : new()
         {
             string data = PlayerPrefs.GetString(key, null);
-            if (string.IsNullOrEmpty(data)) return new T();
+            if (string.IsNullOrEmpty(data)) return default;
 
             try
             {
@@ -98,9 +98,10 @@ namespace KidGame.Core
             catch (Exception ex)
             {
                 Debug.LogError($"PlayerPrefsLoad failed: {ex.Message}");
-                return new T();
+                return default;
             }
         }
+
         #endregion
 
         #region JSON
@@ -112,6 +113,7 @@ namespace KidGame.Core
             File.WriteAllText(GetPath(fileName), dataToSave);
             Debug.Log($"ÒÑ±£´æ{GetPath(fileName)}");
         }
+
 
         public static T JsonLoad<T>(string fileName, bool encrypted = true) where T : new()
         {
@@ -129,10 +131,10 @@ namespace KidGame.Core
                 catch (Exception ex)
                 {
                     Debug.LogError($"JsonLoad failed: {ex.Message}");
-                    return new T();
+                    return default;
                 }
             }
-            return new T();
+            return default;
         }
 
         public static void JsonDelete(string fileName)

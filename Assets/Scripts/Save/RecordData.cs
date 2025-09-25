@@ -43,13 +43,16 @@ namespace KidGame.Core
             if (savedata == null) return;
 
             lastID = savedata.lastID;
+
             for (int i = 0; i < recordNum; i++)
             {
-                recordName[i] = savedata.recordName[i] ?? $"Save_{i}";
+                // ¸æÖªUIÊÇ¿Õ´æµµ
+                recordName[i] = savedata.recordName != null ? savedata.recordName[i] : null;
             }
-            
+
             unlockedItems = savedata.unlockedItems ?? new List<string>();
         }
+
 
         public void Save(bool encrypt = true)
         {

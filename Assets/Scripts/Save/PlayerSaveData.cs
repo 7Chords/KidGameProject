@@ -105,7 +105,21 @@ namespace KidGame.Core
         }
 
         #endregion
-
+        
+        public void InitializeNewGame(int slotIndex, string firstSceneName = "GameScene")
+        {
+            level = 1;
+            scensName = firstSceneName;
+            gameTime = 0;
+            currentDay = 1;
+            trapBag = new List<TrapSlotInfo>();
+            materialBag = new List<MaterialSlotInfo>();
+            playerName = string.IsNullOrEmpty(playerName) ? "Player" : playerName;
+            totalPlayTimeSeconds = 0;
+            lastSavedTimestamp = DateTime.UtcNow.Ticks;
+            currentSaveSlot = slotIndex;
+        }
+        
         /// <summary>
         /// 手动保存
         /// </summary>
@@ -116,13 +130,20 @@ namespace KidGame.Core
             try
             {
                 currentSaveSlot = id;
+
+                // ★ 兜底：槽位名为空则自动命名
+                if (string.IsNullOrEmpty(RecordData.Instance.recordName[id]))
+                {
+                    RecordData.Instance.recordName[id] = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                    RecordData.Instance.lastID = id;
+                    RecordData.Instance.Save();
+                }
+
                 RecordData.Instance.UpdateGlobalData();
-                
-                // 更新总游戏时间
+
                 totalPlayTimeSeconds = Mathf.FloorToInt(gameTime);
-                
                 SAVE.JsonSave(RecordData.Instance.recordName[id], ForSave(), encrypt);
-                
+
                 Debug.Log($"存档成功 - 槽位: {id}, 加密: {encrypt}");
             }
             catch (System.Exception ex)
@@ -130,6 +151,7 @@ namespace KidGame.Core
                 Debug.LogError($"Save failed for slot {id}: {ex.Message}");
             }
         }
+
 
         /// <summary>
         /// 自动保存
@@ -166,7 +188,7 @@ namespace KidGame.Core
                     Debug.Log($"载入成功 - 槽位: {id}, 版本: {gameVersion}");
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Debug.LogError($"Load failed for slot {id}: {ex.Message}");
             }
@@ -196,7 +218,7 @@ namespace KidGame.Core
                 }
                 Debug.Log($"删除存档 - 槽位: {id}");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Debug.LogError($"Delete failed for slot {id}: {ex.Message}");
             }

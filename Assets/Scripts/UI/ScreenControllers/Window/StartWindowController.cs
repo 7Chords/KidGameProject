@@ -28,43 +28,43 @@ namespace KidGame.UI
         public Button continueButton;
         public Button settingsButton;
         public Button exitButton;
-        
+
         private void Start()
         {
             //读取存档列表
             RecordData.Instance.Load();
-            
-            if (RecordData.Instance.lastID != 123)
+
+            // 判定是否有“最近存档”
+            bool hasRecent = false;
+            int id = RecordData.Instance.lastID;
+            if (id >= 0 && id < RecordData.recordNum && !string.IsNullOrEmpty(RecordData.Instance.recordName[id]))
             {
-                continueButton.gameObject.SetActive(false);
+                // 确认文件存在且可解析
+                var preview = PlayerSaveData.Instance.ReadForShow(id);
+                hasRecent = (preview != null);
             }
-            
+
+            continueButton.gameObject.SetActive(hasRecent);
             startButton.onClick.AddListener(UI_Start);
             continueButton.onClick.AddListener(UI_Continue);
             settingsButton.onClick.AddListener(UI_Setting);
             exitButton.onClick.AddListener(UI_Exit);
         }
-        
+
         public void UI_Start()
         {
-            // 创建新存档
+            // 直接走“创建新游戏”路径（与存档面板一致的逻辑）
             int saveSlot = GetAvailableSaveSlot();
-            
             string saveName = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
             RecordData.Instance.recordName[saveSlot] = saveName;
             RecordData.Instance.lastID = saveSlot;
             RecordData.Instance.Save();
-            
-            PlayerSaveData.Instance.scensName = "GameScene";
-            PlayerSaveData.Instance.level = 1;
-            PlayerSaveData.Instance.gameTime = 0;
-            PlayerSaveData.Instance.currentSaveSlot = saveSlot; // 设置当前存档编号
+
+            PlayerSaveData.Instance.InitializeNewGame(saveSlot, "GameScene");
             PlayerSaveData.Instance.Save(saveSlot);
-    
-            // 跳转场景
+
             SceneLoader.Instance.LoadSceneWithTransition("GameScene",
                 UIController.Instance.UICameraBindingVertexCamera);
-            
             Hide();
         }
 
@@ -78,7 +78,7 @@ namespace KidGame.UI
                     return i;
                 }
             }
-            
+
             // 如果没有空位，默认覆盖第一个存档
             return 0;
         }

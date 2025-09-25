@@ -12,6 +12,7 @@ namespace KidGame.UI
         public Text recordName; // 存档名称文本
         public Text additionalInfo; // 附加信息文本
         public Image background; // 背景图片
+        public Button deleteButton;
 
         public Color highlightColor = new Color(0.8f, 0.8f, 0.8f, 1f);
         public Color normalColor = Color.white;
@@ -20,6 +21,7 @@ namespace KidGame.UI
         public static System.Action<int> OnLeftClick;
         public static System.Action<int> OnEnter;
         public static System.Action OnExit;
+        public static System.Action<int> OnDeleteClick;
 
         private int slotIndex = -1;
         private bool hasSaveData = false;
@@ -27,71 +29,48 @@ namespace KidGame.UI
         public void Initialize(int index)
         {
             slotIndex = index;
+            // 绑定删除按钮
+            if (deleteButton != null)
+            {
+                deleteButton.onClick.RemoveAllListeners();
+                deleteButton.onClick.AddListener(() => { OnDeleteClick?.Invoke(slotIndex); });
+            }
+
             RefreshDisplay();
         }
 
         public void RefreshDisplay()
         {
-            if (indexText != null)
-            {
-                indexText.text = (slotIndex + 1).ToString();
-            }
+            if (indexText != null) indexText.text = (slotIndex + 1).ToString();
 
-            // 检查存档是否存在
-            hasSaveData = slotIndex >= 0 && 
-                         slotIndex < RecordData.recordNum && 
+            // 先看是否有名字
+            bool named = slotIndex >= 0 && slotIndex < RecordData.recordNum &&
                          !string.IsNullOrEmpty(RecordData.Instance.recordName[slotIndex]);
 
-            if (recordName != null)
-            {
-                if (!hasSaveData)
-                {
-                    recordName.text = "空存档";
-                    recordName.color = Color.gray;
-                    if (additionalInfo != null) 
-                    {
-                        additionalInfo.text = "点击创建新游戏";
-                        additionalInfo.color = Color.gray;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        string fullName = RecordData.Instance.recordName[slotIndex];
-                        
-                        // 显示存档名称
-                        recordName.text = fullName;
-                        recordName.color = Color.white;
+            var preview = named ? PlayerSaveData.Instance.ReadForShow(slotIndex) : null;
+            hasSaveData = preview != null;
 
-                        // 尝试读取存档数据获取更多信息
-                        if (additionalInfo != null)
-                        {
-                            var saveData = PlayerSaveData.Instance.ReadForShow(slotIndex);
-                            if (saveData != null)
-                            {
-                                string timeInfo = FormatPlayTime(saveData.totalPlayTimeSeconds);
-                                additionalInfo.text = $"关卡:{saveData.level} 天数:{saveData.currentDay}\n时间:{timeInfo}";
-                                additionalInfo.color = Color.white;
-                            }
-                            else
-                            {
-                                additionalInfo.text = "存档数据读取中...";
-                                additionalInfo.color = Color.yellow;
-                            }
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        recordName.text = "存档损坏";
-                        recordName.color = Color.red;
-                        if (additionalInfo != null)
-                        {
-                            additionalInfo.text = "点击尝试修复";
-                            additionalInfo.color = Color.red;
-                        }
-                    }
+            if (!hasSaveData)
+            {
+                recordName.text = "空存档";
+                recordName.color = Color.gray;
+                if (additionalInfo != null)
+                {
+                    additionalInfo.text = "点击创建新游戏";
+                    additionalInfo.color = Color.gray;
                 }
+                background.color = normalColor;
+                return;
+            }
+
+            // 有效存档
+            recordName.text = RecordData.Instance.recordName[slotIndex];
+            recordName.color = Color.white;
+            if (additionalInfo != null)
+            {
+                string timeInfo = FormatPlayTime(preview.totalPlayTimeSeconds);
+                additionalInfo.text = $"关卡:{preview.level} 天数:{preview.currentDay}\n时间:{timeInfo}";
+                additionalInfo.color = Color.white;
             }
         }
 
@@ -105,10 +84,7 @@ namespace KidGame.UI
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                // 点击反馈效果
                 StartCoroutine(ClickAnimation());
-                
-                // 触发点击事件
                 OnLeftClick?.Invoke(slotIndex);
             }
         }
