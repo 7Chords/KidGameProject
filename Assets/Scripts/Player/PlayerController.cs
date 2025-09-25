@@ -57,7 +57,6 @@ namespace KidGame.Core
             LogicSoundManager.Instance.RegSoundable(this);
             //注册一些事件
             RegActions();
-
         }
 
         public void Discard()
@@ -100,18 +99,11 @@ namespace KidGame.Core
             MsgCenter.UnregisterMsgAct(MsgConst.ON_USE_LONG_PRESS, TryUseWeaponUseLongPress);
             MsgCenter.UnregisterMsg(MsgConst.ON_SELECT_ITEM, OnItemSelected);
             MsgCenter.UnregisterMsg(MsgConst.ON_PLAYER_HIDE_CHG, OnPlayerUnderTableChg);
-
         }
 
         #endregion
 
         #region 功能
-
-
-        //public bool IsPlayerState(PlayerState state)
-        //{
-        //    return state == playerInfo.PlayerState;
-        //}
 
         private void GamePause()
         {
@@ -192,7 +184,6 @@ namespace KidGame.Core
             if (playerInfo.PickableDict == null || playerInfo.PickableDict.Count == 0) return;
             GetClosestPickable()?.Pick();
         }
-
 
         /// <summary>
         /// 玩家使用物品

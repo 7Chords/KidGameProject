@@ -45,7 +45,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.9499453, b: 0.76792455, a: 1}
-  m_Intensity: 8
+  m_Intensity: 2
   m_Range: 5
   m_SpotAngle: 34.28128
   m_InnerSpotAngle: 26.083353
@@ -268,6 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapFurnitureData:
+    serialNumber: 0
     furnitureData: {fileID: 0}
     mapPosList: []
     roomType: 0

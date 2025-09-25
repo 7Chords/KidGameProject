@@ -42,16 +42,19 @@ namespace KidGame.Core
                 //发出逻辑上的声音
                 player.ProduceSound(GameModel.Instance.PlayerInfo.RunSoundRange);
             }
-            Vector2 inputVal = player.InputSettings.MoveDir();
-            if (inputVal == Vector2.zero)
+            Vector3 move = player.InputSettings.CameraRelativeMoveDir(CameraController.Instance.transform);
+
+            if (move == Vector3.zero)
             {
                 player.ChangeState(PlayerState.Idle);
             }
             else
             {
-                dir = new Vector3(inputVal.x, 0, inputVal.y);
+                dir = move;  // 相机相对的方向
             }
+
             player.Rotate();
+
         }
 
         private void UpdateSpeed()

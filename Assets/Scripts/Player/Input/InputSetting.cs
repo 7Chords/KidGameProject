@@ -165,7 +165,7 @@ namespace KidGame.Core
         {
             MsgCenter.SendMsgAct(MsgConst.ON_RUN_RELEASE);
         }
-
+        
         private void OnUseActionCancled(InputAction.CallbackContext context)
         {
             // 只有当长按交互被取消且动作确实执行过
@@ -243,7 +243,19 @@ namespace KidGame.Core
             //只展示键位 其他信息都不展示
             return action.bindings[controlTypeIndex].ToDisplayString(DisplayStringOptions.DontIncludeInteractions);
         }
-
+        
+        public Vector3 CameraRelativeMoveDir(Transform cam)
+        {
+            Vector2 in2 = MoveDir();
+            if (in2.sqrMagnitude < 0.0001f) return Vector3.zero;
+            
+            Vector3 fwd = cam.forward; fwd.y = 0f; fwd.Normalize();
+            Vector3 right = cam.right; right.y = 0f; right.Normalize();
+            
+            Vector3 move = fwd * in2.y + right * in2.x;
+            return move.normalized;
+        }
+        
         #endregion
 
         #region RegisterCallbacks

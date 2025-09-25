@@ -20,7 +20,6 @@ namespace KidGame.Core
 
         public void Discard()
         {
-
         }
 
         private void LateUpdate()
@@ -28,9 +27,11 @@ namespace KidGame.Core
             if (Player == null) return;
 
             Vector3 desiredPosition = Player.position - transform.forward * initialDistance;
-            
-            transform.position = Vector3.Lerp(transform.position, desiredPosition + offsetVec3, Time.deltaTime * smoothSpeed);
+
+            transform.position = Vector3.Lerp(transform.position, desiredPosition + offsetVec3,
+                Time.deltaTime * smoothSpeed);
         }
+
         // 设置相机偏移 offset为方向向量 t为倍数
         public void SetCamaraOffset(Vector3 offset, int t)
         {
@@ -42,6 +43,7 @@ namespace KidGame.Core
         {
             smoothSpeed = speed;
         }
+
         // 复位
         public void ResetCamaraOffset()
         {
