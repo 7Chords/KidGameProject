@@ -120,7 +120,7 @@ Material:
     - _Cloud_Strength: 1
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DepthEdgeStrength: 0.5
+    - _DepthEdgeStrength: 1
     - _DepthThreshold: 0.01
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -132,7 +132,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _MinimumDarkness: 0.2
-    - _NormalEdgeStrength: 0.3
+    - _NormalEdgeStrength: 0.5
     - _NormalThreshold: 1
     - _OUTLINESENABLED: 1
     - _OcclusionStrength: 1
@@ -140,7 +140,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Shades: 7
+    - _Shades: 3
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -159,7 +159,7 @@ Material:
     - _DiffuseColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _NormalBias: {r: 1, g: 1, b: 1, a: 0}
-    - _Outline: {r: 0, g: 0, b: 0, a: 0}
+    - _Outline: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
     - _ShadowDiffuseColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
